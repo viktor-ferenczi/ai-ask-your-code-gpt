@@ -1,93 +1,133 @@
 openapi: 3.0.1
 info:
-  title: TODO Plugin
-  description: A plugin that allows the user to create and manage a TODO list using ChatGPT. If you do not know the user's username, ask them first before making queries to the plugin. Otherwise, use the username "global".
+  title: AskYourCode
+  description: A plugin that provides access to the source code and documentation of a software project provided by the user
   version: 'v1'
 servers:
-  - url: http://localhost:5003
+  - url: https://plugin.askyourcode.ai
 paths:
-  /todos/{username}:
-    get:
-      operationId: getTodos
-      summary: Get the list of todos
+  /project/{username}:
+    post:
+      operationId: downloadProject
+      summary: Downloads the source code archive of the project, extracts the archive, splits the source code and documentation into fragments, stores the fragments into a vector database
       parameters:
-      - in: path
-        name: username
-        schema:
+        - in: path
+          name: username
+          schema:
             type: string
+          required: true
+          description: Username of the logged in user. Use a `-` if not logged in
+      requestBody:
         required: true
-        description: The name of the user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/downloadProjectRequest'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getTodosResponse'
-    post:
-      operationId: addTodo
-      summary: Add a todo to the list
-      parameters:
-      - in: path
-        name: username
-        schema:
-            type: string
-        required: true
-        description: The name of the user.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/addTodoRequest'
-      responses:
-        "200":
-          description: OK
+                $ref: '#/components/schemas/downloadProjectResponse'
+  /project/{username}/{project_id}:
     delete:
-      operationId: deleteTodo
-      summary: Delete a todo from the list
+      operationId: deleteProject
+      summary: Deletes a project from the vector database
       parameters:
-      - in: path
-        name: username
-        schema:
+        - in: path
+          name: username
+          schema:
             type: string
-        required: true
-        description: The name of the user.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/deleteTodoRequest'
+          required: true
+          description: Username of the logged in user. Use a `-` if not logged in
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+          description: GUID of the project
       responses:
         "200":
           description: OK
+  /project/{username}/{project_id}/search:
+    get:
+      operationId: search
+      summary: Search for code or documentation fragments
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: The name of the user.
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+          description: GUID of the project
+        - in: query
+          name: path
+          schema:
+            type: string
+          required: false
+          description: Glob pattern matching the path of the file inside the project (case-insensitive)
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Case sensitive match on class or function names, exact match as the tail of fully qualified names
+        - in: query
+          name: text
+          schema:
+            type: string
+          required: false
+          description: Text to search for cosine similarity in the vector database
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 1
+          required: false
+          description: Maximum number of results to return
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchResponse'
 
 components:
   schemas:
-    getTodosResponse:
-      type: object
-      properties:
-        todos:
-          type: array
-          items:
-            type: string
-          description: The list of todos.
-    addTodoRequest:
+    downloadProjectRequest:
       type: object
       required:
-      - todo
+        - url
       properties:
-        todo:
+        url:
           type: string
-          description: The todo to add to the list.
+          description: The URL of the source code archive to download. Must point to a zip or tar.gz file which can be downloaded directly without authentication.
           required: true
-    deleteTodoRequest:
+    downloadProjectResponse:
       type: object
       required:
-      - todo_idx
+        - project_id
       properties:
-        todo_idx:
-          type: integer
-          description: The index of the todo to delete.
+        project_id:
+          type: string
+          description: GUID of the project
           required: true
+        error:
+          type: string
+          description: Error message (missing if the request was successful)
+          required: false
+    searchResponse:
+      type: array
+      items:
+        type: string
+      description: Search results as a list of fragments. Each fragment has a YAML header starting with `AskYourCode:`, which describes the fragment's original location inside the project. The actual text content starts after the first double newline.
