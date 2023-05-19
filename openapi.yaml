@@ -130,4 +130,4 @@ components:
       type: array
       items:
         type: string
-      description: Search results as a list of fragments. Each fragment has a YAML header starting with `AskYourCode:`, which describes the fragment's original location inside the project. The actual text content starts after the first double newline.
+      description: Search results, fragments of code or documentation. Each fragment starts with a YAML header describing the fragment's original location inside the project. The actual text content starts after the first double newline.
