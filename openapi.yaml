@@ -127,7 +127,23 @@ components:
           description: Error message (missing if the request was successful)
           required: false
     searchResponse:
-      type: array
-      items:
-        type: string
-      description: Search results, fragments of code or documentation. Each fragment starts with a YAML header describing the fragment's original location inside the project. The actual text content starts after the first double newline.
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            required:
+              - text
+              - meta
+            properties:
+              text:
+                type: string
+                description: Text of the fragment
+              meta:
+                type: string
+                description: Additional information on the fragment, allows for building a good intuition on the structure of the code and the project in general
+          description: Search results
+          required: true
