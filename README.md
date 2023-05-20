@@ -92,21 +92,22 @@ Programming languages with support planned are recognized and fragmented the sam
 text documents. They don't get proper metadata, but the LLM can still access those source files.
 
 Supported:
-- Python (.py)
-- Shell script (.sh)
-
-Planned:
+- Text
+- Markdown
+- Python
+- Shell
 - C#
-- Java
-- C/C++
-- HTML
-- CSS
-- JavaScript
+- C
+- C++
 - Rust
 - Zig
+- Java
+- JavaScript
 - SQL
+- CSS
+- HTML
 
-TODO: Way to request more languages.
+TODO: Way to request more languages and doc formats.
 
 ## Security
 

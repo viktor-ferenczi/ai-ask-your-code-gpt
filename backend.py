@@ -63,7 +63,7 @@ def delete(username, project_id):
     vdb.delete_collection(f'user:{username}/{project_id}')
 
 
-def search(username: str, project_id: str, path: str, name: str, text: str, limit: int) -> List[Dict[str, object]]:
+def search(username: str, project_id: str, path: str, text: str, limit: int) -> List[Dict[str, object]]:
     query_vector = embedding.embed_fragments([(path, text)])[0]
 
     filter_conditions: List[FieldCondition] = []
@@ -71,15 +71,6 @@ def search(username: str, project_id: str, path: str, name: str, text: str, limi
     if path:
         condition = FieldCondition(
             key='path',
-            range=Match(
-                value=path
-            )
-        )
-        filter_conditions.append(condition)
-
-    if name:
-        condition = FieldCondition(
-            key='name',
             range=Match(
                 value=path
             )

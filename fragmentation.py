@@ -6,7 +6,7 @@ from typing import List, Optional, Dict
 
 import libcst as cst
 import tiktoken
-from langchain.text_splitter import RecursiveCharacterTextSplitter, PythonCodeTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter, PythonCodeTextSplitter, MarkdownTextSplitter
 from libcst.metadata import MetadataWrapper, PositionProvider
 
 SOURCE_DIR = r'C:\Dev\LLM\Source\viktor-ferenczi-dblayer'
@@ -15,43 +15,40 @@ CATEGORY_MODULE = 'module'
 CATEGORY_FUNCTION = 'function'
 CATEGORY_CLASS = 'class'
 
-LANGUAGE_TEXT = 'text'
-LANGUAGE_PYTHON = 'python'
-LANGUAGE_UNKNOWN = 'unknown'
+LANGUAGE_TEXT = 'Text'
+LANGUAGE_MD = 'Markdown'
+LANGUAGE_PYTHON = 'Python'
+LANGUAGE_SHELL = 'Shell'
+LANGUAGE_CS = 'C#'
+LANGUAGE_C = 'C'
+LANGUAGE_CPP = 'C++'
+LANGUAGE_JAVA = 'Java'
+LANGUAGE_JS = 'JavaScript'
+LANGUAGE_CSS = 'CSS'
+LANGUAGE_HTML = 'HTML'
+LANGUAGE_RUST = 'Rust'
+LANGUAGE_ZIG = 'Zig'
+LANGUAGE_SQL = 'SQL'
+
 IGNORE = 'ignore'
 
 EXTENSIONS = {
-    '.md': LANGUAGE_TEXT,
     '.txt': LANGUAGE_TEXT,
+    '.md': LANGUAGE_MD,
     '.py': LANGUAGE_PYTHON,
-    '.sh': LANGUAGE_UNKNOWN,
-    '.cs': LANGUAGE_UNKNOWN,
-    '.c': LANGUAGE_UNKNOWN,
-    '.h': LANGUAGE_UNKNOWN,
-    '.cpp': LANGUAGE_UNKNOWN,
-    '.hpp': LANGUAGE_UNKNOWN,
-    '.java': LANGUAGE_UNKNOWN,
-    '.js': LANGUAGE_UNKNOWN,
-    '.css': LANGUAGE_UNKNOWN,
-    '.html': LANGUAGE_UNKNOWN,
-    '.rust': LANGUAGE_UNKNOWN,
-    '.zig': LANGUAGE_UNKNOWN,
-    '.sql': LANGUAGE_UNKNOWN,
-    '.pyc': IGNORE,
-    '.pyo': IGNORE,
-    '.log': IGNORE,
-    '.bak': IGNORE,
-    '~': IGNORE,
-    '.svnignore': IGNORE,
-    '.gitignore': IGNORE,
-    '.hgignore': IGNORE,
-    '.com': IGNORE,
-    '.exe': IGNORE,
-    '.dll': IGNORE,
-    '.lib': IGNORE,
-    '.so': IGNORE,
-    '.a': IGNORE,
-    '.o': IGNORE,
+    '.sh': LANGUAGE_SHELL,
+    '.cs': LANGUAGE_CS,
+    '.c': LANGUAGE_C,
+    '.h': LANGUAGE_C,
+    '.cpp': LANGUAGE_CPP,
+    '.hpp': LANGUAGE_CPP,
+    '.java': LANGUAGE_JAVA,
+    '.js': LANGUAGE_JS,
+    '.css': LANGUAGE_CSS,
+    '.html': LANGUAGE_HTML,
+    '.rust': LANGUAGE_RUST,
+    '.zig': LANGUAGE_ZIG,
+    '.sql': LANGUAGE_SQL,
 }
 
 
@@ -103,6 +100,11 @@ text_splitter = RecursiveCharacterTextSplitter(
     separators=["\n\n", "\n"]
 )
 
+markdown_splitter = MarkdownTextSplitter(
+    chunk_size=400,
+    chunk_overlap=0,
+    length_function=tiktoken_len,
+)
 
 python_splitter = PythonCodeTextSplitter(
     chunk_size=400,
@@ -136,34 +138,26 @@ class Block:
         )
 
 
+@dataclass
 class Source:
-    def __init__(self, project_id: str, path: str, language: str, text: str) -> None:
-        super().__init__()
-        self.project_id: str = project_id
-        self.path: str = path
-        self.language: str = language
-        self.text: str = f'\n{text.rstrip()}\n'
+    project_id: str
+    path: str
+    language: str
+    text: str
 
+    def find_blocks(self):
         self.blocks: List[Block] = []
         self.errors: List[str] = []
 
-        self.find_blocks()
-
-    def __str__(self) -> str:
-        return f'Source({self.path!r}, {self.language!r})'
-
-    __repr__ = __str__
-
-    def find_blocks(self):
         if self.language == LANGUAGE_TEXT:
             self.find_text_blocks(text_splitter)
+        if self.language == LANGUAGE_MD:
+            self.find_text_blocks(markdown_splitter)
         elif self.language == LANGUAGE_PYTHON:
             self.find_python_blocks()
-        elif self.language == LANGUAGE_UNKNOWN:
-            self.errors.append('Could not detect the programming language (unsupported or unknown)')
-            self.find_text_blocks(text_splitter)
         else:
-            raise ValueError(f'Invalid source language: {self.language}')
+            self.find_text_blocks(text_splitter)
+            # raise ValueError(f'Invalid source language: {self.language}')
 
     def find_python_blocks(self):
         initial_block_count: int = len(self.blocks)
@@ -248,6 +242,7 @@ class BlockExtractor(cst.CSTTransformer):
         return updated_node.with_changes(body=cst.Ellipsis())
 
 
+@dataclass
 class Project:
 
     def __init__(self, base_dir: str, project_id: Optional[str] = None) -> None:
@@ -257,7 +252,7 @@ class Project:
         self.sources: List[Source] = []
 
     def __str__(self) -> str:
-        return f'Project({self.base_dir!r})'
+        return f'Project({self.base_dir!r}, {self.project_id!r})'
 
     __repr__ = __str__
 
@@ -266,7 +261,7 @@ class Project:
         for dirpath, dirnames, filenames in os.walk(self.base_dir):
             for filename in filenames:
                 language = self.detect_language(filename)
-                if language == IGNORE:
+                if not language:
                     continue
 
                 path = os.path.join(dirpath, filename)
@@ -275,6 +270,7 @@ class Project:
 
                 relative_path = path[base_dir_len:].replace('\\', '/')
                 source = Source(self.project_id, relative_path, language, text.replace('\r', ''))
+                source.find_blocks()
                 self.sources.append(source)
 
     @staticmethod
@@ -283,7 +279,7 @@ class Project:
         for extension, language in EXTENSIONS.items():
             if lc_filename.endswith(extension):
                 return language
-        return LANGUAGE_UNKNOWN
+        return None
 
 
 def main():

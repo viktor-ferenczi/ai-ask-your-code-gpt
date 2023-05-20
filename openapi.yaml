@@ -74,12 +74,6 @@ paths:
           required: false
           description: Exact match of relative path inside the project
         - in: query
-          name: name
-          schema:
-            type: string
-          required: false
-          description: Exact match of fully qualified name of class or function
-        - in: query
           name: text
           schema:
             type: string
@@ -151,22 +145,42 @@ components:
                 required:
                   - path
                   - index
+                  - language
                 properties:
                   path:
                     type: string
                     description: Relative path inside the project
                   index:
                     type: integer
-                    description: Fragment index to recover their order inside the same source file
+                    description: Index reflecting the order of fragments if all other metadata are the same
                   language:
                     type: string
+                    enum:
+                      - Text
+                      - Markdown
+                      - Python
+                      - Shell
+                      - C#
+                      - C
+                      - C++
+                      - Rust
+                      - Zig
+                      - Java
+                      - JavaScript
+                      - SQL
+                      - CSS
+                      - HTML
                     description: Programming language
                   name:
                     type: string
                     description: Fully qualified name of the class or function definition
                   category:
                     type: string
-                    description: Category of the definition (module, class, function, method)
+                    enum:
+                      - module
+                      - class
+                      - function
+                    description: Category of the definition
                 description: Additional information on the text fragment
           description: Search results in decreasing score order
           required: true

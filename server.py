@@ -98,7 +98,6 @@ async def search(username: str, project_id: str):
         return quart.Response(response='ERROR: Missing username', status=400)
 
     path: str = request.args.get('path', '')
-    name: str = request.args.get('name', '')
     text: str = request.args.get('text', '')
 
     try:
@@ -108,7 +107,7 @@ async def search(username: str, project_id: str):
 
     # noinspection PyBroadException
     try:
-        results = backend.search(username, project_id, path, name, text, limit)
+        results = backend.search(username, project_id, path, text, limit)
     except KeyboardInterrupt:
         raise
     except Exception:
