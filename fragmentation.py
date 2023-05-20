@@ -332,26 +332,6 @@ def main():
     print('End of code fragments.')
     print('''Say only "Yes" if you understood how the code fragments form a project with source code and optional documentation. Otherwise explain what is missing.''')
 
-    # source.split_to_chunks()
-    # source.embed()
-    # source.upsert()
-    # source.prepare_llm()
-    #
-    # result = source.search('print_diff')
-    # print(result[0].metadata)
-    # print(result[0].page_content)
-    # assert 'print_diff' in result[0].page_content
-    # assert '.py' in result[0].metadata['source']
-    #
-    # result = source.complete('Where is the `print_diff` function defined?')
-    # source.pprint_result(result)
-    #
-    # result = source.complete('Port the `print_diff` function from Python 2 to Python 3.')
-    # source.pprint_result(result)
-    #
-    # result = source.complete('Show me the definition of the `print_diff` function, including its body.')
-    # source.pprint_result(result)
-
 
 if __name__ == '__main__':
     main()
