@@ -33,6 +33,8 @@ def download(username: str, url: str) -> str:
         for block in source.blocks
     ]
 
+    project_id = project.project_id
+
     block_ids = [block.block_id for block in blocks]
 
     embeddings = embedding.embed_fragments([
@@ -44,7 +46,7 @@ def download(username: str, url: str) -> str:
 
     vdb = qdrant_client.QdrantClient()
     vdb.upsert(
-        collection_name=f'user:{username}',
+        collection_name=f'user:{username}/{project_id}',
         points=Batch(
             ids=block_ids,
             vectors=embeddings,
@@ -52,11 +54,12 @@ def download(username: str, url: str) -> str:
         )
     )
 
-    return project.project_id
+    return project_id
 
 
 def delete(username, project_id):
-    raise NotImplementedError()
+    vdb = qdrant_client.QdrantClient()
+    vdb.delete_collection(f'user:{username}/{project_id}')
 
 
 def search(username: str, url: str, path_glob: str, name_tail: str, text_expression: str, limit: int) -> List[Dict[str, object]]:
