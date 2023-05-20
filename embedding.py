@@ -21,10 +21,10 @@ else:
 MODEL.to('cuda')
 
 INSTRUCTIONS = {
-    '.py': 'Python code',
-    '.sh': 'shell script',
-    '.txt': 'documentation',
-    '.md': 'documentation',
+    '.py': 'Represent this Python code for retrieving relevant code',
+    '.sh': 'Represent this shell script for retrieving relevant code',
+    '.txt': 'Represent this text for retrieving relevant text',
+    '.md': 'Represent this text for retrieving relevant text',
 }
 
 
@@ -38,7 +38,7 @@ def get_file_type(relpath: str) -> str:
 
 def get_instruction(relpath: str) -> str:
     file_type = get_file_type(relpath)
-    return f'Represent this {file_type} for retrieval:'
+    return f'Represent this {file_type} for retrieving relevant code:'
 
 
 def embed_fragments(fragments: List[Tuple[str, str]]) -> np.numarray:
