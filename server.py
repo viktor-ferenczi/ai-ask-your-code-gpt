@@ -5,6 +5,7 @@ from typing import Dict
 
 import quart
 import quart_cors
+from quart import request
 
 import backend
 
@@ -53,8 +54,8 @@ async def download(username: str):
     if not username:
         return quart.Response(response='Missing username', status=400)
 
-    request: Dict[str, str] = await quart.request.get_json(force=True)
-    url: str = request.get('url')
+    body: Dict[str, str] = await quart.request.get_json(force=True)
+    url: str = body.get('url')
     if not url:
         return quart.Response(response='Missing url')
     if not (url.startswith('http://') or url.startswith('https://')):
@@ -70,9 +71,15 @@ async def download(username: str):
         print_exc()
         return quart.Response(response='Failed to download or store the source archive', status=400)
 
-    response = {
-        'project_id': project_id
-    }
+    if project_id.startswith('!'):
+        response = {
+            'error': project_id[1:]
+        }
+    else:
+        response = {
+            'project_id': project_id
+        }
+
     return quart.Response(response=json.dumps(response, indent=2), status=200)
 
 
@@ -90,9 +97,18 @@ async def search(username: str, project_id: str):
     if not username:
         return quart.Response(response='ERROR: Missing username', status=400)
 
+    path: str = request.args.get('path', '')
+    name: str = request.args.get('name', '')
+    text: str = request.args.get('text', '')
+
+    try:
+        limit = int(request.args.get('limit', '1'))
+    except ValueError:
+        limit = 1
+
     # noinspection PyBroadException
     try:
-        results = backend.search(username, project_id)
+        results = backend.search(username, project_id, path, name, text, limit)
     except KeyboardInterrupt:
         raise
     except Exception:
@@ -101,16 +117,6 @@ async def search(username: str, project_id: str):
         return quart.Response(response='ERROR: URL must start with http:// or https://', status=400)
 
     return quart.Response(response=json.dumps(results, indent=2), status=200)
-
-
-@app.delete("/todos/<string:username>")
-async def delete_todo(username):
-    request = await quart.request.get_json(force=True)
-    todo_idx = request["todo_idx"]
-    # fail silently, it's a simple plugin
-    if 0 <= todo_idx < len(_TODOS[username]):
-        _TODOS[username].pop(todo_idx)
-    return quart.Response(response='OK', status=200)
 
 
 def main():

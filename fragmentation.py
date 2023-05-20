@@ -2,11 +2,11 @@ import os
 import re
 import uuid
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import libcst as cst
 import tiktoken
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter, PythonCodeTextSplitter
 from libcst.metadata import MetadataWrapper, PositionProvider
 
 SOURCE_DIR = r'C:\Dev\LLM\Source\viktor-ferenczi-dblayer'
@@ -97,35 +97,43 @@ def tiktoken_len(text):
 
 
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000,
+    chunk_size=400,
     chunk_overlap=0,
     length_function=tiktoken_len,
     separators=["\n\n", "\n"]
 )
 
 
+python_splitter = PythonCodeTextSplitter(
+    chunk_size=400,
+    chunk_overlap=0,
+    length_function=tiktoken_len,
+)
+
+
 @dataclass
 class Block:
+    block_id: str
     project_id: str
     path: str
-    lineno: int
+    index: int
     language: str
     name: str
     category: str
     fragment: str
 
     def __str__(self) -> str:
-        return f'Block({self.project_id!r}, {self.path!r}, {self.lineno}, {self.language!r}, {self.name!r}, {self.category!r})'
+        return f'Block({self.block_id!r}, {self.project_id!r}, {self.path!r}, {self.index}, {self.language!r}, {self.name!r}, {self.category!r})'
 
     @property
-    def meta(self) -> str:
-        return f'''\
-path: {self.path}
-lineno: {self.lineno}
-language: {self.language}
-name: {self.name}
-category: {self.category}
-'''
+    def meta(self) -> Dict[str, object]:
+        return dict(
+            path=self.path,
+            index=self.index,
+            language=self.language,
+            name=self.name,
+            category=self.category,
+        )
 
 
 class Source:
@@ -138,6 +146,7 @@ class Source:
 
         self.blocks: List[Block] = []
         self.errors: List[str] = []
+
         self.find_blocks()
 
     def __str__(self) -> str:
@@ -147,22 +156,27 @@ class Source:
 
     def find_blocks(self):
         if self.language == LANGUAGE_TEXT:
-            self.find_text_blocks()
+            self.find_text_blocks(text_splitter)
         elif self.language == LANGUAGE_PYTHON:
             self.find_python_blocks()
         elif self.language == LANGUAGE_UNKNOWN:
             self.errors.append('Could not detect the programming language (unsupported or unknown)')
-            self.find_text_blocks()
+            self.find_text_blocks(text_splitter)
         else:
             raise ValueError(f'Invalid source language: {self.language}')
 
     def find_python_blocks(self):
+        initial_block_count: int = len(self.blocks)
+
         try:
             self.find_python_blocks_with_libcst()
         except SyntaxError as e:
             print(f'FAILED TO PARSE PYTHON CODE: [{e.__class__.__name__}] {e}')
-            self.errors.append(f'Failed to parse as Python 3 source code, a regexp based parser was used instead')
-            self.find_python_blocks_with_regexps()
+            self.errors.append(f'Failed to parse as Python 3 source code, splitting as text instead')
+
+            del self.blocks[initial_block_count:]
+
+            self.find_python_blocks_as_text()
 
     def find_python_blocks_with_libcst(self):
         module = MetadataWrapper(cst.parse_module(self.text))
@@ -173,26 +187,13 @@ class Source:
     rx_python_classes = re.compile(r'^class\s+(\w+)\s*[:(]', re.MULTILINE)
     rx_python_methods = re.compile(r'^\s+def\s+(\w+)\s*\(', re.MULTILINE)
 
-    def find_python_blocks_with_regexps(self):
-        # TODO
-        self.find_text_blocks()
+    def find_python_blocks_as_text(self):
+        self.find_text_blocks(python_splitter)
 
-        # for top in self.rx_python_top.finditer(self.text.replace('\t', '    ')):
-        #     pass
-        #
-        # functions = self.text.split('\ndef')
-        # for fn in functions:
-        #     classes = f'\ndef{fn}\n'.split('\nclass')
-        #     for cls in classes:
-        #         methods = f'\nclass{fn}\n'.split('\n    def')
-
-    def find_text_blocks(self):
-        lineno = 1
-        for paragraph in self.text.split('\n\n'):
-            for fragment in text_splitter.split_text(paragraph):
-                block = Block(self.project_id, self.path, lineno, 'text', '', '', fragment)
-                self.blocks.append(block)
-                lineno += fragment.count('\n') + 1
+    def find_text_blocks(self, splitter):
+        for fragment in splitter.split_text(self.text):
+            block = Block(str(uuid.uuid4()), self.project_id, self.path, len(self.blocks), 'text', '', '', fragment)
+            self.blocks.append(block)
 
 
 class BlockExtractor(cst.CSTTransformer):
@@ -206,7 +207,7 @@ class BlockExtractor(cst.CSTTransformer):
         self.module: Optional[cst.Module] = None
         self.size: int = 0
 
-    def store_block(self, lineno: int, category: str, fragment: str):
+    def store_block(self, category: str, fragment: str):
         if not fragment.strip():
             return
 
@@ -216,15 +217,14 @@ class BlockExtractor(cst.CSTTransformer):
             full_name = ''
 
         for split_fragment in text_splitter.split_text(fragment):
-            block = Block(self.source.project_id, self.source.path, lineno, self.source.language, full_name, category, split_fragment)
+            block = Block(str(uuid.uuid4()), self.source.project_id, self.source.path, len(self.source.blocks), self.source.language, full_name, category, split_fragment)
             self.source.blocks.append(block)
-            lineno += split_fragment.count('\n')
 
     def visit_Module(self, node: cst.Module):
         self.module = node
 
     def leave_Module(self, original_node: cst.Module, updated_node: cst.Module):
-        self.store_block(1, CATEGORY_MODULE, self.module.code_for_node(updated_node))
+        self.store_block(CATEGORY_MODULE, self.module.code_for_node(updated_node))
         self.module = None
         return updated_node
 
@@ -233,7 +233,7 @@ class BlockExtractor(cst.CSTTransformer):
 
     def leave_FunctionDef(self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef):
         position = self.get_metadata(PositionProvider, original_node)
-        self.store_block(position.start.line, CATEGORY_FUNCTION, self.module.code_for_node(updated_node))
+        self.store_block(CATEGORY_FUNCTION, self.module.code_for_node(updated_node))
         self.namespaces.pop()
         return updated_node.with_changes(body=cst.Ellipsis())
 
@@ -243,7 +243,7 @@ class BlockExtractor(cst.CSTTransformer):
 
     def leave_ClassDef(self, original_node: cst.ClassDef, updated_node: cst.ClassDef):
         position = self.get_metadata(PositionProvider, original_node)
-        self.store_block(position.start.line, CATEGORY_CLASS, self.module.code_for_node(updated_node))
+        self.store_block(CATEGORY_CLASS, self.module.code_for_node(updated_node))
         self.namespaces.pop()
         return updated_node.with_changes(body=cst.Ellipsis())
 
@@ -261,7 +261,7 @@ class Project:
 
     __repr__ = __str__
 
-    def load(self):
+    def load_from_disk(self):
         base_dir_len = len(self.base_dir) + 1
         for dirpath, dirnames, filenames in os.walk(self.base_dir):
             for filename in filenames:
@@ -288,7 +288,7 @@ class Project:
 
 def main():
     project = Project(SOURCE_DIR)
-    project.load()
+    project.load_from_disk()
 
     DEBUG = False
 

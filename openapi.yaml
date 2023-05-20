@@ -16,7 +16,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Username of the logged in user. Use a `-` if not logged in
+          description: Username of the logged in user
       requestBody:
         required: true
         content:
@@ -40,7 +40,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Username of the logged in user. Use a `-` if not logged in
+          description: Username of the logged in user
         - in: path
           name: project_id
           schema:
@@ -60,7 +60,7 @@ paths:
           schema:
             type: string
           required: true
-          description: The name of the user.
+          description: Username of the logged in user
         - in: path
           name: project_id
           schema:
@@ -143,7 +143,26 @@ components:
                 type: string
                 description: Text of the fragment
               meta:
-                type: string
-                description: Additional information on the fragment, allows for building a good intuition on the structure of the code and the project in general
+                type: object
+                required:
+                  - path
+                  - index
+                properties:
+                  path:
+                    type: string
+                    description: Relative path inside the project
+                  index:
+                    type: integer
+                    description: Index of the fragment starting at zero, useful to recover the order of fragments
+                  language:
+                    type: string
+                    description: Programming language
+                  name:
+                    type: string
+                    description: Fully qualified name of the class or function definition
+                  category:
+                    type: string
+                    description: Category of the definition (module, class, function, method)
+                description: Additional information on the fragment
           description: Search results
           required: true
