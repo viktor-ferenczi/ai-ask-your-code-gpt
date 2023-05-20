@@ -3,6 +3,7 @@ from typing import List, Dict
 
 import qdrant_client
 import requests
+from qdrant_client.grpc import Filter, FieldCondition, Match
 from qdrant_client.http.models import Batch
 
 import embedding
@@ -62,5 +63,40 @@ def delete(username, project_id):
     vdb.delete_collection(f'user:{username}/{project_id}')
 
 
-def search(username: str, url: str, path_glob: str, name_tail: str, text_expression: str, limit: int) -> List[Dict[str, object]]:
-    return []
+def search(username: str, project_id: str, path: str, name: str, text: str, limit: int) -> List[Dict[str, object]]:
+    query_vector = embedding.embed_fragments([(path, text)])[0]
+
+    filter_conditions: List[FieldCondition] = []
+
+    if path:
+        condition = FieldCondition(
+            key='path',
+            range=Match(
+                value=path
+            )
+        )
+        filter_conditions.append(condition)
+
+    if name:
+        condition = FieldCondition(
+            key='name',
+            range=Match(
+                value=path
+            )
+        )
+        filter_conditions.append(condition)
+
+    query_filter = Filter(must=filter_conditions) if filter_conditions else None
+
+    vdb = qdrant_client.QdrantClient()
+    results = vdb.search(
+        collection_name=f'user:{username}/{project_id}',
+        query_vector=query_vector,
+        query_filter=query_filter,
+        limit=limit,
+        with_payload=True
+    )
+
+    print(results)
+
+    return results

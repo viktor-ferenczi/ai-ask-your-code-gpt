@@ -72,19 +72,19 @@ paths:
           schema:
             type: string
           required: false
-          description: Glob pattern matching the path of the file inside the project (case-insensitive)
+          description: Exact match of relative path inside the project
         - in: query
           name: name
           schema:
             type: string
           required: false
-          description: Case sensitive match on class or function names, exact match as the tail of fully qualified names
+          description: Exact match of fully qualified name of class or function
         - in: query
           name: text
           schema:
             type: string
-          required: false
-          description: Text to search for cosine similarity in the vector database
+          required: true
+          description: Text to search for in the vector database
         - in: query
           name: limit
           schema:
@@ -136,12 +136,16 @@ components:
           items:
             type: object
             required:
+              - score
               - text
               - meta
             properties:
+              score:
+                type: number
+                description: Text match score
               text:
                 type: string
-                description: Text of the fragment
+                description: Text fragment
               meta:
                 type: object
                 required:
@@ -163,6 +167,6 @@ components:
                   category:
                     type: string
                     description: Category of the definition (module, class, function, method)
-                description: Additional information on the fragment
+                description: Additional information on the text fragment
           description: Search results
           required: true
