@@ -142,7 +142,7 @@ components:
             properties:
               score:
                 type: number
-                description: Text match score
+                description: Score, higher value means better match
               text:
                 type: string
                 description: Text fragment
@@ -157,7 +157,7 @@ components:
                     description: Relative path inside the project
                   index:
                     type: integer
-                    description: Index of the fragment starting at zero, useful to recover the order of fragments
+                    description: Fragment index to recover their order inside the same source file
                   language:
                     type: string
                     description: Programming language
@@ -168,5 +168,5 @@ components:
                     type: string
                     description: Category of the definition (module, class, function, method)
                 description: Additional information on the text fragment
-          description: Search results
+          description: Search results in decreasing score order
           required: true
