@@ -93,7 +93,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 @dataclass
 class Block:
     project_id: str
-    relpath: str
+    path: str
     lineno: int
     language: str
     name: str
@@ -101,13 +101,12 @@ class Block:
     fragment: str
 
     def __str__(self) -> str:
-        return f'Block({self.project_id!r}, {self.relpath!r}, {self.lineno}, {self.language!r}, {self.name!r}, {self.category!r})'
+        return f'Block({self.project_id!r}, {self.path!r}, {self.lineno}, {self.language!r}, {self.name!r}, {self.category!r})'
 
     @property
     def meta(self) -> str:
         return f'''\
-project_id: {self.project_id}
-relpath: {self.relpath}
+path: {self.path}
 lineno: {self.lineno}
 language: {self.language}
 name: {self.name}
@@ -116,19 +115,19 @@ category: {self.category}
 
 
 class Source:
-    def __init__(self, project_id: str, relpath: str, language: str, text: str) -> None:
+    def __init__(self, project_id: str, path: str, language: str, text: str) -> None:
         super().__init__()
-        self.project_id = project_id
-        self.relpath = relpath
-        self.language = language
-        self.text = f'\n{text.rstrip()}\n'
+        self.project_id: str = project_id
+        self.path: str = path
+        self.language: str = language
+        self.text: str = f'\n{text.rstrip()}\n'
 
         self.blocks: List[Block] = []
         self.errors: List[str] = []
         self.find_blocks()
 
     def __str__(self) -> str:
-        return f'Source({self.project_id!r}, {self.relpath!r}, {self.language!r})'
+        return f'Source({self.path!r}, {self.language!r})'
 
     __repr__ = __str__
 
@@ -176,7 +175,7 @@ class Source:
     def find_text_blocks(self):
         for paragraph in self.text.split('\n\n'):
             for fragment in text_splitter.split_text(paragraph):
-                block = Block(self.project_id, self.relpath, 0, 'unknown', 'generic', '', fragment)
+                block = Block(self.project_id, self.path, 0, 'text', '', '', fragment)
                 self.blocks.append(block)
 
 
@@ -201,7 +200,7 @@ class BlockExtractor(cst.CSTTransformer):
             full_name = ''
 
         for split_fragment in text_splitter.split_text(fragment):
-            block = Block(self.source.project_id, self.source.relpath, lineno, self.source.language, full_name, category, split_fragment)
+            block = Block(self.source.project_id, self.source.path, lineno, self.source.language, full_name, category, split_fragment)
             self.source.blocks.append(block)
             lineno += split_fragment.count('\n')
 
@@ -246,45 +245,8 @@ class Project:
 
     __repr__ = __str__
 
-    @property
-    def context(self) -> str:
-        return f'''\
-Use the `AskYourCode` plugin.
-You will be asked about a software project.
-The project source code and documentation has been split into fragments. 
-Consider only fragments starting with a header in this format:
-```
-AskYourCode:
-  project: {self.project_id}
-  path: relative/path/to/file.ext
-  lineno: 123
-  language: Python
-  name: FullName
-  category: class
-
-```
-Always search for "AskYourCode:" and "project: {self.project_id}", they must present on the first two lines.
-The path, lineno, language, name and category fields above are only examples, 
-they will contain actual values relevant to the definition after the header.
-
-The source code files are split to class and function definitions. 
-Documentation files are split to paragraphs.
-Long definitions may be split into multiple fragments. 
-
-The header always ends with two newlines, then the original source code or document fragment follows.
-
-Explanation of the header fields:
-- project: Unique identifier of the project (UUID). 
-- path: Relative path of the source or documentation file inside the project.
-- lineno: Line number of the fragment in the file, zero if not available. Use this to restore the order of code fragments inside the same source file.
-- language: Programming language of the source file or "text" for documentation files.
-- name: Fully qualified name of the class or function definition, including all namespaces. Empty if not available.
-- category: Category of the code fragment: module, class or function. Empty in case of documentation fragments. 
-
-'''
-
     def load(self):
-        base_dir_len = len(self.base_dir)
+        base_dir_len = len(self.base_dir) + 1
         for dirpath, dirnames, filenames in os.walk(self.base_dir):
             for filename in filenames:
                 language = self.detect_language(filename)
@@ -294,9 +256,10 @@ Explanation of the header fields:
                 path = os.path.join(dirpath, filename)
                 with open(path, 'rt', encoding='utf-8') as f:
                     text = f.read()
-                    relpath = path[base_dir_len:].replace('\\', '/')
-                    source = Source(self.project_id, relpath, language, text.replace('\r', ''))
-                    self.sources.append(source)
+
+                relative_path = path[base_dir_len:].replace('\\', '/')
+                source = Source(self.project_id, relative_path, language, text.replace('\r', ''))
+                self.sources.append(source)
 
     @staticmethod
     def detect_language(filename):
@@ -315,8 +278,6 @@ def main():
 
     if DEBUG:
         print(project)
-    print(project.context)
-    print('Fragments:')
     for source in project.sources:
         if DEBUG:
             print(source)
@@ -329,8 +290,6 @@ def main():
             print(block.meta)
             print(block.fragment)
         print()
-    print('End of code fragments.')
-    print('''Say only "Yes" if you understood how the code fragments form a project with source code and optional documentation. Otherwise explain what is missing.''')
 
 
 if __name__ == '__main__':
