@@ -21,10 +21,22 @@ else:
 MODEL.to('cuda')
 
 INSTRUCTIONS = {
-    '.py': 'Represent this Python code for retrieving relevant code',
-    '.sh': 'Represent this shell script for retrieving relevant code',
-    '.txt': 'Represent this text for retrieving relevant text',
     '.md': 'Represent this text for retrieving relevant text',
+    '.txt': 'Represent this text for retrieving relevant text',
+    '.py': 'Represent this Python code for retrieving relevant code',
+    '.sh': 'Represent this shell script for retrieving relevant scrip',
+    '.cs': 'Represent this C# code for retrieving relevant code',
+    '.c': 'Represent this C code for retrieving relevant code',
+    '.h': 'Represent this C header for retrieving relevant code',
+    '.cpp': 'Represent this C++ code for retrieving relevant code',
+    '.hpp': 'Represent this C++ header for retrieving relevant code',
+    '.java': 'Represent this Java code for retrieving relevant code',
+    '.js': 'Represent this JavaScript code for retrieving relevant code',
+    '.css': 'Represent this CSS stylesheet for retrieving relevant code',
+    '.html': 'Represent this HTML document for retrieving relevant code',
+    '.rust': 'Represent this Rust code for retrieving relevant code',
+    '.zig': 'Represent this Zig code for retrieving relevant code',
+    '.sql': 'Represent this SQL code for retrieving relevant code',
 }
 
 
