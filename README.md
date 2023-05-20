@@ -99,9 +99,12 @@ Planned:
 - C#
 - Java
 - C/C++
+- HTML
+- CSS
 - JavaScript
 - Rust
 - Zig
+- SQL
 
 TODO: Way to request more languages.
 
