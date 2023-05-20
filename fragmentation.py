@@ -173,10 +173,12 @@ class Source:
         #         methods = f'\nclass{fn}\n'.split('\n    def')
 
     def find_text_blocks(self):
+        lineno = 1
         for paragraph in self.text.split('\n\n'):
             for fragment in text_splitter.split_text(paragraph):
-                block = Block(self.project_id, self.path, 0, 'text', '', '', fragment)
+                block = Block(self.project_id, self.path, lineno, 'text', '', '', fragment)
                 self.blocks.append(block)
+                lineno += fragment.count('\n') + 1
 
 
 class BlockExtractor(cst.CSTTransformer):
