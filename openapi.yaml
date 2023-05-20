@@ -22,14 +22,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/downloadProjectRequest'
+              $ref: '#/components/schemas/downloadRequest'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/downloadProjectResponse'
+                $ref: '#/components/schemas/downloadResponse'
   /project/{username}/{project_id}:
     delete:
       operationId: deleteProject
@@ -104,7 +104,7 @@ paths:
 
 components:
   schemas:
-    downloadProjectRequest:
+    downloadRequest:
       type: object
       required:
         - url
@@ -113,7 +113,7 @@ components:
           type: string
           description: The URL of the source code archive to download. Must point to a zip or tar.gz file which can be downloaded directly without authentication.
           required: true
-    downloadProjectResponse:
+    downloadResponse:
       type: object
       required:
         - project_id
