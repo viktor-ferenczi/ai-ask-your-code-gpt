@@ -1,6 +1,7 @@
 """Embedding server
 """
 import json
+import time
 from typing import Dict, List
 
 from quart import Quart, request, Response
@@ -21,6 +22,13 @@ PORT = 0xa11e  ## AI Instructor Embedding
 
 @app.get('/')
 async def ping():
+    started = time.time()
+    try:
+        async with EMBEDDING.semaphore:
+            pass
+    finally:
+        duration = time.time() - started
+        print(f'Locking the semaphore took {duration:.3f}s')
     return Response(response='OK', status=200)
 
 
