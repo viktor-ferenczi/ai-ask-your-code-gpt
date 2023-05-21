@@ -9,7 +9,7 @@ from InstructorEmbedding import INSTRUCTOR
 if not torch.cuda.is_available():
     raise EnvironmentError('CUDA is not available')
 
-USE_XL_MODEL = False  # FIXME: True
+USE_XL_MODEL = True
 
 if USE_XL_MODEL:
     # XL: 7.0 ms/embedding, 6.2GB GPU RAM usage
