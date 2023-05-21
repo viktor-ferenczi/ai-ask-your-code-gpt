@@ -1,4 +1,5 @@
 import io
+import uuid
 import zipfile
 from typing import List, Dict, Tuple
 
@@ -12,29 +13,54 @@ import fragmentation
 
 MAX_ARCHIVE_SIZE = 1_000_000
 MAX_FILE_SIZE = 10_000_000
+MAX_SOURCE_SIZE = 10_000_000
 
 QDRANT = ':memory:'
 VDB = qdrant_client.QdrantClient(QDRANT)
 
+DOWNLOAD_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+}
+
 
 async def download(username: str, url: str) -> str:
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(headers=DOWNLOAD_HEADERS) as session:
         async with session.get(url) as resp:
-            if int(resp.headers.get('Content-Length', '0')) > MAX_ARCHIVE_SIZE:
+            content_length = int(resp.headers['Content-Length'])
+            if content_length < 1:
+                raise IOError('Empty archive')
+            if content_length > MAX_ARCHIVE_SIZE:
                 raise IOError('Archive is too large (Content-Length)')
-            archive = await resp.content.read(MAX_ARCHIVE_SIZE + 1)
-
-    if len(archive) > MAX_ARCHIVE_SIZE:
-        raise IOError('Archive is too large (actual download size)')
+            archive = await resp.content.readexactly(content_length)
 
     files: List[Tuple[str, str]] = []
-    with zipfile.ZipFile(io.BytesIO(archive), 'r') as zf:
-        for filename in zf.namelist():
-            file_info: zipfile.ZipInfo = zf.getinfo(filename)
-            if file_info.file_size > MAX_FILE_SIZE:
-                raise IOError(f'File too large: {filename}')
-            text: str = zf.read(filename).decode('utf-8')
-            files.append((filename, text))
+    try:
+        total_size = 0
+        with zipfile.ZipFile(io.BytesIO(archive), 'r') as zf:
+            for filename in zf.namelist():
+                file_info: zipfile.ZipInfo = zf.getinfo(filename)
+                if file_info.file_size > MAX_FILE_SIZE:
+                    raise IOError(f'File too large: {filename}')
+                total_size += file_info.file_size
+                if total_size > MAX_SOURCE_SIZE:
+                    raise IOError(f'Extracted source is too large')
+                data: bytes = zf.read(filename)
+                try:
+                    text: str = data.decode('utf-8')
+                except UnicodeDecodeError:
+                    try:
+                        text: str = data.decode('latin-1')
+                    except UnicodeDecodeError:
+                        print(f'Could not decode file, skipping: {filename}')
+                        continue
+                files.append((filename, text))
+    except zipfile.BadZipfile as e:
+        dump_filename = f'failed-archive-{uuid.uuid4()}.zip'
+        print(f"[{e.__class__.__name__}] {e}; URL: {url}; Content: {dump_filename}")
+        with open(dump_filename, 'wb') as f:
+            f.write(archive)
+        raise
 
     project = fragmentation.Project()
     project.load_from_memory(files)

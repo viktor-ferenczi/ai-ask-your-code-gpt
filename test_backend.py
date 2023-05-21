@@ -37,7 +37,7 @@ class TestBackend(unittest.IsolatedAsyncioTestCase):
 
             return await send_file(self.zip_path, as_attachment=True)
 
-        await self.app.run_task(debug=True, host='127.0.0.1', port=self.port)
+        await self.app.run_task(debug=True, host='localhost', port=self.port)
 
     async def test_download_search_delete(self):
         await self.download()
@@ -46,7 +46,7 @@ class TestBackend(unittest.IsolatedAsyncioTestCase):
 
     async def download(self):
         server_task = asyncio.create_task(self.serve_zip())
-        download_task = asyncio.create_task(backend.download('test', f'http://127.0.0.1:{self.port}/'))
+        download_task = asyncio.create_task(backend.download('test', f'http://localhost:{self.port}/'))
         done, pending = await asyncio.wait([server_task, download_task], timeout=10.0, return_when=asyncio.FIRST_COMPLETED)
         print(done)
         print(pending)
@@ -61,3 +61,6 @@ class TestBackend(unittest.IsolatedAsyncioTestCase):
         await backend.delete('test', self.project_id)
         with self.assertRaises(ValueError):
             await self.search()
+
+    async def test_discord_download(self):
+        await backend.download('test', 'https://cdn.discordapp.com/attachments/871154239299285024/1109637381679751280/dblayer.zip')

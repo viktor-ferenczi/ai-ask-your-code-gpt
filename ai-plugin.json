@@ -9,10 +9,10 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://askyourcode.ai/openapi.yaml",
+    "url": "https://plugin.askyourcode.ai/openapi.yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://askyourcode.ai/logo.png",
+  "logo_url": "https://plugin.askyourcode.ai/logo.png",
   "contact_email": "info@askyourcode.ai",
   "legal_info_url": "https://askyourcode.ai/legal/"
 }

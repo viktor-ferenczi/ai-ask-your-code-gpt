@@ -17,7 +17,8 @@ DEVELOPMENT = sys.platform == 'win32'
 
 
 def html_prod_to_dev(text):
-    text = text.replace('https://askyourcode.ai', 'http://127.0.0.1:5003')
+    text = text.replace('https://askyourcode.ai', 'http://localhost:5003')
+    text = text.replace('https://plugin.askyourcode.ai', 'http://localhost:5003')
     return text
 
 
@@ -119,7 +120,7 @@ async def search(username: str, project_id: str):
 
 
 def main():
-    app.run(debug=True, host="127.0.0.1", port=5003)
+    app.run(debug=True, host="localhost", port=5003)
 
 
 if __name__ == "__main__":
