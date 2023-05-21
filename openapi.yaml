@@ -16,7 +16,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Username of the logged in user
+          description: Name of the logged in user
       requestBody:
         required: true
         content:
@@ -40,7 +40,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Username of the logged in user
+          description: Name of the logged in user
         - in: path
           name: project_id
           schema:
@@ -60,7 +60,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Username of the logged in user
+          description: Name of the logged in user
         - in: path
           name: project_id
           schema:
@@ -68,24 +68,18 @@ paths:
           required: true
           description: GUID of the project
         - in: query
-          name: path
-          schema:
-            type: string
-          required: false
-          description: Exact match of relative path inside the project
-        - in: query
           name: text
           schema:
             type: string
           required: true
-          description: Text to search for in the vector database
+          description: Query string for the vector database, start with .extension to narrow down to one file type
         - in: query
           name: limit
           schema:
             type: integer
             minimum: 1
             maximum: 10
-            default: 1
+            default: 3
           required: false
           description: Maximum number of results to return
       responses:
@@ -136,7 +130,7 @@ components:
             properties:
               score:
                 type: number
-                description: Score, higher value means better match
+                description: Score, higher value means more relevant
               text:
                 type: string
                 description: Text fragment
@@ -144,43 +138,19 @@ components:
                 type: object
                 required:
                   - path
-                  - index
-                  - language
                 properties:
                   path:
                     type: string
                     description: Relative path inside the project
-                  index:
-                    type: integer
-                    description: Index reflecting the order of fragments if all other metadata are the same
-                  language:
+                  kind:
                     type: string
-                    enum:
-                      - Text
-                      - Markdown
-                      - Python
-                      - Shell
-                      - C#
-                      - C
-                      - C++
-                      - Rust
-                      - Zig
-                      - Java
-                      - JavaScript
-                      - SQL
-                      - CSS
-                      - HTML
-                    description: Programming language
+                    description: Language construct (module, class, function, method, interface, etc.)
                   name:
                     type: string
-                    description: Fully qualified name of the class or function definition
-                  category:
-                    type: string
-                    enum:
-                      - module
-                      - class
-                      - function
-                    description: Category of the definition
-                description: Additional information on the text fragment
-          description: Search results in decreasing score order
+                    description: Name of the definition or declaration
+                  index:
+                    type: integer
+                    description: Index to order the fragments inside the same definition
+                description: Fragment meta-information
+          description: Search results in order of decreasing score
           required: true

@@ -63,4 +63,4 @@ class TestBackend(unittest.IsolatedAsyncioTestCase):
             await self.search()
 
     async def test_discord_download(self):
-        await backend.download('test', 'https://cdn.discordapp.com/attachments/871154239299285024/1109637381679751280/dblayer.zip')
+        await backend.download('test', 'https://cdn.discordapp.com/attachments/871154239299285024/1109668903279415357/dblayer.zip')

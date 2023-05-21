@@ -26,13 +26,13 @@ DOWNLOAD_HEADERS = {
 
 async def download(username: str, url: str) -> str:
     async with aiohttp.ClientSession(headers=DOWNLOAD_HEADERS) as session:
-        async with session.get(url) as resp:
-            content_length = int(resp.headers['Content-Length'])
+        async with session.get(url) as response:
+            content_length = int(response.headers['Content-Length'])
             if content_length < 1:
                 raise IOError('Empty archive')
             if content_length > MAX_ARCHIVE_SIZE:
                 raise IOError('Archive is too large (Content-Length)')
-            archive = await resp.content.readexactly(content_length)
+            archive = await response.content.readexactly(content_length)
 
     files: List[Tuple[str, str]] = []
     try:
@@ -105,7 +105,7 @@ async def delete(username, project_id):
     VDB.delete_collection(f'user:{username}/{project_id}')
 
 
-async def search(username: str, project_id: str, text: str, path: str = '', limit: int = 1) -> List[Dict[str, object]]:
+async def search(username: str, project_id: str, text: str, limit: int = 1) -> List[Dict[str, any]]:
     query_vector = embedding.embed_fragments([(path, text)])[0]
 
     filter_conditions: List[FieldCondition] = []

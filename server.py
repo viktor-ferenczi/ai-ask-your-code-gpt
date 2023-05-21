@@ -38,7 +38,7 @@ async def plugin_manifest():
         text = f.read()
     if DEVELOPMENT:
         text = html_prod_to_dev(text)
-    return quart.Response(text, mimetype="text/json")
+    return quart.Response(text, mimetype="text/json", status=200)
 
 
 @app.get("/openapi.yaml")
@@ -47,7 +47,7 @@ async def openapi_spec():
         text = f.read()
     if DEVELOPMENT:
         text = html_prod_to_dev(text)
-    return quart.Response(text, mimetype="text/yaml")
+    return quart.Response(text, mimetype="text/yaml", status=200)
 
 
 @app.post("/project/<string:username>")
@@ -58,7 +58,7 @@ async def download(username: str):
     body: Dict[str, str] = await quart.request.get_json(force=True)
     url: str = body.get('url')
     if not url:
-        return quart.Response(response='Missing url')
+        return quart.Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
         return quart.Response(response='The URL must start with http:// or https://', status=400)
 
@@ -108,7 +108,7 @@ async def search(username: str, project_id: str):
 
     # noinspection PyBroadException
     try:
-        results = await backend.search(username, project_id, text, path, limit)
+        results = await backend.search(username, project_id, text, limit)
     except KeyboardInterrupt:
         raise
     except Exception:
