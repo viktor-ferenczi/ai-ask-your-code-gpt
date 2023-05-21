@@ -2,6 +2,7 @@
 """
 from typing import List
 
+from google._upb._message import MessageMapContainer
 from qdrant_client import QdrantClient, grpc
 from qdrant_client.conversions.conversion import payload_to_grpc
 from qdrant_client.grpc import WithPayloadSelector
@@ -66,8 +67,15 @@ class Collection:
             )
         )
 
-        payload = next(iter(response.result)).payload
-
-        hits = [Hit(result.score, Fragment(path=str(result.payload.path), lineno=int(result.payload.lineno), text=str(result.payload.text), name=str(result.payload.name))) for result in response.result]
+        hits = [Hit(result.score, fragment_from_message(result.payload)) for result in response.result]
         hits.sort(key=lambda hit: hit.score, reverse=True)
         return hits
+
+
+def fragment_from_message(message: MessageMapContainer) -> Fragment:
+    return Fragment(
+        path=message['path'].string_value,
+        lineno=message['lineno'].integer_value,
+        text=message['text'].string_value,
+        name=message['name'].string_value,
+    )
