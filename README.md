@@ -121,6 +121,10 @@ Only your ChatGPT user can access your projects, even if others would know its u
 - To delete a project: **AskYourCode delete project YOUR-PROJECT-ID-HERE**
 - To delete all projects: **AskYourCode delete all my projects**
 
+## Assumptions
+
+- All textual source files are UTF-8 encoded. 
+
 ## Best practices
 
 TODO

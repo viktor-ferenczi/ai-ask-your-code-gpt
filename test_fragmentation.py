@@ -14,7 +14,7 @@ REFERENCE_PATH = f'{os.path.abspath(__file__)[:-3]}.reference.txt'
 class TestFragmentation(unittest.TestCase):
 
     def test_fragmentation(self):
-        project = Project(SOURCE_DIR)
+        project = Project()
         project.load_from_disk()
 
         normalize_project(project)

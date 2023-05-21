@@ -63,7 +63,7 @@ async def download(username: str):
 
     # noinspection PyBroadException
     try:
-        project_id = backend.download(username, url)
+        project_id = await backend.download(username, url)
     except KeyboardInterrupt:
         raise
     except Exception:
@@ -88,7 +88,7 @@ async def delete(username: str, project_id: str):
     if not username:
         return quart.Response(response='Missing username', status=400)
 
-    backend.delete(username, project_id)
+    await backend.delete(username, project_id)
     return quart.Response(response='OK', status=200)
 
 
@@ -107,7 +107,7 @@ async def search(username: str, project_id: str):
 
     # noinspection PyBroadException
     try:
-        results = backend.search(username, project_id, path, text, limit)
+        results = await backend.search(username, project_id, text, path, limit)
     except KeyboardInterrupt:
         raise
     except Exception:

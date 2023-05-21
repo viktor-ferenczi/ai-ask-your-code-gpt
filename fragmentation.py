@@ -245,20 +245,19 @@ class BlockExtractor(cst.CSTTransformer):
 @dataclass
 class Project:
 
-    def __init__(self, base_dir: str, project_id: Optional[str] = None) -> None:
+    def __init__(self, project_id: Optional[str] = None) -> None:
         super().__init__()
-        self.base_dir: str = base_dir
         self.project_id: str = project_id or str(uuid.uuid4())
         self.sources: List[Source] = []
 
     def __str__(self) -> str:
-        return f'Project({self.base_dir!r}, {self.project_id!r})'
+        return f'Project({self.project_id!r})'
 
     __repr__ = __str__
 
-    def load_from_disk(self):
-        base_dir_len = len(self.base_dir) + 1
-        for dirpath, dirnames, filenames in os.walk(self.base_dir):
+    def load_from_disk(self, source_dir: str):
+        base_dir_len = len(source_dir) + 1
+        for dirpath, dirnames, filenames in os.walk(source_dir):
             for filename in filenames:
                 language = self.detect_language(filename)
                 if not language:
@@ -273,6 +272,17 @@ class Project:
                 source.find_blocks()
                 self.sources.append(source)
 
+    def load_from_memory(self, files):
+        for path, text in files:
+
+            language = self.detect_language(path)
+            if not language:
+                continue
+
+            source = Source(self.project_id, path, language, text.replace('\r', ''))
+            source.find_blocks()
+            self.sources.append(source)
+
     @staticmethod
     def detect_language(filename):
         lc_filename = filename.lower()
@@ -283,7 +293,7 @@ class Project:
 
 
 def main():
-    project = Project(SOURCE_DIR)
+    project = Project()
     project.load_from_disk()
 
     DEBUG = False
