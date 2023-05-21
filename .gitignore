@@ -132,5 +132,5 @@ dmypy.json
 /.idea
 
 # Test output
-*.actual.txt
 TestProject.zip
+*.actual
