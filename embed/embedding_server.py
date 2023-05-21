@@ -6,7 +6,7 @@ from typing import Dict, List
 
 from quart import Quart, request, Response
 
-from embedding import Embedding
+from embed.embedding import Embedding
 from model.fragment import Fragment
 
 EMBEDDING = Embedding()
@@ -17,7 +17,7 @@ MAX_BATCH_SIZE = 1024
 MAX_INSTRUCTION_SIZE = 512
 MAX_TEXT_SIZE = 8192
 
-PORT = 0xa11e  ## AI Instructor Embedding
+PORT = 41246  ## 0xa11e: AI Instructor Embedding
 
 
 @app.get('/')

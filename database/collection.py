@@ -1,10 +1,10 @@
 """Qdrant based vector database
 """
-import asyncio
 from typing import List
 
 from qdrant_client import QdrantClient, grpc
 from qdrant_client.conversions.conversion import payload_to_grpc
+from qdrant_client.grpc import WithPayloadSelector
 
 from model.fragment import Fragment
 from model.hit import Hit
@@ -57,23 +57,17 @@ class Collection:
     async def search(self, query_embedding: List[float], limit: int = 10) -> List[Hit]:
         assert len(query_embedding) == self.dimensions, (len(query_embedding), self.dimensions)
 
-        # FIXME: Async does not work!!!
-        # query = self.database.grpc_points.Search(
-        #     grpc.SearchPoints(
-        #         collection_name=self.name,
-        #         vector=query_embedding,
-        #         limit=limit
-        #     )
-        # )
-        # TypeError: unhashable type: 'SearchResponse'
-        # results = await asyncio.wait([query])
-
-        results = self.database.search(
-            collection_name=self.name,
-            query_vector=query_embedding,
-            limit=limit,
-            with_payload=True
+        response = await self.database.async_grpc_points.Search(
+            grpc.SearchPoints(
+                collection_name=self.name,
+                vector=query_embedding,
+                limit=limit,
+                with_payload=WithPayloadSelector(enable=True)
+            )
         )
 
-        hits = [Hit(result.score, Fragment(**result.payload)) for result in results]
+        payload = next(iter(response.result)).payload
+
+        hits = [Hit(result.score, Fragment(path=str(result.payload.path), lineno=int(result.payload.lineno), text=str(result.payload.text), name=str(result.payload.name))) for result in response.result]
+        hits.sort(key=lambda hit: hit.score, reverse=True)
         return hits

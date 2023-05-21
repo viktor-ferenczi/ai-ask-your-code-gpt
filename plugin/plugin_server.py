@@ -1,19 +1,23 @@
 import json
+import os
 import sys
 from traceback import print_exc
 from typing import Dict
 
+import backend
 import quart
 import quart_cors
 from quart import request
-
-import backend
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
 
 _TODOS = {}
 
 DEVELOPMENT = sys.platform == 'win32'
+
+MODULE_DIR = os.path.dirname(__file__)
+AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
+OPENAPI_YAML_PATH = os.path.join(MODULE_DIR, 'openapi.yaml')
 
 
 def html_prod_to_dev(text):
@@ -34,7 +38,7 @@ async def logo():
 
 @app.get("/.well-known/ai-plugin.json")
 async def plugin_manifest():
-    with open("ai-plugin.json") as f:
+    with open(AI_PLUGIN_PATH, 'rt') as f:
         text = f.read()
     if DEVELOPMENT:
         text = html_prod_to_dev(text)
@@ -43,7 +47,7 @@ async def plugin_manifest():
 
 @app.get("/openapi.yaml")
 async def openapi_spec():
-    with open("openapi.yaml") as f:
+    with open(OPENAPI_YAML_PATH, 'rt') as f:
         text = f.read()
     if DEVELOPMENT:
         text = html_prod_to_dev(text)
@@ -61,6 +65,8 @@ async def download(username: str):
         return quart.Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
         return quart.Response(response='The URL must start with http:// or https://', status=400)
+    if not DEVELOPMENT and ('://localhost' in url.lower() or '://127.' in url):
+        return quart.Response(response='Invalid URL', status=400)
 
     # noinspection PyBroadException
     try:

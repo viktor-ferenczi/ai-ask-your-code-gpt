@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 from model.fragment import Fragment
-from embedding.embedding import Embedding
+from embed.embedding import Embedding
 
 FRAGMENTS = [
     Fragment('a/b/test.py',

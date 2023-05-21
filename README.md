@@ -15,7 +15,7 @@ pip install -r requirements.txt
 To run the plugin's API backend, enter the following command:
 
 ```bash
-python server.py
+python plugin/plugin_server.py
 ```
 
 Once the local server is running:
