@@ -10,9 +10,9 @@ TEST_PROJECT_DIR = os.path.join(MODULE_DIR, 'TestProject')
 TEST_OUTPUT_DIR = os.path.join(MODULE_DIR, 'TestOutput')
 
 
-class TestFragmentation(unittest.TestCase):
+class TestSplitters(unittest.TestCase):
 
-    def test_fragmentation(self):
+    def test_splitters(self):
         failed = []
         for root, dirs, files in os.walk(TEST_PROJECT_DIR):
             for filename in files:
