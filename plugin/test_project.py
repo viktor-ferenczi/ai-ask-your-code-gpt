@@ -5,8 +5,7 @@ import zipfile
 
 from quart import Quart, send_file
 
-from project import Project
-
+from project import Project, EMBEDDING_CLIENT
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -72,7 +71,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
     async def actual_test(self):
         project = Project('test', 'TEST-PROJECT-ID')
 
-        await project.embedding_client.find_free_server()
+        await EMBEDDING_CLIENT.find_free_server()
 
         await project.initialize(f'http://localhost:{self.zip_server_port}/')
 
