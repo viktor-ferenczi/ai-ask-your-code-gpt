@@ -1,13 +1,15 @@
 import json
 import os
 import sys
+import uuid
 from traceback import print_exc
 from typing import Dict
 
-import backend
 import quart
 import quart_cors
 from quart import request
+
+from project import Project, ProjectException
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
 
@@ -70,13 +72,14 @@ async def download(username: str):
 
     # noinspection PyBroadException
     try:
-        project_id = await backend.download(username, url)
+        project_id = str(uuid.uuid4())
+        project = Project(username, project_id)
+        await project.initialize(url)
     except KeyboardInterrupt:
         raise
-    except Exception:
-        print(f'ERROR: User {username!r} failed to download source archive {url!r}:')
-        print_exc()
-        return quart.Response(response='Failed to download or store the source archive', status=400)
+    except ProjectException as e:
+        print(f'ERROR: User: {username!r}; URL: {url!r}; Error: {e}')
+        return quart.Response(response=str(e), status=400)
 
     if project_id.startswith('!'):
         response = {
@@ -95,7 +98,8 @@ async def delete(username: str, project_id: str):
     if not username:
         return quart.Response(response='Missing username', status=400)
 
-    await backend.delete(username, project_id)
+    project = Project(username, project_id)
+    await project.delete()
     return quart.Response(response='OK', status=200)
 
 
@@ -104,7 +108,6 @@ async def search(username: str, project_id: str):
     if not username:
         return quart.Response(response='ERROR: Missing username', status=400)
 
-    path: str = request.args.get('path', '')
     text: str = request.args.get('text', '')
 
     try:
@@ -114,13 +117,14 @@ async def search(username: str, project_id: str):
 
     # noinspection PyBroadException
     try:
-        results = await backend.search(username, project_id, text, limit)
+        project = Project(username, project_id)
+        results = await project.search(text, limit)
     except KeyboardInterrupt:
         raise
     except Exception:
         print(f'ERROR: User {username!r} failed to search project {project_id!r}:')
         print_exc()
-        return quart.Response(response='ERROR: URL must start with http:// or https://', status=400)
+        return quart.Response(response=f'Failed to search project {project_id!r}', status=400)
 
     return quart.Response(response=json.dumps(results, indent=2), status=200)
 

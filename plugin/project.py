@@ -2,6 +2,7 @@ import io
 import os
 import uuid
 import zipfile
+from traceback import print_exc
 from typing import List, Tuple
 
 import aiohttp
@@ -31,6 +32,10 @@ QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
 QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
 
 
+class ProjectException(Exception):
+    pass
+
+
 class Project:
 
     def __init__(self, username: str, project_id: str) -> None:
@@ -44,7 +49,7 @@ class Project:
         self.collection = Collection(database, f'{username}-{project_id}')
 
     async def initialize(self, url: str):
-        fragments = await self.download(url)
+        fragments = await self.__download(url)
         if not fragments:
             raise ValueError('No fragments')
 
@@ -66,18 +71,40 @@ class Project:
         hits = await self.collection.search(embedding, limit)
         return hits
 
-    async def download(self, url: str) -> List[Fragment]:
-        archive = await self.get_archive(url)
+    async def __download(self, url: str) -> List[Fragment]:
+        try:
+            archive = await self.__get_archive(url)
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            print(f'Failed to download source archive: {url}')
+            print_exc()
+            raise ProjectException(f'Failed to download source archive: {url}')
         print(f'Downloaded archive: {url}')
 
-        files = self.extract_files(archive, url)
+        try:
+            files = self.__extract_files(archive, url)
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            print(f'Failed extract source archive: {url}')
+            print_exc()
+            raise ProjectException(f'Failed extract source archive: {url}')
         print(f'Extracted {len(files)} files')
 
-        fragments = self.split_files(files)
+        try:
+            fragments = self.__split_files(files)
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            print(f'Failed to process or store source text: {url}')
+            print_exc()
+            raise ProjectException(f'Failed to process or store source text: {url}')
         print(f'Split the files to {len(fragments)} fragments')
+
         return fragments
 
-    async def get_archive(self, url):
+    async def __get_archive(self, url):
         async with aiohttp.ClientSession(headers=DOWNLOAD_HEADERS) as session:
             async with session.get(url) as response:
                 content_length = int(response.headers['Content-Length'])
@@ -88,7 +115,7 @@ class Project:
                 archive = await response.content.readexactly(content_length)
         return archive
 
-    def extract_files(self, archive, url):
+    def __extract_files(self, archive, url):
         files: List[Tuple[str, str]] = []
         try:
             total_size = 0
@@ -118,7 +145,7 @@ class Project:
             raise
         return files
 
-    def split_files(self, files: List[Tuple[str, str]]) -> List[Fragment]:
+    def __split_files(self, files: List[Tuple[str, str]]) -> List[Fragment]:
         fragments = []
         for path, text in files:
             doc_type_cls = doc_types.detect_by_extension(path)
