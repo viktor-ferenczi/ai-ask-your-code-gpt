@@ -37,7 +37,7 @@ async def embed_fragments():
     body: Dict[str, any] = await request.get_json(force=True)
     fragments: List[Fragment] = [Fragment(**fields) for fields in body['fragments']]
     embeddings = await EMBEDDING.embed_fragments(fragments)
-    response = dict(embeddings=[[float(x) for x in row] for row in embeddings])
+    response = dict(embeddings=embeddings.tolist())
     return Response(response=json.dumps(response), status=200)
 
 
@@ -45,7 +45,7 @@ async def embed_fragments():
 async def embed_query():
     body: Dict[str, any] = await request.get_json(force=True)
     embeddings = await EMBEDDING.embed_query(body['query'])
-    response = dict(embedding=[float(x) for x in embeddings[0]])
+    response = dict(embedding=embeddings[0].tolist())
     return Response(response=json.dumps(response), status=200)
 
 
