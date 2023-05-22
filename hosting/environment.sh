@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export PYTHONPATH=$HOME/app
+
 export PLUGIN_PORT=5555
 
 export EMBEDDING_SERVER=http://127.0.0.1:41246

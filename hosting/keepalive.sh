@@ -2,7 +2,7 @@
 set -euo pipefail
 
 . environment.sh
-. $1.conf
+. ~/bin/conf-$1.sh
 
 function canary {
   case $CANARY in
@@ -27,9 +27,9 @@ date -Is
 echo "---"
 
 if canary; then
-  echo "The $SERVER_NAME server still works, the second Canary attempt succeeded."
+  echo "The $NAME server still works, the second Canary attempt succeeded."
   exit 0
 fi
 
 echo Server is down. Attempting to restart it.
-bash ~/bin/restart.sh "$SERVER_NAME"
+bash ~/bin/restart.sh "$NAME"

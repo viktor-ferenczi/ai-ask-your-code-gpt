@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-. ~/bin/conf-common.sh
 . ~/bin/conf-$1.sh
 
 if pgrep -f "$COMMAND_LINE"; then
@@ -10,5 +9,6 @@ if pgrep -f "$COMMAND_LINE"; then
 fi
 
 echo "$(date -Is): Starting the $NAME server"
-cd "$SCRIPT_DIR"
+cd "$WORKING_DIR"
+. ~/bin/environment.sh
 nohup $COMMAND_LINE >"$LOG_PATH" 2>&1 &

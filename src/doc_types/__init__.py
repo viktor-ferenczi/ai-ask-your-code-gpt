@@ -1,5 +1,3 @@
-__all__ = ['DOC_TYPES']
-
 from typing import Optional, Type
 
 from .dt_markdown import MarkdownDocType

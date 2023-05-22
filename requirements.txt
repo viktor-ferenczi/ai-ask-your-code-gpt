@@ -8,3 +8,7 @@ numpy~=1.24.3
 aiohttp~=3.8.4
 scikit-learn~=1.2.2
 azure-core
+python-grpc
+qdrant_client
+InstructorEmbedding
+sentence_transformers
