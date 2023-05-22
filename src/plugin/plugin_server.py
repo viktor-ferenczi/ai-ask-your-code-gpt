@@ -124,13 +124,24 @@ async def search(username: str, project_id: str):
     # noinspection PyBroadException
     try:
         project = Project(username, project_id)
-        results = await project.search(text, limit)
+        hits = await project.search(text, limit)
     except KeyboardInterrupt:
         raise
     except Exception:
         print(f'ERROR: User {username!r} failed to search project {project_id!r}:')
         print_exc()
         return quart.Response(response=f'Failed to search project {project_id!r}', status=400)
+
+    results = [
+        dict(
+            score=hit.score,
+            text=hit.fragment.text,
+            path=hit.fragment.path,
+            lineno=hit.fragment.lineno,
+            name=hit.fragment.name,
+        )
+        for hit in hits
+    ]
 
     return quart.Response(response=json.dumps(results, indent=2), status=200)
 

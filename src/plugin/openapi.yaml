@@ -126,7 +126,8 @@ components:
             required:
               - score
               - text
-              - meta
+              - path
+              - lineno
             properties:
               score:
                 type: number
@@ -134,23 +135,14 @@ components:
               text:
                 type: string
                 description: Text fragment
-              meta:
-                type: object
-                required:
-                  - path
-                properties:
-                  path:
-                    type: string
-                    description: Relative path inside the project
-                  kind:
-                    type: string
-                    description: Language construct (module, class, function, method, interface, etc.)
-                  name:
-                    type: string
-                    description: Name of the definition or declaration
-                  index:
-                    type: integer
-                    description: Index to order the fragments inside the same definition
-                description: Fragment meta-information
+              path:
+                type: string
+                description: Relative path inside the project
+              lineno:
+                type: integer
+                description: Line number of recover the order of fragments inside the same file
+              name:
+                type: string
+                description: Name of the definition or declaration (program code only)
           description: Search results in order of decreasing score
           required: true
