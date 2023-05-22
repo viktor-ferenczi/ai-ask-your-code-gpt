@@ -67,7 +67,13 @@ class Project:
     async def search(self, query: str, limit: int) -> List[Hit]:
         embedding = await EMBEDDING_CLIENT.embed_query(query, timeout=20.0)
 
-        hits = await self.collection.search(embedding, limit)
+        # filter = {}
+        # if query.startswith('./'):
+        #     filename = query.split()[0][2:]
+        #     if filename and '.' in filename:
+        #         filter['filename'] = filename
+
+        hits = await self.collection.search(query, embedding, limit)
         return hits
 
     async def __download(self, url: str) -> List[Fragment]:

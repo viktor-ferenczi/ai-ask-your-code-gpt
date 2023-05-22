@@ -1,5 +1,5 @@
 import asyncio
-from typing import List
+from typing import List, Type, Optional
 
 import numpy as np
 import torch
@@ -36,14 +36,10 @@ class Embedding:
 
         return embeddings
 
-    async def embed_query(self, text: str) -> np.numarray:
+    async def embed_query(self, text: str, doc_type_cls: Optional[Type] = None) -> np.numarray:
         assert text
 
-        if text.startswith('.'):
-            extension = text.split(' ')[0].lower()[1:]
-            instruction = doc_types.detect_by_extension(extension).query_instruction
-        else:
-            instruction = TextDocType.query_instruction
+        instruction = (doc_type_cls or TextDocType).query_instruction
 
         async with self.semaphore:
             # noinspection PyTypeChecker

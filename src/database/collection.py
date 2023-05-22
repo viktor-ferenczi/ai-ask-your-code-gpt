@@ -55,13 +55,13 @@ class Collection:
             )
         )
 
-    async def search(self, query_embedding: List[float], limit: int = 10) -> List[Hit]:
-        assert len(query_embedding) == self.dimensions, (len(query_embedding), self.dimensions)
+    async def search(self, query: str, embedding: List[float], limit: int = 10) -> List[Hit]:
+        assert len(embedding) == self.dimensions, (len(embedding), self.dimensions)
 
         response = await self.database.async_grpc_points.Search(
             grpc.SearchPoints(
                 collection_name=self.name,
-                vector=query_embedding,
+                vector=embedding,
                 limit=limit,
                 with_payload=WithPayloadSelector(enable=True)
             )

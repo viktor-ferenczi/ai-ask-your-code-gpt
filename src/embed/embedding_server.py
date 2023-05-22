@@ -2,10 +2,11 @@
 """
 import json
 import time
-from typing import Dict, List
+from typing import Dict, List, Type
 
 from quart import Quart, request, Response
 
+import doc_types
 from embed.embedding import Embedding
 from model.fragment import Fragment
 
@@ -44,8 +45,15 @@ async def embed_fragments():
 @app.post("/embed/query")
 async def embed_query():
     body: Dict[str, any] = await request.get_json(force=True)
-    embeddings = await EMBEDDING.embed_query(body['query'])
+    query = body['query']
+
+    doc_type_cls: Type = None
+    if query.startswith('.') and not query.startswith('./'):
+        doc_type_cls = doc_types.detect_by_extension(query.split()[0])
+
+    embeddings = await EMBEDDING.embed_query(query, doc_type_cls)
     response = dict(embedding=embeddings[0].tolist())
+
     return Response(response=json.dumps(response), status=200)
 
 

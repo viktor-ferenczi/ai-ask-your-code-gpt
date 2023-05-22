@@ -72,7 +72,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Query string for the vector database, start with .extension to narrow down to one file type
+          description: Search expression for the vector database. Starting with `.ext` filters on extension (file type).
         - in: query
           name: limit
           schema:
@@ -137,7 +137,7 @@ components:
                 description: Text fragment
               path:
                 type: string
-                description: Relative path inside the project
+                description: Path of the file inside the project
               lineno:
                 type: integer
                 description: Line number of recover the order of fragments inside the same file
