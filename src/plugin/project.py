@@ -24,8 +24,7 @@ MAX_ARCHIVE_SIZE = 1_000_000
 MAX_FILE_SIZE = 10_000_000
 MAX_SOURCE_SIZE = 10_000_000
 
-EMBEDDING_CLIENT = EmbeddingClient()
-EMBEDDING_CLIENT.servers = os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split()
+EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
 
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
@@ -66,7 +65,7 @@ class Project:
         await self.collection.delete()
 
     async def search(self, query: str, limit: int) -> List[Hit]:
-        embedding = await EMBEDDING_CLIENT.embed_query(query, timeout=30.0)
+        embedding = await EMBEDDING_CLIENT.embed_query(query, timeout=20.0)
 
         hits = await self.collection.search(embedding, limit)
         return hits
@@ -131,10 +130,11 @@ class Project:
                     try:
                         text: str = data.decode('utf-8')
                     except UnicodeDecodeError:
+                        print(f'Error decoding file as UTF-8: {filename}')
                         try:
-                            text: str = data.decode('latin-1')
+                            text: str = data.decode('utf-8', errors='replace')
                         except UnicodeDecodeError:
-                            print(f'Could not decode file, skipping: {filename}')
+                            print(f'Failed to decode file, skipping: {filename}')
                             continue
                     files.append((filename, text))
         except zipfile.BadZipfile as e:

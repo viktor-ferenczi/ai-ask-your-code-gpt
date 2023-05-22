@@ -5,16 +5,20 @@ import zipfile
 
 from quart import Quart, send_file
 
-from project import Project, EMBEDDING_CLIENT
+from plugin.project import Project, EMBEDDING_CLIENT
 
 MODULE_DIR = os.path.dirname(__file__)
+
+
+async def run_embedding_server():
+    from embed.embedding_server import run_task
+    await run_task()
 
 
 class TestPlugin(unittest.IsolatedAsyncioTestCase):
     test_project_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestProject')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
     zip_server_port = 31854
-    embedding_server_port = 41246
 
     def setUp(self) -> None:
         dir_len = len(self.test_project_dir) + 1
@@ -43,12 +47,8 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
 
         await self.app.run_task(debug=True, host='localhost', port=self.zip_server_port)
 
-    async def run_embedding_server(self):
-        from embed.embedding_server import app
-        await app.run_task(debug=True, host='localhost', port=self.embedding_server_port)
-
     async def test_project(self):
-        embedding_server_task = asyncio.create_task(self.run_embedding_server())
+        embedding_server_task = asyncio.create_task(run_embedding_server())
         zip_server_task = asyncio.create_task(self.serve_zip())
         actual_test = asyncio.create_task(self.actual_test())
 
@@ -58,7 +58,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
             actual_test
         ]
 
-        done, pending = await asyncio.wait(tasks, timeout=30.0, return_when=asyncio.FIRST_COMPLETED)
+        done, pending = await asyncio.wait(tasks, timeout=20.0, return_when=asyncio.FIRST_COMPLETED)
 
         self.assertIn(actual_test, done)
         self.assertIn(zip_server_task, pending)
@@ -71,7 +71,8 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
     async def actual_test(self):
         project = Project('test', 'TEST-PROJECT-ID')
 
-        await EMBEDDING_CLIENT.find_free_server()
+        server = await EMBEDDING_CLIENT.find_free_server()
+        self.assertIsNotNone(server)
 
         await project.initialize(f'http://localhost:{self.zip_server_port}/')
 

@@ -49,9 +49,13 @@ async def embed_query():
     return Response(response=json.dumps(response), status=200)
 
 
-def main():
+def run():
     app.run(debug=True, host="localhost", port=PORT)
 
 
+async def run_task():
+    await app.run_task(debug=True, host="localhost", port=PORT)
+
+
 if __name__ == "__main__":
-    main()
+    run()

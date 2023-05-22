@@ -3,6 +3,7 @@ from typing import List
 
 import numpy as np
 import torch
+from InstructorEmbedding import INSTRUCTOR
 
 import doc_types
 from doc_types import TextDocType
@@ -21,7 +22,6 @@ class Embedding:
             raise EnvironmentError('CUDA is not available')
 
         # TODO: Cite them properly!
-        from InstructorEmbedding import INSTRUCTOR
         self.model = INSTRUCTOR(self.model_name)
         self.model.to('cuda')
 
@@ -38,7 +38,7 @@ class Embedding:
 
     async def embed_query(self, text: str) -> np.numarray:
         assert text
-        
+
         if text.startswith('.'):
             extension = text.split(' ')[0].lower()[1:]
             instruction = doc_types.detect_by_extension(extension).query_instruction

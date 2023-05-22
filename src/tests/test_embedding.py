@@ -3,29 +3,8 @@ import unittest
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-from model.fragment import Fragment
 from embed.embedding import Embedding
-
-FRAGMENTS = [
-    Fragment('a/b/test.py',
-             1,
-             '''\
-class GMLExporter:
-
-def __init__(self, model):...
-def export(self, filepath):...
-''',
-             'GMLExporter'),
-    Fragment('a/b/test.py',
-             10,
-             '''\
-class SomeOtherClass:
-
-def __init__(self, model):...
-def export(self, filepath):...
-''',
-             'SomeOtherClass'),
-]
+from example_fragments import FRAGMENTS
 
 
 class TestEmbedding(unittest.IsolatedAsyncioTestCase):

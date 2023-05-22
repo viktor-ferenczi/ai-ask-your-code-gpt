@@ -21,6 +21,8 @@ MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
 OPENAPI_YAML_PATH = os.path.join(MODULE_DIR, 'openapi.yaml')
 
+PORT = int(os.environ.get('PLUGIN_PORT', '5555'))
+
 
 def html_prod_to_dev(text):
     text = text.replace('https://askyourcode.ai', 'http://localhost:5003')
@@ -67,12 +69,13 @@ async def download(username: str):
         return quart.Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
         return quart.Response(response='The URL must start with http:// or https://', status=400)
-    if not DEVELOPMENT and ('://localhost' in url.lower() or '://127.' in url):
+    if not DEVELOPMENT and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return quart.Response(response='Invalid URL', status=400)
 
     # noinspection PyBroadException
     try:
         project_id = str(uuid.uuid4())
+        print(f'Download project {project_id!r} for {username!r}')
         project = Project(username, project_id)
         await project.initialize(url)
     except KeyboardInterrupt:
@@ -98,6 +101,7 @@ async def delete(username: str, project_id: str):
     if not username:
         return quart.Response(response='Missing username', status=400)
 
+    print(f'Delete project {project_id!r} for {username!r}')
     project = Project(username, project_id)
     await project.delete()
     return quart.Response(response='OK', status=200)
@@ -115,6 +119,8 @@ async def search(username: str, project_id: str):
     except ValueError:
         limit = 1
 
+    print(f'Search project {project_id!r} for {username!r} with limit {limit}: {text}')
+
     # noinspection PyBroadException
     try:
         project = Project(username, project_id)
@@ -130,7 +136,11 @@ async def search(username: str, project_id: str):
 
 
 def main():
-    app.run(debug=True, host="localhost", port=5003)
+    app.run(debug=True, host="localhost", port=PORT)
+
+
+async def run_task():
+    await app.run_task(debug=True, host="localhost", port=PORT)
 
 
 if __name__ == "__main__":

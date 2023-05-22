@@ -4,11 +4,11 @@ import uuid
 from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient
 
-from collection import Collection
+from database.collection import Collection
 from embed.embedding import Embedding
-from embed.test_embedding import FRAGMENTS
 from model.fragment import Fragment
 from model.hit import Hit
+from example_fragments import FRAGMENTS
 
 
 class TestCollection(unittest.IsolatedAsyncioTestCase):
@@ -16,7 +16,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
     async def test_collection(self):
         embedding = Embedding()
 
-        database = QdrantClient('localhost', port=6334, prefer_grpc=True, timeout=3.0)
+        database = QdrantClient('localhost', port=6334, prefer_grpc=True, timeout=5.0)
         collection = Collection(database, f'TEST-{uuid.uuid4()}')
 
         try:
