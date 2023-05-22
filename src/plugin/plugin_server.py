@@ -25,8 +25,8 @@ PORT = int(os.environ.get('PLUGIN_PORT', '5555'))
 
 
 def html_prod_to_dev(text):
-    text = text.replace('https://askyourcode.ai', 'http://localhost:5003')
-    text = text.replace('https://plugin.askyourcode.ai', 'http://localhost:5003')
+    text = text.replace('https://askyourcode.ai', f'http://localhost:{PORT}')
+    text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{PORT}')
     return text
 
 

@@ -120,12 +120,19 @@ class Project:
             total_size = 0
             with zipfile.ZipFile(io.BytesIO(archive), 'r') as zf:
                 for filename in zf.namelist():
+                    doc_type_cls = doc_types.detect_by_extension(filename)
+                    if doc_type_cls is None:
+                        print(f'Skipping file of unknown type: {filename}')
+                        continue
+
                     file_info: zipfile.ZipInfo = zf.getinfo(filename)
                     if file_info.file_size > MAX_FILE_SIZE:
                         raise IOError(f'File too large: {filename}')
+
                     total_size += file_info.file_size
                     if total_size > MAX_SOURCE_SIZE:
                         raise IOError(f'Extracted source is too large')
+
                     data: bytes = zf.read(filename)
                     try:
                         text: str = data.decode('utf-8')
@@ -136,13 +143,16 @@ class Project:
                         except UnicodeDecodeError:
                             print(f'Failed to decode file, skipping: {filename}')
                             continue
+
                     files.append((filename, text))
+
         except zipfile.BadZipfile as e:
             dump_filename = f'failed-archive-{uuid.uuid4()}.zip'
             print(f"[{e.__class__.__name__}] {e}; URL: {url}; Content: {dump_filename}")
             with open(dump_filename, 'wb') as f:
                 f.write(archive)
             raise
+
         return files
 
     def __split_files(self, files: List[Tuple[str, str]]) -> List[Fragment]:
