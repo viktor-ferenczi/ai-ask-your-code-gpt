@@ -72,7 +72,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Search expression for the vector database. Starting with `.ext` filters on extension (file type).
+          description: Search expression for the vector database. Starting with `.ext` optimizes the search for that file type.
         - in: query
           name: limit
           schema:

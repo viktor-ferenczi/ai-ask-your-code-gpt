@@ -65,6 +65,11 @@ class Project:
         await self.collection.delete()
 
     async def search(self, query: str, limit: int) -> List[Hit]:
+        if not query.strip():
+            # Empty query used by ChatGPT to check for the project's existence,
+            # so just match some documentation
+            query = 'readme summary documentation manual abstract toc contents howto'
+
         embedding = await EMBEDDING_CLIENT.embed_query(query, timeout=20.0)
 
         # filter = {}

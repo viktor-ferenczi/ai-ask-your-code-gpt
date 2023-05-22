@@ -29,8 +29,9 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         fragment_embeddings = await embedding.embed_fragments(FRAGMENTS)
         await collection.store(FRAGMENTS, fragment_embeddings.tolist())
 
-        query_embeddings = await embedding.embed_query('class GMLExporter')
-        hits = await collection.search(query_embeddings[0].tolist())
+        query = 'class GMLExporter'
+        query_embeddings = await embedding.embed_query(query)
+        hits = await collection.search(query, query_embeddings[0].tolist())
 
         await collection.delete()
 
