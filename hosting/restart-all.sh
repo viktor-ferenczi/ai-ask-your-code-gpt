@@ -1,6 +1,3 @@
 #!/bin/bash
-
-cd ~/bin
-
-bash restart.sh embedding
-bash restart.sh plugin
+bash ~/bin/stop-all.sh
+bash ~/bin/start-all.sh

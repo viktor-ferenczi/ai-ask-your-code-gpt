@@ -4,9 +4,21 @@ set -euo pipefail
 . environment.sh
 . $1.conf
 
-CANARY_REQUEST="--max-time ${CANARY_TIMEOUT} ${CANARY_URL}"
+function canary {
+  case $CANARY in
+  http)
+    CANARY_REQUEST="--max-time ${CANARY_TIMEOUT} ${CANARY_URL}"
+    curl -s "$CANARY_REQUEST" >/dev/null 2>&1
+    return $?
+    ;;
 
-if curl -s "$CANARY_REQUEST" >/dev/null; then
+  none)
+    return 0
+    ;;
+  esac
+}
+
+if canary; then
   exit 0
 fi
 
@@ -14,7 +26,7 @@ echo "---"
 date -Is
 echo "---"
 
-if curl -sS "$CANARY_REQUEST"; then
+if canary; then
   echo "The $SERVER_NAME server still works, the second Canary attempt succeeded."
   exit 0
 fi
