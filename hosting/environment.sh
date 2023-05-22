@@ -1,0 +1,9 @@
+#!/bin/sh
+
+export PLUGIN_PORT=5555
+
+export EMBEDDING_SERVER=http://127.0.0.1:41246
+
+export QDRANT_LOCATION=localhost
+export QDRANT_HTTP_PORT=6333
+export QDRANT_GRPC_PORT=6334
