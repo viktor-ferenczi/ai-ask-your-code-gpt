@@ -7,7 +7,7 @@ import unittest
 from embed.embedding_client import EmbeddingClient
 # from example_fragments import FRAGMENTS
 
-EMBEDDING_CLIENT = EmbeddingClient([f'http://localhost:41246'])
+EMBEDDING_CLIENT = EmbeddingClient([f'http://127.0.0.1:41246'])
 
 
 async def run_embedding_server():
