@@ -23,8 +23,8 @@ DOWNLOAD_HEADERS = {
 }
 
 MAX_ARCHIVE_SIZE = 2 << 20
-MAX_FILE_SIZE = 20 << 20
-MAX_SOURCE_SIZE = 20 << 10
+MAX_FILE_SIZE = 5 << 20
+MAX_SOURCE_SIZE = 20 << 20
 
 MAX_QUERY_LENGTH = 1000
 MAX_QUERY_LIMIT = 50
@@ -217,7 +217,8 @@ class Project:
 
                     file_info: zipfile.ZipInfo = zf.getinfo(filename)
                     if file_info.file_size > MAX_FILE_SIZE:
-                        raise IOError(f'File too large: {filename}; maximum is {MAX_FILE_SIZE >> 20}MiB')
+                        print(f'Skipping large file: {filename}; maximum is {MAX_FILE_SIZE >> 20}MiB')
+                        continue
 
                     total_size += file_info.file_size
                     if total_size > MAX_SOURCE_SIZE:
