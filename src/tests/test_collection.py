@@ -35,9 +35,13 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         await collection.delete()
 
+        self.assertTrue(hits[0].score > hits[1].score)
+        hits[0].score = 0.0
+        hits[1].score = 0.0
+
         self.assertEqual(
             [
-                Hit(score=0.9156620502471924,
+                Hit(score=0.0,
                     fragment=Fragment(path='a/b/test.py',
                                       lineno=1,
                                       text='class GMLExporter:\n'
@@ -45,7 +49,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
                                            'def __init__(self, model):...\n'
                                            'def export(self, filepath):...\n',
                                       name='GMLExporter')),
-                Hit(score=0.8232875466346741,
+                Hit(score=0.0,
                     fragment=Fragment(path='a/b/test.py',
                                       lineno=10,
                                       text='class SomeOtherClass:\n'

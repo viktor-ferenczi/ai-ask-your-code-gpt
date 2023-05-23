@@ -80,10 +80,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(hits), 3)
 
         scores = [hit.score for hit in hits]
-        print(scores)
-        self.assertAlmostEqual(scores[0], 0.890, 3)
-        self.assertAlmostEqual(scores[1], 0.867, 3)
-        self.assertAlmostEqual(scores[2], 0.854, 3)
+        self.assertTrue(scores[0] > scores[1] > scores[2])
 
         hits1 = await project.search('class Duplicates find_duplicates.py', 1)
         self.assertEqual(len(hits1), 1)

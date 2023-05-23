@@ -33,11 +33,9 @@ class Embedding:
         async with self.semaphore:
             # noinspection PyTypeChecker
             embeddings = self.model.encode([
-                [doc_types.detect_by_extension(fragment.path).store_instruction + ':',
-                 # FIXME: This makes the file names and paths searchable by vectors. It would be better to turn paths,
-                 #        filenames and extensions in the query string into proper metadata search conditions.
-                 f'''FILE_PATH="{fragment.path}"\n\n{fragment.text}''']
-                for fragment in fragments])
+                [doc_types.detect_by_extension(fragment.path).store_instruction + ':', fragment.text]
+                for fragment in fragments
+            ])
 
         return embeddings
 
