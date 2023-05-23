@@ -2,14 +2,13 @@
 
 NAME=plugin
 
-SCRIPT_DIR=~/app/plugin
-SCRIPT_PATH=$SCRIPT_DIR/plugin_server.py
-
-WORKING_DIR=$SCRIPT_DIR
-COMMAND_LINE="python -O -u $SCRIPT_PATH"
+WORKING_DIR=~/src/plugin
+COMMAND_LINE="hypercorn --config hypercorn.toml plugin_server:app"
 
 LOG_PATH=~/log/plugin.log
 
 CANARY=http
-CANARY_URL=http://127.0.0.1:5555/
+CANARY_URL=https://plugin.askyourcode.ai/
 CANARY_TIMEOUT=10
+
+export PYTHON_UNBUFFERED=1

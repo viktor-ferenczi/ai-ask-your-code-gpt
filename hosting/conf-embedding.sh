@@ -2,7 +2,7 @@
 
 NAME=embedding
 
-SCRIPT_DIR=~/app/embed
+SCRIPT_DIR=~/src/embed
 SCRIPT_PATH=$SCRIPT_DIR/embedding_server.py
 
 WORKING_DIR=$SCRIPT_DIR

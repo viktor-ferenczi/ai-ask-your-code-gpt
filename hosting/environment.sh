@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PYTHONPATH=$HOME/app
+export PYTHONPATH=$HOME/src
 
 export PLUGIN_PORT=5555
 

@@ -11,4 +11,4 @@ fi
 echo "$(date -Is): Starting the $NAME server"
 cd "$WORKING_DIR"
 . ~/bin/environment.sh
-nohup $COMMAND_LINE >"$LOG_PATH" 2>&1 &
+nohup authbind --deep $COMMAND_LINE >>"$LOG_PATH" 2>&1 &

@@ -11,7 +11,7 @@ fi
 echo "$(date -Is): Stopping the $NAME server"
 pkill -f "$COMMAND_LINE"
 
-for NN in 10 9 8 7 6 5 4 3 2 1; do
+for NN in 3 2 1; do
   if ! pgrep -f "$COMMAND_LINE"; then
     exit 0
   fi
@@ -19,7 +19,7 @@ for NN in 10 9 8 7 6 5 4 3 2 1; do
   sleep 1
 done
 
-if pkill -f "$COMMAND_LINE"; then
+if pkill -9 -f "$COMMAND_LINE"; then
   echo "Killed"
 else
   echo "Stopped"

@@ -12,3 +12,4 @@ python-grpc
 qdrant_client
 InstructorEmbedding
 sentence_transformers
+aioquic

@@ -1,0 +1,12 @@
+bind = "0.0.0.0:443"
+quic_bind = "0.0.0.0:443"
+
+ca_certs = "/home/plugin/cert/chain.pem"
+keyfile = "/home/plugin/cert/privkey.pem"
+certfile = "/home/plugin/cert/cert.pem"
+
+accesslog = "-"
+errorlog = "-"
+loglevel = "info"
+
+quic = true
