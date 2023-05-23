@@ -113,18 +113,17 @@ class Project:
     async def __get_archive(self, url):
         async with aiohttp.ClientSession(headers=DOWNLOAD_HEADERS) as session:
             async with session.get(url) as response:
-                content_length = response.headers.get('Content-Length')
-                if content_length is not None:
-                    content_length = int(content_length)
-                    if content_length < 1:
-                        raise IOError('Empty archive')
-                    if content_length > MAX_ARCHIVE_SIZE:
+                size = 0
+                archive = []
+                while 1:
+                    chunk = await response.content.read(32768)
+                    if not chunk:
+                        break
+                    archive.append(chunk)
+                    size += len(chunk)
+                    if size > MAX_ARCHIVE_SIZE:
                         raise IOError('Archive is too large (Content-Length)')
-                    archive = await response.content.readexactly(content_length)
-                else:
-                    archive = await response.content.readexactly(MAX_ARCHIVE_SIZE + 1)
-                    if len(archive) > MAX_ARCHIVE_SIZE:
-                        raise IOError('Archive is too large (Content-Length)')
+                archive = b''.join(archive)
         return archive
 
     def __extract_files(self, archive, url):
