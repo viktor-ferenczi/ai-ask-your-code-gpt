@@ -107,9 +107,9 @@ async def search(project_id: str):
     query: str = request.args.get('query', '')
 
     try:
-        limit = int(request.args.get('limit', '1'))
+        limit = int(request.args.get('limit', '3'))
     except ValueError:
-        limit = 1
+        limit = 3
 
     print(f'Search project {project_id!r} with limit {limit}: {query}')
 
