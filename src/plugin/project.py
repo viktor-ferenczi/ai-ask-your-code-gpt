@@ -28,7 +28,7 @@ MAX_SOURCE_SIZE = 10_000_000
 MAX_QUERY_LENGTH = 1_000
 
 EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
-EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '128'))
+EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '64'))
 
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
@@ -63,15 +63,12 @@ class Project:
         if not fragments:
             raise ValueError('No fragments')
 
-        async def save_embed_and_store():
-            self.save_fragments(fragments)
-            stats: Dict[str, any] = await background_embed_and_store_fragments(self, fragments)
-            self.mark_stored(stats)
+        self.save_fragments(fragments)
 
         if app is None:
-            await save_embed_and_store()
+            await background_embed_and_store_fragments(self, fragments)
         else:
-            app.add_background_task(save_embed_and_store)
+            app.add_background_task(background_embed_and_store_fragments, self, fragments)
 
     def save_fragments(self, fragments: List[Fragment]):
         os.makedirs(PROJECT_FRAGMENTS_DIR, exist_ok=True)
@@ -264,6 +261,8 @@ async def background_embed_and_store_fragments(project: Project, fragments: List
 
     duration = time.time() - started
     stats = dict(fragment_count=len(fragments), duration=duration, performance=len(fragments) / max(1e-3, duration))
+
+    project.mark_stored(stats)
 
     print(f'Initialized project {project.project_id}, fragments: {len(fragments)}, duration: {duration:.3f} ({stats["performance"]:.1f} fragments/second)')
     return stats
