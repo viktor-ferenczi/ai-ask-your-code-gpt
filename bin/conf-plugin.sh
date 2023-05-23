@@ -10,5 +10,3 @@ LOG_PATH=~/log/plugin.log
 CANARY=http
 CANARY_URL=https://plugin.askyourcode.ai/
 CANARY_TIMEOUT=10
-
-export PYTHON_UNBUFFERED=1
