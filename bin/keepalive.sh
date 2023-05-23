@@ -7,8 +7,7 @@ set -euo pipefail
 function canary {
   case $CANARY in
   http)
-    CANARY_REQUEST="--max-time ${CANARY_TIMEOUT} ${CANARY_URL}"
-    curl -s "$CANARY_REQUEST" >/dev/null 2>&1
+    curl -s --max-time ${CANARY_TIMEOUT} ${CANARY_URL} >/dev/null 2>&1
     return $?
     ;;
 
