@@ -37,15 +37,11 @@ class ProjectException(Exception):
 
 class Project:
 
-    def __init__(self, username: str, project_id: str) -> None:
-        if not username.replace('-', '').replace('_', '').isalnum():
-            username = '-no-user-'
-
-        self.username: str = username
+    def __init__(self, project_id: str) -> None:
         self.project_id: str = project_id
 
         database = QdrantClient(location=QDRANT_LOCATION, port=QDRANT_HTTP_PORT, grpc_port=QDRANT_GRPC_PORT, prefer_grpc=True)
-        self.collection = Collection(database, f'{username}-{project_id}')
+        self.collection = Collection(database, project_id)
 
     async def initialize(self, url: str):
         fragments = await self.__download(url)

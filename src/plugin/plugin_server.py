@@ -59,11 +59,8 @@ async def openapi_spec():
     return quart.Response(text, mimetype="text/yaml", status=200)
 
 
-@app.post("/project/<string:username>")
-async def download(username: str):
-    if not username:
-        return quart.Response(response='Missing username', status=400)
-
+@app.post("/project")
+async def download():
     body: Dict[str, str] = await quart.request.get_json(force=True)
     url: str = body.get('url')
     if not url:
@@ -76,13 +73,13 @@ async def download(username: str):
     # noinspection PyBroadException
     try:
         project_id = str(uuid.uuid4())
-        print(f'Download project {project_id!r} for {username!r}')
-        project = Project(username, project_id)
+        print(f'Download project {project_id!r}')
+        project = Project(project_id)
         await project.initialize(url)
     except KeyboardInterrupt:
         raise
     except ProjectException as e:
-        print(f'ERROR: User: {username!r}; URL: {url!r}; Error: {e}')
+        print(f'ERROR: {e}; url={url!r}')
         return quart.Response(response=str(e), status=400)
 
     if project_id.startswith('!'):
@@ -97,39 +94,33 @@ async def download(username: str):
     return quart.Response(response=json.dumps(response, indent=2), status=200)
 
 
-@app.delete("/project/<string:username>/<string:project_id>")
-async def delete(username: str, project_id: str):
-    if not username:
-        return quart.Response(response='Missing username', status=400)
-
-    print(f'Delete project {project_id!r} for {username!r}')
-    project = Project(username, project_id)
+@app.delete("/project/<string:project_id>")
+async def delete(project_id: str):
+    print(f'Delete project {project_id!r}')
+    project = Project(project_id)
     await project.delete()
     return quart.Response(response='OK', status=200)
 
 
-@app.get("/project/<string:username>/<string:project_id>/search")
-async def search(username: str, project_id: str):
-    if not username:
-        return quart.Response(response='ERROR: Missing username', status=400)
-
-    text: str = request.args.get('text', '')
+@app.get("/project/<string:project_id>/search")
+async def search(project_id: str):
+    query: str = request.args.get('query', '')
 
     try:
         limit = int(request.args.get('limit', '1'))
     except ValueError:
         limit = 1
 
-    print(f'Search project {project_id!r} for {username!r} with limit {limit}: {text}')
+    print(f'Search project {project_id!r} with limit {limit}: {query}')
 
     # noinspection PyBroadException
     try:
-        project = Project(username, project_id)
-        hits = await project.search(text, limit)
+        project = Project(project_id)
+        hits = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
     except Exception:
-        print(f'ERROR: User {username!r} failed to search project {project_id!r}:')
+        print(f'ERROR: Failed to search project {project_id!r}:')
         print_exc()
         return quart.Response(response=f'Failed to search project {project_id!r}', status=400)
 

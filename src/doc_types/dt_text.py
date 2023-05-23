@@ -23,7 +23,7 @@ class TextDocType:
 
     def __init__(self) -> None:
         super().__init__()
-        self.splitter: TextSplitter = self.splitter_cls(**self.splitter_kws)
+        self.splitter = self.splitter_cls(**self.splitter_kws)
 
     def split(self, path: str, text: str) -> Iterator[Fragment]:
         lineno = 1

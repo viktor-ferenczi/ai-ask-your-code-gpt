@@ -6,17 +6,10 @@ info:
 servers:
   - url: https://plugin.askyourcode.ai
 paths:
-  /project/{username}:
+  /project:
     post:
       operationId: downloadProject
       summary: Downloads a project archive, extracts it, then stores the code and text fragments into the database.
-      parameters:
-        - in: path
-          name: username
-          schema:
-            type: string
-          required: true
-          description: Name of the logged in user
       requestBody:
         required: true
         content:
@@ -30,17 +23,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/downloadResponse'
-  /project/{username}/{project_id}:
+  /project/{project_id}:
     delete:
       operationId: deleteProject
       summary: Deletes a project from the database.
       parameters:
-        - in: path
-          name: username
-          schema:
-            type: string
-          required: true
-          description: Name of the logged in user
         - in: path
           name: project_id
           schema:
@@ -50,17 +37,11 @@ paths:
       responses:
         "200":
           description: OK
-  /project/{username}/{project_id}/search:
+  /project/{project_id}/search:
     get:
       operationId: search
       summary: Searches in a project
       parameters:
-        - in: path
-          name: username
-          schema:
-            type: string
-          required: true
-          description: Name of the logged in user
         - in: path
           name: project_id
           schema:
@@ -68,7 +49,7 @@ paths:
           required: true
           description: GUID of the project
         - in: query
-          name: text
+          name: query
           schema:
             type: string
           required: true

@@ -69,7 +69,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         embedding_server_task.cancel()
 
     async def actual_test(self):
-        project = Project('test', 'TEST-PROJECT-ID')
+        project = Project('TEST-PROJECT-ID')
 
         server = await EMBEDDING_CLIENT.find_free_server()
         self.assertIsNotNone(server)
