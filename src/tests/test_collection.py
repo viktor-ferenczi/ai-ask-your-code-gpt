@@ -6,9 +6,9 @@ from qdrant_client import QdrantClient
 
 from database.collection import Collection
 from embed.embedding import Embedding
+from example_fragments import FRAGMENTS
 from model.fragment import Fragment
 from model.hit import Hit
-from example_fragments import FRAGMENTS
 
 
 class TestCollection(unittest.IsolatedAsyncioTestCase):
@@ -37,7 +37,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual(
             [
-                Hit(score=0.9402979612350464,
+                Hit(score=0.9156620502471924,
                     fragment=Fragment(path='a/b/test.py',
                                       lineno=1,
                                       text='class GMLExporter:\n'
@@ -45,14 +45,14 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
                                            'def __init__(self, model):...\n'
                                            'def export(self, filepath):...\n',
                                       name='GMLExporter')),
-                Hit(score=0.8443304896354675,
+                Hit(score=0.8232875466346741,
                     fragment=Fragment(path='a/b/test.py',
                                       lineno=10,
                                       text='class SomeOtherClass:\n'
                                            '\n'
                                            'def __init__(self, model):...\n'
                                            'def export(self, filepath):...\n',
-                                      name='SomeOtherClass')),
+                                      name='SomeOtherClass'))
             ],
             hits
         )

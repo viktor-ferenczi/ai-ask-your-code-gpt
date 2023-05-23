@@ -32,8 +32,8 @@ class EmbeddingClient:
                 if response.status != 200:
                     raise IOError(f'Failed to embed fragments using embed server: {server}')
 
-        data = json.loads(content.decode('ascii'))
-        fragment_embeddings = data['embeddings']
+        fragment_dicts = json.loads(content.decode('ascii'))
+        fragment_embeddings = fragment_dicts['embeddings']
         return fragment_embeddings
 
     async def embed_query(self, query: str, *, timeout=10.0) -> List[float]:

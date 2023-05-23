@@ -9,6 +9,7 @@ import quart
 import quart_cors
 from quart import request
 
+from model.hit import Hit
 from project import Project, ProjectException
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
@@ -132,18 +133,23 @@ async def search(username: str, project_id: str):
         print_exc()
         return quart.Response(response=f'Failed to search project {project_id!r}', status=400)
 
-    results = [
-        dict(
-            score=hit.score,
-            text=hit.fragment.text,
-            path=hit.fragment.path,
-            lineno=hit.fragment.lineno,
-            name=hit.fragment.name,
-        )
-        for hit in hits
-    ]
-
+    results = [format_hit(hit) for hit in hits]
     return quart.Response(response=json.dumps(results, indent=2), status=200)
+
+
+def format_hit(hit: Hit) -> Dict[str, any]:
+    result = dict(
+        score=hit.score,
+        text=hit.fragment.text,
+        path=hit.fragment.path,
+        lineno=hit.fragment.lineno,
+    )
+
+    name = hit.fragment.name
+    if name:
+        result['name'] = name
+
+    return result
 
 
 def main():

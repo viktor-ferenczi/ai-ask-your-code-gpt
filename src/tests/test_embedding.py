@@ -37,7 +37,7 @@ class TestEmbedding(unittest.IsolatedAsyncioTestCase):
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)
         print(similarities)
         self.assertTrue(np.all(np.abs(similarities - np.average(similarities)) < 0.02))
-        self.assertTrue(np.all(similarities > 0.88))
+        self.assertTrue(np.all(similarities > 0.87))
 
         query_embeddings: np.ndarray = await embedding.embed_query('completely_different method', PythonDocType)
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)

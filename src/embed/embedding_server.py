@@ -47,9 +47,12 @@ async def embed_query():
     body: Dict[str, any] = await request.get_json(force=True)
     query = body['query']
 
+    # FIXME: Extend this to turn all paths, filenames and extensions in the
+    #        query string into proper metadata search conditions.
     doc_type_cls: Type = None
-    if query.startswith('.') and not query.startswith('./'):
-        doc_type_cls = doc_types.detect_by_extension(query.split()[0])
+    if query.startswith('.') and ' ' in query:
+        ext, query = query.split(' ', 1)
+        doc_type_cls = doc_types.detect_by_extension(ext.lower())
 
     embeddings = await EMBEDDING.embed_query(query, doc_type_cls)
     response = dict(embedding=embeddings[0].tolist())
