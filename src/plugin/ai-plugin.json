@@ -3,7 +3,7 @@
   "name_for_human": "AskYourCode",
   "name_for_model": "askyourcode",
   "description_for_human": "Ask your source code directly. The intelligent rubber ducky!",
-  "description_for_model": "The AskYouCode plugin provides access to the source code and documentation of a software project provided by the user. The user may start the conversation by specifying a URL of a source archive to download or the project_id (GUID) of an existing project.",
+  "description_for_model": "Allows retrieving the source code and documentation of a software project.",
   "auth": {
     "type": "none"
   },

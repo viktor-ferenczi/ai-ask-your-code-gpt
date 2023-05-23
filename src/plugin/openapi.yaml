@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: AskYourCode
-  description: A plugin that provides access to the source code and documentation of a software project provided by the user
+  description: Manages a vector database storing the source code and documentation of software projects.
   version: 'v1'
 servers:
   - url: https://plugin.askyourcode.ai
@@ -9,7 +9,7 @@ paths:
   /project/{username}:
     post:
       operationId: downloadProject
-      summary: Downloads the source code archive of the project, extracts the archive, splits the source code and documentation into fragments, stores the fragments into a vector database
+      summary: Downloads a project archive, extracts it, then stores the code and text fragments into the database.
       parameters:
         - in: path
           name: username
@@ -33,7 +33,7 @@ paths:
   /project/{username}/{project_id}:
     delete:
       operationId: deleteProject
-      summary: Deletes a project from the vector database
+      summary: Deletes a project from the database.
       parameters:
         - in: path
           name: username
@@ -53,7 +53,7 @@ paths:
   /project/{username}/{project_id}/search:
     get:
       operationId: search
-      summary: Search for code or documentation fragments
+      summary: Searches in a project
       parameters:
         - in: path
           name: username
@@ -72,7 +72,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Search expression for the vector database. Starting with `.ext` optimizes the search for that file type.
+          description: Code or text to look for, files can be filtered by .extension, name or path
         - in: query
           name: limit
           schema:
@@ -99,7 +99,7 @@ components:
       properties:
         url:
           type: string
-          description: The URL of the source code archive to download. Must point to a zip or tar.gz file which can be downloaded directly without authentication.
+          description: URL of the ZIP archive to download directly without authentication
           required: true
     downloadResponse:
       type: object
@@ -112,7 +112,7 @@ components:
           required: true
         error:
           type: string
-          description: Error message (missing if the request was successful)
+          description: Error message (OK if missing)
           required: false
     searchResponse:
       type: object
@@ -131,18 +131,18 @@ components:
             properties:
               score:
                 type: number
-                description: Score, higher value means more relevant
+                description: Score (relevance)
               text:
                 type: string
-                description: Text fragment
+                description: Code or text fragment
               path:
                 type: string
-                description: Path of the file inside the project
+                description: Relative file path (inside project)
               lineno:
                 type: integer
-                description: Line number of recover the order of fragments inside the same file
+                description: Line number to reconstruct fragment order
               name:
                 type: string
                 description: Name of the definition or declaration (program code only)
-          description: Search results in order of decreasing score
+          description: Search results in decreasing score order
           required: true
