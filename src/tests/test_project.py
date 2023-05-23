@@ -2,9 +2,11 @@ import asyncio
 import os
 import unittest
 import zipfile
+from typing import List
 
 from quart import Quart, send_file
 
+from model.hit import Hit
 from plugin.project import Project, EMBEDDING_CLIENT
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -77,18 +79,37 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         await project.initialize(f'http://localhost:{self.zip_server_port}/')
 
         hits = await project.search('class Duplicates', 3)
-        self.assertEqual(len(hits), 3)
+        self.verify_hits(hits, 3, contains=['class Duplicates'])
 
-        scores = [hit.score for hit in hits]
-        self.assertTrue(scores == sorted(scores))
+        hits = await project.search('.py', 10)
+        self.verify_hits(hits, 6, path='find_duplicates.py')
 
-        hits1 = await project.search('class Duplicates find_duplicates.py', 1)
-        self.assertEqual(len(hits1), 1)
+        hits = await project.search('find_duplicates.py', 3)
+        self.verify_hits(hits, 3, path='find_duplicates.py')
 
-        hits2 = await project.search('.py class Duplicates', 1)
-        self.assertEqual(len(hits2), 1)
+        hits = await project.search('find_duplicates.py class Duplicates', 1)
+        self.verify_hits(hits, 1, path='find_duplicates.py', contains=['class Duplicates'])
 
-        self.assertTrue(hits1[0].fragment.text.startswith('class Duplicates:'))
-        self.assertEqual(hits1[0].fragment.text, hits2[0].fragment.text)
+        hits = await project.search('README.md', 10)
+        self.verify_hits(hits, 4, path='README.md')
 
         await project.delete()
+
+    def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
+        print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
+
+        self.assertEqual(len(hits), count)
+        self.assertEqual(len(set(hit.fragment.uuid for hit in hits)), count)
+
+        if path:
+            for hit in hits:
+                self.assertEqual(hit.fragment.path, path)
+
+            self.assertEqual(hits, sorted(hits, key=lambda hit: (hit.fragment.path, hit.fragment.lineno, -hit.score)))
+
+        else:
+            self.assertEqual(hits, sorted(hits, key=lambda hit: -hit.score))
+
+        if contains:
+            for text in contains:
+                self.assertTrue(any((text in hit.fragment.text) for hit in hits))

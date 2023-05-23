@@ -45,7 +45,10 @@ async def embed_fragments():
 @app.post("/embed/query")
 async def embed_query():
     body: Dict[str, any] = await request.get_json(force=True)
-    query = body['query']
+    query = body.get('query', '')
+
+    if not query.strip():
+        return Response(response='Empty or missing query', status=400)
 
     # FIXME: Extend this to turn all paths, filenames and extensions in the
     #        query string into proper metadata search conditions.

@@ -107,7 +107,7 @@ class Project:
 
         path_matches = set()
         # name_matches = set()
-        vector_query = set()
+        vector_query = []
 
         for part in query.split():
             if not part:
@@ -123,10 +123,10 @@ class Project:
             #     name_matches.update(m)
             #     continue
 
-            vector_query.add(part)
+            vector_query.append(part)
 
         matching_fragments = path_matches  # | name_matches
-        vector_query = ' '.join(vector_query)
+        vector_query = ' '.join(vector_query) if vector_query else 'anything'
 
         uuid_filter = [fragment.uuid for fragment in matching_fragments]
         embedding = await EMBEDDING_CLIENT.embed_query(vector_query, timeout=20.0)

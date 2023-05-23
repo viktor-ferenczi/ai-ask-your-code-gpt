@@ -78,7 +78,12 @@ class Collection:
         )
 
         hits = [Hit(result.score, fragment_from_message(result.payload)) for result in response.result]
-        hits.sort(key=lambda hit: hit.score, reverse=True)
+
+        if point_filter is None:
+            hits.sort(key=lambda hit: -hit.score)
+        else:
+            hits.sort(key=lambda hit: (hit.fragment.path, hit.fragment.lineno, -hit.score))
+
         return hits
 
 

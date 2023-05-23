@@ -37,6 +37,9 @@ class EmbeddingClient:
         return fragment_embeddings
 
     async def embed_query(self, query: str, *, timeout=10.0) -> List[float]:
+        if not query.strip():
+            raise ValueError('Empty query')
+
         data = json.dumps(dict(query=query), indent=2)
 
         server = await self.find_free_server()
