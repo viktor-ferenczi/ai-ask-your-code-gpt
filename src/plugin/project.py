@@ -1,10 +1,11 @@
 import io
 import json
 import os
+import time
 import uuid
 import zipfile
 from traceback import print_exc
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 import aiohttp
 from grpc.aio import AioRpcError
@@ -27,6 +28,7 @@ MAX_SOURCE_SIZE = 10_000_000
 MAX_QUERY_LENGTH = 1_000
 
 EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
+EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '128'))
 
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
@@ -50,26 +52,29 @@ class Project:
 
     @property
     def fragments_path(self):
-        os.makedirs(PROJECT_FRAGMENTS_DIR, exist_ok=True)
         return os.path.join(PROJECT_FRAGMENTS_DIR, f'{self.project_id}.json')
 
-    async def initialize(self, url: str):
+    @property
+    def stored_marker_path(self):
+        return os.path.join(PROJECT_FRAGMENTS_DIR, f'{self.project_id}.stored')
+
+    async def initialize(self, url: str, app=None):
         fragments = await self.__download(url)
         if not fragments:
             raise ValueError('No fragments')
 
-        embeddings = await EMBEDDING_CLIENT.embed_fragments(fragments, timeout=30.0)
+        async def save_embed_and_store():
+            self.save_fragments(fragments)
+            stats: Dict[str, any] = await background_embed_and_store_fragments(self, fragments)
+            self.mark_stored(stats)
 
-        try:
-            await self.collection.create()
-        except AioRpcError:
-            pass
-
-        await self.collection.store(fragments, embeddings)
-
-        self.save_fragments(fragments)
+        if app is None:
+            await save_embed_and_store()
+        else:
+            app.add_background_task(save_embed_and_store)
 
     def save_fragments(self, fragments: List[Fragment]):
+        os.makedirs(PROJECT_FRAGMENTS_DIR, exist_ok=True)
         with open(self.fragments_path, 'wt') as f:
             json.dump([fragment.__dict__ for fragment in fragments], f, indent=2)
 
@@ -77,9 +82,15 @@ class Project:
         with open(self.fragments_path, 'rt') as f:
             return [Fragment(**fields) for fields in json.load(f)]
 
-    def delete_fragments(self) -> List[Fragment]:
+    def delete_fragments(self):
         if os.path.isfile(self.fragments_path):
             os.remove(self.fragments_path)
+        if os.path.isfile(self.stored_marker_path):
+            os.remove(self.stored_marker_path)
+
+    def mark_stored(self, stats: Dict[str, any]):
+        with open(self.stored_marker_path, 'wt') as f:
+            json.dump(stats, f, indent=2)
 
     async def delete(self):
         await self.collection.delete()
@@ -189,6 +200,9 @@ class Project:
             total_size = 0
             with zipfile.ZipFile(io.BytesIO(archive), 'r') as zf:
                 for filename in zf.namelist():
+                    if filename.endswith('/'):
+                        continue
+
                     doc_type_cls = doc_types.detect_by_extension(filename)
                     if doc_type_cls is None:
                         print(f'Skipping file of unknown type: {filename}')
@@ -231,3 +245,25 @@ class Project:
             doc_type = doc_type_cls()
             fragments.extend(doc_type.split(path, text))
         return fragments
+
+
+async def background_embed_and_store_fragments(project: Project, fragments: List[Fragment]) -> Dict[str, any]:
+    collection = project.collection
+
+    try:
+        await collection.create()
+    except AioRpcError:
+        pass
+
+    started = time.time()
+
+    for index in range(0, len(fragments), EMBEDDING_CHUNK_SIZE):
+        chunk_of_fragments = fragments[index: index + EMBEDDING_CHUNK_SIZE]
+        chunk_of_embeddings = await EMBEDDING_CLIENT.embed_fragments(chunk_of_fragments, timeout=30.0)
+        await collection.store(chunk_of_fragments, chunk_of_embeddings)
+
+    duration = time.time() - started
+    stats = dict(fragment_count=len(fragments), duration=duration, performance=len(fragments) / max(1e-3, duration))
+
+    print(f'Initialized project {project.project_id}, fragments: {len(fragments)}, duration: {duration:.3f} ({stats["performance"]:.1f} fragments/second)')
+    return stats

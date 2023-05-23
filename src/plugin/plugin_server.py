@@ -75,7 +75,7 @@ async def download():
         project_id = str(uuid.uuid4())
         print(f'Download project {project_id!r}')
         project = Project(project_id)
-        await project.initialize(url)
+        await project.initialize(url, app)
     except KeyboardInterrupt:
         raise
     except ProjectException as e:
