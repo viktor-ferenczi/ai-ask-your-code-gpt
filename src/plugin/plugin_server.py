@@ -109,7 +109,7 @@ async def search(project_id: str):
     try:
         limit = int(request.args.get('limit', '3'))
     except ValueError:
-        limit = 3
+        limit = 5
 
     print(f'Search project {project_id!r} with limit {limit}: {query}')
 

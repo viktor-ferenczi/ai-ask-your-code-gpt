@@ -22,10 +22,12 @@ DOWNLOAD_HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
 }
 
-MAX_ARCHIVE_SIZE = 1_000_000
-MAX_FILE_SIZE = 10_000_000
-MAX_SOURCE_SIZE = 10_000_000
-MAX_QUERY_LENGTH = 1_000
+MAX_ARCHIVE_SIZE = 2 << 20
+MAX_FILE_SIZE = 20 << 20
+MAX_SOURCE_SIZE = 20 << 10
+
+MAX_QUERY_LENGTH = 1000
+MAX_QUERY_LIMIT = 50
 
 EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
 EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '256'))
@@ -103,7 +105,10 @@ class Project:
             query = 'any documentation or code'
 
         if len(query) > MAX_QUERY_LENGTH:
-            raise ValueError('The query must be at most 1000 characters')
+            raise ValueError(f'The query must be at most {MAX_QUERY_LENGTH} characters')
+
+        if limit > MAX_QUERY_LIMIT:
+            raise ValueError(f'The limit must be at most {MAX_QUERY_LIMIT}')
 
         fragments = self.load_fragments()
 
@@ -151,10 +156,10 @@ class Project:
             archive = await self.__get_archive(url)
         except KeyboardInterrupt:
             raise
-        except Exception:
+        except Exception as e:
             print(f'Failed to download source archive: {url}')
             print_exc()
-            raise ProjectException(f'Failed to download source archive: {url}')
+            raise ProjectException(f'Failed to download source archive: {url}; Reason: {e}')
         print(f'Downloaded archive: {url}')
 
         try:
@@ -191,7 +196,7 @@ class Project:
                     archive.append(chunk)
                     size += len(chunk)
                     if size > MAX_ARCHIVE_SIZE:
-                        raise IOError('Archive is too large (Content-Length)')
+                        raise IOError(f'Archive is too large, maximum is {MAX_ARCHIVE_SIZE >> 20}MiB')
                 archive = b''.join(archive)
         return archive
 
@@ -212,11 +217,11 @@ class Project:
 
                     file_info: zipfile.ZipInfo = zf.getinfo(filename)
                     if file_info.file_size > MAX_FILE_SIZE:
-                        raise IOError(f'File too large: {filename}')
+                        raise IOError(f'File too large: {filename}; maximum is {MAX_FILE_SIZE >> 20}MiB')
 
                     total_size += file_info.file_size
                     if total_size > MAX_SOURCE_SIZE:
-                        raise IOError(f'Extracted source is too large')
+                        raise IOError(f'Extracted source is too large, maximum is {MAX_SOURCE_SIZE >> 20}MiB')
 
                     data: bytes = zf.read(filename)
                     try:
