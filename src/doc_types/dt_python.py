@@ -1,5 +1,6 @@
 __all__ = ['PythonDocType']
 
+import uuid
 from typing import Iterator
 
 from doc_types.dt_text import TextDocType
@@ -17,4 +18,4 @@ class PythonDocType(TextDocType):
 
     def split(self, path: str, text: str) -> Iterator[Fragment]:
         for index, chunk in enumerate(self.splitter.split_code(text)):
-            yield Fragment(path, chunk.lineno, chunk.text, chunk.name)
+            yield Fragment(str(uuid.uuid4()), path, chunk.lineno, chunk.text, chunk.name)

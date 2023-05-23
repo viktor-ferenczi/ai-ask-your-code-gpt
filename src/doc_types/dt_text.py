@@ -1,5 +1,6 @@
 __all__ = ['TextDocType']
 
+import uuid
 from typing import Iterator
 
 from langchain.text_splitter import TextSplitter, RecursiveCharacterTextSplitter
@@ -28,6 +29,6 @@ class TextDocType:
     def split(self, path: str, text: str) -> Iterator[Fragment]:
         lineno = 1
         for index, paragraph in enumerate(self.splitter.split_text(text)):
-            yield Fragment(path, lineno, paragraph, '')
+            yield Fragment(str(uuid.uuid4()), path, lineno, paragraph, '')
             # FIXME: Not exact due to the splitter eating the separators, but good enough for sorting
             lineno += paragraph.count('\n') + 1

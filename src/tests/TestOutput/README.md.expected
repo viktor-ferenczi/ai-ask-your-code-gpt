@@ -1,5 +1,10 @@
-[Fragment(path='README.md', lineno=1, text='# Test project\n\nThis is a project used by the unit tests of the **AskYourCode** _ChatGPT_ plugin.', name=''),
- Fragment(path='README.md',
+[Fragment(uuid='TEST-00',
+          path='README.md',
+          lineno=1,
+          text='# Test project\n\nThis is a project used by the unit tests of the **AskYourCode** _ChatGPT_ plugin.',
+          name=''),
+ Fragment(uuid='TEST-01',
+          path='README.md',
           lineno=4,
           text='Rationale\n'
                '\n'
@@ -24,7 +29,8 @@
                '- CSS\n'
                '- HTML',
           name=''),
- Fragment(path='README.md',
+ Fragment(uuid='TEST-02',
+          path='README.md',
           lineno=26,
           text='Some long section\n'
                '\n'
@@ -38,7 +44,8 @@
                'Vivamus nisi tellus, gravida eu pellentesque at, tempus in massa. Suspendisse potenti.\n'
                'Aliquam purus sapien, faucibus vitae eros a, aliquet porta nulla.',
           name=''),
- Fragment(path='README.md',
+ Fragment(uuid='TEST-03',
+          path='README.md',
           lineno=37,
           text='Sed facilisis tellus ut pretium egestas. Etiam finibus dolor in quam tincidunt fermentum.\n'
                'Aenean viverra est eget velit blandit, ut feugiat purus congue. Maecenas semper nunc molestie,\n'

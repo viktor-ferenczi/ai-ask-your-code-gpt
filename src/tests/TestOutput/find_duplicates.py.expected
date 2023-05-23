@@ -1,4 +1,5 @@
-[Fragment(path='find_duplicates.py',
+[Fragment(uuid='TEST-00',
+          path='find_duplicates.py',
           lineno=1,
           text='import hashlib\n'
                'import os\n'
@@ -17,7 +18,8 @@
                "if __name__ == '__main__':\n"
                '    main()',
           name='module'),
- Fragment(path='find_duplicates.py',
+ Fragment(uuid='TEST-01',
+          path='find_duplicates.py',
           lineno=9,
           text='def md5_checksum(file_path):\n'
                '    hasher = hashlib.md5()\n'
@@ -29,15 +31,18 @@
                '            hasher.update(data)\n'
                '    return hasher.hexdigest()',
           name='md5_checksum'),
- Fragment(path='find_duplicates.py',
+ Fragment(uuid='TEST-02',
+          path='find_duplicates.py',
           lineno=20,
           text='class Duplicates:\n\n    def __init__(self, root_dir: str) -> None:...\n    def collect(self):...',
           name='Duplicates'),
- Fragment(path='find_duplicates.py',
+ Fragment(uuid='TEST-03',
+          path='find_duplicates.py',
           lineno=22,
           text='def __init__(self, root_dir: str) -> None:\n    super().__init__()\n    self.root_dir = root_dir\n    self.files = []',
           name='Duplicates.__init__'),
- Fragment(path='find_duplicates.py',
+ Fragment(uuid='TEST-04',
+          path='find_duplicates.py',
           lineno=27,
           text='def collect(self):\n'
                '    files_by_size = defaultdict(list)\n'
@@ -63,7 +68,8 @@
                '\n'
                '    self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)',
           name='Duplicates.collect'),
- Fragment(path='find_duplicates.py',
+ Fragment(uuid='TEST-05',
+          path='find_duplicates.py',
           lineno=52,
           text='def main():\n'
                '    root_dir = input("Enter the root directory to search for duplicate files: ")\n'

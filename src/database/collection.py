@@ -1,6 +1,6 @@
 """Qdrant based vector database
 """
-from typing import List
+from typing import List, Optional
 
 from google._upb._message import MessageMapContainer
 from qdrant_client import QdrantClient, grpc
@@ -37,31 +37,41 @@ class Collection:
             )
         )
 
-    async def store(self, fragments: List[Fragment], fragment_embeddings: List[List[float]]):
-        assert len(fragment_embeddings[0]) == self.dimensions, (len(fragment_embeddings[0]), self.dimensions)
+    async def store(self, fragments: List[Fragment], embeddings: List[List[float]]):
+        if not fragments or not embeddings:
+            return
+        assert len(fragments) == len(embeddings), (len(fragments), len(embeddings))
+        assert len(embeddings[0]) == self.dimensions, (len(embeddings[0]), self.dimensions)
+
+        points = [
+            grpc.PointStruct(
+                id=grpc.PointId(uuid=fragment.uuid),
+                vectors=grpc.Vectors(vector=grpc.Vector(data=embedding)),
+                payload=payload_to_grpc(fragment.__dict__),
+            )
+            for fragment, embedding in zip(fragments, embeddings)
+        ]
 
         await self.database.async_grpc_points.Upsert(
             grpc.UpsertPoints(
                 collection_name=self.name,
                 wait=True,
-                points=[
-                    grpc.PointStruct(
-                        id=grpc.PointId(num=index),
-                        vectors=grpc.Vectors(vector=grpc.Vector(data=embedding)),
-                        payload=payload_to_grpc(fragment.__dict__),
-                    )
-                    for index, fragment, embedding in zip(range(len(fragments)), fragments, fragment_embeddings)
-                ]
+                points=points
             )
         )
 
-    async def search(self, query: str, embedding: List[float], limit: int = 10) -> List[Hit]:
+    async def search(self, embedding: List[float], *, limit: int = 10, uuid_filter: Optional[List[str]] = None) -> List[Hit]:
         assert len(embedding) == self.dimensions, (len(embedding), self.dimensions)
+
+        point_filter: grpc.Filter = None
+        if uuid_filter:
+            point_filter = grpc.Filter(should=[grpc.Condition(has_id=grpc.HasIdCondition(has_id=[grpc.PointId(uuid=uuid)])) for uuid in uuid_filter])
 
         response = await self.database.async_grpc_points.Search(
             grpc.SearchPoints(
                 collection_name=self.name,
                 vector=embedding,
+                filter=point_filter,
                 limit=limit,
                 with_payload=WithPayloadSelector(enable=True)
             )
@@ -74,6 +84,7 @@ class Collection:
 
 def fragment_from_message(message: MessageMapContainer) -> Fragment:
     return Fragment(
+        uuid=message['uuid'].string_value,
         path=message['path'].string_value,
         lineno=message['lineno'].integer_value,
         text=message['text'].string_value,

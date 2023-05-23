@@ -1,4 +1,5 @@
 import io
+import json
 import os
 import uuid
 import zipfile
@@ -23,12 +24,16 @@ DOWNLOAD_HEADERS = {
 MAX_ARCHIVE_SIZE = 1_000_000
 MAX_FILE_SIZE = 10_000_000
 MAX_SOURCE_SIZE = 10_000_000
+MAX_QUERY_LENGTH = 1_000
 
 EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
 
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
 QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
+
+PROJECT_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
+PROJECT_FRAGMENTS_DIR = os.path.join(PROJECT_DIR, 'fragments')
 
 
 class ProjectException(Exception):
@@ -42,6 +47,11 @@ class Project:
 
         database = QdrantClient(location=QDRANT_LOCATION, port=QDRANT_HTTP_PORT, grpc_port=QDRANT_GRPC_PORT, prefer_grpc=True)
         self.collection = Collection(database, project_id)
+
+    @property
+    def fragments_path(self):
+        os.makedirs(PROJECT_FRAGMENTS_DIR, exist_ok=True)
+        return os.path.join(PROJECT_FRAGMENTS_DIR, f'{self.project_id}.json')
 
     async def initialize(self, url: str):
         fragments = await self.__download(url)
@@ -57,24 +67,71 @@ class Project:
 
         await self.collection.store(fragments, embeddings)
 
+        self.save_fragments(fragments)
+
+    def save_fragments(self, fragments: List[Fragment]):
+        with open(self.fragments_path, 'wt') as f:
+            json.dump([fragment.__dict__ for fragment in fragments], f, indent=2)
+
+    def load_fragments(self) -> List[Fragment]:
+        with open(self.fragments_path, 'rt') as f:
+            return [Fragment(**fields) for fields in json.load(f)]
+
+    def delete_fragments(self) -> List[Fragment]:
+        if os.path.isfile(self.fragments_path):
+            os.remove(self.fragments_path)
+
     async def delete(self):
         await self.collection.delete()
+        self.delete_fragments()
 
     async def search(self, query: str, limit: int) -> List[Hit]:
         if not query.strip():
-            # Empty query used by ChatGPT to check for the project's existence,
-            # so just match some documentation
-            query = 'readme summary documentation manual abstract toc contents howto'
+            # Empty query used by ChatGPT to check for the project's existence
+            query = 'any documentation or code'
 
-        embedding = await EMBEDDING_CLIENT.embed_query(query, timeout=20.0)
+        if len(query) > MAX_QUERY_LENGTH:
+            raise ValueError('The query must be at most 1000 characters')
 
-        # filter = {}
-        # if query.startswith('./'):
-        #     filename = query.split()[0][2:]
-        #     if filename and '.' in filename:
-        #         filter['filename'] = filename
+        fragments = self.load_fragments()
 
-        hits = await self.collection.search(query, embedding, limit)
+        def match_path(part: str) -> List[Fragment]:
+            if '.' not in part or len(part) < 2:
+                return []
+            return [fragment for fragment in fragments if fragment.path.lower().endswith(part.lower())]
+
+        # def match_name(part: str) -> List[Fragment]:
+        #     if len(part) < 3:
+        #         return [fragment for fragment in fragments if fragment.name == part]
+        #     return [fragment for fragment in fragments if fragment.name and fragment.name.endswith(part)]
+
+        path_matches = set()
+        # name_matches = set()
+        vector_query = set()
+
+        for part in query.split():
+            if not part:
+                continue
+
+            m = match_path(part)
+            if m:
+                path_matches.update(m)
+                continue
+
+            # m = match_name(part)
+            # if m:
+            #     name_matches.update(m)
+            #     continue
+
+            vector_query.add(part)
+
+        matching_fragments = path_matches  # | name_matches
+        vector_query = ' '.join(vector_query)
+
+        uuid_filter = [fragment.uuid for fragment in matching_fragments]
+        embedding = await EMBEDDING_CLIENT.embed_query(vector_query, timeout=20.0)
+
+        hits = await self.collection.search(embedding, limit=limit, uuid_filter=uuid_filter)
         return hits
 
     async def __download(self, url: str) -> List[Fragment]:

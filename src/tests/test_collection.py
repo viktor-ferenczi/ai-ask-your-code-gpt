@@ -1,5 +1,6 @@
 import unittest
 import uuid
+from typing import List
 
 from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient
@@ -31,18 +32,15 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         query = 'class GMLExporter'
         query_embeddings = await embedding.embed_query(query)
-        hits = await collection.search(query, query_embeddings[0].tolist())
+        hits = await collection.search(query_embeddings[0].tolist())
 
-        await collection.delete()
-
-        self.assertTrue(hits[0].score > hits[1].score)
-        hits[0].score = 0.0
-        hits[1].score = 0.0
+        self.verify_and_normalize_hits(hits)
 
         self.assertEqual(
             [
                 Hit(score=0.0,
-                    fragment=Fragment(path='a/b/test.py',
+                    fragment=Fragment(uuid='',
+                                      path='a/b/test.py',
                                       lineno=1,
                                       text='class GMLExporter:\n'
                                            '\n'
@@ -50,7 +48,80 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
                                            'def export(self, filepath):...\n',
                                       name='GMLExporter')),
                 Hit(score=0.0,
-                    fragment=Fragment(path='a/b/test.py',
+                    fragment=Fragment(uuid='',
+                                      path='a/b/other.py',
+                                      lineno=10,
+                                      text='class SomeOtherClass:\n'
+                                           '\n'
+                                           'def __init__(self, model):...\n'
+                                           'def export(self, filepath):...\n',
+                                      name='SomeOtherClass')),
+            ],
+            hits
+        )
+
+        query = 'class SomeOtherClass'
+        query_embeddings = await embedding.embed_query(query)
+        hits = await collection.search(query_embeddings[0].tolist())
+
+        self.verify_and_normalize_hits(hits)
+
+        self.assertEqual(
+            [
+                Hit(score=0.0,
+                    fragment=Fragment(uuid='',
+                                      path='a/b/other.py',
+                                      lineno=10,
+                                      text='class SomeOtherClass:\n'
+                                           '\n'
+                                           'def __init__(self, model):...\n'
+                                           'def export(self, filepath):...\n',
+                                      name='SomeOtherClass')),
+                Hit(score=0.0,
+                    fragment=Fragment(uuid='',
+                                      path='a/b/test.py',
+                                      lineno=1,
+                                      text='class GMLExporter:\n'
+                                           '\n'
+                                           'def __init__(self, model):...\n'
+                                           'def export(self, filepath):...\n',
+                                      name='GMLExporter')),
+            ],
+            hits
+        )
+
+        query = 'class GMLExporter'
+        query_embeddings = await embedding.embed_query(query)
+        hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[FRAGMENTS[0].uuid])
+
+        self.verify_and_normalize_hits(hits)
+
+        self.assertEqual(
+            [
+                Hit(score=0.0,
+                    fragment=Fragment(uuid='',
+                                      path='a/b/test.py',
+                                      lineno=1,
+                                      text='class GMLExporter:\n'
+                                           '\n'
+                                           'def __init__(self, model):...\n'
+                                           'def export(self, filepath):...\n',
+                                      name='GMLExporter')),
+            ],
+            hits
+        )
+
+        query = 'SomeOtherClass class'
+        query_embeddings = await embedding.embed_query(query)
+        hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[FRAGMENTS[1].uuid])
+
+        self.verify_and_normalize_hits(hits)
+
+        self.assertEqual(
+            [
+                Hit(score=0.0,
+                    fragment=Fragment(uuid='',
+                                      path='a/b/other.py',
                                       lineno=10,
                                       text='class SomeOtherClass:\n'
                                            '\n'
@@ -60,3 +131,17 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
             ],
             hits
         )
+
+    def verify_and_normalize_hits(self, hits: List[Hit]):
+        if not hits:
+            return
+
+        scores = [hit.score for hit in hits]
+        self.assertEqual(sorted(scores, reverse=True), scores)
+
+        uuids = [hit.fragment.uuid for hit in hits]
+        self.assertEqual(sorted(uuids), sorted(set(uuids)))
+
+        for hit in hits:
+            hit.score = 0.0
+            hit.fragment.uuid = ''
