@@ -1,6 +1,6 @@
 SHELL="/bin/bash"
 HOME="/home/plugin"
-PATH="/home/plugin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 @reboot /bin/bash $HOME/bin/start-all.sh >>$HOME/log/boot.log 2>&1
 
