@@ -9,6 +9,7 @@ from quart import Quart, request, Response
 import doc_types
 from embed.embedding import Embedding
 from model.fragment import Fragment
+from utils.timer import timer
 
 EMBEDDING = Embedding()
 
@@ -23,13 +24,9 @@ PORT = 41246  ## 0xa11e: AI Instructor Embedding
 
 @app.get('/')
 async def ping():
-    started = time.time()
-    try:
+    with timer('Locked the semaphore'):
         async with EMBEDDING.semaphore:
             pass
-    finally:
-        duration = time.time() - started
-        print(f'Locking the semaphore took {duration:.3f}s')
     return Response(response='OK', status=200)
 
 

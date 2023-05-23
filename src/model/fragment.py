@@ -10,6 +10,10 @@ class Fragment:
     text: str
     name: str
 
+    @classmethod
+    def clone(cls, other: "Fragment") -> "Fragment":
+        return cls(**other.__dict__)
+
     def __hash__(self) -> int:
         return hash(self.uuid) ^ hash(self.path) ^ self.lineno ^ hash(self.text) & hash(self.name)
 

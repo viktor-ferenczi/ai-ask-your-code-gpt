@@ -1,3 +1,7 @@
+import random
+import uuid
+from typing import List
+
 from model.fragment import Fragment
 
 FRAGMENTS = [
@@ -22,3 +26,21 @@ def export(self, filepath):...
 ''',
              'SomeOtherClass'),
 ]
+
+
+def get_test_fragments() -> List[Fragment]:
+    fragments = [Fragment.clone(fragment) for fragment in FRAGMENTS]
+    randomize_uuids_set_lineno(fragments)
+    return fragments
+
+
+def get_random_test_fragments(count: int) -> List[Fragment]:
+    fragments = [Fragment.clone(random.choice(FRAGMENTS)) for _ in range(500)]
+    randomize_uuids_set_lineno(fragments)
+    return fragments
+
+
+def randomize_uuids_set_lineno(fragments):
+    for index, fragment in enumerate(FRAGMENTS):
+        fragment.uuid = str(uuid.uuid4())
+        fragment.lineno = 1 + index * 5

@@ -7,7 +7,7 @@ from qdrant_client import QdrantClient
 
 from database.collection import Collection
 from embed.embedding import Embedding
-from example_fragments import FRAGMENTS
+from example_fragments import get_test_fragments
 from model.fragment import Fragment
 from model.hit import Hit
 
@@ -27,8 +27,10 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         await collection.create()
 
-        fragment_embeddings = await embedding.embed_fragments(FRAGMENTS)
-        await collection.store(FRAGMENTS, fragment_embeddings.tolist())
+        fragments = get_test_fragments()
+
+        fragment_embeddings = await embedding.embed_fragments(fragments)
+        await collection.store(fragments, fragment_embeddings.tolist())
 
         query = 'class GMLExporter'
         query_embeddings = await embedding.embed_query(query)
@@ -92,7 +94,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         query = 'class GMLExporter'
         query_embeddings = await embedding.embed_query(query)
-        hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[FRAGMENTS[0].uuid])
+        hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[fragments[0].uuid])
 
         self.verify_and_normalize_hits(hits)
 
@@ -113,7 +115,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         query = 'SomeOtherClass class'
         query_embeddings = await embedding.embed_query(query)
-        hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[FRAGMENTS[1].uuid])
+        hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[fragments[1].uuid])
 
         self.verify_and_normalize_hits(hits)
 

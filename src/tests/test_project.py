@@ -1,5 +1,6 @@
 import asyncio
 import os
+import pprint
 import unittest
 import zipfile
 from typing import List
@@ -60,7 +61,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
             actual_test
         ]
 
-        done, pending = await asyncio.wait(tasks, timeout=20.0, return_when=asyncio.FIRST_COMPLETED)
+        done, pending = await asyncio.wait(tasks, timeout=60.0, return_when=asyncio.FIRST_COMPLETED)
 
         self.assertIn(actual_test, done)
         self.assertIn(zip_server_task, pending)
@@ -71,7 +72,11 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         embedding_server_task.cancel()
 
     async def actual_test(self):
-        project = Project('TEST-PROJECT-ID')
+        await self.small_project()
+        await self.medium_project()
+
+    async def small_project(self):
+        project = Project('SMALL-TEST-PROJECT-ID')
 
         server = await EMBEDDING_CLIENT.find_free_server()
         self.assertIsNotNone(server)
@@ -92,6 +97,22 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
 
         hits = await project.search('README.md', 10)
         self.verify_hits(hits, 4, path='README.md')
+
+        await project.delete()
+
+    async def medium_project(self):
+        project = Project('MEDIUM-TEST-PROJECT-ID')
+
+        server = await EMBEDDING_CLIENT.find_free_server()
+        self.assertIsNotNone(server)
+
+        await project.initialize(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
+
+        hits = await project.search('README.md', 20)
+        self.verify_hits(hits, 3, path='README.md')
+
+        hits = await project.search('class Query', 10)
+        self.verify_hits(hits, 10, contains=['class Query'])
 
         await project.delete()
 

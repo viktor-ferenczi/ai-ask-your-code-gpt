@@ -1,7 +1,6 @@
 import io
 import json
 import os
-import time
 import uuid
 import zipfile
 from traceback import print_exc
@@ -16,6 +15,7 @@ from database.collection import Collection
 from embed.embedding_client import EmbeddingClient
 from model.fragment import Fragment
 from model.hit import Hit
+from utils.timer import timer
 
 DOWNLOAD_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
@@ -28,7 +28,7 @@ MAX_SOURCE_SIZE = 10_000_000
 MAX_QUERY_LENGTH = 1_000
 
 EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
-EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '64'))
+EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '256'))
 
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
@@ -69,6 +69,10 @@ class Project:
             await background_embed_and_store_fragments(self, fragments)
         else:
             app.add_background_task(background_embed_and_store_fragments, self, fragments)
+
+    @property
+    def has_initialized(self):
+        return os.path.isfile(self.fragments_path) and os.path.isfile(self.stored_marker_path)
 
     def save_fragments(self, fragments: List[Fragment]):
         os.makedirs(PROJECT_FRAGMENTS_DIR, exist_ok=True)
@@ -194,6 +198,7 @@ class Project:
     def __extract_files(self, archive, url):
         files: List[Tuple[str, str]] = []
         try:
+            shortest = None
             total_size = 0
             with zipfile.ZipFile(io.BytesIO(archive), 'r') as zf:
                 for filename in zf.namelist():
@@ -224,7 +229,18 @@ class Project:
                             print(f'Failed to decode file, skipping: {filename}')
                             continue
 
+                    if shortest is None or len(filename) < len(shortest):
+                        shortest = filename
+
                     files.append((filename, text))
+
+            # Strip common folder at the top
+            if shortest:
+                if not shortest.endswith('/'):
+                    shortest = shortest.rsplit('/')[0] + '/'
+                if all(filename.startswith(shortest) for filename, text in files):
+                    strip_len = len(shortest)
+                    files = [(filename[strip_len:], text) for filename, text in files]
 
         except zipfile.BadZipfile as e:
             dump_filename = f'failed-archive-{uuid.uuid4()}.zip'
@@ -247,22 +263,17 @@ class Project:
 async def background_embed_and_store_fragments(project: Project, fragments: List[Fragment]) -> Dict[str, any]:
     collection = project.collection
 
-    try:
-        await collection.create()
-    except AioRpcError:
-        pass
+    stats = {}
+    with timer(f'Initialized project {project.project_id}', count=len(fragments), unit='fragment', stats=stats):
+        try:
+            await collection.create()
+        except AioRpcError:
+            pass
 
-    started = time.time()
-
-    for index in range(0, len(fragments), EMBEDDING_CHUNK_SIZE):
-        chunk_of_fragments = fragments[index: index + EMBEDDING_CHUNK_SIZE]
-        chunk_of_embeddings = await EMBEDDING_CLIENT.embed_fragments(chunk_of_fragments, timeout=30.0)
-        await collection.store(chunk_of_fragments, chunk_of_embeddings)
-
-    duration = time.time() - started
-    stats = dict(fragment_count=len(fragments), duration=duration, performance=len(fragments) / max(1e-3, duration))
+        for index in range(0, len(fragments), EMBEDDING_CHUNK_SIZE):
+            chunk_of_fragments = fragments[index: index + EMBEDDING_CHUNK_SIZE]
+            chunk_of_embeddings = await EMBEDDING_CLIENT.embed_fragments(chunk_of_fragments, timeout=30.0)
+            await collection.store(chunk_of_fragments, chunk_of_embeddings)
 
     project.mark_stored(stats)
-
-    print(f'Initialized project {project.project_id}, fragments: {len(fragments)}, duration: {duration:.3f} ({stats["performance"]:.1f} fragments/second)')
     return stats
