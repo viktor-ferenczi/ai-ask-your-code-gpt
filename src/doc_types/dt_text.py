@@ -2,7 +2,7 @@ __all__ = ['TextDocType']
 
 from typing import Iterator
 
-from langchain.text_splitter import TextSplitter
+from langchain.text_splitter import TextSplitter, RecursiveCharacterTextSplitter
 
 from model.fragment import Fragment
 from .splitters.tokenization import tiktoken_len
@@ -14,8 +14,7 @@ class TextDocType:
     store_instruction: str = 'Represent the document for retrieval'
     query_instruction: str = 'Represent the question for retrieving relevant paragraphs'
 
-    splitter: TextSplitter
-    splitter_cls = TextSplitter
+    splitter_cls = RecursiveCharacterTextSplitter
     splitter_kws = dict(
         chunk_size=400,
         chunk_overlap=0,
@@ -24,7 +23,7 @@ class TextDocType:
 
     def __init__(self) -> None:
         super().__init__()
-        self.splitter = self.splitter_cls(**self.splitter_kws)
+        self.splitter: TextSplitter = self.splitter_cls(**self.splitter_kws)
 
     def split(self, path: str, text: str) -> Iterator[Fragment]:
         lineno = 1

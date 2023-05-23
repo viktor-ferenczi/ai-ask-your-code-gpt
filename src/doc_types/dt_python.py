@@ -13,7 +13,6 @@ class PythonDocType(TextDocType):
     store_instruction: str = 'Represent the Python code for retrieval'
     query_instruction: str = 'Represent the Python question for retrieving relevant code'
 
-    splitter: PythonSplitter
     splitter_cls = PythonSplitter
 
     def split(self, path: str, text: str) -> Iterator[Fragment]:
