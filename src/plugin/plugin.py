@@ -1,6 +1,5 @@
 import json
 import os
-import sys
 import uuid
 from traceback import print_exc
 from typing import Dict
@@ -9,25 +8,23 @@ import quart
 import quart_cors
 from quart import request
 
-from common.constants import RX_GUID
+from common.constants import RX_GUID, DEVELOPMENT, PRODUCTION
 from project import Project, ProjectException
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
 
 _TODOS = {}
 
-DEVELOPMENT = sys.platform == 'win32'
-
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
 OPENAPI_YAML_PATH = os.path.join(MODULE_DIR, 'openapi.yaml')
 
-PORT = int(os.environ.get('PLUGIN_PORT', '5555'))
+HTTP_PORT = int(os.environ.get('HTTP_PORT', '5555'))
 
 
 def html_prod_to_dev(text):
-    text = text.replace('https://askyourcode.ai', f'http://localhost:{PORT}')
-    text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{PORT}')
+    text = text.replace('https://askyourcode.ai', f'http://localhost:{HTTP_PORT}')
+    text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{HTTP_PORT}')
     return text
 
 
@@ -69,7 +66,7 @@ async def create():
         return quart.Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
         return quart.Response(response='The URL must start with http:// or https://', status=400)
-    if not DEVELOPMENT and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
+    if PRODUCTION and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return quart.Response(response='Invalid URL', status=400)
 
     # Create project, download and verify archive, initiate indexing
@@ -161,11 +158,11 @@ async def search(project_id: str):
 
 
 def main():
-    app.run(debug=True, host="localhost", port=PORT)
+    app.run(debug=True, host="localhost", port=HTTP_PORT)
 
 
 async def run_task():
-    await app.run_task(debug=True, host="localhost", port=PORT)
+    await app.run_task(debug=True, host="localhost", port=HTTP_PORT)
 
 
 if __name__ == "__main__":

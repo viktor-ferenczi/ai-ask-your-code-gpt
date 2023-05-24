@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Dict, List, Type
 
 from quart import Quart, request, Response
@@ -12,7 +13,7 @@ EMBEDDER_MODEL = EmbedderModel()
 
 app = Quart(__name__)
 
-PORT = 41246  ## 0xa11e: AI Instructor Embedding
+PORT = int(os.environ.get('HTTP_PORT', '40001'))
 
 
 @app.get('/')

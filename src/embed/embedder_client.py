@@ -7,9 +7,8 @@ from typing import Optional, List
 
 import aiohttp
 
+from common.constants import DEVELOPMENT
 from model.fragment import Fragment
-
-DEVELOPMENT = sys.platform == 'win32'
 
 
 class EmbedderClient:

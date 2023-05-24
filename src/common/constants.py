@@ -10,13 +10,26 @@ ARCHIVE_DOWNLOAD_FAKE_HEADERS = {
 }
 
 # Limits
+
+# Archive file
 MAX_ARCHIVE_SIZE = 2 << 20
 MAX_FILE_SIZE = 5 << 20
 MAX_SOURCE_SIZE = 20 << 20
+
+# Query
 MAX_QUERY_LENGTH = 1000
 MAX_QUERY_LIMIT = 50
+
+# Embedder
+MAX_BATCH_SIZE = 1024
+MAX_INSTRUCTION_SIZE = 512
+MAX_TEXT_SIZE = 8192
 
 # Dirs
 SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 PROJECT_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
 PROJECT_FRAGMENTS_DIR = os.path.join(PROJECT_DIR, 'projects')
+
+# Environment
+PRODUCTION = bool(int(os.environ.get('PRODUCTION', '0')))
+DEVELOPMENT = not PRODUCTION
