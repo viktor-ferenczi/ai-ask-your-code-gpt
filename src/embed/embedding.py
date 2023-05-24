@@ -14,6 +14,17 @@ from utils.timer import timer
 EMBEDDING_BATCH_SIZE = int(os.environ.get('EMBEDDING_BATCH_SIZE', '32'))
 
 
+def verify_torch():
+    if not torch.cuda.is_available():
+        raise EnvironmentError('CUDA is not available')
+    print(f'Torch CUDA device: {torch.cuda.get_device_name(0)}')
+    cudnn_version = torch.backends.cudnn.version()
+    if not cudnn_version:
+        raise EnvironmentError('cuDNN is not available')
+    if cudnn_version < 8700:
+        raise EnvironmentError(f'cuDNN version must be at least 8700, currently it is {cudnn_version}')
+
+
 class Embedding:
     # XL: 7.0 ms/embed, 6.2GB GPU RAM usage
     # model_name = 'hkunlp/instructor-xl'
@@ -22,14 +33,11 @@ class Embedding:
     model_name = 'hkunlp/instructor-large'
 
     def __init__(self) -> None:
-        if not torch.cuda.is_available():
-            raise EnvironmentError('CUDA is not available')
-
-        print(f'Torch device: {torch.cuda.get_device_name(0)}')
+        verify_torch()
 
         # TODO: Cite them properly!
         self.model = INSTRUCTOR(self.model_name)
-        self.model.to('cuda')
+        self.model.to('cuda:0')
 
         self.semaphore = asyncio.Semaphore()
 
