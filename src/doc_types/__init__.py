@@ -1,5 +1,6 @@
 from typing import Optional, Type
 
+from .dt_csharp import CSharpDocType
 from .dt_markdown import MarkdownDocType
 from .dt_python import PythonDocType
 from .dt_text import TextDocType
@@ -8,8 +9,8 @@ DOC_TYPES = {
     'txt': TextDocType,
     'md': MarkdownDocType,
     'py': PythonDocType,
-    # 'sh': ,
-    # 'cs': ,
+    # 'sh': ShellDocType,
+    'cs': CSharpDocType,
     # 'c': ,
     # 'h': ,
     # 'cpp': ,
