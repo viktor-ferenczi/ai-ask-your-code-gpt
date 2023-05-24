@@ -59,6 +59,8 @@ class Embedding:
     async def embed_query(self, text: str, doc_type_cls: Optional[Type] = None) -> np.ndarray:
         assert text
 
+        # FIXME: Move this up the call chain to the Project level,
+        # this level must receive a ready to use instruction text
         instruction = (doc_type_cls or TextDocType).query_instruction
         sentences = [[instruction + ':', text]]
 

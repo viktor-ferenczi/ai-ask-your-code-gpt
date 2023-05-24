@@ -47,8 +47,8 @@ async def embed_query():
     if not query.strip():
         return Response(response='Empty or missing query', status=400)
 
-    # FIXME: Extend this to turn all paths, filenames and extensions in the
-    #        query string into proper metadata search conditions.
+    # FIXME: Move this up the call chain to the Project level,
+    # this level must receive a ready to use instruction text
     doc_type_cls: Type = None
     if query.startswith('.') and ' ' in query:
         ext, query = query.split(' ', 1)

@@ -142,8 +142,15 @@ class Project:
 
             vector_query.append(part)
 
+        path_matches = list(path_matches)
+        # name_matches = list(name_matches)
+
         matching_fragments = path_matches  # | name_matches
         vector_query = ' '.join(vector_query) if vector_query else 'anything'
+
+        # FIXME: Remove this once an instruction is passed down from here based on doc_type_cls!
+        if path_matches:
+            vector_query = f'{path_matches[0]} {vector_query}'
 
         uuid_filter = [fragment.uuid for fragment in matching_fragments]
         embedding = await EMBEDDING_CLIENT.embed_query(vector_query, timeout=20.0)
