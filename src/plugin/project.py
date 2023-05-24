@@ -13,13 +13,16 @@ from qdrant_client import QdrantClient
 import doc_types
 from common.constants import ARCHIVE_DOWNLOAD_FAKE_HEADERS, MAX_ARCHIVE_SIZE, MAX_FILE_SIZE, MAX_SOURCE_SIZE, MAX_QUERY_LENGTH, MAX_QUERY_LIMIT, PROJECT_FRAGMENTS_DIR
 from database.collection import Collection
-from embed.embedder_client import EmbederClient
+from embed.embedder_client import EmbedderClient
 from model.fragment import Fragment
 from model.hit import Hit
 from utils.timer import timer
 
-EMBEDDER_CLIENT = EmbederClient(os.environ.get('EMBEDDER_URLS', 'http://127.0.0.1:40003').split())
-EMBEDDER_CHUNK_SIZE = int(os.environ.get('EMBEDDER_CHUNK_SIZE', '128'))
+
+EMBEDDER_URLS = os.environ.get('EMBEDDER_URLS', 'http://127.0.0.1:40004').split()
+EMBEDDER_CHUNK_SIZE = int(os.environ.get('EMBEDDER_CHUNK_SIZE', '1'))
+
+EMBEDDER_CLIENT = EmbedderClient(EMBEDDER_URLS)
 
 
 class ProjectException(Exception):
