@@ -26,7 +26,7 @@ class TextDocType:
         super().__init__()
         self.splitter = self.splitter_cls(**self.splitter_kws)
 
-    def split(self, path: str, text: str) -> Iterator[Fragment]:
+    def load(self, path: str, text: str) -> Iterator[Fragment]:
         lineno = 1
         for index, paragraph in enumerate(self.splitter.split_text(text)):
             yield Fragment(str(uuid.uuid4()), path, lineno, paragraph, '')

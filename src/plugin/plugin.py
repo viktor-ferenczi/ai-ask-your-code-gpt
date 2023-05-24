@@ -156,7 +156,7 @@ async def search(project_id: str):
     return quart.Response(response=json.dumps(results, indent=2), status=200)
 
 
-def main():
+def run():
     app.run(debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
 
 
@@ -165,4 +165,4 @@ async def run_task():
 
 
 if __name__ == "__main__":
-    main()
+    run()

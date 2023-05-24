@@ -11,5 +11,5 @@ CANARY="http"
 CANARY_URL="https://plugin.askyourcode.ai/"
 CANARY_TIMEOUT=5
 
-export EMBEDDER_URLS="http://127.0.0.1:40004"
+export EMBEDDER_URLS="http://127.0.0.1:40003"
 export EMBEDDER_CHUNK_SIZE=1

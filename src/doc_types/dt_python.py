@@ -16,6 +16,6 @@ class PythonDocType(TextDocType):
 
     splitter_cls = PythonSplitter
 
-    def split(self, path: str, text: str) -> Iterator[Fragment]:
+    def load(self, path: str, text: str) -> Iterator[Fragment]:
         for index, chunk in enumerate(self.splitter.split_code(text)):
             yield Fragment(str(uuid.uuid4()), path, chunk.lineno, chunk.text, chunk.name)

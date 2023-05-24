@@ -6,7 +6,7 @@ from quart import Quart, request, Response
 import doc_types
 from embed.embedder_model import EmbedderModel
 from model.fragment import Fragment
-from utils.timer import timer
+from common.timer import timer
 
 EMBEDDER_MODEL = EmbedderModel()
 
@@ -16,7 +16,7 @@ PORT = 41246  ## 0xa11e: AI Instructor Embedding
 
 
 @app.get('/')
-async def ping():
+async def canary():
     with timer('Locked the semaphore'):
         async with EMBEDDER_MODEL.semaphore:
             pass

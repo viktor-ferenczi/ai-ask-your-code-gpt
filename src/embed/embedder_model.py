@@ -9,7 +9,7 @@ from InstructorEmbedding import INSTRUCTOR
 import doc_types
 from doc_types import TextDocType
 from model.fragment import Fragment
-from utils.timer import timer
+from common.timer import timer
 
 EMBEDDING_BATCH_SIZE = int(os.environ.get('EMBEDDING_BATCH_SIZE', '32'))
 

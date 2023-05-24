@@ -4,7 +4,7 @@ import re
 
 RX_GUID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
 
-ARCHIVE_DOWNLOAD_FAKE_HEADERS = {
+FAKE_BROWSER_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
 }
@@ -27,8 +27,8 @@ MAX_TEXT_SIZE = 8192
 
 # Dirs
 SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-PROJECT_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
-PROJECT_FRAGMENTS_DIR = os.path.join(PROJECT_DIR, 'projects')
+DATA_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
+PROJECTS_DIR = os.path.join(DATA_DIR, 'projects')
 
 # Environment
 PRODUCTION = bool(int(os.environ.get('PRODUCTION', '0')))

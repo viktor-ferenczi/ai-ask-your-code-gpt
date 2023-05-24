@@ -26,7 +26,7 @@ class TestSplitters(unittest.TestCase):
                     text = f.read()
 
                 relpath = path[len(TEST_PROJECT_DIR) + 1:]
-                fragments = list(doc_type.split(relpath, text))
+                fragments = list(doc_type.load(relpath, text))
 
                 # Replace UUIDs with sequence numbers, so they are stable
                 for index, fragment in enumerate(fragments):

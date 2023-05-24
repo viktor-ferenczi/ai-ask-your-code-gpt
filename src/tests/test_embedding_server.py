@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from embed.embedder_client import EmbedderClient
 from example_fragments import get_random_test_fragments, get_test_fragments
-from utils.timer import timer
+from common.timer import timer
 
 EMBEDDING_CLIENT = EmbedderClient([f'http://127.0.0.1:41246'])
 
