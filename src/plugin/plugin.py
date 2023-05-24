@@ -11,21 +11,20 @@ from quart import request
 from common.constants import RX_GUID, DEVELOPMENT, PRODUCTION
 from project import Project, ProjectException
 
-app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
-
-_TODOS = {}
-
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
 OPENAPI_YAML_PATH = os.path.join(MODULE_DIR, 'openapi.yaml')
 
-HTTP_PORT = int(os.environ.get('HTTP_PORT', '5555'))
+DEVELOPMENT_HTTP_PORT = 5555
 
 
 def html_prod_to_dev(text):
-    text = text.replace('https://askyourcode.ai', f'http://localhost:{HTTP_PORT}')
-    text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{HTTP_PORT}')
+    text = text.replace('https://askyourcode.ai', f'http://localhost:{DEVELOPMENT_HTTP_PORT}')
+    text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{DEVELOPMENT_HTTP_PORT}')
     return text
+
+
+app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
 
 
 @app.get("/")
@@ -158,11 +157,11 @@ async def search(project_id: str):
 
 
 def main():
-    app.run(debug=True, host="localhost", port=HTTP_PORT)
+    app.run(debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
 
 
 async def run_task():
-    await app.run_task(debug=True, host="localhost", port=HTTP_PORT)
+    await app.run_task(debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
 
 
 if __name__ == "__main__":
