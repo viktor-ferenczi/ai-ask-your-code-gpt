@@ -81,7 +81,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         server = await EMBEDDING_CLIENT.find_free_server()
         self.assertIsNotNone(server)
 
-        await project.initialize(f'http://localhost:{self.zip_server_port}/')
+        await project.download(f'http://localhost:{self.zip_server_port}/')
 
         hits = await project.search('class Duplicates', 3)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
@@ -106,7 +106,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         server = await EMBEDDING_CLIENT.find_free_server()
         self.assertIsNotNone(server)
 
-        await project.initialize(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
+        await project.download(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
 
         hits = await project.search('README.md', 20)
         self.verify_hits(hits, 3, path='README.md')

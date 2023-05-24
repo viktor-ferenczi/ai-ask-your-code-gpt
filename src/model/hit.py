@@ -4,9 +4,5 @@ from model.fragment import Fragment
 
 
 @dataclass
-class Hit:
+class Hit(Fragment):
     score: float
-    fragment: Fragment
-
-    def __hash__(self) -> int:
-        return hash(self.fragment)

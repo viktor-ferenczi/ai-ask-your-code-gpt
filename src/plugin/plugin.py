@@ -9,7 +9,7 @@ import quart
 import quart_cors
 from quart import request
 
-from model.hit import Hit
+from common.constants import RX_GUID
 from project import Project, ProjectException
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
@@ -60,8 +60,10 @@ async def openapi_spec():
 
 
 @app.post("/project")
-async def download():
+async def create():
     body: Dict[str, str] = await quart.request.get_json(force=True)
+
+    # Validate URL
     url: str = body.get('url')
     if not url:
         return quart.Response(response='Missing url', status=400)
@@ -70,48 +72,70 @@ async def download():
     if not DEVELOPMENT and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return quart.Response(response='Invalid URL', status=400)
 
+    # Create project, download and verify archive, initiate indexing
+    project_id = str(uuid.uuid4())
+    print(f'Create project {project_id!r} from {url!r}')
+
     # noinspection PyBroadException
     try:
-        project_id = str(uuid.uuid4())
-        print(f'Download project {project_id!r}')
         project = Project(project_id)
-        await project.initialize(url, app)
+        await project.download(url, app)
     except KeyboardInterrupt:
         raise
     except ProjectException as e:
-        print(f'ERROR: {e}; url={url!r}')
+        print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}: {e}')
         return quart.Response(response=str(e), status=400)
+    except Exception:
+        print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
+        print_exc()
+        return quart.Response(response=f'Failed to create project {project_id!r}: Unexpected error', status=400)
 
-    if project_id.startswith('!'):
-        response = {
-            'error': project_id[1:]
-        }
-    else:
-        response = {
-            'project_id': project_id
-        }
-
+    response = {
+        'project_id': project_id
+    }
     return quart.Response(response=json.dumps(response, indent=2), status=200)
 
 
 @app.delete("/project/<string:project_id>")
 async def delete(project_id: str):
+    project_id = project_id.lower()
+    if not RX_GUID.match(project_id):
+        return quart.Response(response='Invalid project_id, it must be a GUID', status=400)
+
     print(f'Delete project {project_id!r}')
-    project = Project(project_id)
-    await project.delete()
+
+    # noinspection PyBroadException
+    try:
+        project = Project(project_id)
+        await project.delete()
+    except KeyboardInterrupt:
+        raise
+    except ProjectException as e:
+        print(f'ERROR: Failed to delete project {project_id!r}: [{e.__class__.__name__}] {e}')
+        return quart.Response(response=str(e), status=400)
+    except Exception:
+        print(f'ERROR: Failed to delete project {project_id!r}')
+        print_exc()
+        return quart.Response(response=f'Failed to delete project {project_id!r}: Unexpected error', status=400)
+
     return quart.Response(response='OK', status=200)
 
 
 @app.get("/project/<string:project_id>/search")
 async def search(project_id: str):
+    project_id = project_id.lower()
+    if not RX_GUID.match(project_id):
+        return quart.Response(response='Invalid project_id, it must be a GUID', status=400)
+
     query: str = request.args.get('query', '')
+    limit_str: str = request.args.get('limit', '3')
 
     try:
-        limit = int(request.args.get('limit', '3'))
+        limit: int = int(limit_str)
     except ValueError:
-        limit = 5
+        limit: int = 5
 
-    print(f'Search project {project_id!r} with limit {limit}: {query}')
+    print(f'Search project {project_id!r} with limit {limit}: {query!r}')
 
     # noinspection PyBroadException
     try:
@@ -119,28 +143,21 @@ async def search(project_id: str):
         hits = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
+    except ProjectException as e:
+        print(f'ERROR: Failed to search project {project_id!r}: {e}')
+        return quart.Response(response=str(e), status=400)
     except Exception:
-        print(f'ERROR: Failed to search project {project_id!r}:')
+        print(f'ERROR: Failed to search project {project_id!r} with limit {limit}: {query}')
         print_exc()
-        return quart.Response(response=f'Failed to search project {project_id!r}', status=400)
+        return quart.Response(response=f'Failed to search project {project_id!r}: Unexpected error', status=400)
 
-    results = [format_hit(hit) for hit in hits]
+    results = [hit.__dict__ for hit in hits]
+
+    for result in results:
+        if not result['name']:
+            del result['name']
+
     return quart.Response(response=json.dumps(results, indent=2), status=200)
-
-
-def format_hit(hit: Hit) -> Dict[str, any]:
-    result = dict(
-        score=hit.score,
-        text=hit.fragment.text,
-        path=hit.fragment.path,
-        lineno=hit.fragment.lineno,
-    )
-
-    name = hit.fragment.name
-    if name:
-        result['name'] = name
-
-    return result
 
 
 def main():

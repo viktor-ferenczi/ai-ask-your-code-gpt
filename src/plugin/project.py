@@ -60,7 +60,7 @@ class Project:
     def stored_marker_path(self):
         return os.path.join(PROJECT_FRAGMENTS_DIR, f'{self.project_id}.stored')
 
-    async def initialize(self, url: str, app=None):
+    async def download(self, url: str, app=None):
         fragments = await self.__download(url)
         if not fragments:
             raise ValueError('No fragments')
