@@ -17,18 +17,30 @@ function canary {
   esac
 }
 
-if canary; then
-  exit 0
+# Running?
+if pgrep -f "$COMMAND_LINE" >/dev/null; then
+
+  # Canary check
+  for RETRY in 1 2 3 4 5; do
+    if canary; then
+      exit 0
+    fi
+    echo "$(date -Is): The $NAME server canary check failed, retry #$RETRY"
+    sleep 1
+  done
+
+  if canary; then
+    exit 0
+  fi
+
+  echo "$(date -Is): The $NAME is running, but does not respond. Restarting it now.
+  bash ~/bin/restart.sh "$NAME"
+
+else
+
+  echo "$(date -Is): The $NAME is not running. Starting it now.
+  bash ~/bin/start.sh "$NAME"
+
 fi
 
-echo "---"
-date -Is
-echo "---"
-
-if canary; then
-  echo "The $NAME server still works, the second Canary attempt succeeded."
-  exit 0
-fi
-
-echo Server is down. Attempting to restart it.
-bash ~/bin/restart.sh "$NAME"
+exit 0
