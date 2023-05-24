@@ -6,7 +6,7 @@ from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient
 
 from database.collection import Collection
-from embed.embedding import Embedding
+from embed.embedder_model import EmbedderModel
 from example_fragments import get_test_fragments
 from model.fragment import Fragment
 from model.hit import Hit
@@ -15,7 +15,7 @@ from model.hit import Hit
 class TestCollection(unittest.IsolatedAsyncioTestCase):
 
     async def test_collection(self):
-        embedding = Embedding()
+        embedder_model = EmbedderModel()
 
         database = QdrantClient('localhost', port=6334, prefer_grpc=True, timeout=5.0)
         collection = Collection(database, f'TEST-{uuid.uuid4()}')
@@ -29,11 +29,11 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         fragments = get_test_fragments()
 
-        fragment_embeddings = await embedding.embed_fragments(fragments)
+        fragment_embeddings = await embedder_model.embed_fragments(fragments)
         await collection.store(fragments, fragment_embeddings.tolist())
 
         query = 'class GMLExporter'
-        query_embeddings = await embedding.embed_query(query)
+        query_embeddings = await embedder_model.embed_query(query)
         hits = await collection.search(query_embeddings[0].tolist())
 
         self.verify_and_normalize_hits(hits)
@@ -63,7 +63,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         )
 
         query = 'class SomeOtherClass'
-        query_embeddings = await embedding.embed_query(query)
+        query_embeddings = await embedder_model.embed_query(query)
         hits = await collection.search(query_embeddings[0].tolist())
 
         self.verify_and_normalize_hits(hits)
@@ -93,7 +93,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         )
 
         query = 'class GMLExporter'
-        query_embeddings = await embedding.embed_query(query)
+        query_embeddings = await embedder_model.embed_query(query)
         hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[fragments[0].uuid])
 
         self.verify_and_normalize_hits(hits)
@@ -114,7 +114,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         )
 
         query = 'SomeOtherClass class'
-        query_embeddings = await embedding.embed_query(query)
+        query_embeddings = await embedder_model.embed_query(query)
         hits = await collection.search(query_embeddings[0].tolist(), uuid_filter=[fragments[1].uuid])
 
         self.verify_and_normalize_hits(hits)

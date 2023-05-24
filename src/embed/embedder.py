@@ -7,11 +7,11 @@ from typing import Dict, List, Type
 from quart import Quart, request, Response
 
 import doc_types
-from embed.embedding import Embedding
+from embed.embedder_model import EmbedderModel
 from model.fragment import Fragment
 from utils.timer import timer
 
-EMBEDDING = Embedding()
+EMBEDDER_MODEL = EmbedderModel()
 
 app = Quart(__name__)
 
@@ -25,7 +25,7 @@ PORT = 41246  ## 0xa11e: AI Instructor Embedding
 @app.get('/')
 async def ping():
     with timer('Locked the semaphore'):
-        async with EMBEDDING.semaphore:
+        async with EMBEDDER_MODEL.semaphore:
             pass
     return Response(response='OK', status=200)
 
@@ -34,7 +34,7 @@ async def ping():
 async def embed_fragments():
     body: Dict[str, any] = await request.get_json(force=True)
     fragments: List[Fragment] = [Fragment(**fields) for fields in body['fragments']]
-    embeddings = await EMBEDDING.embed_fragments(fragments)
+    embeddings = await EMBEDDER_MODEL.embed_fragments(fragments)
     response = dict(embeddings=embeddings.tolist())
     return Response(response=json.dumps(response), status=200)
 
@@ -54,7 +54,7 @@ async def embed_query():
         ext, query = query.split(' ', 1)
         doc_type_cls = doc_types.detect_by_extension(ext.lower())
 
-    embeddings = await EMBEDDING.embed_query(query, doc_type_cls)
+    embeddings = await EMBEDDER_MODEL.embed_query(query, doc_type_cls)
     response = dict(embedding=embeddings[0].tolist())
 
     return Response(response=json.dumps(response), status=200)

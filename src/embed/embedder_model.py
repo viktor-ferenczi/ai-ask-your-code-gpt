@@ -25,7 +25,7 @@ def verify_torch():
         raise EnvironmentError(f'cuDNN version must be at least 8700, currently it is {cudnn_version}')
 
 
-class Embedding:
+class EmbedderModel:
     # XL: 7.0 ms/embed, 6.2GB GPU RAM usage
     # model_name = 'hkunlp/instructor-xl'
 

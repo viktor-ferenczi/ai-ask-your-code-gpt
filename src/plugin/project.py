@@ -11,33 +11,15 @@ from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient
 
 import doc_types
+from common.constants import ARCHIVE_DOWNLOAD_FAKE_HEADERS, MAX_ARCHIVE_SIZE, MAX_FILE_SIZE, MAX_SOURCE_SIZE, MAX_QUERY_LENGTH, MAX_QUERY_LIMIT, PROJECT_FRAGMENTS_DIR
 from database.collection import Collection
-from embed.embedder_client import EmbeddingClient
+from embed.embedder_client import EmbederClient
 from model.fragment import Fragment
 from model.hit import Hit
 from utils.timer import timer
 
-DOWNLOAD_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-}
-
-MAX_ARCHIVE_SIZE = 2 << 20
-MAX_FILE_SIZE = 5 << 20
-MAX_SOURCE_SIZE = 20 << 20
-
-MAX_QUERY_LENGTH = 1000
-MAX_QUERY_LIMIT = 50
-
-EMBEDDING_CLIENT = EmbeddingClient(os.environ.get('EMBEDDING_SERVER', 'http://127.0.0.1:41246').split())
-EMBEDDING_CHUNK_SIZE = int(os.environ.get('EMBEDDING_CHUNK_SIZE', '256'))
-
-QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
-QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
-QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
-
-PROJECT_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
-PROJECT_FRAGMENTS_DIR = os.path.join(PROJECT_DIR, 'fragments')
+EMBEDDER_CLIENT = EmbederClient(os.environ.get('EMBEDDER_URLS', 'http://127.0.0.1:40003').split())
+EMBEDDER_CHUNK_SIZE = int(os.environ.get('EMBEDDER_CHUNK_SIZE', '128'))
 
 
 class ProjectException(Exception):
@@ -153,7 +135,7 @@ class Project:
             vector_query = f'{path_matches[0]} {vector_query}'
 
         uuid_filter = [fragment.uuid for fragment in matching_fragments]
-        embedding = await EMBEDDING_CLIENT.embed_query(vector_query, timeout=20.0)
+        embedding = await EMBEDDER_CLIENT.embed_query(vector_query, timeout=20.0)
 
         hits = await self.collection.search(embedding, limit=limit, uuid_filter=uuid_filter)
         return hits
@@ -192,7 +174,7 @@ class Project:
         return fragments
 
     async def __get_archive(self, url):
-        async with aiohttp.ClientSession(headers=DOWNLOAD_HEADERS) as session:
+        async with aiohttp.ClientSession(headers=ARCHIVE_DOWNLOAD_FAKE_HEADERS) as session:
             async with session.get(url) as response:
                 size = 0
                 archive = []
@@ -283,9 +265,9 @@ async def background_embed_and_store_fragments(project: Project, fragments: List
         except AioRpcError:
             pass
 
-        for index in range(0, len(fragments), EMBEDDING_CHUNK_SIZE):
-            chunk_of_fragments = fragments[index: index + EMBEDDING_CHUNK_SIZE]
-            chunk_of_embeddings = await EMBEDDING_CLIENT.embed_fragments(chunk_of_fragments, timeout=30.0)
+        for index in range(0, len(fragments), EMBEDDER_CHUNK_SIZE):
+            chunk_of_fragments = fragments[index: index + EMBEDDER_CHUNK_SIZE]
+            chunk_of_embeddings = await EMBEDDER_CLIENT.embed_fragments(chunk_of_fragments, timeout=30.0)
             await collection.store(chunk_of_fragments, chunk_of_embeddings)
 
     project.mark_stored(stats)

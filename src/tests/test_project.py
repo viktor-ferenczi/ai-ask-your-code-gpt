@@ -8,7 +8,7 @@ from typing import List
 from quart import Quart, send_file
 
 from model.hit import Hit
-from plugin.project import Project, EMBEDDING_CLIENT
+from plugin.project import Project, EMBEDDER_CLIENT
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -78,7 +78,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
     async def small_project(self):
         project = Project('SMALL-TEST-PROJECT-ID')
 
-        server = await EMBEDDING_CLIENT.find_free_server()
+        server = await EMBEDDER_CLIENT.find_free_server()
         self.assertIsNotNone(server)
 
         await project.download(f'http://localhost:{self.zip_server_port}/')
@@ -103,7 +103,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
     async def medium_project(self):
         project = Project('MEDIUM-TEST-PROJECT-ID')
 
-        server = await EMBEDDING_CLIENT.find_free_server()
+        server = await EMBEDDER_CLIENT.find_free_server()
         self.assertIsNotNone(server)
 
         await project.download(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')

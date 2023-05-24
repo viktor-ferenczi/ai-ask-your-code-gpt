@@ -4,11 +4,11 @@ import unittest
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-from embed.embedder_client import EmbeddingClient
+from embed.embedder_client import EmbederClient
 from example_fragments import get_random_test_fragments, get_test_fragments
 from utils.timer import timer
 
-EMBEDDING_CLIENT = EmbeddingClient([f'http://127.0.0.1:41246'])
+EMBEDDING_CLIENT = EmbederClient([f'http://127.0.0.1:41246'])
 
 
 async def run_embedding_server():

@@ -12,7 +12,7 @@ from model.fragment import Fragment
 DEVELOPMENT = sys.platform == 'win32'
 
 
-class EmbeddingClient:
+class EmbederClient:
     def __init__(self, servers: List[str]) -> None:
         self.servers = servers
 
