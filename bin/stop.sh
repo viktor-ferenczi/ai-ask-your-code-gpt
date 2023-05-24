@@ -1,28 +1,34 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]; then
-  echo "Usage: $0 server_name"
-  exit 1
+. ~/bin/common.sh
+
+if [ -z "$1" ]; then
+  run_for_all $0
+  exit 0
 fi
 
 set -euo pipefail
 
-. ~/bin/conf-$1.sh
+CONFIG_DIR="$HOME/bin/servers/$1"
+. $CONFIG_DIR/config.sh
 
 if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$(date -Is): The $NAME server is not running"
   exit 0
 fi
 
-echo "$(date -Is): Stopping the $NAME server"
 pkill -f "$COMMAND_LINE"
 
 sleep 1
 
+if pgrep -f "$COMMAND_LINE" >/dev/null; then
+  echo "$NAME: Stopped"
+  exit 0
+fi
+
 if pkill -9 -f "$COMMAND_LINE"; then
-  echo "$(date -Is): Killed the $NAME server"
+  echo "$NAME: Killed"
 else
-  echo "$(date -Is): Stopped the $NAME server"
+  echo "$NAME: Stopped"
 fi
 
 exit 0

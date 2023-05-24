@@ -1,28 +1,24 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]; then
-  echo "Usage: $0 server_name"
-  exit 1
+. ~/bin/common.sh
+
+if [ -z "$1" ]; then
+  run_for_all $0
+  exit 0
 fi
 
 set -euo pipefail
 
-. ~/bin/conf-$1.sh
+CONFIG_DIR="$HOME/bin/servers/$1"
+. $CONFIG_DIR/config.sh
 
 if pgrep -f "$COMMAND_LINE" >/dev/null; then
   echo "$(date -Is): The $NAME server is already running"
   exit 0
 fi
 
-echo "$(date -Is): Starting the $NAME server"
-
-. ~/bin/environment.sh
-
-export PYTHONUNBUFFERED=1
-
 cd "$WORKING_DIR"
 nohup authbind --deep $COMMAND_LINE >>"$LOG_PATH" 2>&1 &
-
-echo "$(date -Is): Started the $NAME server"
+echo "$NAME: Started"
 
 exit 0

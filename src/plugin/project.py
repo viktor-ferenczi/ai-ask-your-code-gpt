@@ -12,7 +12,7 @@ from qdrant_client import QdrantClient
 
 import doc_types
 from database.collection import Collection
-from embed.embedding_client import EmbeddingClient
+from embed.embedder_client import EmbeddingClient
 from model.fragment import Fragment
 from model.hit import Hit
 from utils.timer import timer

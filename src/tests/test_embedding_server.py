@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-from embed.embedding_client import EmbeddingClient
+from embed.embedder_client import EmbeddingClient
 from example_fragments import get_random_test_fragments, get_test_fragments
 from utils.timer import timer
 
@@ -12,7 +12,7 @@ EMBEDDING_CLIENT = EmbeddingClient([f'http://127.0.0.1:41246'])
 
 
 async def run_embedding_server():
-    from embed.embedding_server import run_task
+    from embed.embedder import run_task
     await run_task()
 
 

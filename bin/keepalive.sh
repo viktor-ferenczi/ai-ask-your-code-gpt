@@ -1,10 +1,19 @@
 #!/bin/bash
+
+. ~/bin/common.sh
+
+if [ -z "$1" ]; then
+  run_for_all $0
+  exit 0
+fi
+
 set -euo pipefail
 
-. environment.sh
-. ~/bin/conf-$1.sh
+CONFIG_DIR="$HOME/bin/servers/$1"
+. $CONFIG_DIR/config.sh
 
-function canary {
+
+function check_canary {
   case $CANARY in
   http)
     curl -s --max-time ${CANARY_TIMEOUT} ${CANARY_URL} >/dev/null 2>&1
@@ -17,8 +26,12 @@ function canary {
   esac
 }
 
-# Running?
-if pgrep -f "$COMMAND_LINE" >/dev/null; then
+
+if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
+  echo "$(date -Is): $NAME is missing, starting it"
+  $HOME/bin/start $1
+
+
 
   # Canary check
   for RETRY in 1 2 3 4 5; do

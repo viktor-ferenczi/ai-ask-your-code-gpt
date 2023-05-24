@@ -1,18 +1,21 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]; then
-  echo "Usage: $0 server_name"
-  exit 1
+. ~/bin/common.sh
+
+if [ -z "$1" ]; then
+  run_for_all $0
+  exit 0
 fi
 
 set -euo pipefail
 
-. ~/bin/conf-$1.sh
+CONFIG_DIR="$HOME/bin/servers/$1"
+. $CONFIG_DIR/config.sh
 
 if pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$(date -Is): The $NAME server is running"
+  echo "$NAME: Running"
 else
-  echo "$(date -Is): The $NAME server is NOT running"
+  echo "$NAME: Not running"
 fi
 
 exit 0

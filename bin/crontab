@@ -6,16 +6,16 @@ PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/u
 
 # Keepalive
 # mm hh         dom mon dow command
-*/5 *            *   *   *  /bin/bash $HOME/bin/keepalive-all.sh >>$HOME/log/keepalive.log 2>&1
+*/5 *            *   *   *  /bin/bash $HOME/bin/keepalive.sh all >>$HOME/log/keepalive.log 2>&1
 
 # Daily restart
 # mm hh         dom mon dow command
-31 08            *   *   *  /bin/bash $HOME/bin/restart-all.sh >>$HOME/log/restart.log 2>&1
+31 08            *   *   *  /bin/bash $HOME/bin/restart.sh all >>$HOME/log/restart.log 2>&1
 
 # Backup
 # mm hh         dom mon dow command
-#31 07            *   *   *  /bin/bash $HOME/bin/backup-all.sh >>$HOME/log/backup.log 2>&1
+#31 07            *   *   *  /bin/bash $HOME/bin/backup.sh all >>$HOME/log/backup.log 2>&1
 
 # Cleanup
 # mm hh         dom mon dow command
-#16 08            *   *   *  /bin/bash $HOME/bin/backup-all.sh >>$HOME/log/cleanup.log 2>&1
+#16 08            *   *   *  /bin/bash $HOME/bin/cleanup.sh all >>$HOME/log/cleanup.log 2>&1

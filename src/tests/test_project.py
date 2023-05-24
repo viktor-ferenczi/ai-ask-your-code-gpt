@@ -14,7 +14,7 @@ MODULE_DIR = os.path.dirname(__file__)
 
 
 async def run_embedding_server():
-    from embed.embedding_server import run_task
+    from embed.embedder import run_task
     await run_task()
 
 
