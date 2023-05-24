@@ -1,22 +1,15 @@
-import hashlib
+from chunk import Chunk
 from dataclasses import dataclass
 
 
 @dataclass
-class Fragment:
+class Fragment(Chunk):
     uuid: str
     path: str
-    lineno: int
-    text: str
-    name: str
 
     @classmethod
     def clone(cls, other: "Fragment") -> "Fragment":
-        return cls(**other.__dict__)
+        return Fragment(other.lineno, other.text, other.name, other.uuid, other.path)
 
     def __hash__(self) -> int:
-        return hash(self.uuid) ^ hash(self.path) ^ self.lineno ^ hash(self.text) & hash(self.name)
-
-    @property
-    def text_hash(self) -> str:
-        return hashlib.sha256(self.text).hexdigest()
+        return Chunk.__hash__(self) ^ hash(self.uuid) ^ hash(self.path)
