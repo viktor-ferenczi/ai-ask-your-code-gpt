@@ -35,7 +35,7 @@ class Extractor:
                 self.project.insert_fragment(cursor, fragment)
                 await asyncio.sleep(0)
 
-        self.inventory.mark_project_as_extracted()
+        self.inventory.mark_project_as_extracted(self.project.project_id)
 
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
@@ -45,12 +45,13 @@ class Extractor:
                 print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
                 continue
 
-            yield from doc_type_cls().load(doc)
+            yield from doc_type_cls().load(doc.path, doc.data)
 
 
 async def extract_worker():
+    print('Fragment extractor worker starter')
     inventory = Inventory()
-    while True:
+    while 1:
         try:
             project_id: str = inventory.get_next_project_to_extract()
             if not project_id:
@@ -99,12 +100,13 @@ class Embedder:
 
             await asyncio.sleep(0)
 
-        self.inventory.mark_project_as_embedded()
+        self.inventory.mark_project_as_embedded(self.project.project_id)
 
 
 async def embed_worker():
+    print('Fragment embedder worker starter')
     inventory = Inventory()
-    while True:
+    while 1:
         try:
             project_id: str = inventory.get_next_project_to_embed()
             if not project_id:
@@ -134,6 +136,7 @@ async def embed_worker():
 
 
 app = Quart(__name__)
+workers = [extract_worker, embed_worker]
 
 
 @app.get('/')
@@ -143,4 +146,4 @@ async def canary():
 
 if __name__ == "__main__":
     port = int(os.environ.get('HTTP_PORT', '40002'))
-    run_app(app, extract_worker(), embed_worker(), host='localhost', port=port)
+    run_app(app, *[worker() for worker in workers], host='localhost', port=port)

@@ -9,15 +9,15 @@ from quart import Quart, send_file
 
 from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
-from loader.loader import app as loader_app
+from loader.loader import app as loader_app, workers as loader_workers
 from model.hit import Hit
 from project.inventory import Inventory
-from project.project import EMBEDDER_CLIENT, Project
+from project.project import Project
 
 MODULE_DIR = os.path.dirname(__file__)
 
 
-class TestOldProject(unittest.IsolatedAsyncioTestCase):
+class TestProject(unittest.IsolatedAsyncioTestCase):
     test_project_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestProject')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
@@ -47,26 +47,26 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
 
     async def test_project(self):
         zip_server_task = asyncio.create_task(self.serve_zip())
-        embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200))
+        query_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40100))
+        store_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200))
         downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
         loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
+        loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
         actual_test = asyncio.create_task(self.actual_test())
 
-        tasks = [
-            zip_server_task,
-            embedder_task,
-            downloader_task,
-            loader_task,
-            actual_test,
-        ]
+        tasks = [actual_test,
+                 zip_server_task,
+                 query_embedder_task,
+                 store_embedder_task,
+                 downloader_task,
+                 loader_task,
+                 ] + loader_worker_tasks
 
         await asyncio.wait(tasks, timeout=60.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
-        loader_task.cancel()
-        downloader_task.cancel()
-        embedder_task.cancel()
-        zip_server_task.cancel()
+        for task in tasks[1:]:
+            task.cancel()
 
     async def actual_test(self):
         await self.small_project()
@@ -74,9 +74,6 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
 
     async def small_project(self):
         project = Project(str(uuid.uuid4()))
-
-        server = await EMBEDDER_CLIENT.find_free_server()
-        self.assertIsNotNone(server)
 
         await project.download(f'http://127.0.0.1:49001/')
 
@@ -101,9 +98,6 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
 
     async def medium_project(self):
         project = Project(str(uuid.uuid4()))
-
-        server = await EMBEDDER_CLIENT.find_free_server()
-        self.assertIsNotNone(server)
 
         await project.download(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
 

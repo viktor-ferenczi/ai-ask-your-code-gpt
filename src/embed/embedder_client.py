@@ -29,6 +29,7 @@ class EmbedderClient:
 
         server = await self.find_free_server()
         if not server:
+            print(f'Configure embedding servers: {self.servers}')
             raise IOError('No embedding server is available')
 
         async with aiohttp.ClientSession() as session:

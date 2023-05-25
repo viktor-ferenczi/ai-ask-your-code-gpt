@@ -16,7 +16,7 @@ def extract_verify_documents(archive: Union[str, bytes], *, max_file_count, max_
     with zip_file as zf:
 
         namelist = zf.namelist()
-        if len(namelist) >= max_file_count:
+        if max_file_count and len(namelist) >= max_file_count:
             raise IOError(f'The archive contains too many files, maximum is {max_file_count}')
 
         for index, path in enumerate(namelist):

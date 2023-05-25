@@ -26,7 +26,10 @@ class TextDocType:
         super().__init__()
         self.splitter = self.splitter_cls(**self.splitter_kws)
 
-    def load(self, path: str, text: str) -> Iterator[Fragment]:
+    def load(self, path: str, data: bytes) -> Iterator[Fragment]:
+        # FIXME: Support multiple encodings
+        text = data.decode('utf-8', errors='replace')
+
         lineno = 1
         for index, paragraph in enumerate(self.splitter.split_text(text)):
             yield Fragment(uuid=str(uuid.uuid4()), path=path, lineno=lineno, text=paragraph, name='')
