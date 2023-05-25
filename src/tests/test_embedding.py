@@ -16,7 +16,7 @@ class TestEmbedding(unittest.IsolatedAsyncioTestCase):
         fragments = get_test_fragments()
         fragment_embeddings: np.ndarray = await embedder_model.embed_fragments(fragments)
 
-        python_query_instruction = f'{PythonDocType.query_instruction}:'
+        python_query_instruction = PythonDocType.query_instruction
 
         query_embeddings: np.ndarray = await embedder_model.embed_query(python_query_instruction, 'class GMLExporter')
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)

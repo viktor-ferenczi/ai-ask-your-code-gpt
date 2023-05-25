@@ -6,15 +6,12 @@ from typing import List
 
 from quart import Quart, send_file
 
+from embed.embedder import app as embedder_app
+from loader.loader import app as loader_app
 from model.hit import Hit
 from project.project import EMBEDDER_CLIENT, Project
 
 MODULE_DIR = os.path.dirname(__file__)
-
-
-async def run_embedding_server():
-    from embed.embedder import run_task
-    await run_task()
 
 
 class TestOldProject(unittest.IsolatedAsyncioTestCase):
@@ -50,12 +47,14 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         await self.app.run_task(debug=True, host='localhost', port=self.zip_server_port)
 
     async def test_project(self):
-        embedding_server_task = asyncio.create_task(run_embedding_server())
+        embedder_task = asyncio.create_task(embedder_app)
+        loader_task = asyncio.create_task(loader_app)
         zip_server_task = asyncio.create_task(self.serve_zip())
         actual_test = asyncio.create_task(self.actual_test())
 
         tasks = [
-            embedding_server_task,
+            embedder_task,
+            loader_task,
             zip_server_task,
             actual_test
         ]
@@ -64,11 +63,13 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
 
         self.assertIn(actual_test, done)
         self.assertIn(zip_server_task, pending)
-        self.assertIn(embedding_server_task, pending)
+        self.assertIn(loader_task, pending)
+        self.assertIn(embedder_task, pending)
 
         actual_test.result()
         zip_server_task.cancel()
-        embedding_server_task.cancel()
+        loader_task.cancel()
+        embedder_task.cancel()
 
     async def actual_test(self):
         await self.small_project()

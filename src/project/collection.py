@@ -73,5 +73,5 @@ class Collection:
             )
         )
 
-        results = [Result(result.uuid, result.score) for result in response.result]
+        results = [Result(result.id.uuid, result.score) for result in response.result]
         return results
