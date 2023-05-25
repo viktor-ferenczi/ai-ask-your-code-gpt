@@ -20,19 +20,22 @@ EMBEDDER_CLIENT = EmbedderClient(STORE_EMBEDDERS)
 
 class Extractor:
 
-    def __init__(self, project_id: str) -> None:
+    def __init__(self, inventory: Inventory, project_id: str) -> None:
+        self.inventory = inventory
         self.project: Project = Project(project_id)
 
     async def load(self):
-        self.project.create_database()
-
         common_base_dir = find_common_base_dir([doc.path for doc in extract_verify_documents(self.project.archive_path, max_file_count=None, verify_only=True)])
+
         await asyncio.sleep(0)
+
         with self.project.cursor() as cursor:
             iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path, max_file_count=None))
             for fragment in self.iter_fragments_from_documents(iter_docs):
                 self.project.insert_fragment(cursor, fragment)
                 await asyncio.sleep(0)
+
+        self.inventory.mark_project_as_extracted()
 
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
@@ -55,7 +58,7 @@ async def extract_worker():
                 continue
 
             try:
-                loader = Extractor(project_id)
+                loader = Extractor(inventory, project_id)
                 await loader.load()
             except KeyboardInterrupt:
                 raise
@@ -78,7 +81,8 @@ async def extract_worker():
 
 class Embedder:
 
-    def __init__(self, project_id: str) -> None:
+    def __init__(self, inventory: Inventory, project_id: str) -> None:
+        self.inventory = inventory
         self.project: Project = Project(project_id)
 
     async def embed(self):
@@ -95,6 +99,8 @@ class Embedder:
 
             await asyncio.sleep(0)
 
+        self.inventory.mark_project_as_embedded()
+
 
 async def embed_worker():
     inventory = Inventory()
@@ -106,7 +112,7 @@ async def embed_worker():
                 continue
 
             try:
-                embedder = Embedder(project_id)
+                embedder = Embedder(inventory, project_id)
                 await embedder.embed()
             except KeyboardInterrupt:
                 raise

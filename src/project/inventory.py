@@ -55,12 +55,12 @@ class Inventory:
 
     def mark_project_as_extracted(self, project_id: str):
         with self.cursor() as cursor:
-            cursor.execute('UPDATE Project SET extracted = 1 WHERE project_id = ?', (project_id,))
+            cursor.execute('UPDATE Inventory SET extracted = 1 WHERE project_id = ?', (project_id,))
 
     def has_project_as_extracted(self, project_id: str) -> bool:
         with self.cursor() as cursor:
-            extracted = cursor.execute('SELECT extracted FROM Project WHERE project_id = ?', (project_id,))[0]
-            return bool(extracted)
+            for row in cursor.execute('SELECT extracted FROM Inventory WHERE project_id = ?', (project_id,)):
+                return bool(row[0])
 
     def get_next_project_to_embed(self) -> Optional[str]:
         with self.cursor() as cursor:
@@ -72,12 +72,12 @@ class Inventory:
 
     def mark_project_as_embedded(self, project_id: str):
         with self.cursor() as cursor:
-            cursor.execute('UPDATE Project SET embedded = 1 WHERE project_id = ?', (project_id,))
+            cursor.execute('UPDATE Inventory SET embedded = 1 WHERE project_id = ?', (project_id,))
 
     def has_project_as_embedded(self, project_id: str) -> bool:
         with self.cursor() as cursor:
-            embedded = cursor.execute('SELECT embedded FROM Project WHERE project_id = ?', (project_id,))[0]
-            return bool(embedded)
+            for row in cursor.execute('SELECT embedded FROM Inventory WHERE project_id = ?', (project_id,)):
+                return bool(row[0])
 
     def get_expired_projects(self, cutoff: int, limit: int) -> Optional[str]:
         with self.cursor() as cursor:

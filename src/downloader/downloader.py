@@ -35,6 +35,8 @@ class Downloader:
         with open(self.project.archive_path, 'wb') as f:
             f.write(archive)
 
+        await self.project.create_database()
+
     async def __download(self) -> bytes:
         try:
             archive: bytes = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE)

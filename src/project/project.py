@@ -11,6 +11,7 @@ from qdrant_client import QdrantClient
 
 import doc_types
 from common.constants import C
+from common.timer import timer
 from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
 from model.hit import Hit
@@ -51,7 +52,7 @@ class Project:
         with sqlite3.connect(self.db_path) as db:
             yield db.cursor()
 
-    def create_database(self):
+    async def create_database(self):
         if os.path.exists(self.db_path):
             return
 
@@ -67,15 +68,15 @@ class Project:
                 )
             ''')
 
-        self.collection.create()
+        await self.collection.create()
 
-    def drop_database(self):
+    async def drop_database(self):
         try:
             os.remove(self.db_path)
         except:
             pass
 
-        self.collection.delete()
+        await self.collection.delete()
 
     def index_by_path(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
@@ -96,21 +97,23 @@ class Project:
     def get_fragments_by_path_tail(self, cursor: Cursor, path: str, limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
 
-    def delete(self):
+    async def delete(self):
         inventory = Inventory()
         inventory.delete_project(self.project_id)
+
+        await self.drop_database()
 
         if os.path.isdir(self.data_dir):
             shutil.rmtree(self.data_dir)
 
     async def download(self, url: str, *, timeout: float = 30.0):
-        async with aiohttp.ClientSession() as session:
-            data = json.dumps(dict(url=url))
-            async with session.post(f'{DOWNLOADER_URL}/download/{self.project_id}', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
-                content = await response.content.read()
-                if response.status != 200:
-                    print(f'Failed to download archive {url!r} for project {self.project_id!r}')
-                    raise IOError(f'Failed to download archive {url!r}')
+        with timer(f'Downloaded {url!r} for project {self.project_id!r}'):
+            async with aiohttp.ClientSession() as session:
+                data = json.dumps(dict(url=url))
+                async with session.post(f'{DOWNLOADER_URL}/download/{self.project_id}', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
+                    if response.status != 200:
+                        print(f'Failed to download archive {url!r} for project {self.project_id!r}')
+                        raise IOError(f'Failed to download archive {url!r}')
 
     async def search(self, query: str, limit: int) -> List[Hit]:
         if len(query) > C.MAX_QUERY_LENGTH:

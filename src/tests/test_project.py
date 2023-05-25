@@ -55,6 +55,7 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         tasks = [
             zip_server_task,
             embedder_task,
+            downloader_task,
             loader_task,
             actual_test,
         ]
@@ -62,9 +63,10 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         await asyncio.wait(tasks, timeout=60.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
-        zip_server_task.cancel()
         loader_task.cancel()
+        downloader_task.cancel()
         embedder_task.cancel()
+        zip_server_task.cancel()
 
     async def actual_test(self):
         await self.small_project()
@@ -77,6 +79,8 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         self.assertIsNotNone(server)
 
         await project.download(f'http://127.0.0.1:49001/')
+
+        await self.wait_for_processing(project)
 
         hits = await project.search('class Duplicates', 3)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
@@ -103,23 +107,7 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
 
         await project.download(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
 
-        inventory = Inventory()
-
-        print('Waiting for download...')
-        while 1:
-            with inventory.cursor() as cursor:
-                if inventory.has_project_as_extracted(project.project_id):
-                    break
-            await asyncio.sleep(0.1)
-        print('Downloaded')
-
-        print('Waiting for embedding...')
-        while 1:
-            with inventory.cursor() as cursor:
-                if inventory.has_project_as_embedded(project.project_id):
-                    break
-            await asyncio.sleep(0.1)
-        print('Embedded')
+        await self.wait_for_processing(project)
 
         hits = await project.search('README.md', 20)
         self.verify_hits(hits, 3, path='README.md')
@@ -147,3 +135,20 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         if contains:
             for text in contains:
                 self.assertTrue(any((text in hit.text) for hit in hits))
+
+    async def wait_for_processing(self, project):
+        inventory = Inventory()
+
+        print('Waiting for extracting fragments...')
+        while 1:
+            if inventory.has_project_as_extracted(project.project_id):
+                break
+            await asyncio.sleep(0.2)
+        print('Downloaded')
+
+        print('Waiting for embedding fragments...')
+        while 1:
+            if inventory.has_project_as_embedded(project.project_id):
+                break
+            await asyncio.sleep(0.2)
+        print('Embedded')
