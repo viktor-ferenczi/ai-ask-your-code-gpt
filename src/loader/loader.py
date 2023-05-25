@@ -91,7 +91,8 @@ class Embedder:
                     break
 
                 embeddings = await EMBEDDER_CLIENT.embed_fragments(fragments)
-                await self.project.collection.store(fragments, embeddings)
+                uuids = [fragment.uuid for fragment in fragments]
+                await self.project.collection.store(uuids, embeddings)
 
             await asyncio.sleep(0)
 

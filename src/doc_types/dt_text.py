@@ -29,6 +29,6 @@ class TextDocType:
     def load(self, path: str, text: str) -> Iterator[Fragment]:
         lineno = 1
         for index, paragraph in enumerate(self.splitter.split_text(text)):
-            yield Fragment(str(uuid.uuid4()), path, lineno, paragraph, '')
+            yield Fragment(uuid=str(uuid.uuid4()), path=path, lineno=lineno, text=paragraph, name='')
             # FIXME: Not exact due to the splitter eating the separators, but good enough for sorting
             lineno += paragraph.count('\n') + 1

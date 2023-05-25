@@ -39,7 +39,7 @@ class PythonParser(cst.CSTTransformer):
         self.module = node
 
     def leave_Module(self, original_node: cst.Module, updated_node: cst.Module):
-        self.store(1, 'module', self.module.code_for_node(updated_node))
+        self.store(1, '', self.module.code_for_node(updated_node))
         self.module = None
         return updated_node
 

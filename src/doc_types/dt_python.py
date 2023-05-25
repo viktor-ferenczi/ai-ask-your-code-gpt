@@ -18,4 +18,4 @@ class PythonDocType(TextDocType):
 
     def load(self, path: str, text: str) -> Iterator[Fragment]:
         for index, chunk in enumerate(self.splitter.split_code(text)):
-            yield Fragment(str(uuid.uuid4()), path, chunk.lineno, chunk.text, chunk.name)
+            yield Fragment(uuid=str(uuid.uuid4()), path=path, lineno=chunk.lineno, text=chunk.text, name=chunk.name)

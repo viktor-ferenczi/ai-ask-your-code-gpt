@@ -64,7 +64,7 @@ class TestSplitters(unittest.TestCase):
                 print('=' * 70)
                 print(relpath)
                 print('=' * 70)
-                for line in difflib.unified_diff(actual.split('\n'), expected.split('\n')):
+                for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
                     print(line)
                 print()
 

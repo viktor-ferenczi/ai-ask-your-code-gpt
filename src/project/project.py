@@ -87,13 +87,13 @@ class Project:
         cursor.execute('UPDATE Fragment SET embedded=1 WHERE uuid IN ?', (uuids,))
 
     def get_fragments_to_embed(self, cursor: Cursor, limit: int) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, text, name FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
 
     def get_fragments_by_path(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, text, name FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
 
     def get_fragments_by_path_tail(self, cursor: Cursor, path: str, limit: int) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, text, name FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
 
     def delete(self):
         inventory = Inventory()

@@ -35,19 +35,18 @@ class Collection:
             )
         )
 
-    async def store(self, fragments: List[Fragment], embeddings: List[List[float]]):
-        if not fragments or not embeddings:
+    async def store(self, uuids: List[str], embeddings: List[List[float]]):
+        if not uuids or not embeddings:
             return
-        assert len(fragments) == len(embeddings), (len(fragments), len(embeddings))
+        assert len(uuids) == len(embeddings), (len(uuids), len(embeddings))
         assert len(embeddings[0]) == self.dimensions, (len(embeddings[0]), self.dimensions)
 
         points = [
             grpc.PointStruct(
-                id=grpc.PointId(uuid=fragment.uuid),
-                vectors=grpc.Vectors(vector=grpc.Vector(data=embedding)),
-                payload=payload_to_grpc(fragment.__dict__),
+                id=grpc.PointId(uuid=uuid),
+                vectors=grpc.Vectors(vector=grpc.Vector(data=embedding))
             )
-            for fragment, embedding in zip(fragments, embeddings)
+            for uuid, embedding in zip(uuids, embeddings)
         ]
 
         await self.database.async_grpc_points.Upsert(
