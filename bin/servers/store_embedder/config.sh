@@ -1,13 +1,13 @@
 #!/bin/sh
 
-NAME="Load Embedder"
+NAME="Store Embedder"
 
 WORKING_DIR="$HOME/src/embedder"
 COMMAND_LINE="python -O -u embedder.py"
 
 LOG_PATH="$HOME/log/$NAME.log"
 
-HTTP_PORT=40002
+HTTP_PORT=40003
 
 CANARY="http"
 CANARY_URL="http://127.0.0.1:$HTTP_PORT"

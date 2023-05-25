@@ -6,7 +6,7 @@ from typing import Dict
 
 import quart
 import quart_cors
-from quart import request
+from quart import request, Response
 
 from common.constants import RX_GUID, DEVELOPMENT, PRODUCTION
 from project import Project, ProjectException
@@ -43,7 +43,7 @@ async def plugin_manifest():
         text = f.read()
     if DEVELOPMENT:
         text = html_prod_to_dev(text)
-    return quart.Response(text, mimetype="text/json", status=200)
+    return Response(text, mimetype="text/json", status=200)
 
 
 @app.get("/openapi.yaml")
@@ -52,7 +52,7 @@ async def openapi_spec():
         text = f.read()
     if DEVELOPMENT:
         text = html_prod_to_dev(text)
-    return quart.Response(text, mimetype="text/yaml", status=200)
+    return Response(text, mimetype="text/yaml", status=200)
 
 
 @app.post("/project")
@@ -62,11 +62,11 @@ async def create():
     # Validate URL
     url: str = body.get('url')
     if not url:
-        return quart.Response(response='Missing url', status=400)
+        return Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
-        return quart.Response(response='The URL must start with http:// or https://', status=400)
+        return Response(response='The URL must start with http:// or https://', status=400)
     if PRODUCTION and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
-        return quart.Response(response='Invalid URL', status=400)
+        return Response(response='Invalid URL', status=400)
 
     # Create project, download and verify archive, initiate indexing
     project_id = str(uuid.uuid4())
@@ -80,23 +80,23 @@ async def create():
         raise
     except ProjectException as e:
         print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}: {e}')
-        return quart.Response(response=str(e), status=400)
+        return Response(response=str(e), status=400)
     except Exception:
         print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
         print_exc()
-        return quart.Response(response=f'Failed to create project {project_id!r}: Unexpected error', status=400)
+        return Response(response=f'Failed to create project {project_id!r}: Unexpected error', status=400)
 
     response = {
         'project_id': project_id
     }
-    return quart.Response(response=json.dumps(response, indent=2), status=200)
+    return Response(response=json.dumps(response, indent=2), status=200)
 
 
 @app.delete("/project/<string:project_id>")
 async def delete(project_id: str):
     project_id = project_id.lower()
     if not RX_GUID.match(project_id):
-        return quart.Response(response='Invalid project_id, it must be a GUID', status=400)
+        return Response(response='Invalid project_id, it must be a GUID', status=400)
 
     print(f'Delete project {project_id!r}')
 
@@ -108,20 +108,20 @@ async def delete(project_id: str):
         raise
     except ProjectException as e:
         print(f'ERROR: Failed to delete project {project_id!r}: [{e.__class__.__name__}] {e}')
-        return quart.Response(response=str(e), status=400)
+        return Response(response=str(e), status=400)
     except Exception:
         print(f'ERROR: Failed to delete project {project_id!r}')
         print_exc()
-        return quart.Response(response=f'Failed to delete project {project_id!r}: Unexpected error', status=400)
+        return Response(response=f'Failed to delete project {project_id!r}: Unexpected error', status=400)
 
-    return quart.Response(response='OK', status=200)
+    return Response(response='OK', status=200)
 
 
 @app.get("/project/<string:project_id>/search")
 async def search(project_id: str):
     project_id = project_id.lower()
     if not RX_GUID.match(project_id):
-        return quart.Response(response='Invalid project_id, it must be a GUID', status=400)
+        return Response(response='Invalid project_id, it must be a GUID', status=400)
 
     query: str = request.args.get('query', '')
     limit_str: str = request.args.get('limit', '3')
@@ -141,11 +141,11 @@ async def search(project_id: str):
         raise
     except ProjectException as e:
         print(f'ERROR: Failed to search project {project_id!r}: {e}')
-        return quart.Response(response=str(e), status=400)
+        return Response(response=str(e), status=400)
     except Exception:
         print(f'ERROR: Failed to search project {project_id!r} with limit {limit}: {query}')
         print_exc()
-        return quart.Response(response=f'Failed to search project {project_id!r}: Unexpected error', status=400)
+        return Response(response=f'Failed to search project {project_id!r}: Unexpected error', status=400)
 
     results = [hit.__dict__ for hit in hits]
 
@@ -153,7 +153,7 @@ async def search(project_id: str):
         if not result['name']:
             del result['name']
 
-    return quart.Response(response=json.dumps(results, indent=2), status=200)
+    return Response(response=json.dumps(results, indent=2), status=200)
 
 
 def run():
