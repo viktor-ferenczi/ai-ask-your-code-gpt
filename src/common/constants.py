@@ -31,7 +31,6 @@ class C:
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     DATA_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
-    PROJECTS_DIR = os.path.join(DATA_DIR, 'projects')
 
     # Environment
     PRODUCTION = bool(int(os.environ.get('PRODUCTION', '0')))

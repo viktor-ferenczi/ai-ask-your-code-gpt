@@ -1,4 +1,4 @@
-"""Qdrant based vector database
+"""Qdrant based vector project
 """
 from typing import List, Optional
 

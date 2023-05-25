@@ -14,11 +14,11 @@ class Project:
     def __init__(self, project_id: str) -> None:
         self.project_id: str = project_id
 
-        self.data_dir: str = os.path.join(C.PROJECTS_DIR, self.project_id[:2], self.project_id[2:4], self.project_id)
+        self.data_dir: str = os.path.join(C.DATA_DIR, 'projects', self.project_id[:2], self.project_id[2:4], self.project_id)
         os.makedirs(self.data_dir, exist_ok=True)
 
         self.archive_path: str = os.path.join(self.data_dir, 'archive.zip')
-        self.db_path: str = os.path.join(self.data_dir, 'fragment.db')
+        self.db_path: str = os.path.join(self.data_dir, 'project.sqlite')
         self.done_marker_path: str = os.path.join(self.data_dir, 'done')
         self.used_marker_path: str = os.path.join(self.data_dir, 'used')
 
@@ -35,7 +35,7 @@ class Project:
                         lineno INTEGER NOT NULL,
                         text TEXT NOT NULL,
                         name TEXT,
-                        embedded INTEGER DEFAULT 0
+                        embedded INTEGER DEFAULT 0 NOT NULL
                     )
                 ''')
 

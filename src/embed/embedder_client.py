@@ -1,7 +1,7 @@
 import asyncio
 import json
+import os
 import random
-import sys
 import time
 from typing import Optional, List
 
@@ -9,6 +9,9 @@ import aiohttp
 
 from common.constants import DEVELOPMENT
 from model.fragment import Fragment
+
+STORE_EMBEDDER_POOL = os.environ.get('STORE_EMBEDDER_POOL', 'http://127.0.0.1:40100')
+QUERY_EMBEDDER_POOL = os.environ.get('QUERY_EMBEDDER_POOL', 'http://127.0.0.1:40200')
 
 
 class EmbedderClient:

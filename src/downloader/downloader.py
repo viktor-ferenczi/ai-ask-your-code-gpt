@@ -6,8 +6,8 @@ from typing import Dict
 import aiohttp
 from quart import Quart, request, Response
 
-from common.constants import C, Msg, RX
 import doc_types
+from common.constants import C, Msg, RX
 from common.extractor import extract_files
 from common.http import download_file
 from common.storage import ArchiveStorage

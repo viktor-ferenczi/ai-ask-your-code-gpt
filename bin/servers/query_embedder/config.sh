@@ -7,7 +7,7 @@ COMMAND_LINE="python -O -u embedder.py"
 
 LOG_PATH="$HOME/log/$NAME.log"
 
-HTTP_PORT=40004
+HTTP_PORT=40200
 
 CANARY="http"
 CANARY_URL="http://127.0.0.1:$HTTP_PORT"
