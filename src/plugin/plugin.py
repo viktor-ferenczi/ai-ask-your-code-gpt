@@ -6,10 +6,11 @@ from typing import Dict
 
 import quart
 import quart_cors
+from oldproject import OldProject, ProjectException
 from quart import request, Response
 
 from common.constants import RX_GUID, DEVELOPMENT, PRODUCTION
-from oldproject import OldProject, ProjectException
+from common.server import run_app
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -156,13 +157,5 @@ async def search(project_id: str):
     return Response(response=json.dumps(results, indent=2), status=200)
 
 
-def run():
-    app.run(debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
-
-
-async def run_task():
-    await app.run_task(debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
-
-
 if __name__ == "__main__":
-    run()
+    run_app(app, debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
