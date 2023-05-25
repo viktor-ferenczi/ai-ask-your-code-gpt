@@ -11,6 +11,7 @@ from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app
 from model.hit import Hit
+from project.inventory import Inventory
 from project.project import EMBEDDER_CLIENT, Project
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -101,6 +102,24 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         self.assertIsNotNone(server)
 
         await project.download(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
+
+        inventory = Inventory()
+
+        print('Waiting for download...')
+        while 1:
+            with inventory.cursor() as cursor:
+                if inventory.has_project_as_extracted(project.project_id):
+                    break
+            await asyncio.sleep(0.1)
+        print('Downloaded')
+
+        print('Waiting for embedding...')
+        while 1:
+            with inventory.cursor() as cursor:
+                if inventory.has_project_as_embedded(project.project_id):
+                    break
+            await asyncio.sleep(0.1)
+        print('Embedded')
 
         hits = await project.search('README.md', 20)
         self.verify_hits(hits, 3, path='README.md')

@@ -24,7 +24,6 @@ class Extractor:
         self.project: Project = Project(project_id)
 
     async def load(self):
-        self.project.drop_database()
         self.project.create_database()
 
         common_base_dir = find_common_base_dir([doc.path for doc in extract_verify_documents(self.project.archive_path, max_file_count=None, verify_only=True)])

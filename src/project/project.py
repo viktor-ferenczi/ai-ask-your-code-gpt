@@ -55,8 +55,6 @@ class Project:
         if os.path.exists(self.db_path):
             return
 
-        self.drop_database()
-
         with self.cursor() as cursor:
             cursor.execute('''
                 CREATE TABLE Fragment(
@@ -69,11 +67,15 @@ class Project:
                 )
             ''')
 
+        self.collection.create()
+
     def drop_database(self):
         try:
             os.remove(self.db_path)
         except:
             pass
+
+        self.collection.delete()
 
     def index_by_path(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
@@ -124,7 +126,7 @@ class Project:
             parts: List[str] = 'readme documentation text anything'.split()
 
         vector_query = []
-        matching_fragments = set()
+        file_fragments = set()
         with self.cursor() as cursor:
             for part in parts:
 
@@ -134,12 +136,12 @@ class Project:
 
                 fragments = self.get_fragments_by_path_tail(cursor, part, limit)
                 if fragments:
-                    matching_fragments.update(fragments)
+                    file_fragments.update(fragments)
                 else:
                     vector_query.append(part)
 
         instruction = doc_types.TextDocType.query_instruction
-        for fragment in fragments:
+        for fragment in file_fragments:
             doc_type_cls = doc_types.detect_by_extension(fragment.path)
             if doc_type_cls is not None:
                 instruction = doc_type_cls.query_instruction
@@ -150,7 +152,7 @@ class Project:
             hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments]
             return hits
 
-        uuid_filter = [fragment.uuid for fragment in matching_fragments]
+        uuid_filter = [fragment.uuid for fragment in file_fragments]
 
         vector_query = ' '.join(vector_query)
         embedding = await EMBEDDER_CLIENT.embed_query(instruction, vector_query, timeout=20.0)
