@@ -1,6 +1,8 @@
 import asyncio
 import json
 import os.path
+import time
+from pathlib import Path
 from typing import Iterable, Iterator
 
 import constants as C
@@ -16,11 +18,28 @@ class ProjectStorage:
         self.semaphore = asyncio.Semaphore(1)
 
 
-class FragmentStorage(ProjectStorage):
+class FileProjectStorage(ProjectStorage):
+    filename: str = ''
 
     def __init__(self, project_id: str) -> None:
         super().__init__(project_id)
-        self.path: str = os.path.join(self.data_subdir, 'fragments.jsonl')
+        assert self.filename
+        self.path: str = os.path.join(self.data_subdir, self.filename)
+
+    @property
+    def exist(self) -> bool:
+        return os.path.isfile(self.path)
+
+    @property
+    def age(self) -> float:
+        return max(0.0, time.time() - os.stat(self.path).st_mtime)
+
+    def touch(self):
+        Path(self.path).touch()
+
+
+class FragmentStorage(FileProjectStorage):
+    filename = 'fragments.jsonl'
 
     def save(self, fragments: Iterable[Fragment]):
         with self.semaphore:
@@ -34,19 +53,22 @@ class FragmentStorage(ProjectStorage):
                 yield from (Fragment(**json.loads(line)) for line in f.readlines())
 
 
-class EmbeddingStateStorage(ProjectStorage):
-
-    def __init__(self, project_id: str, fragment_count: int) -> None:
-        super().__init__(project_id)
-        self.path: str = os.path.join(self.data_subdir, 'embedding-state.txt')
-        self.fragment_count: int = fragment_count
+class ProgressStorage(FileProjectStorage):
 
     @property
-    def zero(self) -> bytes:
-        return b'.' * self.fragment_count
+    def exist(self) -> bool:
+        return os.path.isfile(self.path)
+
+    def __init__(self, project_id: str, count: int) -> None:
+        super().__init__(project_id)
+        self.count: int = count
+
+    @property
+    def initial_state(self) -> bytes:
+        return b'.' * self.count
 
     def save(self, state: bytes):
-        assert len(state) == self.fragment_count
+        assert len(state) == self.count
         with self.semaphore:
             with open(self.path, 'wb') as f:
                 f.write(state)
@@ -55,5 +77,9 @@ class EmbeddingStateStorage(ProjectStorage):
         with self.semaphore:
             with open(self.path, 'rb') as f:
                 state: bytes = f.read()
-        assert len(state) == self.fragment_count
+        assert len(state) == self.count
         return state
+
+
+class EmbeddingProgressStorage(ProgressStorage):
+    filename = 'embedding-progress.txt'

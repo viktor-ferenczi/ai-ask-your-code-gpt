@@ -9,9 +9,9 @@ from quart import Quart, request, Response
 
 import common.constants as C
 import doc_types
-from common import zipfile
+from common import extractor
 from common.http import download_file
-from common.storage import format_fragments_path, save_fragments
+from common.storage import FragmentStorage, EmbeddingProgressStorage
 from common.timer import timer
 from embed.embedder_client import EmbedderClient
 from model.document import Document
@@ -38,11 +38,13 @@ class LoaderException(Exception):
 class Loader:
 
     def __init__(self, project_id: str, url: str) -> None:
-        self.project_id = project_id
-        self.url = url
+        self.project_id: str = project_id
+        self.url: str = url
+        self.fragment_storage: FragmentStorage = FragmentStorage(project_id)
 
     def download_verify_split(self):
-        archive = self.__download()
+        with timer(f'Downloaded archive for project {self.project_id!r}'):
+            archive = self.__download()
 
         asyncio.sleep(0)
 
@@ -51,8 +53,8 @@ class Loader:
 
         asyncio.sleep(0)
 
-        fragments_path = format_fragments_path(self.project_id)
-        save_fragments(fragments_path, self.__split(files))
+        with timer(f'Extracted archive for project {self.project_id!r}'):
+            self.fragment_storage.save(self.__split(files))
 
     def __download(self) -> bytes:
         try:
@@ -63,12 +65,12 @@ class Loader:
             print(f'Failed to download archive {self.url!r} for project {self.project_id!r}')
             print_exc()
             raise LoaderException(f'Failed to download archive {self.url!r}: {e}')
-        print(f'Downloaded archive {self.url!r} for project {self.project_id!r}')
+        print(f'Downloaded archive of {len(archive)}B size for project {self.project_id!r} from {self.url!r}')
         return archive
 
     def __extract(self, archive: bytes) -> List[Document]:
         try:
-            documents = zipfile.extract_files(archive)
+            documents = extractor.extract_files(archive)
         except KeyboardInterrupt:
             raise
         except Exception:
@@ -104,6 +106,37 @@ class Loader:
         print(f'Loaded {len(documents)} files into {fragment_count} fragments')
 
 
+class Embedder:
+
+    def __init__(self, project_id: str) -> None:
+        self.project_id: str = project_id
+        self.fragment_storage: FragmentStorage = FragmentStorage(project_id)
+        self.state_storage: EmbeddingProgressStorage = EmbeddingProgressStorage(project_id)
+
+    def embed_all_fragments(self):
+        if self.state_storage.exist:
+            state: bytes = self.state_storage.load()
+        else:
+            self.state_storage.touch()
+            state: bytes = b''
+
+        batch = []
+        for fragment in self.fragment_storage.load():
+            if len(batch) < EMBEDDER_CHUNK_SIZE:
+                batch.append(fragment)
+            else:
+                self.embed_batch(batch)
+
+        if batch:
+            self.embed_batch(batch)
+
+    def embed_batch(self, batch):
+        fragments: List[Fragment] = [Fragment(**fields) for fields in body['fragments']]
+        embeddings = await EMBEDDER_MODEL.embed_fragments(fragments)
+        response = dict(embeddings=embeddings.tolist())
+
+
+
 @app.get('/')
 async def canary():
     return Response(response='OK', status=200)
@@ -120,14 +153,15 @@ async def download(project_id: str):
     if not url:
         return quart.Response(response='Missing url', status=400)
 
-    with timer(f'Downloaded archive for project {project_id!r} from {self.url!r}'):
+    with timer(f'Loaded project {project_id!r}'):
+
         downloader = Loader(project_id, url)
         downloader.download_verify_split()
 
-    fragments: List[Fragment] = [Fragment(**fields) for fields in body['fragments']]
-    embeddings = await EMBEDDER_MODEL.embed_fragments(fragments)
-    response = dict(embeddings=embeddings.tolist())
-    return Response(response=json.dumps(response), status=200)
+        embedder = Embedder(project_id)
+        embedder.embed_all_fragments()
+
+    return Response(response='OK', status=200)
 
 
 @app.post("/embed/query")

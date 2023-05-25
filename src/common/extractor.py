@@ -1,17 +1,18 @@
+import asyncio
 import io
 from typing import Optional, Set, List
+from zipfile import ZipInfo, ZipFile
 
-import zipfile
 from model.document import Document
 
 
-def extract_files(archive: bytes, *, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, strip_common_folder: bool = True) -> List[Document]:
+def extract_files(archive: bytes, *, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, strip_common_folder: bool = True, async_sleep_period: int = 100) -> List[Document]:
     documents: List[Document] = []
 
     prefix = None
     total_size = 0
-    with zipfile.ZipFile(io.BytesIO(archive), 'r') as zf:
-        for path in zf.namelist():
+    with ZipFile(io.BytesIO(archive), 'r') as zf:
+        for index, path in enumerate(zf.namelist()):
             if path.endswith('/'):
                 # Directory
                 continue
@@ -22,7 +23,7 @@ def extract_files(archive: bytes, *, max_file_size: Optional[int] = None, max_to
                     print(f'Skipping file due to unsupported extension: {path}')
                     continue
 
-            file_info: zipfile.ZipInfo = zf.getinfo(path)
+            file_info: ZipInfo = zf.getinfo(path)
             file_size = file_info.file_size
             if max_file_size and file_size > max_file_size:
                 print(f'Skipping large file of {file_size}B in size, maximum is {max_file_size >> 20}MiB: {path!r}')
@@ -37,6 +38,9 @@ def extract_files(archive: bytes, *, max_file_size: Optional[int] = None, max_to
 
             if prefix is None or len(path) < len(prefix):
                 prefix = path
+
+            if (1 + index) % async_sleep_period == 0:
+                asyncio.sleep(0)
 
     # Strip common folder from all paths
     if strip_common_folder and prefix:
