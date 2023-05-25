@@ -78,64 +78,6 @@ class OldProject:
         await self.collection.delete()
         self.delete_fragments()
 
-    async def search(self, query: str, limit: int) -> List[Hit]:
-        if not query.strip():
-            # Empty query used by ChatGPT to check for the project's existence
-            query = 'any documentation or code'
-
-        if len(query) > MAX_QUERY_LENGTH:
-            raise ValueError(f'The query must be at most {MAX_QUERY_LENGTH} characters')
-
-        if limit > MAX_QUERY_LIMIT:
-            raise ValueError(f'The limit must be at most {MAX_QUERY_LIMIT}')
-
-        fragments = self.load_fragments()
-
-        def match_path(part: str) -> List[Fragment]:
-            if '.' not in part or len(part) < 2:
-                return []
-            return [fragment for fragment in fragments if fragment.path.lower().endswith(part.lower())]
-
-        # def match_name(part: str) -> List[Fragment]:
-        #     if len(part) < 3:
-        #         return [fragment for fragment in fragments if fragment.name == part]
-        #     return [fragment for fragment in fragments if fragment.name and fragment.name.endswith(part)]
-
-        path_matches = set()
-        # name_matches = set()
-        vector_query = []
-
-        for part in query.split():
-            if not part:
-                continue
-
-            m = match_path(part)
-            if m:
-                path_matches.update(m)
-                continue
-
-            # m = match_name(part)
-            # if m:
-            #     name_matches.update(m)
-            #     continue
-
-            vector_query.append(part)
-
-        path_matches = list(path_matches)
-        # name_matches = list(name_matches)
-
-        matching_fragments = path_matches  # | name_matches
-        vector_query = ' '.join(vector_query) if vector_query else 'anything'
-
-        # FIXME: Remove this once an instruction is passed down from here based on doc_type_cls!
-        if path_matches:
-            vector_query = f'{path_matches[0]} {vector_query}'
-
-        uuid_filter = [fragment.uuid for fragment in matching_fragments]
-        embedding = await EMBEDDER_CLIENT.embed_query(vector_query, timeout=20.0)
-
-        hits = await self.collection.search(embedding, limit=limit, uuid_filter=uuid_filter)
-        return hits
 
 
 async def background_embed_and_store_fragments(project: OldProject, fragments: List[Fragment]) -> Dict[str, any]:

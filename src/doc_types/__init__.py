@@ -28,3 +28,6 @@ DOC_TYPES = {
 def detect_by_extension(path_or_filename: str) -> Optional[Type[TextDocType]]:
     extension = path_or_filename.rsplit('.')[-1].lower()
     return DOC_TYPES.get(extension)
+
+
+SUPPORTED_EXTENSIONS = set(DOC_TYPES.keys())

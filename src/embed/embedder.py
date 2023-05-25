@@ -35,19 +35,16 @@ async def embed_fragments():
 @app.post("/embed/query")
 async def embed_query():
     body: Dict[str, any] = await request.get_json(force=True)
+    instruction = body.get('instruction', '')
     query = body.get('query', '')
+
+    if not instruction.strip():
+        return Response(response='Empty or missing instruction', status=400)
 
     if not query.strip():
         return Response(response='Empty or missing query', status=400)
 
-    # FIXME: Move this up the call chain to the Project level,
-    # this level must receive a ready to use instruction text
-    doc_type_cls: Type = None
-    if query.startswith('.') and ' ' in query:
-        ext, query = query.split(' ', 1)
-        doc_type_cls = doc_types.detect_by_extension(ext.lower())
-
-    embeddings = await EMBEDDER_MODEL.embed_query(query, doc_type_cls)
+    embeddings = await EMBEDDER_MODEL.embed_query(instruction, query)
     response = dict(embedding=embeddings[0].tolist())
 
     return Response(response=json.dumps(response), status=200)

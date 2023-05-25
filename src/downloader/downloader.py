@@ -9,13 +9,10 @@ import doc_types
 from common.constants import C, Msg, RX
 from common.extractor import extract_files
 from common.http import download_file
+from common.server import run_app
 from common.timer import timer
 from project.inventory import Inventory
 from project.project import Project
-
-PORT = int(os.environ.get('HTTP_PORT', '40001'))
-
-SUPPORTED_EXTENSIONS = set(doc_types.DOC_TYPES.keys())
 
 
 class Downloader:
@@ -54,10 +51,12 @@ class Downloader:
         try:
             document_count: int = sum(1 for _ in extract_files(
                 archive,
+                max_file_count=C.MAX_FILE_COUNT,
                 max_file_size=C.MAX_FILE_SIZE,
                 max_total_size=C.MAX_TOTAL_SIZE,
-                supported_extensions=SUPPORTED_EXTENSIONS,
-                verify_only=True))
+                supported_extensions=doc_types.SUPPORTED_EXTENSIONS,
+                verify_only=True
+            ))
         except KeyboardInterrupt:
             raise
         except Exception:
@@ -76,7 +75,7 @@ app = Quart(__name__)
 
 @app.get('/')
 async def canary():
-    return Response(response='OK', status=200)
+    return 'OK', 200
 
 
 @app.post("/download/<string:project_id>")
@@ -101,13 +100,13 @@ async def download(project_id: str):
     return Response(response='OK', status=200)
 
 
-def run():
-    app.run(debug=True, host="localhost", port=PORT)
+def main():
+    inventory = Inventory()
+    inventory.create_database()
 
-
-async def run_task():
-    await app.run_task(debug=True, host="localhost", port=PORT)
+    port = int(os.environ.get('HTTP_PORT', '40001'))
+    run_app(app, debug=True, host='localhost', port=port)
 
 
 if __name__ == "__main__":
-    run()
+    main()

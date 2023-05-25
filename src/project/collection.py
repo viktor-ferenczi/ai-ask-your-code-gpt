@@ -9,6 +9,7 @@ from qdrant_client.grpc import WithPayloadSelector
 
 from model.fragment import Fragment
 from model.hit import Hit
+from model.result import Result
 
 
 class Collection:
@@ -60,7 +61,7 @@ class Collection:
             )
         )
 
-    async def search(self, embedding: List[float], *, limit: int = 10, uuid_filter: Optional[List[str]] = None) -> List[Hit]:
+    async def search(self, embedding: List[float], *, limit: int = 10, uuid_filter: Optional[List[str]] = None) -> List[Result]:
         assert len(embedding) == self.dimensions, (len(embedding), self.dimensions)
 
         point_filter: grpc.Filter = None
@@ -72,26 +73,9 @@ class Collection:
                 collection_name=self.name,
                 vector=embedding,
                 filter=point_filter,
-                limit=limit,
-                with_payload=WithPayloadSelector(enable=True)
+                limit=limit
             )
         )
 
-        hits = [Hit(result.score, fragment_from_message(result.payload)) for result in response.result]
-
-        if point_filter is None:
-            hits.sort(key=lambda hit: -hit.score)
-        else:
-            hits.sort(key=lambda hit: (hit.fragment.path, hit.fragment.lineno, -hit.score))
-
-        return hits
-
-
-def fragment_from_message(message: MessageMapContainer) -> Fragment:
-    return Fragment(
-        uuid=message['uuid'].string_value,
-        path=message['path'].string_value,
-        lineno=message['lineno'].integer_value,
-        text=message['text'].string_value,
-        name=message['name'].string_value,
-    )
+        results = [Result(result.uuid, result.score) for result in response.result]
+        return results

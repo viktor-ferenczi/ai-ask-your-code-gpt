@@ -1,5 +1,6 @@
-from chunk import Chunk
 from dataclasses import dataclass
+
+from model.chunk import Chunk
 
 
 @dataclass

@@ -17,6 +17,7 @@ class C:
     MAX_ARCHIVE_SIZE = 2 << 20
     MAX_FILE_SIZE = 5 << 20
     MAX_TOTAL_SIZE = 20 << 20
+    MAX_FILE_COUNT = MAX_TOTAL_SIZE >> 10
 
     # Query
     MAX_QUERY_LENGTH = 1000

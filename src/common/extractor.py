@@ -1,19 +1,20 @@
 import io
-from typing import Optional, Set, Iterator
+from typing import Optional, Set, Iterator, Union
 from zipfile import ZipInfo, ZipFile
 
 from model.document import Document
 
 
-def extract_files(archive: bytes,
-                  *,
-                  max_file_size: Optional[int] = None,
-                  max_total_size: Optional[int] = None,
-                  supported_extensions: Optional[Set] = None,
-                  verify_only: bool = False) -> Iterator[Document]:
+def extract_files(archive: Union[str, bytes], *, max_file_count, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[Document]:
     total_size = 0
-    with ZipFile(io.BytesIO(archive), 'r') as zf:
-        for index, path in enumerate(zf.namelist()):
+    source = io.BytesIO(archive) if archive is bytes else archive
+    with ZipFile(source, 'r') as zf:
+
+        namelist = zf.namelist()
+        if len(namelist) >= max_file_count:
+            raise IOError(f'The archive contains too many files, maximum is {max_file_count}')
+
+        for index, path in enumerate(namelist):
             if path.endswith('/'):
                 # Directory
                 continue

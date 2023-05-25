@@ -7,16 +7,19 @@ from typing import Optional, List
 
 import aiohttp
 
-from common.constants import DEVELOPMENT
+from common.constants import C
 from model.fragment import Fragment
 
 STORE_EMBEDDERS = os.environ.get('STORE_EMBEDDERS', 'http://127.0.0.1:40100').split()
 QUERY_EMBEDDERS = os.environ.get('QUERY_EMBEDDERS', 'http://127.0.0.1:40200').split()
 
+EMBEDDER_CHUNK_SIZE = int(os.environ.get('EMBEDDER_CHUNK_SIZE', '128'))
+
 
 class EmbedderClient:
     def __init__(self, servers: List[str]) -> None:
         self.servers = servers
+        self.chunk_size = EMBEDDER_CHUNK_SIZE
 
     def add_servers(self, servers: List[str]):
         self.servers.extend(servers)
@@ -38,11 +41,14 @@ class EmbedderClient:
         fragment_embeddings = fragment_dicts['embeddings']
         return fragment_embeddings
 
-    async def embed_query(self, query: str, *, timeout=10.0) -> List[float]:
+    async def embed_query(self, instruction: str, query: str, *, timeout=10.0) -> List[float]:
+        if not instruction.strip():
+            raise ValueError('Empty instruction')
+
         if not query.strip():
             raise ValueError('Empty query')
 
-        data = json.dumps(dict(query=query), indent=2)
+        data = json.dumps(dict(instruction=instruction, query=query), indent=2)
 
         server = await self.find_free_server()
         if not server:
@@ -81,7 +87,7 @@ class EmbedderClient:
                 async with session.get(server, headers={'Accept': 'text/plain'}, timeout=timeout) as response:
                     content = await response.content.read()
                     content = content.decode('utf-8', errors='ignore')
-                    if DEVELOPMENT and response.status != 200:
+                    if C.DEVELOPMENT and response.status != 200:
                         print(f'Ping failed with [{response.status}] {content}')
                     return response.status == 200
         except asyncio.TimeoutError:
