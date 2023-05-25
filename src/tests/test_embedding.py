@@ -16,25 +16,27 @@ class TestEmbedding(unittest.IsolatedAsyncioTestCase):
         fragments = get_test_fragments()
         fragment_embeddings: np.ndarray = await embedder_model.embed_fragments(fragments)
 
-        query_embeddings: np.ndarray = await embedder_model.embed_query('class GMLExporter')
+        python_query_instruction = f'{PythonDocType.query_instruction}:'
+
+        query_embeddings: np.ndarray = await embedder_model.embed_query(python_query_instruction, 'class GMLExporter')
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)
         print(similarities)
         fragment_index = np.argmax(similarities)
         self.assertEqual(fragment_index, 0)
 
-        query_embeddings: np.ndarray = await embedder_model.embed_query('class GMLExporter', PythonDocType)
+        query_embeddings: np.ndarray = await embedder_model.embed_query(python_query_instruction, 'class GMLExporter')
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)
         print(similarities)
         fragment_index = np.argmax(similarities)
         self.assertEqual(fragment_index, 0)
 
-        query_embeddings: np.ndarray = await embedder_model.embed_query('class SomeOtherClass', PythonDocType)
+        query_embeddings: np.ndarray = await embedder_model.embed_query(python_query_instruction, 'class SomeOtherClass')
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)
         print(similarities)
         fragment_index = np.argmax(similarities)
         self.assertEqual(fragment_index, 1)
 
-        query_embeddings: np.ndarray = await embedder_model.embed_query('export method', PythonDocType)
+        query_embeddings: np.ndarray = await embedder_model.embed_query(python_query_instruction, 'export method')
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)
         print(similarities)
         self.assertTrue(np.all(np.abs(similarities - np.average(similarities)) < 0.02))
