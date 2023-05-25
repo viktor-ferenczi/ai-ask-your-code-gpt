@@ -60,6 +60,16 @@ class Project:
             with db.cursor() as cur:
                 return [row['uuid'] for row in cur.execute('SELECT uuid FROM Fragment WHERE embedded=0')]
 
+    def get_fragments_by_path(self, paths: List[str]) -> List[str]:
+        with sqlite3.connect(self.db_path) as db:
+            with db.cursor() as cur:
+                return [row['uuid'] for row in cur.execute('SELECT uuid FROM Fragment WHERE path IN (?)', (paths,))]
+
+    def get_fragments_by_path_tail(self, path: str) -> List[str]:
+        with sqlite3.connect(self.db_path) as db:
+            with db.cursor() as cur:
+                return [row['uuid'] for row in cur.execute('SELECT uuid FROM Fragment WHERE path LIKE (?)', (f'%{path}',))]
+
     def touch(self):
         Path(self.used_marker_path).touch()
 
