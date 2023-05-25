@@ -5,10 +5,15 @@ from zipfile import ZipInfo, ZipFile
 from model.document import Document
 
 
-def extract_files(archive: Union[str, bytes], *, max_file_count, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[Document]:
+def extract_verify_documents(archive: Union[str, bytes], *, max_file_count, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[Document]:
     total_size = 0
-    source = io.BytesIO(archive) if archive is bytes else archive
-    with ZipFile(source, 'r') as zf:
+
+    if isinstance(archive, bytes):
+        zip_file = ZipFile(io.BytesIO(archive))
+    else:
+        zip_file = ZipFile(archive, 'r')
+
+    with zip_file as zf:
 
         namelist = zf.namelist()
         if len(namelist) >= max_file_count:
@@ -28,7 +33,7 @@ def extract_files(archive: Union[str, bytes], *, max_file_count, max_file_size: 
             file_info: ZipInfo = zf.getinfo(path)
             file_size = file_info.file_size
             if max_file_size and file_size > max_file_size:
-                print(f'Skipping large file of {file_size}B in size, maximum is {max_file_size >> 20}MiB: {path!r}')
+                print(f'Skipping large file of {file_size} bytes in size, maximum is {max_file_size >> 20}MiB: {path!r}')
                 continue
 
             total_size += file_size

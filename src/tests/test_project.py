@@ -1,11 +1,13 @@
 import asyncio
 import os
 import unittest
+import uuid
 import zipfile
 from typing import List
 
 from quart import Quart, send_file
 
+from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app
 from model.hit import Hit
@@ -17,7 +19,6 @@ MODULE_DIR = os.path.dirname(__file__)
 class TestOldProject(unittest.IsolatedAsyncioTestCase):
     test_project_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestProject')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
-    zip_server_port = 31854
 
     def setUp(self) -> None:
         dir_len = len(self.test_project_dir) + 1
@@ -35,36 +36,29 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
             pass
 
     async def serve_zip(self):
-        # Prepare the Quart app and the route to serve the zip file
-        self.app = Quart(__name__)
+        self.app = Quart('test_zip_server')
 
         @self.app.route('/')
         async def serve_zip():
-            # Create a Zip file from TestProject directory
-
             return await send_file(self.zip_path, as_attachment=True)
 
-        await self.app.run_task(debug=True, host='localhost', port=self.zip_server_port)
+        await self.app.run_task(debug=True, host='localhost', port=49001)
 
     async def test_project(self):
-        embedder_task = asyncio.create_task(embedder_app)
-        loader_task = asyncio.create_task(loader_app)
         zip_server_task = asyncio.create_task(self.serve_zip())
+        embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200))
+        downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
+        loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
         actual_test = asyncio.create_task(self.actual_test())
 
         tasks = [
+            zip_server_task,
             embedder_task,
             loader_task,
-            zip_server_task,
-            actual_test
+            actual_test,
         ]
 
-        done, pending = await asyncio.wait(tasks, timeout=60.0, return_when=asyncio.FIRST_COMPLETED)
-
-        self.assertIn(actual_test, done)
-        self.assertIn(zip_server_task, pending)
-        self.assertIn(loader_task, pending)
-        self.assertIn(embedder_task, pending)
+        await asyncio.wait(tasks, timeout=60.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
         zip_server_task.cancel()
@@ -76,12 +70,12 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         await self.medium_project()
 
     async def small_project(self):
-        project = Project('SMALL-TEST-PROJECT-ID')
+        project = Project(str(uuid.uuid4()))
 
         server = await EMBEDDER_CLIENT.find_free_server()
         self.assertIsNotNone(server)
 
-        await project.download(f'http://localhost:{self.zip_server_port}/')
+        await project.download(f'http://127.0.0.1:49001/')
 
         hits = await project.search('class Duplicates', 3)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
@@ -101,7 +95,7 @@ class TestOldProject(unittest.IsolatedAsyncioTestCase):
         await project.delete()
 
     async def medium_project(self):
-        project = Project('MEDIUM-TEST-PROJECT-ID')
+        project = Project(str(uuid.uuid4()))
 
         server = await EMBEDDER_CLIENT.find_free_server()
         self.assertIsNotNone(server)

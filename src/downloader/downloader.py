@@ -1,4 +1,5 @@
 import asyncio
+import io
 import os
 from traceback import print_exc
 from typing import Dict
@@ -7,7 +8,7 @@ from quart import Quart, request, Response
 
 import doc_types
 from common.constants import C, Msg, RX
-from common.extractor import extract_files
+from common.zip_support import extract_verify_documents
 from common.http import download_file
 from common.server import run_app
 from common.timer import timer
@@ -23,18 +24,18 @@ class Downloader:
 
         self.project = Project(project_id)
 
-    def download_verify(self):
+    async def download_verify(self):
         with timer(f'Downloaded archive for project {self.project_id!r}'):
-            archive = self.__download()
+            archive = await self.__download()
 
-        asyncio.sleep(0)
+        await asyncio.sleep(0)
 
         self.__verify(archive)
 
         with open(self.project.archive_path, 'wb') as f:
             f.write(archive)
 
-    def __download(self) -> bytes:
+    async def __download(self) -> bytes:
         try:
             archive: bytes = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE)
         except KeyboardInterrupt:
@@ -42,14 +43,14 @@ class Downloader:
         except Exception as e:
             print(f'Failed to download archive {self.url!r} for project {self.project_id!r}')
             print_exc()
-            raise IOError(f'Failed to download archive {self.url!r}: {e}')
+            raise IOError(f'Failed to download archive {self.url!r}')
 
-        print(f'Downloaded archive of {len(archive)}B size for project {self.project_id!r} from {self.url!r}')
+        print(f'Downloaded archive of {len(archive)} bytes in size for project {self.project_id!r} from {self.url!r}')
         return archive
 
     def __verify(self, archive: bytes):
         try:
-            document_count: int = sum(1 for _ in extract_files(
+            document_count: int = sum(1 for _ in extract_verify_documents(
                 archive,
                 max_file_count=C.MAX_FILE_COUNT,
                 max_file_size=C.MAX_FILE_SIZE,
@@ -92,7 +93,7 @@ async def download(project_id: str):
     with timer(f'Loaded project {project_id!r}'):
 
         downloader = Downloader(project_id, url)
-        downloader.download_verify()
+        await downloader.download_verify()
 
         inventory = Inventory()
         inventory.register_project(project_id)

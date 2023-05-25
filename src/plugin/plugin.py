@@ -81,9 +81,9 @@ async def create():
     except KeyboardInterrupt:
         raise
     except Exception as e:
-        print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}: {e}')
+        print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
         print_exc()
-        return Response(response=str(e), status=400)
+        return Response(response='Failed to create project', status=400)
 
     response = {
         'project_id': project_id
@@ -106,9 +106,9 @@ async def delete(project_id: str):
     except KeyboardInterrupt:
         raise
     except Exception as e:
-        print(f'ERROR: Failed to delete project {project_id!r}: [{e.__class__.__name__}] {e}')
+        print(f'ERROR: Failed to delete project {project_id!r}')
         print_exc()
-        return Response(response=str(e), status=400)
+        return Response(response='Failed to delete project', status=400)
 
     return Response(response='OK', status=200)
 
@@ -136,9 +136,9 @@ async def search(project_id: str):
     except KeyboardInterrupt:
         raise
     except Exception as e:
-        print(f'ERROR: Failed to search project {project_id!r}: {e}')
+        print(f'ERROR: Failed to search project {project_id!r}')
         print_exc()
-        return Response(response=str(e), status=400)
+        return Response(response='Failed to search project', status=400)
 
     results = [hit.__dict__ for hit in hits]
 

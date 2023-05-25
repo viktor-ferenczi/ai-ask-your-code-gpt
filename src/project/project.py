@@ -49,8 +49,7 @@ class Project:
     @contextmanager
     def cursor(self) -> ContextManager[Cursor]:
         with sqlite3.connect(self.db_path) as db:
-            with db.cursor() as cursor:
-                yield cursor
+            yield db.cursor()
 
     def create_database(self):
         if os.path.exists(self.db_path):
@@ -108,7 +107,8 @@ class Project:
             async with session.post(f'{DOWNLOADER_URL}/download/{self.project_id}', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
                 content = await response.content.read()
                 if response.status != 200:
-                    raise IOError(f'Failed to download archive {url!r} for project {self.project_id!r}: {content}')
+                    print(f'Failed to download archive {url!r} for project {self.project_id!r}')
+                    raise IOError(f'Failed to download archive {url!r}')
 
     async def search(self, query: str, limit: int) -> List[Hit]:
         if len(query) > C.MAX_QUERY_LENGTH:

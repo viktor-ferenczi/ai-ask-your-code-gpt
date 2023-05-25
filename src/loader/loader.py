@@ -7,7 +7,7 @@ from quart import Quart
 
 import doc_types
 from common.doc import find_common_base_dir, remove_common_base_dir
-from common.extractor import extract_files
+from common.zip_support import extract_verify_documents
 from common.server import run_app
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS
 from model.document import Document
@@ -27,10 +27,10 @@ class Extractor:
         self.project.drop_database()
         self.project.create_database()
 
-        common_base_dir = find_common_base_dir([doc.path for doc in extract_files(self.project.archive_path, max_file_count=None, verify_only=True)])
+        common_base_dir = find_common_base_dir([doc.path for doc in extract_verify_documents(self.project.archive_path, max_file_count=None, verify_only=True)])
         await asyncio.sleep(0)
         with self.project.cursor() as cursor:
-            iter_docs = remove_common_base_dir(common_base_dir, extract_files(self.project.archive_path, max_file_count=None))
+            iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path, max_file_count=None))
             for fragment in self.iter_fragments_from_documents(iter_docs):
                 self.project.insert_fragment(cursor, fragment)
                 await asyncio.sleep(0)

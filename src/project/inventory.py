@@ -19,8 +19,7 @@ class Inventory:
     @contextmanager
     def cursor(self) -> ContextManager[sqlite3.Cursor]:
         with sqlite3.connect(self.db_path) as db:
-            with db.cursor() as cursor:
-                yield cursor
+            yield db.cursor()
 
     def create_database(self):
         if os.path.exists(self.db_path):
