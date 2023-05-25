@@ -1,33 +1,34 @@
 import asyncio
+import io
 import json
 import os.path
 import time
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterable, Iterator
+from typing import Iterable, Iterator, ContextManager
 
 import constants as C
 from model.fragment import Fragment
 
 
 class ProjectStorage:
-
-    def __init__(self, project_id: str) -> None:
-        assert C.RX_GUID.match(project_id)
-        self.project_id: str = project_id
-        self.data_subdir: str = os.path.join(C.PROJECTS_DIR, self.project_id[:2], self.project_id[2:4], self.project_id)
-        self.semaphore = asyncio.Semaphore(1)
-
-
-class FileProjectStorage(ProjectStorage):
     filename: str = ''
 
     def __init__(self, project_id: str) -> None:
-        super().__init__(project_id)
         assert self.filename
+        assert C.RX_GUID.match(project_id)
+
+        self.project_id: str = project_id
+
+        self.data_subdir: str = os.path.join(C.PROJECTS_DIR, self.project_id[:2], self.project_id[2:4], self.project_id)
+        os.makedirs(self.data_subdir, exist_ok=True)
+
         self.path: str = os.path.join(self.data_subdir, self.filename)
 
+        self.semaphore = asyncio.Semaphore(1)
+
     @property
-    def exist(self) -> bool:
+    def exists(self) -> bool:
         return os.path.isfile(self.path)
 
     @property
@@ -37,49 +38,65 @@ class FileProjectStorage(ProjectStorage):
     def touch(self):
         Path(self.path).touch()
 
-
-class FragmentStorage(FileProjectStorage):
-    filename = 'fragments.jsonl'
-
-    def save(self, fragments: Iterable[Fragment]):
+    @contextmanager
+    def open(self, mode='r', buffering=None, encoding=None) -> ContextManager[io.FileIO]:
         with self.semaphore:
-            with open(self.path, 'wt', encoding='utf-8') as f:
-                for fragment in fragments:
-                    print(json.dumps(fragment.__dict__), file=f)
-
-    def load(self) -> Iterator[Fragment]:
-        with self.semaphore:
-            with open(self.path, 'rt', encoding='utf-8') as f:
-                yield from (Fragment(**json.loads(line)) for line in f.readlines())
+            with open(self.path, mode, buffering, encoding) as f:
+                yield f
 
 
-class ProgressStorage(FileProjectStorage):
+class BinaryStorage(ProjectStorage):
 
-    @property
-    def exist(self) -> bool:
-        return os.path.isfile(self.path)
+    def save(self, data: bytes):
+        with self.open('wb') as f:
+            f.write(data)
+
+    def load(self) -> bytes:
+        with self.open('rb') as f:
+            return f.read()
+
+
+class JsonStorage(ProjectStorage):
 
     def __init__(self, project_id: str, count: int) -> None:
         super().__init__(project_id)
-        self.count: int = count
+        self.new_path = self.path + '.new'
 
-    @property
-    def initial_state(self) -> bytes:
-        return b'.' * self.count
-
-    def save(self, state: bytes):
-        assert len(state) == self.count
+    def save(self, value: object):
         with self.semaphore:
-            with open(self.path, 'wb') as f:
-                f.write(state)
+            with open(self.new_path, 'wt', encoding='utf-8') as f:
+                json.dump(value, f)
+            os.rename(self.new_path, self.path)
 
-    def load(self) -> bytes:
-        with self.semaphore:
-            with open(self.path, 'rb') as f:
-                state: bytes = f.read()
-        assert len(state) == self.count
-        return state
+    def load(self) -> object:
+        with self.open('rt', encoding='utf-8') as f:
+            return json.load(f)
 
 
-class EmbeddingProgressStorage(ProgressStorage):
-    filename = 'embedding-progress.txt'
+class ArchiveStorage(BinaryStorage):
+    filename = 'archive.zip'
+
+
+class FragmentIndexStorage(JsonStorage):
+    filename = 'fragment-index.json'
+
+
+class FragmentsByFileMapStorage(JsonStorage):
+    filename = 'fragments-by-file.json'
+
+
+class EmbeddingStateStorage(JsonStorage):
+    filename = 'embedding-state.json'
+
+
+class FragmentStorage(ProjectStorage):
+    filename = 'fragments.jsonl'
+
+    def save(self, fragments: Iterable[Fragment]):
+        with self.open('wt', encoding='utf-8') as f:
+            for fragment in fragments:
+                print(json.dumps(fragment.__dict__), file=f)
+
+    def load(self) -> Iterator[Fragment]:
+        with self.open('rt', encoding='utf-8') as f:
+            yield from (Fragment(**json.loads(line)) for line in f.readlines())

@@ -6,7 +6,14 @@ from zipfile import ZipInfo, ZipFile
 from model.document import Document
 
 
-def extract_files(archive: bytes, *, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, strip_common_folder: bool = True, async_sleep_period: int = 100) -> List[Document]:
+def extract_files(archive: bytes,
+                  *,
+                  max_file_size: Optional[int] = None,
+                  max_total_size: Optional[int] = None,
+                  supported_extensions: Optional[Set] = None,
+                  strip_common_folder: bool = True,
+                  verify_only: bool = False,
+                  async_sleep_period: int = 100) -> List[Document]:
     documents: List[Document] = []
 
     prefix = None
@@ -33,8 +40,13 @@ def extract_files(archive: bytes, *, max_file_size: Optional[int] = None, max_to
             if max_total_size and total_size > max_total_size:
                 raise IOError(f'Extracted archive is too large, maximum is {max_total_size >> 20}MiB')
 
-            data: bytes = zf.read(path)
-            documents.append(Document(path, data))
+            if verify_only:
+                data: bytes = b''
+            else:
+                data: bytes = zf.read(path)
+
+            document = Document(path, data)
+            documents.append(document)
 
             if prefix is None or len(path) < len(prefix):
                 prefix = path

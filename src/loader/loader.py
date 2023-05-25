@@ -11,7 +11,7 @@ import common.constants as C
 import doc_types
 from common import extractor
 from common.http import download_file
-from common.storage import FragmentStorage, EmbeddingProgressStorage
+from common.storage import FragmentStorage, EmbeddingProgressStorage, ArchiveStorage
 from common.timer import timer
 from embed.embedder_client import EmbedderClient
 from model.document import Document
@@ -30,6 +30,8 @@ QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
 QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
 
+SUPPORTED_EXTENSIONS = set(doc_types.DOC_TYPES.keys())
+
 
 class LoaderException(Exception):
     pass
@@ -40,18 +42,22 @@ class Loader:
     def __init__(self, project_id: str, url: str) -> None:
         self.project_id: str = project_id
         self.url: str = url
+        self.archive_storage: ArchiveStorage = ArchiveStorage(project_id)
         self.fragment_storage: FragmentStorage = FragmentStorage(project_id)
 
-    def download_verify_split(self):
+    def download_verify(self):
         with timer(f'Downloaded archive for project {self.project_id!r}'):
             archive = self.__download()
 
         asyncio.sleep(0)
 
-        files = self.__extract(archive)
-        del archive
+        files = self.__extract(archive, verify_only=True)
+        if not files:
+            raise LoaderException('The archive does not contain any supported documents')
 
-        asyncio.sleep(0)
+        self.archive_storage.save(archive)
+
+    def __split(self):
 
         with timer(f'Extracted archive for project {self.project_id!r}'):
             self.fragment_storage.save(self.__split(files))
@@ -68,9 +74,16 @@ class Loader:
         print(f'Downloaded archive of {len(archive)}B size for project {self.project_id!r} from {self.url!r}')
         return archive
 
-    def __extract(self, archive: bytes) -> List[Document]:
+    def __extract(self, archive: bytes, *, verify_only: bool = False) -> List[Document]:
         try:
-            documents = extractor.extract_files(archive)
+            documents = extractor.extract_files(
+                archive,
+                max_file_size=C.MAX_FILE_SIZE,
+                max_total_size=C.MAX_TOTAL_SIZE,
+                supported_extensions=SUPPORTED_EXTENSIONS,
+                strip_common_folder=True,
+                verify_only=verify_only,
+                async_sleep_period=100)
         except KeyboardInterrupt:
             raise
         except Exception:
@@ -114,7 +127,7 @@ class Embedder:
         self.state_storage: EmbeddingProgressStorage = EmbeddingProgressStorage(project_id)
 
     def embed_all_fragments(self):
-        if self.state_storage.exist:
+        if self.state_storage.exists:
             state: bytes = self.state_storage.load()
         else:
             self.state_storage.touch()
@@ -136,7 +149,6 @@ class Embedder:
         response = dict(embeddings=embeddings.tolist())
 
 
-
 @app.get('/')
 async def canary():
     return Response(response='OK', status=200)
@@ -156,7 +168,7 @@ async def download(project_id: str):
     with timer(f'Loaded project {project_id!r}'):
 
         downloader = Loader(project_id, url)
-        downloader.download_verify_split()
+        downloader.download_verify()
 
         embedder = Embedder(project_id)
         embedder.embed_all_fragments()
