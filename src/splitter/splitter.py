@@ -110,7 +110,7 @@ async def canary():
 @app.post("/project/<string:project_id>")
 async def trigger(project_id: str):
     project_id = project_id.lower()
-    if not C.RX_GUID.match(project_id):
+    if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
 
 

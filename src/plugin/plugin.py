@@ -9,7 +9,7 @@ import quart_cors
 from quart import request, Response
 
 from common.constants import RX_GUID, DEVELOPMENT, PRODUCTION
-from project import Project, ProjectException
+from oldproject import OldProject, ProjectException
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -74,7 +74,7 @@ async def create():
 
     # noinspection PyBroadException
     try:
-        project = Project(project_id)
+        project = OldProject(project_id)
         await project.download(url, app)
     except KeyboardInterrupt:
         raise
@@ -102,7 +102,7 @@ async def delete(project_id: str):
 
     # noinspection PyBroadException
     try:
-        project = Project(project_id)
+        project = OldProject(project_id)
         await project.delete()
     except KeyboardInterrupt:
         raise
@@ -135,7 +135,7 @@ async def search(project_id: str):
 
     # noinspection PyBroadException
     try:
-        project = Project(project_id)
+        project = OldProject(project_id)
         hits = await project.search(query, limit)
     except KeyboardInterrupt:
         raise

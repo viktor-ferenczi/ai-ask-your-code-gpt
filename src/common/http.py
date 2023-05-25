@@ -2,7 +2,7 @@ from typing import Optional
 
 import aiohttp
 
-from common import constants as C
+from common.constants import C
 
 
 async def download_file(url: str, *, max_size: Optional[int] = None):

@@ -17,7 +17,7 @@ class ProjectStorage:
 
     def __init__(self, project_id: str) -> None:
         assert self.filename
-        assert C.RX_GUID.match(project_id)
+        assert RX.GUID.match(project_id)
 
         self.project_id: str = project_id
 

@@ -8,7 +8,7 @@ from typing import List
 from quart import Quart, send_file
 
 from model.hit import Hit
-from plugin.project import Project, EMBEDDER_CLIENT
+from plugin.oldproject import OldProject, EMBEDDER_CLIENT
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -76,7 +76,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         await self.medium_project()
 
     async def small_project(self):
-        project = Project('SMALL-TEST-PROJECT-ID')
+        project = OldProject('SMALL-TEST-PROJECT-ID')
 
         server = await EMBEDDER_CLIENT.find_free_server()
         self.assertIsNotNone(server)
@@ -101,7 +101,7 @@ class TestPlugin(unittest.IsolatedAsyncioTestCase):
         await project.delete()
 
     async def medium_project(self):
-        project = Project('MEDIUM-TEST-PROJECT-ID')
+        project = OldProject('MEDIUM-TEST-PROJECT-ID')
 
         server = await EMBEDDER_CLIENT.find_free_server()
         self.assertIsNotNone(server)

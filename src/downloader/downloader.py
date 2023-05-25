@@ -6,7 +6,7 @@ from typing import Dict
 import aiohttp
 from quart import Quart, request, Response
 
-import common.constants as C
+from common.constants import C, Msg, RX
 import doc_types
 from common.extractor import extract_files
 from common.http import download_file
@@ -69,7 +69,7 @@ class Downloader:
             raise IOError(f'Failed verify source archive: {self.url!r}')
 
         if not document_count:
-            raise IOError(C.Message.EmptyArchive)
+            raise IOError(Msg.EmptyArchive)
 
         print(f'Extracted {document_count} files')
 
@@ -85,7 +85,7 @@ class Downloader:
             print('ERROR: The splitter could not be notified. Is it running?')
             print_exc()
             self.archive_storage.remove()
-            raise IOError(C.Message.ArchiveIsGoodTryAgainLater)
+            raise IOError(Msg.ArchiveIsGoodTryAgainLater)
 
 
 app = Quart(__name__)
@@ -99,7 +99,7 @@ async def canary():
 @app.post("/download/<string:project_id>")
 async def download(project_id: str):
     project_id = project_id.lower()
-    if not C.RX_GUID.match(project_id):
+    if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
 
     body: Dict[str, any] = await request.get_json(force=True)

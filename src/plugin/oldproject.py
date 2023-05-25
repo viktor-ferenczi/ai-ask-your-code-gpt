@@ -23,7 +23,7 @@ class ProjectException(Exception):
     pass
 
 
-class Project:
+class OldProject:
 
     def __init__(self, project_id: str) -> None:
         self.project_id: str = project_id
@@ -138,7 +138,7 @@ class Project:
         return hits
 
 
-async def background_embed_and_store_fragments(project: Project, fragments: List[Fragment]) -> Dict[str, any]:
+async def background_embed_and_store_fragments(project: OldProject, fragments: List[Fragment]) -> Dict[str, any]:
     collection = project.collection
 
     stats = {}
