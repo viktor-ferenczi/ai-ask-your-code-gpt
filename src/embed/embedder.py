@@ -1,18 +1,16 @@
 import json
-from typing import Dict, List, Type
+from typing import Dict, List
 
 from quart import Quart, request, Response
 
-import doc_types
+from common.server import run_app
+from common.timer import timer
 from embed.embedder_model import EmbedderModel
 from model.fragment import Fragment
-from common.timer import timer
 
 EMBEDDER_MODEL = EmbedderModel()
 
 app = Quart(__name__)
-
-PORT = 41246  ## 0xa11e: AI Instructor Embedding
 
 
 @app.get('/')
@@ -50,13 +48,6 @@ async def embed_query():
     return Response(response=json.dumps(response), status=200)
 
 
-def run():
-    app.run(debug=True, host="localhost", port=PORT)
-
-
-async def run_task():
-    await app.run_task(debug=True, host="localhost", port=PORT)
-
-
 if __name__ == "__main__":
-    run()
+    port = int(os.environ.get('HTTP_PORT', '40002'))
+    run_app(app, host='localhost', port=port)

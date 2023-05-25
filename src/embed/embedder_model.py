@@ -1,15 +1,15 @@
 import asyncio
 import os
-from typing import List, Type, Optional
+from typing import List
 
 import numpy as np
 import torch
 from InstructorEmbedding import INSTRUCTOR
 
 import doc_types
+from common.timer import timer
 from doc_types import TextDocType
 from model.fragment import Fragment
-from common.timer import timer
 
 EMBEDDING_BATCH_SIZE = int(os.environ.get('EMBEDDING_BATCH_SIZE', '32'))
 
@@ -44,9 +44,19 @@ class EmbedderModel:
     async def embed_fragments(self, fragments: List[Fragment]) -> np.ndarray:
         assert fragments
 
-        sentences = [
-            [doc_types.detect_by_extension(fragment.path).store_instruction + ':', fragment.text]
+        doc_type_cls_list = [
+            doc_types.detect_by_extension(fragment.path)
             for fragment in fragments
+        ]
+
+        instructions = [
+            (doc_type_cls.store_instruction if doc_type_cls else TextDocType.store_instruction)
+            for doc_type_cls in doc_type_cls_list
+        ]
+
+        sentences = [
+            [f'{instruction}:', fragment.text]
+            for instruction, fragment in zip(instructions, fragments)
         ]
 
         async with self.semaphore:

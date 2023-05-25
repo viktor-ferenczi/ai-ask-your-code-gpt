@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from fragment import Fragment
+from model.fragment import Fragment
 
 
 @dataclass

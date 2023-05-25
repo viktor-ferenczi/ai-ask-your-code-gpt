@@ -8,7 +8,7 @@ from embed.embedder_client import EmbedderClient
 from example_fragments import get_random_test_fragments, get_test_fragments
 from common.timer import timer
 
-EMBEDDING_CLIENT = EmbedderClient([f'http://127.0.0.1:41246'])
+EMBEDDING_CLIENT = EmbedderClient([f'http://127.0.0.1:40200'])
 
 
 async def run_embedding_server():
