@@ -3,19 +3,17 @@ import os
 from traceback import print_exc
 from typing import Dict
 
-import aiohttp
 from quart import Quart, request, Response
 
 import doc_types
 from common.constants import C, Msg, RX
 from common.extractor import extract_files
 from common.http import download_file
-from common.storage import ArchiveStorage
 from common.timer import timer
+from project.inventory import Inventory
+from project.project import Project
 
 PORT = int(os.environ.get('HTTP_PORT', '40001'))
-
-SPLITTER_PORT = int(os.environ.get('SPLITTER_PORT', '40002'))
 
 SUPPORTED_EXTENSIONS = set(doc_types.DOC_TYPES.keys())
 
@@ -26,7 +24,7 @@ class Downloader:
         self.project_id: str = project_id
         self.url: str = url
 
-        self.archive_storage: ArchiveStorage = ArchiveStorage(project_id)
+        self.project = Project(project_id)
 
     def download_verify(self):
         with timer(f'Downloaded archive for project {self.project_id!r}'):
@@ -36,9 +34,8 @@ class Downloader:
 
         self.__verify(archive)
 
-        self.archive_storage.save(archive)
-
-        self.__trigger_processing()
+        with open(self.project.archive_path, 'wb') as f:
+            f.write(archive)
 
     def __download(self) -> bytes:
         try:
@@ -73,20 +70,6 @@ class Downloader:
 
         print(f'Extracted {document_count} files')
 
-    def __trigger_processing(self):
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.post(f'http://127.0.0.1:{SPLITTER_PORT}/project/{self.project_id}') as response:
-                    if response.status != 200:
-                        raise IOError()
-        except KeyboardInterrupt:
-            raise
-        except Exception:
-            print('ERROR: The splitter could not be notified. Is it running?')
-            print_exc()
-            self.archive_storage.remove()
-            raise IOError(Msg.ArchiveIsGoodTryAgainLater)
-
 
 app = Quart(__name__)
 
@@ -111,6 +94,9 @@ async def download(project_id: str):
 
         downloader = Downloader(project_id, url)
         downloader.download_verify()
+
+        inventory = Inventory()
+        inventory.register_project(project_id)
 
     return Response(response='OK', status=200)
 

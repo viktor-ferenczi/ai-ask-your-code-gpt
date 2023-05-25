@@ -10,8 +10,8 @@ import aiohttp
 from common.constants import DEVELOPMENT
 from model.fragment import Fragment
 
-STORE_EMBEDDER_POOL = os.environ.get('STORE_EMBEDDER_POOL', 'http://127.0.0.1:40100')
-QUERY_EMBEDDER_POOL = os.environ.get('QUERY_EMBEDDER_POOL', 'http://127.0.0.1:40200')
+STORE_EMBEDDERS = os.environ.get('STORE_EMBEDDERS', 'http://127.0.0.1:40100').split()
+QUERY_EMBEDDERS = os.environ.get('QUERY_EMBEDDERS', 'http://127.0.0.1:40200').split()
 
 
 class EmbedderClient:

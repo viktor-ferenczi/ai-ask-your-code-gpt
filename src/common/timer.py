@@ -1,6 +1,7 @@
 import time
 from contextlib import contextmanager
 
+
 @contextmanager
 def timer(prefix='', *, count=None, unit=None, stats=None):
     started = time.time()
