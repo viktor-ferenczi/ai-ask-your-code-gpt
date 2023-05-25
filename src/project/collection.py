@@ -2,13 +2,10 @@
 """
 from typing import List, Optional
 
-from google._upb._message import MessageMapContainer
 from qdrant_client import QdrantClient, grpc
 from qdrant_client.conversions.conversion import payload_to_grpc
-from qdrant_client.grpc import WithPayloadSelector
 
 from model.fragment import Fragment
-from model.hit import Hit
 from model.result import Result
 
 

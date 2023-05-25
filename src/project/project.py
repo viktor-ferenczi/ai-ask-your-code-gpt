@@ -15,6 +15,7 @@ from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
 from model.hit import Hit
 from project.collection import Collection
+from project.inventory import Inventory
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
@@ -95,6 +96,9 @@ class Project:
         return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, text, name FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
 
     def delete(self):
+        inventory = Inventory()
+        inventory.delete_project(self.project_id)
+
         if os.path.isdir(self.data_dir):
             shutil.rmtree(self.data_dir)
 

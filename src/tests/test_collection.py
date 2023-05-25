@@ -5,7 +5,7 @@ from typing import List
 from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient
 
-from database.collection import Collection
+from project.collection import Collection
 from embed.embedder_model import EmbedderModel
 from example_fragments import get_test_fragments
 from model.fragment import Fragment

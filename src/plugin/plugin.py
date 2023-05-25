@@ -6,11 +6,11 @@ from typing import Dict
 
 import quart
 import quart_cors
-from oldproject import OldProject, ProjectException
 from quart import request, Response
 
-from common.constants import RX_GUID, DEVELOPMENT, PRODUCTION
+from common.constants import C, RX
 from common.server import run_app
+from project.project import Project
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -42,7 +42,7 @@ async def logo():
 async def plugin_manifest():
     with open(AI_PLUGIN_PATH, 'rt') as f:
         text = f.read()
-    if DEVELOPMENT:
+    if C.DEVELOPMENT:
         text = html_prod_to_dev(text)
     return Response(text, mimetype="text/json", status=200)
 
@@ -51,7 +51,7 @@ async def plugin_manifest():
 async def openapi_spec():
     with open(OPENAPI_YAML_PATH, 'rt') as f:
         text = f.read()
-    if DEVELOPMENT:
+    if C.DEVELOPMENT:
         text = html_prod_to_dev(text)
     return Response(text, mimetype="text/yaml", status=200)
 
@@ -66,7 +66,7 @@ async def create():
         return Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
         return Response(response='The URL must start with http:// or https://', status=400)
-    if PRODUCTION and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
+    if C.PRODUCTION and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return Response(response='Invalid URL', status=400)
 
     # Create project, download and verify archive, initiate indexing
@@ -75,17 +75,14 @@ async def create():
 
     # noinspection PyBroadException
     try:
-        project = OldProject(project_id)
-        await project.download(url, app)
+        project = Project(project_id)
+        await project.download(url)
     except KeyboardInterrupt:
         raise
-    except ProjectException as e:
+    except Exception as e:
         print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}: {e}')
-        return Response(response=str(e), status=400)
-    except Exception:
-        print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
         print_exc()
-        return Response(response=f'Failed to create project {project_id!r}: Unexpected error', status=400)
+        return Response(response=str(e), status=400)
 
     response = {
         'project_id': project_id
@@ -96,24 +93,21 @@ async def create():
 @app.delete("/project/<string:project_id>")
 async def delete(project_id: str):
     project_id = project_id.lower()
-    if not RX_GUID.match(project_id):
+    if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
 
     print(f'Delete project {project_id!r}')
 
     # noinspection PyBroadException
     try:
-        project = OldProject(project_id)
+        project = Project(project_id)
         await project.delete()
     except KeyboardInterrupt:
         raise
-    except ProjectException as e:
+    except Exception as e:
         print(f'ERROR: Failed to delete project {project_id!r}: [{e.__class__.__name__}] {e}')
-        return Response(response=str(e), status=400)
-    except Exception:
-        print(f'ERROR: Failed to delete project {project_id!r}')
         print_exc()
-        return Response(response=f'Failed to delete project {project_id!r}: Unexpected error', status=400)
+        return Response(response=str(e), status=400)
 
     return Response(response='OK', status=200)
 
@@ -121,7 +115,7 @@ async def delete(project_id: str):
 @app.get("/project/<string:project_id>/search")
 async def search(project_id: str):
     project_id = project_id.lower()
-    if not RX_GUID.match(project_id):
+    if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
 
     query: str = request.args.get('query', '')
@@ -136,17 +130,14 @@ async def search(project_id: str):
 
     # noinspection PyBroadException
     try:
-        project = OldProject(project_id)
+        project = Project(project_id)
         hits = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
-    except ProjectException as e:
+    except Exception as e:
         print(f'ERROR: Failed to search project {project_id!r}: {e}')
-        return Response(response=str(e), status=400)
-    except Exception:
-        print(f'ERROR: Failed to search project {project_id!r} with limit {limit}: {query}')
         print_exc()
-        return Response(response=f'Failed to search project {project_id!r}: Unexpected error', status=400)
+        return Response(response=str(e), status=400)
 
     results = [hit.__dict__ for hit in hits]
 
