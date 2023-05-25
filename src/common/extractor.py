@@ -1,6 +1,5 @@
-import asyncio
 import io
-from typing import Optional, Set, List
+from typing import Optional, Set, Iterator
 from zipfile import ZipInfo, ZipFile
 
 from model.document import Document
@@ -11,12 +10,7 @@ def extract_files(archive: bytes,
                   max_file_size: Optional[int] = None,
                   max_total_size: Optional[int] = None,
                   supported_extensions: Optional[Set] = None,
-                  strip_common_folder: bool = True,
-                  verify_only: bool = False,
-                  async_sleep_period: int = 100) -> List[Document]:
-    documents: List[Document] = []
-
-    prefix = None
+                  verify_only: bool = False) -> Iterator[Document]:
     total_size = 0
     with ZipFile(io.BytesIO(archive), 'r') as zf:
         for index, path in enumerate(zf.namelist()):
@@ -46,21 +40,4 @@ def extract_files(archive: bytes,
                 data: bytes = zf.read(path)
 
             document = Document(path, data)
-            documents.append(document)
-
-            if prefix is None or len(path) < len(prefix):
-                prefix = path
-
-            if (1 + index) % async_sleep_period == 0:
-                asyncio.sleep(0)
-
-    # Strip common folder from all paths
-    if strip_common_folder and prefix:
-        if not prefix.endswith('/'):
-            prefix = prefix.rsplit('/')[0] + '/'
-        if all(filename.startswith(prefix) for filename, text in documents):
-            strip_len = len(prefix)
-            for doc in documents:
-                doc.path = doc.path[strip_len:]
-
-    return documents
+            yield document

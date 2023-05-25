@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Iterable, Iterator, ContextManager
 
 import constants as C
+from common.file import iter_line_offsets
 from model.fragment import Fragment
 
 
@@ -86,7 +87,7 @@ class FragmentIndexStorage(JsonStorage):
     filename = 'fragment-index.json'
 
 
-class FragmentsByFileMapStorage(JsonStorage):
+class FragmentsByPathStorage(JsonStorage):
     filename = 'fragments-by-file.json'
 
 
@@ -105,3 +106,7 @@ class FragmentStorage(ProjectStorage):
     def load(self) -> Iterator[Fragment]:
         with self.open('rt', encoding='utf-8') as f:
             yield from (Fragment(**json.loads(line)) for line in f.readlines())
+
+    def iter_line_offsets(self) -> Iterator[int]:
+        with self.open('rt', encoding='utf-8') as f:
+            yield from iter_line_offsets(f)

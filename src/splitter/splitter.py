@@ -1,6 +1,16 @@
+import asyncio
+import os
+from typing import Iterator, List, Dict
+
 from quart import Response, Quart
 
-from common.storage import FragmentStorage
+import common.constants as C
+import doc_types
+from common.doc import find_common_base_dir, remove_common_base_dir
+from common.extractor import extract_files
+from common.storage import FragmentStorage, ArchiveStorage, FragmentIndexStorage, FragmentsByPathStorage
+from embed.embedder_client import EmbedderClient
+from model.document import Document
 
 EMBEDDER_URLS = os.environ.get('EMBEDDER_URLS', 'http://127.0.0.1:40004').split()
 EMBEDDER_CHUNK_SIZE = int(os.environ.get('EMBEDDER_CHUNK_SIZE', '1'))
@@ -14,46 +24,57 @@ QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
 
 class Splitter:
 
+    def __init__(self, project_id: str) -> None:
+        self.project_id = project_id
 
-    def __init__(self) -> None:
+        self.archive_storage: ArchiveStorage = ArchiveStorage(project_id)
         self.fragment_storage: FragmentStorage = FragmentStorage(project_id)
+        self.fragment_index_storage: FragmentIndexStorage = FragmentIndexStorage(project_id)
+        self.fragments_by_path_storage: FragmentsByPathStorage = FragmentsByPathStorage(project_id)
 
-    def __split(self):
-        with timer(f'Extracted archive for project {self.project_id!r}'):
-            self.fragment_storage.save(self.__split(files))
+    def extract_and_produce_fragments(self):
+        if not self.archive_storage.exists:
+            raise IOError(f'Archive is missing for project {self.project_id}')
 
-    def __split(self, documents: List[Document]) -> Iterator[Fragment]:
-        path = ''
-        fragment_count = 0
-        try:
-            for path, data in documents:
+        if self.fragment_storage and self.fragment_index_storage and self.fragments_by_path_storage:
+            return
 
-                doc_type_cls = doc_types.detect_by_extension(path)
-                if doc_type_cls is None:
-                    print(f'Skipping unsupported document {path!r} in project {self.project_id!r}')
-                    continue
+        fragment_uuids = []
+        fragments_by_path = {}
+        archive = self.archive_storage.load()
+        common_base_dir = find_common_base_dir([doc.path for doc in extract_files(archive, verify_only=True)])
+        iter_docs = remove_common_base_dir(common_base_dir, extract_files(archive))
+        self.fragment_storage.save(self.__produce_fragments(iter_docs, fragment_uuids, fragments_by_path))
+        self.fragments_by_path_storage.save(fragments_by_path)
 
-                for fragment in doc_type_cls().load(path, data):
-                    fragment_count += 1
-                    yield fragment
+        fragment_index = dict(zip(fragment_uuids, self.fragment_storage.iter_line_offsets()))
+        self.fragment_index_storage.save(fragment_index)
 
-                asyncio.sleep(0)
+    def __produce_fragments(self, iter_docs: Iterator[Document], fragment_uuids: List[str], fragments_by_path: Dict[str, List[str]]):
+        for doc in iter_docs:
 
-        except KeyboardInterrupt:
-            raise
-        except Exception:
-            print(f'Failed to load file {path!r} in project {self.project_id!r}')
-            print_exc()
-            raise LoaderException(f'Failed to load file: {path!r}')
-        print(f'Loaded {len(documents)} files into {fragment_count} fragments')
+            doc_type_cls = doc_types.detect_by_extension(doc.path)
+            if doc_type_cls is None:
+                print(f'Skipping unsupported document {doc.path!r} in project {self.project_id!r}')
+                continue
+
+            doc_uuids: List[str] = []
+            for fragment in doc_type_cls().load(doc):
+                fragment_uuids.append(fragment.uuid)
+                doc_uuids.append(fragment.uuid)
+                yield fragment
+
+            fragments_by_path[doc.path] = doc_uuids
+
+            asyncio.sleep(0)
 
 
 class Embedder:
 
     def __init__(self, project_id: str) -> None:
         self.project_id: str = project_id
+
         self.fragment_storage: FragmentStorage = FragmentStorage(project_id)
-        self.state_storage: EmbeddingProgressStorage = EmbeddingProgressStorage(project_id)
 
     def embed_all_fragments(self):
         if self.state_storage.exists:
@@ -91,31 +112,6 @@ async def trigger(project_id: str):
     project_id = project_id.lower()
     if not C.RX_GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
-
-
-
-@app.post("/embed/query")
-async def process_project():
-    embedder = Embedder(project_id)
-    embedder.embed_all_fragments()
-
-    body: Dict[str, any] = await request.get_json(force=True)
-    query = body.get('query', '')
-
-    if not query.strip():
-        return Response(response='Empty or missing query', status=400)
-
-    # FIXME: Move this up the call chain to the Project level,
-    # this level must receive a ready to use instruction text
-    doc_type_cls: Type = None
-    if query.startswith('.') and ' ' in query:
-        ext, query = query.split(' ', 1)
-        doc_type_cls = doc_types.detect_by_extension(ext.lower())
-
-    embeddings = await EMBEDDER_MODEL.embed_query(query, doc_type_cls)
-    response = dict(embedding=embeddings[0].tolist())
-
-    return Response(response=json.dumps(response), status=200)
 
 
 def run():

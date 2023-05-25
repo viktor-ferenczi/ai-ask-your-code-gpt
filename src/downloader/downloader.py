@@ -1,18 +1,17 @@
 import asyncio
 import os
 from traceback import print_exc
-from typing import Dict, List
+from typing import Dict
 
 import aiohttp
 from quart import Quart, request, Response
 
 import common.constants as C
 import doc_types
-from common import extractor
+from common.extractor import extract_files
 from common.http import download_file
 from common.storage import ArchiveStorage
 from common.timer import timer
-from model.document import Document
 
 PORT = int(os.environ.get('HTTP_PORT', '40001'))
 
@@ -35,9 +34,7 @@ class Downloader:
 
         asyncio.sleep(0)
 
-        files = self.__extract(archive, verify_only=True)
-        if not files:
-            raise IOError(C.Message.EmptyArchive)
+        self.__verify(archive)
 
         self.archive_storage.save(archive)
 
@@ -56,24 +53,25 @@ class Downloader:
         print(f'Downloaded archive of {len(archive)}B size for project {self.project_id!r} from {self.url!r}')
         return archive
 
-    def __extract(self, archive: bytes, *, verify_only: bool = False) -> List[Document]:
+    def __verify(self, archive: bytes):
         try:
-            documents = extractor.extract_files(
+            document_count: int = sum(1 for _ in extract_files(
                 archive,
                 max_file_size=C.MAX_FILE_SIZE,
                 max_total_size=C.MAX_TOTAL_SIZE,
                 supported_extensions=SUPPORTED_EXTENSIONS,
-                strip_common_folder=True,
-                verify_only=verify_only,
-                async_sleep_period=100)
+                verify_only=True))
         except KeyboardInterrupt:
             raise
         except Exception:
-            print(f'Failed extract source archive {self.url!r} for project {self.project_id!r}')
+            print(f'Failed verify source archive {self.url!r} for project {self.project_id!r}')
             print_exc()
-            raise IOError(f'Failed extract source archive: {self.url!r}')
-        print(f'Extracted {len(documents)} files')
-        return documents
+            raise IOError(f'Failed verify source archive: {self.url!r}')
+
+        if not document_count:
+            raise IOError(C.Message.EmptyArchive)
+
+        print(f'Extracted {document_count} files')
 
     def __trigger_processing(self):
         try:
