@@ -141,9 +141,9 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         scores = [hit.score for hit in hits]
         self.assertEqual(sorted(scores, reverse=True), scores)
 
-        uuids = [hit.fragment.uuid for hit in hits]
+        uuids = [hit.uuid for hit in hits]
         self.assertEqual(sorted(uuids), sorted(set(uuids)))
 
         for hit in hits:
             hit.score = 0.0
-            hit.fragment.uuid = ''
+            hit.uuid = ''

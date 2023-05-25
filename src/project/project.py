@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import sqlite3
@@ -5,6 +6,7 @@ from contextlib import contextmanager
 from sqlite3 import Cursor
 from typing import List, ContextManager, Optional
 
+import aiohttp
 from qdrant_client import QdrantClient
 
 import doc_types
@@ -13,6 +15,8 @@ from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
 from model.hit import Hit
 from project.collection import Collection
+
+DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
 EMBEDDER_CLIENT = EmbedderClient(QUERY_EMBEDDERS)
 
@@ -93,6 +97,14 @@ class Project:
     def delete(self):
         if os.path.isdir(self.data_dir):
             shutil.rmtree(self.data_dir)
+
+    async def download(self, url: str, *, timeout: float = 30.0):
+        async with aiohttp.ClientSession() as session:
+            data = json.dumps(dict(url=url))
+            async with session.post(f'{DOWNLOADER_URL}/download/{self.project_id}', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
+                content = await response.content.read()
+                if response.status != 200:
+                    raise IOError(f'Failed to download archive {url!r} for project {self.project_id!r}: {content}')
 
     async def search(self, query: str, limit: int) -> List[Hit]:
         if len(query) > C.MAX_QUERY_LENGTH:
