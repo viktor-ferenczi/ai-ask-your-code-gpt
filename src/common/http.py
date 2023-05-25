@@ -5,7 +5,7 @@ import aiohttp
 from common import constants as C
 
 
-async def download_file(url, *, max_size: Optional[int] = None):
+async def download_file(url: str, *, max_size: Optional[int] = None):
     size = 0
     archive = []
 

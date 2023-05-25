@@ -44,6 +44,11 @@ class ProjectStorage:
             with open(self.path, mode, buffering, encoding) as f:
                 yield f
 
+    def remove(self):
+        with self.semaphore:
+            if os.path.isfile(self.path):
+                os.remove(self.path)
+
 
 class BinaryStorage(ProjectStorage):
 

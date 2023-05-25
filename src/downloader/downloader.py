@@ -3,17 +3,20 @@ import os
 from traceback import print_exc
 from typing import Dict, List
 
+import aiohttp
 from quart import Quart, request, Response
 
 import common.constants as C
 import doc_types
 from common import extractor
 from common.http import download_file
-from common.storage import ArchiveStorage, FragmentStorage
+from common.storage import ArchiveStorage
 from common.timer import timer
 from model.document import Document
 
 PORT = int(os.environ.get('HTTP_PORT', '40001'))
+
+SPLITTER_PORT = int(os.environ.get('SPLITTER_PORT', '40002'))
 
 SUPPORTED_EXTENSIONS = set(doc_types.DOC_TYPES.keys())
 
@@ -34,9 +37,11 @@ class Downloader:
 
         files = self.__extract(archive, verify_only=True)
         if not files:
-            raise IOError('The archive does not contain any supported documents')
+            raise IOError(C.Message.EmptyArchive)
 
         self.archive_storage.save(archive)
+
+        self.__trigger_processing()
 
     def __download(self) -> bytes:
         try:
@@ -69,6 +74,20 @@ class Downloader:
             raise IOError(f'Failed extract source archive: {self.url!r}')
         print(f'Extracted {len(documents)} files')
         return documents
+
+    def __trigger_processing(self):
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(f'http://127.0.0.1:{SPLITTER_PORT}/project/{self.project_id}') as response:
+                    if response.status != 200:
+                        raise IOError()
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            print('ERROR: The splitter could not be notified. Is it running?')
+            print_exc()
+            self.archive_storage.remove()
+            raise IOError(C.Message.ArchiveIsGoodTryAgainLater)
 
 
 app = Quart(__name__)

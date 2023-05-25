@@ -1,4 +1,3 @@
-import os
 import os.path
 import re
 
@@ -33,3 +32,9 @@ PROJECTS_DIR = os.path.join(DATA_DIR, 'projects')
 # Environment
 PRODUCTION = bool(int(os.environ.get('PRODUCTION', '0')))
 DEVELOPMENT = not PRODUCTION
+
+
+# Error messages
+class Message:
+    ArchiveIsGoodTryAgainLater = 'The archive is good, but the backend failed to process it. Please try again later.'
+    EmptyArchive = 'The archive does not contain any supported documents'
