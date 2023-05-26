@@ -7,6 +7,7 @@ from typing import Iterator, List
 from quart import Quart
 
 import doc_types
+from common.constants import C
 from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
