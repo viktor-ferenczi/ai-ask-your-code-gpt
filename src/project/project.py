@@ -107,6 +107,11 @@ class Project:
         fragments = [Fragment(*row) for row in cursor.execute(f'SELECT lineno, text, name, uuid, path FROM Fragment WHERE uuid IN ({placeholders})', tuple(uuids))]
         return fragments
 
+    def count_fragments(self) -> int:
+        with self.cursor() as cursor:
+            for row in cursor.execute('SELECT COUNT(1) FROM Fragment'):
+                return row[0]
+
     async def delete(self):
         inventory = Inventory()
         inventory.delete_project(self.project_id)

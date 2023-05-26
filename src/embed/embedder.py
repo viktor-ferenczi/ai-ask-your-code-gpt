@@ -16,7 +16,7 @@ app = Quart(__name__)
 
 @app.get('/')
 async def canary():
-    with timer('Locked the semaphore'):
+    with timer('Locked the semaphore', minimum=2.0):
         async with EMBEDDER_MODEL.semaphore:
             pass
     return Response(response='OK', status=200)

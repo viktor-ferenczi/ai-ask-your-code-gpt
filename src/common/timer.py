@@ -1,9 +1,10 @@
 import time
 from contextlib import contextmanager
+from typing import Dict, Optional
 
 
 @contextmanager
-def timer(prefix='', *, count=None, unit=None, stats=None):
+def timer(prefix='', *, count: int = None, unit: str = None, stats: Dict[str, any] = None, minimum: Optional[float] = None):
     started = time.time()
     yield
     duration = time.time() - started
@@ -23,4 +24,5 @@ def timer(prefix='', *, count=None, unit=None, stats=None):
         if frequency is not None:
             stats['frequency'] = frequency
 
-    print(f'{prefix} in {duration:.3f}s{frequency_text}')
+    if minimum is None or duration >= minimum:
+        print(f'{prefix} in {duration:.3f}s{frequency_text}')

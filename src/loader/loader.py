@@ -21,9 +21,9 @@ EMBEDDER_CLIENT = EmbedderClient(STORE_EMBEDDERS)
 
 class Extractor:
 
-    def __init__(self, inventory: Inventory, project_id: str) -> None:
+    def __init__(self, inventory: Inventory, project: Project) -> None:
         self.inventory = inventory
-        self.project: Project = Project(project_id)
+        self.project = project
 
     async def load(self):
         common_base_dir = find_common_base_dir(iter_files_from_zip(self.project.archive_path))
@@ -61,8 +61,9 @@ async def extract_worker():
                 continue
 
             try:
+                project = Project(project_id)
                 with timer(f'Extracted fragments of project {project_id!r}'):
-                    loader = Extractor(inventory, project_id)
+                    loader = Extractor(inventory, project)
                     await loader.load()
             except KeyboardInterrupt:
                 raise
@@ -85,9 +86,9 @@ async def extract_worker():
 
 class Embedder:
 
-    def __init__(self, inventory: Inventory, project_id: str) -> None:
+    def __init__(self, inventory: Inventory, project: Project) -> None:
         self.inventory = inventory
-        self.project: Project = Project(project_id)
+        self.project = project
 
     async def embed(self):
         more = True
@@ -136,8 +137,10 @@ async def embed_worker():
                 continue
 
             try:
-                with timer(f'Embedded fragments of project {project_id!r}'):
-                    embedder = Embedder(inventory, project_id)
+                project = Project(project_id)
+                fragment_count = project.count_fragments()
+                with timer(f'Embedded {fragment_count} fragments of project {project_id!r}', count=fragment_count):
+                    embedder = Embedder(inventory, project)
                     await embedder.embed()
             except KeyboardInterrupt:
                 raise
