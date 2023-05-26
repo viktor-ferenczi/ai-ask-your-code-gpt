@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import uuid
@@ -161,4 +162,4 @@ async def search(project_id: str):
 
 
 if __name__ == "__main__":
-    run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT)
+    asyncio.run(run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT))

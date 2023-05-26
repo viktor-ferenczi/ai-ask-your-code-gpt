@@ -108,7 +108,7 @@ def main():
     inventory.create_database()
 
     port = int(os.environ.get('HTTP_PORT', '40001'))
-    run_app(app, debug=C.DEVELOPMENT, host='localhost', port=port)
+    asyncio.run(run_app(app, debug=C.DEVELOPMENT, host='localhost', port=port))
 
 
 if __name__ == "__main__":

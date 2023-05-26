@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 from typing import Dict, List
@@ -59,4 +60,4 @@ async def embed_query():
 
 if __name__ == "__main__":
     port = int(os.environ.get('HTTP_PORT', '40002'))
-    run_app(app, host='localhost', port=port, debug=C.DEVELOPMENT)
+    asyncio.run(run_app(app, host='localhost', port=port, debug=C.DEVELOPMENT))
