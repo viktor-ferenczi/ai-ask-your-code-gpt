@@ -13,7 +13,6 @@ CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
 if pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$(date -Is): The $NAME server is already running"
   exit 0
 fi
 

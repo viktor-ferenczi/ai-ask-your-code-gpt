@@ -2,7 +2,7 @@
 
 NAME="Store Embedder"
 
-WORKING_DIR="$HOME/src/embedder"
+WORKING_DIR="$HOME/src/embed"
 COMMAND_LINE="python -O -u embedder.py"
 
 LOG_PATH="$HOME/log/$NAME.log"
