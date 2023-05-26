@@ -8,6 +8,7 @@ from typing import Optional, List
 import aiohttp
 
 from common.constants import C
+from common.timer import timer
 from model.fragment import Fragment
 
 QUERY_EMBEDDERS = os.environ.get('QUERY_EMBEDDERS', 'http://127.0.0.1:40100').split()
@@ -55,7 +56,9 @@ class EmbedderClient:
 
         data = json.dumps(dict(instruction=instruction, query=query), indent=2)
 
-        server = await self.find_free_server()
+        with timer('Embedding server search'):
+            server = await self.find_free_server()
+
         if not server:
             raise IOError('No embedding server is available')
 
@@ -88,7 +91,7 @@ class EmbedderClient:
         return None
 
     async def ping(self, server: str, *, timeout=1.0) -> bool:
-        print(f'Ping: {server}')
+        # print(f'Ping: {server}')
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(server, headers={'Accept': 'text/plain'}, timeout=timeout) as response:
