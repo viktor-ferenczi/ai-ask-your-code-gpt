@@ -139,7 +139,7 @@ async def embed_worker():
             try:
                 project = Project(project_id)
                 fragment_count = project.count_fragments()
-                with timer(f'Embedded {fragment_count} fragments of project {project_id!r}', count=fragment_count):
+                with timer(f'Embedded {fragment_count} fragments for project {project_id!r}', count=fragment_count):
                     embedder = Embedder(inventory, project)
                     await embedder.embed()
             except KeyboardInterrupt:
