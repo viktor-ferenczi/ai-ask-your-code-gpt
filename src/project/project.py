@@ -4,7 +4,7 @@ import shutil
 import sqlite3
 from contextlib import contextmanager
 from sqlite3 import Cursor
-from typing import List, ContextManager, Optional
+from typing import List, ContextManager, Optional, Set, Dict
 
 import aiohttp
 from qdrant_client import QdrantClient
@@ -86,7 +86,10 @@ class Project:
                        (fragment.uuid, fragment.path, fragment.lineno, fragment.text, fragment.name))
 
     def mark_fragments_embedded(self, cursor: Cursor, uuids: List[str]):
-        cursor.execute('UPDATE Fragment SET embedded=1 WHERE uuid IN ?', (uuids,))
+        if not uuids:
+            return
+        placeholders = ",".join("?" for _ in uuids)
+        cursor.execute(f'UPDATE Fragment SET embedded=1 WHERE uuid IN ({placeholders})', tuple(uuids))
 
     def get_fragments_to_embed(self, cursor: Cursor, limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
@@ -96,6 +99,13 @@ class Project:
 
     def get_fragments_by_path_tail(self, cursor: Cursor, path: str, limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
+
+    def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
+        if not uuids:
+            return
+        placeholders = ",".join("?" for _ in uuids)
+        fragments = [Fragment(*row) for row in cursor.execute(f'SELECT lineno, text, name, uuid, path FROM Fragment WHERE uuid IN ({placeholders})', tuple(uuids))]
+        return fragments
 
     async def delete(self):
         inventory = Inventory()
@@ -129,7 +139,7 @@ class Project:
             parts: List[str] = 'readme documentation text anything'.split()
 
         vector_query = []
-        file_fragments = set()
+        fragments: Set[Fragment] = set()
         with self.cursor() as cursor:
             for part in parts:
 
@@ -137,32 +147,49 @@ class Project:
                     vector_query.append(part)
                     continue
 
-                fragments = self.get_fragments_by_path_tail(cursor, part, limit)
-                if fragments:
-                    file_fragments.update(fragments)
+                part_fragments = self.get_fragments_by_path_tail(cursor, part, limit)
+                if part_fragments:
+                    fragments.update(part_fragments)
                 else:
                     vector_query.append(part)
 
+        fragments: List[Fragment] = list(fragments)
+
         instruction = doc_types.TextDocType.query_instruction
-        for fragment in file_fragments:
+        for fragment in fragments:
             doc_type_cls = doc_types.detect_by_extension(fragment.path)
             if doc_type_cls is not None:
                 instruction = doc_type_cls.query_instruction
                 break
 
         if not vector_query:
-            fragments.sort(key=lambda fragment: (fragment.path, fragment.lineno))
+            fragments.sort(key=lambda f: (f.path, f.lineno))
             hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments]
             return hits
 
-        uuid_filter = [fragment.uuid for fragment in file_fragments]
-
         vector_query = ' '.join(vector_query)
         embedding = await EMBEDDER_CLIENT.embed_query(instruction, vector_query, timeout=20.0)
+
+        uuid_filter = [fragment.uuid for fragment in fragments]
         results = await self.collection.search(embedding, limit=limit, uuid_filter=uuid_filter)
 
         result_map = {result.uuid: result.score for result in results}
 
-        hits = [Hit(score=result_map[fragment.uuid], **fragment.__dict__) for fragment in fragments if fragment.uuid in result_map]
+        if uuid_filter:
+            fragments: List[Fragment] = [fragment for fragment in fragments if fragment.uuid in result_map]
+            hits: List[Hit] = [
+                Hit(score=result_map[fragment.uuid], **fragment.__dict__)
+                for fragment in fragments
+            ]
+            return hits
+
+        uuids = [result.uuid for result in results]
+        with self.cursor() as cursor:
+            fragments: Dict[str, Fragment] = {f.uuid: f for f in self.list_fragments_by_uuid(cursor, uuids)}
+
+        hits: List[Hit] = [
+            Hit(score=result.score, **fragments[result.uuid].__dict__)
+            for result in results if result.uuid in fragments
+        ]
         hits.sort(key=lambda hit: (hit.path, hit.lineno, -hit.score))
         return hits

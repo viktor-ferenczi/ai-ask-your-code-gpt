@@ -1,19 +1,19 @@
 import asyncio
 import os
 from traceback import print_exc
-from typing import Iterator
+from typing import Iterator, List
 
 from quart import Quart
 
 import doc_types
 from common.doc import find_common_base_dir, remove_common_base_dir
-from common.zip_support import extract_verify_documents
 from common.server import run_app
+from common.zip_support import extract_verify_documents
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS
 from model.document import Document
+from model.fragment import Fragment
 from project.inventory import Inventory
 from project.project import Project
-
 
 EMBEDDER_CLIENT = EmbedderClient(STORE_EMBEDDERS)
 
@@ -49,7 +49,7 @@ class Extractor:
 
 
 async def extract_worker():
-    print('Fragment extractor worker starter')
+    print('Loader: Fragment extractor worker starter')
     inventory = Inventory()
     while 1:
         try:
@@ -87,24 +87,43 @@ class Embedder:
         self.project: Project = Project(project_id)
 
     async def embed(self):
-        while 1:
+        more = True
+        tasks = set()
+        max_tasks = EMBEDDER_CLIENT.server_count
+        assert max_tasks > 0
+        while tasks or more:
+
             with self.project.cursor() as cursor:
 
-                fragments = self.project.get_fragments_to_embed(cursor, EMBEDDER_CLIENT.chunk_size)
-                if not fragments:
-                    break
+                # Add new task as needed
+                if more and len(tasks) < max_tasks:
+                    fragments: List[Fragment] = self.project.get_fragments_to_embed(cursor, EMBEDDER_CLIENT.chunk_size)
+                    if not fragments:
+                        more = False
+                        continue
+                    task = asyncio.create_task(self.embed_batch(fragments))
+                    tasks.add(task)
+                    continue
 
-                embeddings = await EMBEDDER_CLIENT.embed_fragments(fragments)
-                uuids = [fragment.uuid for fragment in fragments]
-                await self.project.collection.store(uuids, embeddings)
+                # Collect results
+                done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED, timeout=30.0)
+                for task in done:
+                    uuids = task.result()
+                    self.project.mark_fragments_embedded(cursor, uuids)
 
             await asyncio.sleep(0)
 
         self.inventory.mark_project_as_embedded(self.project.project_id)
 
+    async def embed_batch(self, fragments: List[Fragment]):
+        embeddings: List[List[float]] = await EMBEDDER_CLIENT.embed_fragments(fragments)
+        uuids: List[str] = [fragment.uuid for fragment in fragments]
+        await self.project.collection.store(uuids, embeddings)
+        return uuids
+
 
 async def embed_worker():
-    print('Fragment embedder worker starter')
+    print('Loader: Fragment embedder worker starter')
     inventory = Inventory()
     while 1:
         try:

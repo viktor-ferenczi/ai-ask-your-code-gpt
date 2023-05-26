@@ -24,6 +24,10 @@ class EmbedderClient:
     def add_servers(self, servers: List[str]):
         self.servers.extend(servers)
 
+    @property
+    def server_count(self):
+        return len(self.servers)
+
     async def embed_fragments(self, fragments: List[Fragment], *, timeout=30.0) -> List[List[float]]:
         data = json.dumps(dict(fragments=[fragment.__dict__ for fragment in fragments]), indent=2)
 

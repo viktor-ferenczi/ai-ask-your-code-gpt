@@ -62,7 +62,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
                  loader_task,
                  ] + loader_worker_tasks
 
-        await asyncio.wait(tasks, timeout=60.0, return_when=asyncio.FIRST_COMPLETED)
+        await asyncio.wait(tasks, timeout=30.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
         for task in tasks[1:]:
