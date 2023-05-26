@@ -22,11 +22,11 @@ class TestSplitters(unittest.TestCase):
                 self.assertIsNotNone(doc_type_cls)
                 doc_type = doc_type_cls()
 
-                with open(path, 'rt') as f:
-                    text = f.read()
+                with open(path, 'rb') as f:
+                    data: bytes = f.read()
 
                 relpath = path[len(TEST_PROJECT_DIR) + 1:]
-                fragments = list(doc_type.load(relpath, text))
+                fragments = list(doc_type.load(relpath, data))
 
                 # Replace UUIDs with sequence numbers, so they are stable
                 for index, fragment in enumerate(fragments):
