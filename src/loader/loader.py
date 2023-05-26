@@ -94,9 +94,7 @@ class Toc:
                 lineno += len(lines) + 1
 
     def get_free_toc_path(self):
-        filename = 'README.md'
-        if filename in self.paths:
-            filename = 'TOC.md'
+        filename = 'TOC.md'
         while filename in self.paths:
             filename = f'_{filename}'
         return filename
