@@ -106,6 +106,10 @@ class EmbedderClient:
 
                 self.retries[index] = time.time() + 60.0
 
+            if all(state == MISSING for state in self.states):
+                for index in range(len(self.retries)):
+                    self.retries[index] = time.time() + 1.0
+
             next_event = min(deadline, min(self.retries))
             delay = max(0.0, next_event - time.time())
             await asyncio.sleep(delay)
