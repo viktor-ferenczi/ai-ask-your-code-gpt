@@ -102,7 +102,7 @@ class Project:
     def get_fragments_by_path(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
 
-    def get_fragments_by_path_tail(self, cursor: Cursor, path: str, limit: int) -> List[Fragment]:
+    def get_fragments_by_path_tail(self, cursor: Cursor, path: str) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
 
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
@@ -161,7 +161,7 @@ class Project:
                     vector_query.append(part)
                     continue
 
-                part_fragments = self.get_fragments_by_path_tail(cursor, part, limit)
+                part_fragments = self.get_fragments_by_path_tail(cursor, part)
                 if part_fragments:
                     fragments.update(part_fragments)
                 else:
