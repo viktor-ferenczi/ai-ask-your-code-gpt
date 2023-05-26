@@ -3,7 +3,7 @@ __all__ = ['TextDocType']
 import uuid
 from typing import Iterator
 
-from langchain.text_splitter import TextSplitter, RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from model.fragment import Fragment
 from .splitters.tokenization import tiktoken_len

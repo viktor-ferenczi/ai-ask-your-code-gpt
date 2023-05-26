@@ -4,7 +4,6 @@ import shutil
 import sqlite3
 from contextlib import contextmanager
 from sqlite3 import Cursor
-from traceback import print_exc
 from typing import List, ContextManager, Optional, Set, Dict, Tuple
 
 import aiohttp
@@ -26,7 +25,6 @@ EMBEDDER_CLIENT = EmbedderClient(QUERY_EMBEDDERS)
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
 QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
-
 
 
 class ProjectError(Exception):
@@ -104,8 +102,8 @@ class Project:
     def get_fragments_by_path(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
 
-    def get_fragments_by_path_tail(self, cursor: Cursor, path: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? ORDER BY path, lineno LIMIT ?', (f'%{path}', limit))]
+    def get_fragments_by_path_tail_unsorted(self, cursor: Cursor, path: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{path}',))]
 
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
@@ -119,7 +117,7 @@ class Project:
             for row in cursor.execute('SELECT COUNT(1) FROM Fragment'):
                 return row[0]
 
-    def count_embedded_fragments(self, cursor: sqlite3.Cursor) -> Tuple[int, int]:
+    def count_embedded_fragments(self) -> Tuple[int, int]:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT COUNT(1), SUM(embedded) FROM Fragment'):
                 return tuple(row)
@@ -149,13 +147,12 @@ class Project:
         if limit > C.MAX_QUERY_LIMIT:
             raise ProjectError(f'The limit must be at most {C.MAX_QUERY_LIMIT}')
 
-        with self.cursor() as cursor:
-            fragment_count, embedded_count = self.count_embedded_fragments(cursor)
-            if not fragment_count:
-                raise ProjectError(f'Your project is being indexed. Please try again later.')
-            if embedded_count < fragment_count:
-                progress = int(round(100.0 * embedded_count / fragment_count))
-                raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
+        fragment_count, embedded_count = self.count_embedded_fragments()
+        if not fragment_count:
+            raise ProjectError(f'Your project is being indexed. Please try again later.')
+        if embedded_count < fragment_count:
+            progress = int(round(100.0 * embedded_count / fragment_count))
+            raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
 
         query = query.strip()
         if query in ('.', '/', '?'):
@@ -175,7 +172,7 @@ class Project:
                     vector_query.append(part)
                     continue
 
-                part_fragments = self.get_fragments_by_path_tail(cursor, part)
+                part_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
                 if part_fragments:
                     fragments.update(part_fragments)
                 else:
@@ -192,7 +189,6 @@ class Project:
                 break
 
         if not vector_query:
-            fragments.sort(key=lambda f: (f.path, f.lineno))
             hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments[:limit]]
             return hits
 
@@ -212,13 +208,13 @@ class Project:
                 for fragment in fragments[:limit]
             ]
         else:
-            uuids = [result.uuid for result in results]
+            uuids = [result.uuid for result in results[:limit]]
             with self.cursor() as cursor:
                 fragments: Dict[str, Fragment] = {f.uuid: f for f in self.list_fragments_by_uuid(cursor, uuids)}
 
             hits: List[Hit] = [
                 Hit(score=result.score, **fragments[result.uuid].__dict__)
-                for result in results if result.uuid in fragments[:limit]
+                for result in results if result.uuid in fragments
             ]
 
         hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))

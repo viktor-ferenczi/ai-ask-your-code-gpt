@@ -58,6 +58,7 @@ async def openapi_spec():
     return Response(text, mimetype="text/yaml", status=200)
 
 
+# noinspection HttpUrlsUsage
 @app.post("/project")
 async def create():
     body: Dict[str, str] = await quart.request.get_json(force=True)
@@ -84,7 +85,7 @@ async def create():
     except ProjectError as e:
         print(f'Failed to download project {project_id!r}: {e}')
         return Response(response=str(e), status=400)
-    except Exception as e:
+    except Exception:
         print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
         print_exc()
         return Response(response='Failed to create project', status=400)
@@ -112,7 +113,7 @@ async def delete(project_id: str):
     except ProjectError as e:
         print(f'Failed to delete project {project_id!r}: {e}')
         return Response(response=str(e), status=400)
-    except Exception as e:
+    except Exception:
         print(f'ERROR: Failed to delete project {project_id!r}')
         print_exc()
         return Response(response='Failed to delete project, please try again later', status=400)
@@ -145,7 +146,7 @@ async def search(project_id: str):
     except ProjectError as e:
         print(f'Failed to search project {project_id!r}: {e}')
         return Response(response=str(e), status=400)
-    except Exception as e:
+    except Exception:
         print(f'ERROR: Failed to search project {project_id!r}')
         print_exc()
         return Response(response='Failed to search project, please try again later', status=400)

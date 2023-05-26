@@ -37,12 +37,12 @@ def get_test_fragments() -> List[Fragment]:
 
 
 def get_random_test_fragments(count: int) -> List[Fragment]:
-    fragments = [Fragment.clone(random.choice(FRAGMENTS)) for _ in range(500)]
+    fragments = [Fragment.clone(random.choice(FRAGMENTS)) for _ in range(count)]
     randomize_uuids_set_lineno(fragments)
     return fragments
 
 
 def randomize_uuids_set_lineno(fragments):
-    for index, fragment in enumerate(FRAGMENTS):
+    for index, fragment in enumerate(fragments):
         fragment.uuid = str(uuid.uuid4())
         fragment.lineno = 1 + index * 5

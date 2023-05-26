@@ -1,4 +1,3 @@
-import pprint
 import unittest
 
 from common.doc import find_common_base_dir

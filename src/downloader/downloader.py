@@ -1,5 +1,4 @@
 import asyncio
-import io
 import os
 from traceback import print_exc
 from typing import Dict
@@ -8,10 +7,10 @@ from quart import Quart, request, Response
 
 import doc_types
 from common.constants import C, Msg, RX
-from common.zip_support import extract_verify_documents
 from common.http import download_file
 from common.server import run_app
 from common.timer import timer
+from common.zip_support import extract_verify_documents
 from project.inventory import Inventory
 from project.project import Project
 
@@ -43,7 +42,7 @@ class Downloader:
             archive: bytes = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE)
         except KeyboardInterrupt:
             raise
-        except Exception as e:
+        except Exception:
             print(f'Failed to download archive {self.url!r} for project {self.project_id!r}')
             print_exc()
             raise IOError(f'Failed to download archive {self.url!r}')

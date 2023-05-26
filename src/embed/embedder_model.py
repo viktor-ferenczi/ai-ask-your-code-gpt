@@ -18,6 +18,7 @@ def verify_torch():
     if not torch.cuda.is_available():
         raise EnvironmentError('CUDA is not available')
     print(f'Torch CUDA device: {torch.cuda.get_device_name(0)}')
+    # noinspection PyUnresolvedReferences
     cudnn_version = torch.backends.cudnn.version()
     if not cudnn_version:
         raise EnvironmentError('cuDNN is not available')
@@ -25,6 +26,7 @@ def verify_torch():
         raise EnvironmentError(f'cuDNN version must be at least 8700, currently it is {cudnn_version}')
 
 
+# noinspection SpellCheckingInspection
 class EmbedderModel:
     # XL: 7.0 ms/embed, 6.2GB GPU RAM usage
     # model_name = 'hkunlp/instructor-xl'

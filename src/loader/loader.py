@@ -150,12 +150,14 @@ async def extract_worker():
     print('Loader: Fragment extractor worker started')
     inventory = Inventory()
     while 1:
+        # noinspection PyBroadException
         try:
             project_id: str = inventory.get_next_project_to_extract()
             if not project_id:
                 await asyncio.sleep(1.0)
                 continue
 
+            # noinspection PyBroadException
             try:
                 project = Project(project_id)
                 with timer(f'Extracted fragments of project {project_id!r}'):
@@ -245,12 +247,14 @@ async def embed_worker():
     print('Loader: Fragment embedder worker started')
     inventory = Inventory()
     while 1:
+        # noinspection PyBroadException
         try:
             project_id: str = inventory.get_next_project_to_embed()
             if not project_id:
                 await asyncio.sleep(1.0)
                 continue
 
+            # noinspection PyBroadException
             try:
                 project = Project(project_id)
                 fragment_count = project.count_fragments()

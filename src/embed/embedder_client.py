@@ -10,7 +10,6 @@ import aiohttp
 from aiohttp import ClientConnectorError
 
 from common.constants import C
-from common.timer import timer
 from model.fragment import Fragment
 
 QUERY_EMBEDDERS = os.environ.get('QUERY_EMBEDDERS', 'http://127.0.0.1:40100').split()
@@ -56,7 +55,7 @@ class EmbedderClient:
         fragment_embeddings = fragment_dicts['embeddings']
         return fragment_embeddings
 
-    async def embed_query(self, instruction: str, query: str, *, timeout=10.0) -> List[float]:
+    async def embed_query(self, instruction: str, query: str, *, timeout=20.0) -> List[float]:
         if not instruction.strip():
             raise EmbedderError('Empty instruction')
 
@@ -65,9 +64,7 @@ class EmbedderClient:
 
         data = json.dumps(dict(instruction=instruction, query=query), indent=2)
 
-        with timer('Embedding server search'):
-            server = await self.find_free_server()
-
+        server = await self.find_free_server(timeout=20.0)
         if not server:
             raise EmbedderError('No embedding servers are available')
 
@@ -116,6 +113,7 @@ class EmbedderClient:
         return None
 
     async def check_embedder(self, server: str, *, timeout=3.0) -> int:
+        # noinspection PyBroadException
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'{server}/check', headers={'Accept': 'text/plain'}, timeout=timeout) as response:

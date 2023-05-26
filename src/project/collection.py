@@ -3,9 +3,7 @@
 from typing import List, Optional
 
 from qdrant_client import QdrantClient, grpc
-from qdrant_client.conversions.conversion import payload_to_grpc
 
-from model.fragment import Fragment
 from model.result import Result
 
 
