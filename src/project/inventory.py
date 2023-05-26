@@ -35,6 +35,8 @@ class Inventory:
                     )
                 ''')
             cursor.execute('CREATE INDEX idx_inventory_project_id ON Inventory(project_id)')
+            cursor.execute('CREATE INDEX idx_inventory_project_extracted ON Inventory(extracted)')
+            cursor.execute('CREATE INDEX idx_inventory_project_embedded ON Inventory(embedded)')
 
     def register_project(self, project_id: str):
         with self.cursor() as cursor:

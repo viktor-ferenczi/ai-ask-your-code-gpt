@@ -82,6 +82,9 @@ class Project:
     def index_by_path(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
 
+    def index_by_name(self, cursor: Cursor):
+        cursor.execute('CREATE INDEX idx_fragment_name ON Fragment(name)')
+
     def insert_fragment(self, cursor: Cursor, fragment: Fragment):
         cursor.execute('INSERT INTO Fragment(uuid, path, lineno, text, name) VALUES (?, ?, ?, ?, ?)',
                        (fragment.uuid, fragment.path, fragment.lineno, fragment.text, fragment.name))
