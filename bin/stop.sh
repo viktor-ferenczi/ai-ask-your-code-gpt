@@ -12,23 +12,15 @@ set -euo pipefail
 CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
-if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
+if ! check_process "$COMMAND_LINE"; then
+  echo "$TITLE: Not running"
   exit 0
 fi
 
-pkill -f "$COMMAND_LINE"
-
-sleep 1
-
-if pgrep -f "$COMMAND_LINE" >/dev/null; then
+if pkill -9 -u $UID -f "$COMMAND_LINE"; then
   echo "$TITLE: Stopped"
-  exit 0
-fi
-
-if pkill -9 -f "$COMMAND_LINE"; then
-  echo "$TITLE: Killed"
 else
-  echo "$TITLE: Stopped"
+  echo "$TITLE: Failed to stop"
 fi
 
 exit 0

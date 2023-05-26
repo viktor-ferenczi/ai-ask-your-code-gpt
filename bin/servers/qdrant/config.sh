@@ -4,7 +4,7 @@ NAME="qdrant"
 TITLE="Qdrant"
 
 WORKING_DIR="$HOME/db"
-COMMAND_LINE="qdrant"
+COMMAND_LINE="./qdrant --disable-telemetry"
 
 LOG_PATH="$HOME/log/$NAME.log"
 

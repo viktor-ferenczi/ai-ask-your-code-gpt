@@ -9,14 +9,5 @@ fi
 
 set -euo pipefail
 
-CONFIG_DIR="$HOME/bin/servers/$1"
-. $CONFIG_DIR/config.sh
-
-
-
-if [ "$1" == "all" ]; then
-
-fi
-
 bash ~/bin/stop.sh "$@"
 bash ~/bin/start.sh "$@"

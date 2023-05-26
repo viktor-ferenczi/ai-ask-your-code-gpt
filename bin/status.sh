@@ -12,7 +12,7 @@ set -euo pipefail
 CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
-if pgrep -f "$COMMAND_LINE" >/dev/null; then
+if check_process "$COMMAND_LINE"; then
   echo "$TITLE: Running"
 else
   echo "$TITLE: Not running"

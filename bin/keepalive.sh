@@ -27,33 +27,28 @@ function check_canary {
 }
 
 
-if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$(date -Is): $TITLE is missing, starting it"
-  $HOME/bin/start $1
-
-
+if check_process "$COMMAND_LINE"; then
+  # Process is running, but verify whether it is functional
 
   # Canary check
   for RETRY in 1 2 3 4 5; do
-    if canary; then
+    if check_canary; then
       exit 0
     fi
     echo "$(date -Is): $TITLE canary check failed, retry #$RETRY"
     sleep 1
   done
 
-  if canary; then
+  if check_canary; then
     exit 0
   fi
 
   echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
   bash ~/bin/restart.sh "$NAME"
-
-else
-
-  echo "$(date -Is): $TITLE is not running. Starting it now."
-  bash ~/bin/start.sh "$NAME"
-
+  exit 0
 fi
 
+# Process is missing
+echo "$(date -Is): $TITLE is not running. Starting it now."
+bash ~/bin/start.sh "$NAME"
 exit 0

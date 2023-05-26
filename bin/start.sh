@@ -12,12 +12,13 @@ set -euo pipefail
 CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
-if pgrep -f "$COMMAND_LINE" >/dev/null; then
+if check_process "$COMMAND_LINE"; then
+  echo "$TITLE: Already running"
   exit 0
 fi
 
 cd "$WORKING_DIR"
-nohup authbind --deep $COMMAND_LINE >>"$LOG_PATH" 2>&1 &
+nohup $WRAPPER $COMMAND_LINE >>"$LOG_PATH" 2>&1 &
 echo "$TITLE: Started"
 
 exit 0
