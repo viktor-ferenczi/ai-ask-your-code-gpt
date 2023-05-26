@@ -10,8 +10,6 @@ from .splitters.tokenization import tiktoken_len
 
 
 class TextDocType:
-    extension: str = '.txt'
-
     store_instruction: str = 'Represent the document for retrieval'
     query_instruction: str = 'Represent the question for retrieving relevant paragraphs'
 

@@ -10,8 +10,6 @@ from .splitters.tokenization import tiktoken_len
 
 
 class CSharpDocType(TextDocType):
-    extension: str = '.cs'
-
     store_instruction: str = 'Represent the C# code for retrieval'
     query_instruction: str = 'Represent the C# question for retrieving relevant code'
 
