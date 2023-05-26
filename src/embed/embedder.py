@@ -1,8 +1,8 @@
 import asyncio
-import json
 import os
 from typing import Dict, List
 
+import numpy as np
 from quart import Quart, request, Response
 
 from common.constants import C
@@ -36,8 +36,9 @@ async def embed_fragments():
     body: Dict[str, any] = await request.get_json(force=True)
     fragments: List[Fragment] = [Fragment(**fields) for fields in body['fragments']]
     embeddings = await EMBEDDER_MODEL.embed_fragments(fragments)
-    response = dict(embeddings=embeddings.tolist())
-    return Response(response=json.dumps(response), status=200)
+    assert embeddings.shape == (len(fragments), 768)
+    assert embeddings.dtype == np.float32
+    return Response(response=embeddings.tobytes(), status=200)
 
 
 @app.post("/embed/query")
@@ -53,9 +54,10 @@ async def embed_query():
         return Response(response='Empty or missing query', status=400)
 
     embeddings = await EMBEDDER_MODEL.embed_query(instruction, query)
-    response = dict(embedding=embeddings[0].tolist())
+    assert embeddings.shape == (1, 768)
+    assert embeddings.dtype == np.float32
 
-    return Response(response=json.dumps(response), status=200)
+    return Response(response=embeddings.tobytes(), status=200)
 
 
 if __name__ == "__main__":

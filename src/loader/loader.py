@@ -4,6 +4,7 @@ import uuid
 from traceback import print_exc
 from typing import Iterator, List
 
+import numpy as np
 from quart import Quart
 
 import doc_types
@@ -240,7 +241,8 @@ class Embedder:
         self.inventory.mark_project_as_embedded(self.project.project_id)
 
     async def embed_batch(self, fragments: List[Fragment]):
-        embeddings: List[List[float]] = await EMBEDDER_CLIENT.embed_fragments(fragments)
+        embeddings_array: np.ndarray = await EMBEDDER_CLIENT.embed_fragments(fragments)
+        embeddings = [row.tolist() for row in embeddings_array]
         uuids: List[str] = [fragment.uuid for fragment in fragments]
         await self.project.collection.store(uuids, embeddings)
         return uuids

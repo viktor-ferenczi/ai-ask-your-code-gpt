@@ -194,9 +194,10 @@ class Project:
 
         vector_query = ' '.join(vector_query)
         embedding = await EMBEDDER_CLIENT.embed_query(instruction, vector_query, timeout=20.0)
+        assert embedding.shape == (1, 768)
 
         uuid_filter = [fragment.uuid for fragment in fragments]
-        results = await self.collection.search(embedding, limit=limit, uuid_filter=uuid_filter)
+        results = await self.collection.search(embedding[0].tolist(), limit=limit, uuid_filter=uuid_filter)
 
         result_map = {result.uuid: result.score for result in results}
 

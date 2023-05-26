@@ -7,6 +7,7 @@ from traceback import print_exc
 from typing import Optional, List
 
 import aiohttp
+import numpy as np
 from aiohttp import ClientConnectorError
 
 from common.constants import C
@@ -36,7 +37,7 @@ class EmbedderClient:
     def server_count(self):
         return len(self.servers)
 
-    async def embed_fragments(self, fragments: List[Fragment], *, timeout=30.0) -> List[List[float]]:
+    async def embed_fragments(self, fragments: List[Fragment], *, timeout=30.0) -> np.ndarray:
         data = json.dumps(dict(fragments=[fragment.__dict__ for fragment in fragments]), indent=2)
 
         server = await self.find_free_server(timeout=300.0)
@@ -50,11 +51,10 @@ class EmbedderClient:
                 if response.status != 200:
                     raise EmbedderError(f'Failed to embed fragments using embedder: {server}')
 
-        fragment_dicts = json.loads(content.decode('ascii'))
-        fragment_embeddings = fragment_dicts['embeddings']
-        return fragment_embeddings
+        embeddings = np.frombuffer(content, np.float32).reshape(len(fragments), 768)
+        return embeddings
 
-    async def embed_query(self, instruction: str, query: str, *, timeout=20.0) -> List[float]:
+    async def embed_query(self, instruction: str, query: str, *, timeout=20.0) -> np.ndarray:
         if not instruction.strip():
             raise EmbedderError('Empty instruction')
 
@@ -73,9 +73,8 @@ class EmbedderClient:
                 if response.status != 200:
                     raise EmbedderError(f'Failed to embed fragments using embedder: {server}')
 
-        data = json.loads(content.decode('ascii'))
-        query_embedding = data['embedding']
-        return query_embedding
+        embedding = np.frombuffer(content, np.float32).reshape(1, 768)
+        return embedding
 
     async def find_free_server(self, *, timeout=30.0) -> Optional[str]:
         if not self.servers:
