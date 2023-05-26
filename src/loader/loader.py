@@ -145,9 +145,10 @@ async def embed_worker():
             except KeyboardInterrupt:
                 raise
             except Exception:
-                print(f'Failed to embed project {project_id!r}, it will be retry')
+                print(f'Failed to embed project {project_id!r}, will retry')
                 print_exc()
                 inventory.delete_project(project_id)
+                await asyncio.sleep(5)
                 continue
 
         except KeyboardInterrupt:
@@ -155,10 +156,8 @@ async def embed_worker():
         except Exception:
             print('Unexpected failure')
             print_exc()
-            await asyncio.sleep(9)
+            await asyncio.sleep(10)
             continue
-
-        await asyncio.sleep(1)
 
 
 app = Quart(__name__)

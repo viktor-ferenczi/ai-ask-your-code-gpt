@@ -16,10 +16,17 @@ app = Quart(__name__)
 
 @app.get('/')
 async def canary():
-    with timer('Locked the semaphore', minimum=2.0):
+    with timer('Locked the semaphore', minimum=3.0):
         async with EMBEDDER_MODEL.semaphore:
             pass
     return Response(response='OK', status=200)
+
+
+@app.get('/check')
+async def is_free():
+    if EMBEDDER_MODEL.semaphore.locked():
+        return Response(response='BUSY', status=429)
+    return Response(response='FREE', status=200)
 
 
 @app.post("/embed/fragments")

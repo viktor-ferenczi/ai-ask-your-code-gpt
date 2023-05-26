@@ -46,27 +46,22 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         await self.app.run_task(debug=True, host='localhost', port=49001)
 
     async def test_project(self):
+        actual_test = asyncio.create_task(self.actual_test())
         zip_server_task = asyncio.create_task(self.serve_zip())
         query_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40100))
-        store_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200))
+        store_embedder_tasks = [asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200 + i)) for i in (0, 1)]
         downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
         loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
         loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
-        actual_test = asyncio.create_task(self.actual_test())
 
-        tasks = [actual_test,
-                 zip_server_task,
-                 query_embedder_task,
-                 store_embedder_task,
-                 downloader_task,
-                 loader_task,
-                 ] + loader_worker_tasks
+        tasks = [actual_test, zip_server_task, query_embedder_task, downloader_task, loader_task] + store_embedder_tasks + loader_worker_tasks
 
         await asyncio.wait(tasks, timeout=30.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
-        for task in tasks[1:]:
-            task.cancel()
+        for task in tasks:
+            if task is not actual_test:
+                task.cancel()
 
     async def actual_test(self):
         await self.small_project()
