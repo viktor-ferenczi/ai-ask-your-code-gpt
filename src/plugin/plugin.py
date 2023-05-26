@@ -21,6 +21,7 @@ DEVELOPMENT_HTTP_PORT = 5555
 
 def html_prod_to_dev(text):
     text = text.replace('AskYourCode', 'AskYourCodeDev')
+    text = text.replace('askyourcode', 'askyourcodedev')
     text = text.replace('https://askyourcode.ai', f'http://localhost:{DEVELOPMENT_HTTP_PORT}')
     text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{DEVELOPMENT_HTTP_PORT}')
     return text
