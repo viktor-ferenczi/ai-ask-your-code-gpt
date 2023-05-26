@@ -30,7 +30,8 @@ class Downloader:
 
         await asyncio.sleep(0)
 
-        self.__verify(archive)
+        with timer(f'Verified archive for project {self.project_id!r}'):
+            self.__verify(archive)
 
         with open(self.project.archive_path, 'wb') as f:
             f.write(archive)

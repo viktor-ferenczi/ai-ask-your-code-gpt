@@ -10,8 +10,8 @@ import aiohttp
 from common.constants import C
 from model.fragment import Fragment
 
-STORE_EMBEDDERS = os.environ.get('STORE_EMBEDDERS', 'http://127.0.0.1:40100').split()
-QUERY_EMBEDDERS = os.environ.get('QUERY_EMBEDDERS', 'http://127.0.0.1:40200').split()
+QUERY_EMBEDDERS = os.environ.get('QUERY_EMBEDDERS', 'http://127.0.0.1:40100').split()
+STORE_EMBEDDERS = os.environ.get('STORE_EMBEDDERS', 'http://127.0.0.1:40200').split()
 
 EMBEDDER_CHUNK_SIZE = int(os.environ.get('EMBEDDER_CHUNK_SIZE', '128'))
 
@@ -69,19 +69,21 @@ class EmbedderClient:
         query_embedding = data['embedding']
         return query_embedding
 
-    async def find_free_server(self, *, timeout=10.0) -> Optional[str]:
+    async def find_free_server(self, *, timeout=30.0) -> Optional[str]:
         if not self.servers:
             raise ValueError('No embedding servers configured')
 
-        delay = 0.05
-        max_delay = 0.5 * timeout / len(self.servers)
+        ping_timeout = 0.1
+        indices = list(range(len(self.servers)))
         deadline = time.time() + timeout
         while time.time() < deadline:
-            server = random.choice(self.servers)
-            if await self.ping(server, timeout=1.0):
-                return server
-            await asyncio.sleep(delay)
-            delay = min(max_delay, delay * 2.0)
+            random.shuffle(indices)
+            for index in indices:
+                server = self.servers[index]
+                if await self.ping(server, timeout=ping_timeout):
+                    return server
+            ping_timeout = max(1.0, ping_timeout * 2)
+            await asyncio.sleep(ping_timeout)
 
         return None
 
@@ -93,7 +95,7 @@ class EmbedderClient:
                     content = await response.content.read()
                     content = content.decode('utf-8', errors='ignore')
                     if C.DEVELOPMENT and response.status != 200:
-                        print(f'Ping failed with [{response.status}] {content}')
+                        print(f'Failed to ping embedder {server}: [{response.status}] {content}')
                     return response.status == 200
         except asyncio.TimeoutError:
             pass

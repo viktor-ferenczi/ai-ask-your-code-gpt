@@ -8,6 +8,7 @@ from quart import Quart
 import doc_types
 from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
+from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS
 from model.document import Document
@@ -43,7 +44,7 @@ class Extractor:
 
             doc_type_cls = doc_types.detect_by_extension(doc.path)
             if doc_type_cls is None:
-                print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
+                # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
                 continue
 
             yield from doc_type_cls().load(doc.path, doc.data)
@@ -60,8 +61,9 @@ async def extract_worker():
                 continue
 
             try:
-                loader = Extractor(inventory, project_id)
-                await loader.load()
+                with timer(f'Extracted fragments of project {self.project_id!r}'):
+                    loader = Extractor(inventory, project_id)
+                    await loader.load()
             except KeyboardInterrupt:
                 raise
             except Exception:
@@ -90,7 +92,7 @@ class Embedder:
     async def embed(self):
         more = True
         tasks = set()
-        max_tasks = EMBEDDER_CLIENT.server_count
+        max_tasks = 1 + EMBEDDER_CLIENT.server_count
         assert max_tasks > 0
         while tasks or more:
 
@@ -134,8 +136,9 @@ async def embed_worker():
                 continue
 
             try:
-                embedder = Embedder(inventory, project_id)
-                await embedder.embed()
+                with timer(f'Embedded fragments of project {self.project_id!r}'):
+                    embedder = Embedder(inventory, project_id)
+                    await embedder.embed()
             except KeyboardInterrupt:
                 raise
             except Exception:

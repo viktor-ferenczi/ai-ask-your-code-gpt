@@ -5,8 +5,8 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="EMBEDDER_BATCH_SIZE" value="1" />
       <env name="HTTP_PORT" value="40200" />
-      <env name="EMBEDDER_BATCH_SIZE" value="32" />
     </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/embed" />
