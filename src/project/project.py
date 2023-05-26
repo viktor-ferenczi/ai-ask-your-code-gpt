@@ -88,7 +88,7 @@ class Project:
     def mark_fragments_embedded(self, cursor: Cursor, uuids: List[str]):
         if not uuids:
             return
-        placeholders = ",".join("?" for _ in uuids)
+        placeholders = ','.join('?' for _ in uuids)
         cursor.execute(f'UPDATE Fragment SET embedded=1 WHERE uuid IN ({placeholders})', tuple(uuids))
 
     def get_fragments_to_embed(self, cursor: Cursor, limit: int) -> List[Fragment]:
@@ -102,8 +102,8 @@ class Project:
 
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
-            return
-        placeholders = ",".join("?" for _ in uuids)
+            return []
+        placeholders = ','.join('?' for _ in uuids)
         fragments = [Fragment(*row) for row in cursor.execute(f'SELECT lineno, text, name, uuid, path FROM Fragment WHERE uuid IN ({placeholders})', tuple(uuids))]
         return fragments
 
