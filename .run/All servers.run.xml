@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All servers" type="CompoundRunConfigurationType">
+    <toRun name="downloader" type="PythonConfigurationType" />
+    <toRun name="loader" type="PythonConfigurationType" />
+    <toRun name="plugin" type="PythonConfigurationType" />
+    <toRun name="query embedder" type="PythonConfigurationType" />
+    <toRun name="store embedder" type="PythonConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
