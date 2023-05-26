@@ -36,9 +36,9 @@ class EmbedderClient:
     async def embed_fragments(self, fragments: List[Fragment], *, timeout=30.0) -> List[List[float]]:
         data = json.dumps(dict(fragments=[fragment.__dict__ for fragment in fragments]), indent=2)
 
-        server = await self.find_free_server()
+        server = await self.find_free_server(timeout=300.0)
         if not server:
-            print(f'Configure embedding servers: {self.servers}')
+            print(f'Configured embedding servers: {self.servers}')
             raise IOError('No embedding server is available')
 
         async with aiohttp.ClientSession() as session:
