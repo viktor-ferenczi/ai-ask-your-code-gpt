@@ -179,7 +179,7 @@ class Project:
                     vector_query.append(part)
 
         fragments: List[Fragment] = list(fragments)
-        fragments.sort(key=(lambda f: (f.path.count(), f.path, f.lineno)))
+        fragments.sort(key=(lambda f: (f.path.count('/'), f.path, f.lineno)))
 
         instruction = doc_types.TextDocType.query_instruction
         for fragment in fragments:
