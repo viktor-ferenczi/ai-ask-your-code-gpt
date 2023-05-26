@@ -141,6 +141,10 @@ class Project:
         if limit > C.MAX_QUERY_LIMIT:
             raise ValueError(f'The limit must be at most {C.MAX_QUERY_LIMIT}')
 
+        query = query.strip()
+        if not query or query in ('.', '/', '?'):
+            query = 'README.md TOC.md _TOC.md __TOC.md'
+
         parts: List[str] = [part for part in query.split() if part.strip()]
 
         if not parts:
