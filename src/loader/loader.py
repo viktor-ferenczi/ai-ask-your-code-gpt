@@ -91,31 +91,43 @@ class Embedder:
         self.project = project
 
     async def embed(self):
-        more = True
-        tasks = set()
+        embedder_chunk_size = EMBEDDER_CLIENT.chunk_size
+
         max_tasks = 1 + EMBEDDER_CLIENT.server_count
         assert max_tasks > 0
-        while tasks or more:
+
+        while 1:
 
             with self.project.cursor() as cursor:
+                fragments: List[Fragment] = self.project.get_fragments_to_embed(cursor, 16384)
 
-                # Add new task as needed
-                if more and len(tasks) < max_tasks:
-                    fragments: List[Fragment] = self.project.get_fragments_to_embed(cursor, EMBEDDER_CLIENT.chunk_size)
-                    if not fragments:
-                        more = False
+            if not fragments:
+                break
+
+            batches = [fragments[i:i + embedder_chunk_size] for i in range(0, len(fragments), embedder_chunk_size)]
+            del fragments
+
+            batches.reverse()
+
+            tasks = set()
+            while batches or tasks:
+
+                with self.project.cursor() as cursor:
+
+                    # Add new task as needed
+                    if batches and len(tasks) < max_tasks:
+                        fragments: List[Fragment] = batches.pop()
+                        task = asyncio.create_task(self.embed_batch(fragments))
+                        tasks.add(task)
                         continue
-                    task = asyncio.create_task(self.embed_batch(fragments))
-                    tasks.add(task)
-                    continue
 
-                # Collect results
-                done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED, timeout=30.0)
-                for task in done:
-                    uuids = task.result()
-                    self.project.mark_fragments_embedded(cursor, uuids)
+                    # Collect results
+                    done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED, timeout=30.0)
+                    for task in done:
+                        uuids = task.result()
+                        self.project.mark_fragments_embedded(cursor, uuids)
 
-            await asyncio.sleep(0)
+                await asyncio.sleep(0)
 
         self.inventory.mark_project_as_embedded(self.project.project_id)
 

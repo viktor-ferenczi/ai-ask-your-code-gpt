@@ -95,7 +95,7 @@ class EmbedderClient:
                 status = await self.is_free(server, timeout=0.3)
 
                 if status == FREE:
-                    self.retries[index] = time.time() + 0.02
+                    self.retries[index] = time.time() + 0.2
                     return server
 
                 if status == BUSY:
