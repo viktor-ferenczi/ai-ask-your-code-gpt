@@ -134,7 +134,7 @@ class EmbedderClient:
         except asyncio.exceptions.CancelledError:
             pass
         except asyncio.exceptions.TimeoutError:
-            pass
+            return BUSY
         except Exception:
             print(f'Failed to check embedder {server!r}:')
             print_exc()
