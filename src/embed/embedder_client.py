@@ -104,7 +104,7 @@ class EmbedderClient:
                     self.retries[index] = time.time() + 0.5
                     continue
 
-                self.retries[index] = time.time() + 3 + index
+                self.retries[index] = time.time() + 5 + index
 
             next_event = min(deadline, min(self.retries))
             delay = max(0.0, next_event - time.time())

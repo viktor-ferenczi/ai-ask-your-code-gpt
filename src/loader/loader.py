@@ -122,12 +122,15 @@ class Extractor:
                 toc.add(fragment)
                 await asyncio.sleep(0)
 
-            print('>>> TOC:')
+            if C.DEVELOPMENT:
+                print('>>> TOC:')
             for fragment in toc:
                 self.project.insert_fragment(cursor, fragment)
-                print(fragment.text, end='')
+                if C.DEVELOPMENT:
+                    print(fragment.text, end='')
                 await asyncio.sleep(0)
-            print('>>> /TOC')
+            if C.DEVELOPMENT:
+                print('>>> /TOC')
 
         with self.project.cursor() as cursor:
             self.project.index_by_path(cursor)
