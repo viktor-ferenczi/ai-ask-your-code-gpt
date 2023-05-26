@@ -124,7 +124,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(hits, sorted(hits, key=lambda hit: (hit.path, hit.lineno, -hit.score)))
 
         else:
-            self.assertEqual(hits, sorted(hits, key=lambda hit: -hit.score))
+            self.assertEqual(hits, sorted(hits, key=lambda hit: (-hit.score, hit.path, hit.lineno)))
 
         if contains:
             for text in contains:

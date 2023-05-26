@@ -5,7 +5,12 @@ from zipfile import ZipInfo, ZipFile
 from model.document import Document
 
 
-def extract_verify_documents(archive: Union[str, bytes], *, max_file_count, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[Document]:
+def iter_files_from_zip(path: str) -> Iterator[str]:
+    with ZipFile(path, 'r') as zf:
+        yield from zf.namelist()
+
+
+def extract_verify_documents(archive: Union[str, bytes], *, max_file_count: int = None, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[Document]:
     total_size = 0
 
     if isinstance(archive, bytes):

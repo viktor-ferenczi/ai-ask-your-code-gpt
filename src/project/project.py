@@ -177,19 +177,20 @@ class Project:
 
         if uuid_filter:
             fragments: List[Fragment] = [fragment for fragment in fragments if fragment.uuid in result_map]
+
             hits: List[Hit] = [
                 Hit(score=result_map[fragment.uuid], **fragment.__dict__)
                 for fragment in fragments
             ]
-            return hits
+        else:
+            uuids = [result.uuid for result in results]
+            with self.cursor() as cursor:
+                fragments: Dict[str, Fragment] = {f.uuid: f for f in self.list_fragments_by_uuid(cursor, uuids)}
 
-        uuids = [result.uuid for result in results]
-        with self.cursor() as cursor:
-            fragments: Dict[str, Fragment] = {f.uuid: f for f in self.list_fragments_by_uuid(cursor, uuids)}
+            hits: List[Hit] = [
+                Hit(score=result.score, **fragments[result.uuid].__dict__)
+                for result in results if result.uuid in fragments
+            ]
 
-        hits: List[Hit] = [
-            Hit(score=result.score, **fragments[result.uuid].__dict__)
-            for result in results if result.uuid in fragments
-        ]
-        hits.sort(key=lambda hit: (hit.path, hit.lineno, -hit.score))
+        hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
         return hits

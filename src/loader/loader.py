@@ -8,7 +8,7 @@ from quart import Quart
 import doc_types
 from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
-from common.zip_support import extract_verify_documents
+from common.zip_support import extract_verify_documents, iter_files_from_zip
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS
 from model.document import Document
 from model.fragment import Fragment
@@ -25,12 +25,13 @@ class Extractor:
         self.project: Project = Project(project_id)
 
     async def load(self):
-        common_base_dir = find_common_base_dir([doc.path for doc in extract_verify_documents(self.project.archive_path, max_file_count=None, verify_only=True)])
+        common_base_dir = find_common_base_dir(iter_files_from_zip(self.project.archive_path))
+        print(f'Common base dir: {common_base_dir!r}')
 
         await asyncio.sleep(0)
 
         with self.project.cursor() as cursor:
-            iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path, max_file_count=None))
+            iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
             for fragment in self.iter_fragments_from_documents(iter_docs):
                 self.project.insert_fragment(cursor, fragment)
                 await asyncio.sleep(0)
@@ -40,6 +41,7 @@ class Extractor:
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
 
+            print(f'>>> {doc.path}')
             doc_type_cls = doc_types.detect_by_extension(doc.path)
             if doc_type_cls is None:
                 print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')

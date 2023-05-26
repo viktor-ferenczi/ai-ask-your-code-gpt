@@ -6,12 +6,10 @@ from model.document import Document
 def find_common_base_dir(paths: Iterable[str]) -> str:
     dir_sets = []
     for path in paths:
-        for i, dirname in enumerate(path.split('/')[:-1]):
+        for i, dirname in enumerate(path.split('/')):
             if i == len(dir_sets):
                 dir_sets.append(set())
             dir_sets[i].add(dirname)
-
-    print(dir_sets)
 
     common = [dir_set for dir_set in dir_sets if len(dir_set) == 1]
     if not common:
