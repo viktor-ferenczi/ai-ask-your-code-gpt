@@ -61,7 +61,7 @@ async def extract_worker():
                 continue
 
             try:
-                with timer(f'Extracted fragments of project {self.project_id!r}'):
+                with timer(f'Extracted fragments of project {project_id!r}'):
                     loader = Extractor(inventory, project_id)
                     await loader.load()
             except KeyboardInterrupt:
@@ -136,7 +136,7 @@ async def embed_worker():
                 continue
 
             try:
-                with timer(f'Embedded fragments of project {self.project_id!r}'):
+                with timer(f'Embedded fragments of project {project_id!r}'):
                     embedder = Embedder(inventory, project_id)
                     await embedder.embed()
             except KeyboardInterrupt:
