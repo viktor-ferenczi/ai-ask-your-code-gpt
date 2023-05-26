@@ -28,7 +28,7 @@ function check_canary {
 
 
 if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$(date -Is): $NAME is missing, starting it"
+  echo "$(date -Is): $TITLE is missing, starting it"
   $HOME/bin/start $1
 
 
@@ -38,7 +38,7 @@ if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
     if canary; then
       exit 0
     fi
-    echo "$(date -Is): The $NAME server canary check failed, retry #$RETRY"
+    echo "$(date -Is): $TITLE canary check failed, retry #$RETRY"
     sleep 1
   done
 
@@ -46,12 +46,12 @@ if ! pgrep -f "$COMMAND_LINE" >/dev/null; then
     exit 0
   fi
 
-  echo "$(date -Is): The $NAME is running, but does not respond. Restarting it now.
+  echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
   bash ~/bin/restart.sh "$NAME"
 
 else
 
-  echo "$(date -Is): The $NAME is not running. Starting it now.
+  echo "$(date -Is): $TITLE is not running. Starting it now."
   bash ~/bin/start.sh "$NAME"
 
 fi

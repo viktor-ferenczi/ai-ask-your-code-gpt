@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NAME="Query Embedder"
+NAME="query_embedder"
+TITLE="Query Embedder"
 
 WORKING_DIR="$HOME/src/embed"
 COMMAND_LINE="python -O -u embedder.py"

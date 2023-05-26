@@ -13,9 +13,9 @@ CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
 if pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$NAME: Running"
+  echo "$TITLE: Running"
 else
-  echo "$NAME: Not running"
+  echo "$TITLE: Not running"
 fi
 
 exit 0

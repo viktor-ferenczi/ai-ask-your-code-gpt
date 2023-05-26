@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NAME="Store Embedder"
+NAME="store_embedder"
+TITLE="Store Embedder"
 
 WORKING_DIR="$HOME/src/embed"
 COMMAND_LINE="python -O -u embedder.py"

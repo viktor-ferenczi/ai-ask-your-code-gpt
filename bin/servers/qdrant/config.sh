@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NAME="Qdrant"
+NAME="qdrant"
+TITLE="Qdrant"
 
 WORKING_DIR="$HOME/db"
 COMMAND_LINE="qdrant"

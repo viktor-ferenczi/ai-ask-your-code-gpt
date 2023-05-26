@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NAME="Downloader"
+NAME="downloader"
+TITLE="Downloader"
 
 WORKING_DIR="$HOME/src/downloader"
 COMMAND_LINE="python -O -u downloader.py"

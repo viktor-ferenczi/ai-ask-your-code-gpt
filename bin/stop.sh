@@ -21,14 +21,14 @@ pkill -f "$COMMAND_LINE"
 sleep 1
 
 if pgrep -f "$COMMAND_LINE" >/dev/null; then
-  echo "$NAME: Stopped"
+  echo "$TITLE: Stopped"
   exit 0
 fi
 
 if pkill -9 -f "$COMMAND_LINE"; then
-  echo "$NAME: Killed"
+  echo "$TITLE: Killed"
 else
-  echo "$NAME: Stopped"
+  echo "$TITLE: Stopped"
 fi
 
 exit 0

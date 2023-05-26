@@ -18,6 +18,6 @@ fi
 
 cd "$WORKING_DIR"
 nohup authbind --deep $COMMAND_LINE >>"$LOG_PATH" 2>&1 &
-echo "$NAME: Started"
+echo "$TITLE: Started"
 
 exit 0

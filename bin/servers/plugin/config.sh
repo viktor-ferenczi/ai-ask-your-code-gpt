@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NAME="Plugin"
+NAME="plugin"
+TITLE="Plugin"
 
 WORKING_DIR="$HOME/src/plugin"
 COMMAND_LINE="hypercorn --config hypercorn.toml plugin:app"

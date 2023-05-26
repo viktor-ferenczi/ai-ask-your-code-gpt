@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NAME="Loader"
+NAME="loader"
+TITLE="Loader"
 
 WORKING_DIR="$HOME/src/loader"
 COMMAND_LINE="python -O -u loader.py"
