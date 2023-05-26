@@ -4,7 +4,8 @@ import shutil
 import sqlite3
 from contextlib import contextmanager
 from sqlite3 import Cursor
-from typing import List, ContextManager, Optional, Set, Dict
+from traceback import print_exc
+from typing import List, ContextManager, Optional, Set, Dict, Tuple
 
 import aiohttp
 from qdrant_client import QdrantClient
@@ -25,6 +26,11 @@ EMBEDDER_CLIENT = EmbedderClient(QUERY_EMBEDDERS)
 QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
 QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
 QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
+
+
+
+class ProjectError(Exception):
+    pass
 
 
 class Project:
@@ -73,11 +79,7 @@ class Project:
         await self.collection.create()
 
     async def drop_database(self):
-        try:
-            os.remove(self.db_path)
-        except:
-            pass
-
+        os.remove(self.db_path)
         await self.collection.delete()
 
     def index_by_path(self, cursor: Cursor):
@@ -117,6 +119,11 @@ class Project:
             for row in cursor.execute('SELECT COUNT(1) FROM Fragment'):
                 return row[0]
 
+    def count_embedded_fragments(self, cursor: sqlite3.Cursor) -> Tuple[int, int]:
+        with self.cursor() as cursor:
+            for row in cursor.execute('SELECT COUNT(1), SUM(embedded) FROM Fragment'):
+                return tuple(row)
+
     async def delete(self):
         inventory = Inventory()
         inventory.delete_project(self.project_id)
@@ -133,24 +140,31 @@ class Project:
                 async with session.post(f'{DOWNLOADER_URL}/download/{self.project_id}', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
                     if response.status != 200:
                         print(f'Failed to download archive {url!r} for project {self.project_id!r}')
-                        raise IOError(f'Failed to download archive {url!r}')
+                        raise ProjectError(f'Failed to download archive: {url}')
 
     async def search(self, query: str, limit: int) -> List[Hit]:
         if len(query) > C.MAX_QUERY_LENGTH:
-            raise ValueError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
+            raise ProjectError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
 
         if limit > C.MAX_QUERY_LIMIT:
-            raise ValueError(f'The limit must be at most {C.MAX_QUERY_LIMIT}')
+            raise ProjectError(f'The limit must be at most {C.MAX_QUERY_LIMIT}')
+
+        with self.cursor() as cursor:
+            fragment_count, embedded_count = self.count_embedded_fragments(cursor)
+            if not fragment_count:
+                raise ProjectError(f'Your project is being indexed. Please try again later.')
+            if embedded_count < fragment_count:
+                progress = int(round(100.0 * embedded_count / fragment_count))
+                raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
 
         query = query.strip()
-        if not query or query in ('.', '/', '?'):
-            query = 'README.md readme.txt TOC.md _TOC.md __TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
+        if query in ('.', '/', '?'):
+            query = ''
 
         parts: List[str] = [part for part in query.split() if part.strip()]
-
         if not parts:
-            # Empty query used by ChatGPT to check for the project's existence
-            parts: List[str] = 'readme documentation text anything'.split()
+            query = 'README.md readme.txt TOC.md _TOC.md __TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
+            parts = query.split()
 
         vector_query = []
         fragments: Set[Fragment] = set()

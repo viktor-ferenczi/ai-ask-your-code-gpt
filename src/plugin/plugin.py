@@ -10,7 +10,7 @@ from quart import request, Response
 
 from common.constants import C, RX
 from common.server import run_app
-from project.project import Project
+from project.project import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -81,6 +81,9 @@ async def create():
         await project.download(url)
     except KeyboardInterrupt:
         raise
+    except ProjectError as e:
+        print(f'Failed to download project {project_id!r}: {e}')
+        return Response(response=str(e), status=400)
     except Exception as e:
         print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
         print_exc()
@@ -106,10 +109,13 @@ async def delete(project_id: str):
         await project.delete()
     except KeyboardInterrupt:
         raise
+    except ProjectError as e:
+        print(f'Failed to delete project {project_id!r}: {e}')
+        return Response(response=str(e), status=400)
     except Exception as e:
         print(f'ERROR: Failed to delete project {project_id!r}')
         print_exc()
-        return Response(response='Failed to delete project', status=400)
+        return Response(response='Failed to delete project, please try again later', status=400)
 
     return Response(response='OK', status=200)
 
@@ -136,10 +142,13 @@ async def search(project_id: str):
         hits = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
+    except ProjectError as e:
+        print(f'Failed to search project {project_id!r}: {e}')
+        return Response(response=str(e), status=400)
     except Exception as e:
         print(f'ERROR: Failed to search project {project_id!r}')
         print_exc()
-        return Response(response='Failed to search project', status=400)
+        return Response(response='Failed to search project, please try again later', status=400)
 
     results = [hit.__dict__ for hit in hits]
 
