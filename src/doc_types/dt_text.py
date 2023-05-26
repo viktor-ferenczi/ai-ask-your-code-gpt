@@ -28,7 +28,7 @@ class TextDocType:
 
     def load(self, path: str, data: bytes) -> Iterator[Fragment]:
         # FIXME: Support multiple encodings
-        text = data.decode('utf-8', errors='replace')
+        text = data.decode('utf-8', errors='replace').replace('\r\n', '\n')
 
         lineno = 1
         for index, paragraph in enumerate(self.splitter.split_text(text)):

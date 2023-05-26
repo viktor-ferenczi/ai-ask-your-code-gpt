@@ -18,7 +18,7 @@ class PythonDocType(TextDocType):
 
     def load(self, path: str, data: bytes) -> Iterator[Fragment]:
         # FIXME: Support multiple encodings
-        text = data.decode('utf-8', errors='replace')
+        text = data.decode('utf-8', errors='replace').replace('\r\n', '\n')
 
         for index, chunk in enumerate(self.splitter.split_code(text)):
             yield Fragment(uuid=str(uuid.uuid4()), path=path, lineno=chunk.lineno, text=chunk.text, name=chunk.name)
