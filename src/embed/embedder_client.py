@@ -31,6 +31,7 @@ class EmbedderClient:
     def __init__(self, servers: List[str]) -> None:
         self.servers: List[str] = servers
         self.retries: List[float] = [0.0 for _ in servers]
+        self.states: List[int] = [MISSING for _ in servers]
         self.chunk_size: int = EMBEDDER_CHUNK_SIZE
 
     @property
@@ -96,17 +97,17 @@ class EmbedderClient:
                     continue
 
                 server = self.servers[index]
-                status = await self.is_free(server)
+                status = await self.check_embedder(server, timeout=0.5 if MISSING else 5.0)
 
                 if status == FREE:
-                    self.retries[index] = time.time() + 0.5
+                    self.retries[index] = time.time() + 1.0
                     return server
 
                 if status == BUSY:
-                    self.retries[index] = time.time() + 0.2
+                    self.retries[index] = time.time() + 0.5
                     continue
 
-                self.retries[index] = time.time() + 20.0
+                self.retries[index] = time.time() + 60.0
 
             next_event = min(deadline, min(self.retries))
             delay = max(0.0, next_event - time.time())
@@ -114,7 +115,7 @@ class EmbedderClient:
 
         return None
 
-    async def is_free(self, server: str, *, timeout=1.0) -> int:
+    async def check_embedder(self, server: str, *, timeout=3.0) -> int:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'{server}/check', headers={'Accept': 'text/plain'}, timeout=timeout) as response:
