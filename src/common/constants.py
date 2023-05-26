@@ -14,9 +14,9 @@ class C:
     # Limits
 
     # Archive file
-    MAX_ARCHIVE_SIZE = 2 << 20
+    MAX_ARCHIVE_SIZE = 20 << 20
     MAX_FILE_SIZE = 5 << 20
-    MAX_TOTAL_SIZE = 20 << 20
+    MAX_TOTAL_SIZE = 200 << 20
     MAX_FILE_COUNT = MAX_TOTAL_SIZE >> 10
 
     # Query

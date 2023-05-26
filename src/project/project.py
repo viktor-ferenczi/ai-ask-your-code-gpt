@@ -51,6 +51,7 @@ class Project:
     def cursor(self) -> ContextManager[Cursor]:
         with sqlite3.connect(self.db_path) as db:
             yield db.cursor()
+            db.commit()
 
     async def create_database(self):
         if os.path.exists(self.db_path):

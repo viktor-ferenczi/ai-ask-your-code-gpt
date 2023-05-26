@@ -81,7 +81,7 @@ async def extract_worker():
             await asyncio.sleep(9)
             continue
 
-        await asyncio.sleep(1)
+        await asyncio.sleep(0)
 
 
 class Embedder:
@@ -170,6 +170,8 @@ async def embed_worker():
             print_exc()
             await asyncio.sleep(10)
             continue
+
+        await asyncio.sleep(0)
 
 
 app = Quart(__name__)

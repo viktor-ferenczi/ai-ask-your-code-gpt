@@ -92,17 +92,17 @@ class EmbedderClient:
                     continue
 
                 server = self.servers[index]
-                status = await self.is_free(server, timeout=0.3)
+                status = await self.is_free(server)
 
                 if status == FREE:
-                    self.retries[index] = time.time() + 0.2
+                    self.retries[index] = time.time() + 0.5
                     return server
 
                 if status == BUSY:
-                    self.retries[index] = time.time() + 0.1
+                    self.retries[index] = time.time() + 0.2
                     continue
 
-                self.retries[index] = time.time() + 10.0
+                self.retries[index] = time.time() + 20.0
 
             next_event = min(deadline, min(self.retries))
             delay = max(0.0, next_event - time.time())
