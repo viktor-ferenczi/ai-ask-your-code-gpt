@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import sqlite3
+import uuid
 from contextlib import contextmanager
 from sqlite3 import Cursor
 from typing import List, ContextManager, Optional, Set, Dict, Tuple
@@ -159,7 +160,8 @@ class Project:
             query = ''
 
         parts: List[str] = [part for part in query.split() if part.strip()]
-        if not parts:
+        default_query = not parts
+        if default_query:
             query = 'README.md readme.txt TOC.md _TOC.md __TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
             parts = query.split()
 
@@ -175,8 +177,11 @@ class Project:
                 part_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
                 if part_fragments:
                     fragments.update(part_fragments)
-                else:
+                elif not default_query:
                     vector_query.append(part)
+
+        if not vector_query and not fragments:
+            return [Hit(score=1.0, uuid=str(uuid.uuid4()), path='', lineno=0, text='The project does not appear to have any supported files.', name='')]
 
         fragments: List[Fragment] = list(fragments)
         fragments.sort(key=(lambda f: (f.path.count('/'), f.path, f.lineno)))
