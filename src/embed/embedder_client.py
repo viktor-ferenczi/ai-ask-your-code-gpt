@@ -29,8 +29,7 @@ class EmbedderError(Exception):
 class EmbedderClient:
     def __init__(self, servers: List[str]) -> None:
         self.servers: List[str] = servers
-        self.retries: List[float] = [0.0 for _ in servers]
-        self.states: List[int] = [MISSING for _ in servers]
+        self.missing = [False for _ in self.servers]
         self.chunk_size: int = EMBEDDER_CHUNK_SIZE
 
     @property
@@ -82,37 +81,23 @@ class EmbedderClient:
         if not self.servers:
             raise EmbedderError('No embedding servers are configured')
 
-        indices = list(range(len(self.servers)))
-
         deadline = time.time() + timeout
+
         while time.time() < deadline:
-
-            random.shuffle(indices)
-
-            for index in indices:
-                if self.retries[index] > time.time():
+            for i, server in enumerate(self.servers):
+                if self.missing[i] and random.randrange(10):
                     continue
-
-                server = self.servers[index]
-                status = await self.check_embedder(server, timeout=0.5 if MISSING else 5.0)
-
+                status = await self.check_embedder(server, timeout=0.5)
                 if status == FREE:
-                    self.retries[index] = time.time() + 1.0
                     return server
+                if status == MISSING:
+                    self.missing[i] = True
 
-                if status == BUSY:
-                    self.retries[index] = time.time() + 0.5
-                    continue
-
-                self.retries[index] = time.time() + 5 + index
-
-            next_event = min(deadline, min(self.retries))
-            delay = max(0.0, next_event - time.time())
-            await asyncio.sleep(delay)
+            await asyncio.sleep(0.5)
 
         return None
 
-    async def check_embedder(self, server: str, *, timeout=3.0) -> int:
+    async def check_embedder(self, server: str, *, timeout=5.0) -> int:
         # noinspection PyBroadException
         try:
             async with aiohttp.ClientSession() as session:
@@ -127,13 +112,9 @@ class EmbedderClient:
                         return BUSY
         except KeyboardInterrupt:
             raise
-        except ConnectionRefusedError:
+        except (ConnectionRefusedError, ClientConnectorError, asyncio.exceptions.CancelledError):
             pass
-        except ClientConnectorError:
-            pass
-        except asyncio.exceptions.CancelledError:
-            pass
-        except asyncio.exceptions.TimeoutError:
+        except (asyncio.exceptions.TimeoutError, TimeoutError):
             return BUSY
         except Exception:
             print(f'Failed to check embedder {server!r}:')
