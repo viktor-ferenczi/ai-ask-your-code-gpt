@@ -5,7 +5,7 @@ import quart
 
 
 def run_app(app: quart.Quart, *coros: Coroutine, **kws):
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     for coro in coros:
         loop.create_task(coro)
     app.run(loop=loop, **kws)
