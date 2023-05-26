@@ -147,7 +147,7 @@ class Extractor:
 
 
 async def extract_worker():
-    print('Loader: Fragment extractor worker starter')
+    print('Loader: Fragment extractor worker started')
     inventory = Inventory()
     while 1:
         try:
@@ -242,7 +242,7 @@ class Embedder:
 
 
 async def embed_worker():
-    print('Loader: Fragment embedder worker starter')
+    print('Loader: Fragment embedder worker started')
     inventory = Inventory()
     while 1:
         try:
