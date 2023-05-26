@@ -32,13 +32,13 @@ def extract_verify_documents(archive: Union[str, bytes], *, max_file_count: int 
             if supported_extensions:
                 ext = path.split('.')[-1]
                 if ext not in supported_extensions:
-                    print(f'Skipping file due to unsupported extension: {path}')
+                    # print(f'Skipping file due to unsupported extension: {path}')
                     continue
 
             file_info: ZipInfo = zf.getinfo(path)
             file_size = file_info.file_size
             if max_file_size and file_size > max_file_size:
-                print(f'Skipping large file of {file_size} bytes in size, maximum is {max_file_size >> 20}MiB: {path!r}')
+                # print(f'Skipping large file of {file_size} bytes in size, maximum is {max_file_size >> 20}MiB: {path!r}')
                 continue
 
             total_size += file_size
