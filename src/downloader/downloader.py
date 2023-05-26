@@ -93,7 +93,7 @@ async def download(project_id: str):
     if not url:
         return Response(response='Missing url', status=400)
 
-    with timer(f'Loaded project {project_id!r}'):
+    with timer(f'Downloaded archived {url!r} and registered project {project_id!r}'):
 
         downloader = Downloader(project_id, url)
         await downloader.download_verify()

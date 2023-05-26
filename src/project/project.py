@@ -168,6 +168,7 @@ class Project:
                     vector_query.append(part)
 
         fragments: List[Fragment] = list(fragments)
+        fragments.sort(key=(lambda f: (f.path.count(), f.path, f.lineno)))
 
         instruction = doc_types.TextDocType.query_instruction
         for fragment in fragments:
@@ -178,7 +179,7 @@ class Project:
 
         if not vector_query:
             fragments.sort(key=lambda f: (f.path, f.lineno))
-            hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments]
+            hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments[:limit]]
             return hits
 
         vector_query = ' '.join(vector_query)
@@ -194,7 +195,7 @@ class Project:
 
             hits: List[Hit] = [
                 Hit(score=result_map[fragment.uuid], **fragment.__dict__)
-                for fragment in fragments
+                for fragment in fragments[:limit]
             ]
         else:
             uuids = [result.uuid for result in results]
@@ -203,7 +204,7 @@ class Project:
 
             hits: List[Hit] = [
                 Hit(score=result.score, **fragments[result.uuid].__dict__)
-                for result in results if result.uuid in fragments
+                for result in results if result.uuid in fragments[:limit]
             ]
 
         hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
