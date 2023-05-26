@@ -8,10 +8,11 @@ from common.constants import C
 
 
 class Inventory:
+    filename = 'inventory.sqlite'
 
     def __init__(self) -> None:
         os.makedirs(C.DATA_DIR, exist_ok=True)
-        self.db_path = os.path.join(C.DATA_DIR, 'inventory.sqlite')
+        self.db_path = os.path.join(C.DATA_DIR, self.filename)
         self.create_database()
 
     @contextmanager

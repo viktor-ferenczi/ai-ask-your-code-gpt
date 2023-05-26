@@ -28,11 +28,12 @@ QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
 
 
 class Project:
+    dirname = 'projects'
 
     def __init__(self, project_id: str) -> None:
         self.project_id: str = project_id
 
-        self.data_dir: str = os.path.join(C.DATA_DIR, 'projects', self.project_id[:2], self.project_id[2:4], self.project_id)
+        self.data_dir: str = os.path.join(C.DATA_DIR, self.dirname, self.project_id[:2], self.project_id[2:4], self.project_id)
         os.makedirs(self.data_dir, exist_ok=True)
 
         self.archive_path: str = os.path.join(self.data_dir, 'archive.zip')

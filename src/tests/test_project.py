@@ -1,5 +1,6 @@
 import asyncio
 import os
+import shutil
 import unittest
 import uuid
 import zipfile
@@ -7,6 +8,7 @@ from typing import List
 
 from quart import Quart, send_file
 
+from common.constants import C
 from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
@@ -22,6 +24,15 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
     def setUp(self) -> None:
+        Inventory.filename = 'test-inventory.sqlite'
+        inventory = Inventory()
+        inventory.drop_database()
+
+        Project.dirname = 'test-projects'
+        test_projects_dir = os.path.join(C.DATA_DIR, Project.dirname)
+        if os.path.isdir(test_projects_dir):
+            shutil.rmtree(test_projects_dir)
+
         dir_len = len(self.test_project_dir) + 1
         with zipfile.ZipFile(self.zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, dirs, files in os.walk(self.test_project_dir):

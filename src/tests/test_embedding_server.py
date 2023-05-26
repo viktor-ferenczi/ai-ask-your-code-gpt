@@ -1,4 +1,5 @@
 import asyncio
+import time
 import unittest
 
 import numpy as np
@@ -6,25 +7,32 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from common.timer import timer
 from doc_types import PythonDocType
-from embed.embedder_client import EmbedderClient
+from embed.embedder_client import EmbedderClient, FREE
 from embed.embedder import app
 from example_fragments import get_random_test_fragments, get_test_fragments
 
-EMBEDDING_CLIENT = EmbedderClient([f'http://127.0.0.1:40100'])
+EMBEDDING_CLIENT = EmbedderClient(['http://127.0.0.1:40100'])
 
 
 class TestEmbeddingServer(unittest.IsolatedAsyncioTestCase):
 
     async def test_embedding_server(self):
         server_task = asyncio.create_task(app.run_task(debug=True, host='localhost', port=40100))
-        test_task = asyncio.create_task(self.send_test_requests())
+        test_task = asyncio.create_task(self.actual_test())
 
         await asyncio.wait([server_task, test_task], timeout=30.0, return_when=asyncio.FIRST_COMPLETED)
 
         test_task.result()
         server_task.cancel()
 
-    async def send_test_requests(self):
+    async def actual_test(self):
+        deadline = time.time() + 20.0
+        while time.time() < deadline:
+            if await EMBEDDING_CLIENT.check_embedder(EMBEDDING_CLIENT.servers[0], timeout=0.5) == FREE:
+                break
+        else:
+            self.fail('The embedder did not come online')
+
         server = await EMBEDDING_CLIENT.find_free_server()
         self.assertIsNotNone(server)
 
