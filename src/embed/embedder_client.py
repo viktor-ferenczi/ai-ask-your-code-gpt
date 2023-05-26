@@ -23,6 +23,10 @@ BUSY = 1
 MISSING = 2
 
 
+class EmbedderError(Exception):
+    pass
+
+
 class EmbedderClient:
     def __init__(self, servers: List[str]) -> None:
         self.servers: List[str] = servers
@@ -39,13 +43,13 @@ class EmbedderClient:
         server = await self.find_free_server(timeout=300.0)
         if not server:
             print(f'Configured embedding servers: {self.servers}')
-            raise IOError('No embedding server is available')
+            raise EmbedderError('No embedding servers are available')
 
         async with aiohttp.ClientSession() as session:
             async with session.post(f'{server}/embed/fragments', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
                 content = await response.content.read()
                 if response.status != 200:
-                    raise IOError(f'Failed to embed fragments using embed server: {server}')
+                    raise EmbedderError(f'Failed to embed fragments using embedder: {server}')
 
         fragment_dicts = json.loads(content.decode('ascii'))
         fragment_embeddings = fragment_dicts['embeddings']
@@ -53,10 +57,10 @@ class EmbedderClient:
 
     async def embed_query(self, instruction: str, query: str, *, timeout=10.0) -> List[float]:
         if not instruction.strip():
-            raise ValueError('Empty instruction')
+            raise EmbedderError('Empty instruction')
 
         if not query.strip():
-            raise ValueError('Empty query')
+            raise EmbedderError('Empty query')
 
         data = json.dumps(dict(instruction=instruction, query=query), indent=2)
 
@@ -64,13 +68,13 @@ class EmbedderClient:
             server = await self.find_free_server()
 
         if not server:
-            raise IOError('No embedding server is available')
+            raise EmbedderError('No embedding servers are available')
 
         async with aiohttp.ClientSession() as session:
             async with session.post(f'{server}/embed/query', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
                 content = await response.content.read()
                 if response.status != 200:
-                    raise IOError(f'Failed to embed fragments using embed server: {server}')
+                    raise EmbedderError(f'Failed to embed fragments using embedder: {server}')
 
         data = json.loads(content.decode('ascii'))
         query_embedding = data['embedding']
@@ -78,7 +82,7 @@ class EmbedderClient:
 
     async def find_free_server(self, *, timeout=30.0) -> Optional[str]:
         if not self.servers:
-            raise ValueError('No embedding servers configured')
+            raise EmbedderError('No embedding servers are configured')
 
         indices = list(range(len(self.servers)))
 

@@ -143,7 +143,7 @@ class Project:
 
         query = query.strip()
         if not query or query in ('.', '/', '?'):
-            query = 'README.md TOC.md _TOC.md __TOC.md'
+            query = 'README.md readme.txt TOC.md _TOC.md __TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
 
         parts: List[str] = [part for part in query.split() if part.strip()]
 

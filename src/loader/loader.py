@@ -12,7 +12,7 @@ from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
 from doc_types.splitters.tokenization import tiktoken_len
-from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS
+from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS, EmbedderError
 from model.document import Document
 from model.fragment import Fragment
 from project.inventory import Inventory
@@ -219,7 +219,13 @@ class Embedder:
 
                 # Collect results
                 for task in done:
-                    uuids = task.result()
+                    
+                    try:
+                        uuids = task.result()
+                    except EmbedderError as e:
+                        print(f'Failed to embed batch, it will be retried: {e}')
+                        continue
+
                     with self.project.cursor() as cursor:
                         self.project.mark_fragments_embedded(cursor, uuids)
 
