@@ -41,7 +41,6 @@ class Extractor:
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
 
-            print(f'>>> {doc.path}')
             doc_type_cls = doc_types.detect_by_extension(doc.path)
             if doc_type_cls is None:
                 print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
