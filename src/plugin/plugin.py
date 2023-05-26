@@ -151,4 +151,4 @@ async def search(project_id: str):
 
 
 if __name__ == "__main__":
-    run_app(app, debug=True, host="localhost", port=DEVELOPMENT_HTTP_PORT)
+    run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT)

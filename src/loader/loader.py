@@ -219,7 +219,7 @@ class Embedder:
 
                 # Collect results
                 for task in done:
-                    
+
                     try:
                         uuids = task.result()
                     except EmbedderError as e:
@@ -287,4 +287,4 @@ async def canary():
 
 if __name__ == "__main__":
     port = int(os.environ.get('HTTP_PORT', '40002'))
-    run_app(app, *[worker() for worker in workers], host='localhost', port=port)
+    run_app(app, *[worker() for worker in workers], host='localhost', port=port, debug=C.DEVELOPMENT)

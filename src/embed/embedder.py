@@ -4,6 +4,7 @@ from typing import Dict, List
 
 from quart import Quart, request, Response
 
+from common.constants import C
 from common.server import run_app
 from common.timer import timer
 from embed.embedder_model import EmbedderModel
@@ -58,4 +59,4 @@ async def embed_query():
 
 if __name__ == "__main__":
     port = int(os.environ.get('HTTP_PORT', '40002'))
-    run_app(app, host='localhost', port=port)
+    run_app(app, host='localhost', port=port, debug=C.DEVELOPMENT)
