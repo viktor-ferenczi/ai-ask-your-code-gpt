@@ -115,21 +115,24 @@ class Extractor:
         with self.project.cursor() as cursor:
             iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
 
-            toc = Toc()
+            toc = Toc() if C.INCLUDE_TOC else None
+
             for fragment in self.iter_fragments_from_documents(iter_docs):
                 self.project.insert_fragment(cursor, fragment)
-                toc.add(fragment)
+                if toc is not None:
+                    toc.add(fragment)
                 await asyncio.sleep(0)
 
-            if C.DEVELOPMENT:
-                print('>>> TOC:')
-            for fragment in toc:
-                self.project.insert_fragment(cursor, fragment)
+            if toc is not None:
                 if C.DEVELOPMENT:
-                    print(fragment.text, end='')
-                await asyncio.sleep(0)
-            if C.DEVELOPMENT:
-                print('>>> /TOC')
+                    print('>>> TOC:')
+                for fragment in toc:
+                    self.project.insert_fragment(cursor, fragment)
+                    if C.DEVELOPMENT:
+                        print(fragment.text, end='')
+                    await asyncio.sleep(0)
+                if C.DEVELOPMENT:
+                    print('>>> /TOC')
 
         with self.project.cursor() as cursor:
             self.project.index_by_path(cursor)
