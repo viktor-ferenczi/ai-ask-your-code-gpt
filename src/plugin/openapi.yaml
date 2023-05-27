@@ -18,7 +18,7 @@ paths:
               $ref: '#/components/schemas/downloadRequest'
       responses:
         "200":
-          description: OK
+          description: Archive downloaded, context indexing is in progress
           content:
             application/json:
               schema:
@@ -126,9 +126,9 @@ components:
           type: string
           description: Project ID (GUID)
           required: true
-        message:
-          type: string
-          description: Additional information on indexing progress or an error message.
+        progress:
+          type: integer
+          description: Percentage progress of content indexing. Missing if the indexing has completed. Text based search results may be incomplete until indexing finishes.
     summarizeResponse:
       type: object
       required:
@@ -141,26 +141,22 @@ components:
     searchResponse:
       type: object
       required:
-        - score
-        - text
         - path
         - lineno
+        - text
       properties:
-        score:
-          type: number
-          description: Score (relevance).
-        text:
-          type: string
-          description: Code or text fragment.
         path:
           type: string
           description: Relative file path (inside project).
         lineno:
           type: integer
           description: Line number to reconstruct the order of text fragments inside the same file.
+        text:
+          type: string
+          description: Code or text fragment.
         name:
           type: string
           description: Name of the definition or declaration (program code only).
         progress:
           type: integer
-          description: Percentage progress of content indexing, signifies a potentially incomplete search. Present only if indexing is still in progress.
+          description: Percentage progress of content indexing. Missing if the indexing has completed. Signifies an incomplete search if present.
