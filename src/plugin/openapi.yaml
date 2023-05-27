@@ -40,7 +40,7 @@ paths:
   /project/{project_id}/search:
     get:
       operationId: search
-      summary: Searches in a project
+      summary: Searches project files.
       parameters:
         - in: path
           name: project_id
@@ -53,7 +53,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Code or text to look for, files can be filtered by .extension, name or path
+          description: Code or text to look for, filter files by .extension, name or path
         - in: query
           name: limit
           schema:
@@ -94,7 +94,6 @@ components:
         error:
           type: string
           description: Error message (OK if missing)
-          required: false
     searchResponse:
       type: object
       required:
@@ -127,3 +126,6 @@ components:
                 description: Name of the definition or declaration (program code only)
           description: Search results in decreasing score order
           required: true
+        remarks:
+          type: string
+          description: Remarks about the search process

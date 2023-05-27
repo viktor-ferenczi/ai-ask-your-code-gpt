@@ -138,7 +138,7 @@ class Extractor:
             self.project.index_by_path(cursor)
             self.project.index_by_name(cursor)
 
-        self.inventory.mark_project_as_extracted(self.project.project_id)
+        self.inventory.mark_project_extracted(self.project.project_id)
 
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
@@ -239,7 +239,7 @@ class Embedder:
 
                 await asyncio.sleep(0)
 
-        self.inventory.mark_project_as_embedded(self.project.project_id)
+        self.inventory.mark_project_embedded(self.project.project_id)
 
     async def embed_batch(self, fragments: List[Fragment]):
         embeddings_array: np.ndarray = await EMBEDDER_CLIENT.embed_fragments(fragments)

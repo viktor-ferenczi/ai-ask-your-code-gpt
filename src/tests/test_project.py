@@ -85,20 +85,25 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits = await project.search('class Duplicates', 3)
+        hits, remarks = await project.search('class Duplicates', 3)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
+        self.assertEqual(remarks, [])
 
-        hits = await project.search('.py', 10)
+        hits, remarks = await project.search('.py', 10)
         self.verify_hits(hits, 6, path='find_duplicates.py')
+        self.assertEqual(remarks, ['Searched only by path, not by content.'])
 
-        hits = await project.search('find_duplicates.py', 3)
+        hits, remarks = await project.search('find_duplicates.py', 3)
         self.verify_hits(hits, 3, path='find_duplicates.py')
+        self.assertEqual(remarks, ['Searched only by path, not by content.'])
 
-        hits = await project.search('find_duplicates.py class Duplicates', 1)
+        hits, remarks = await project.search('find_duplicates.py class Duplicates', 1)
         self.verify_hits(hits, 1, path='find_duplicates.py', contains=['class Duplicates'])
+        self.assertEqual(remarks, [])
 
-        hits = await project.search('README.md', 10)
+        hits, remarks = await project.search('README.md', 10)
         self.verify_hits(hits, 4, path='README.md')
+        self.assertEqual(remarks, ['Searched only by path, not by content.'])
 
         await project.delete()
 
@@ -109,11 +114,13 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits = await project.search('README.md', 20)
+        hits, remarks = await project.search('README.md', 20)
         self.verify_hits(hits, 3, path='README.md')
+        self.assertEqual(remarks, ['Searched only by path, not by content.'])
 
-        hits = await project.search('class Query', 10)
+        hits, remarks = await project.search('class Query', 10)
         self.verify_hits(hits, 10, contains=['class Query'])
+        self.assertEqual(remarks, [])
 
         await project.delete()
 
@@ -141,14 +148,14 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         print('Waiting for extracting fragments...')
         while 1:
-            if inventory.has_project_as_extracted(project.project_id):
+            if inventory.has_project_extracted(project.project_id):
                 break
             await asyncio.sleep(0.2)
         print('Downloaded')
 
         print('Waiting for embedding fragments...')
         while 1:
-            if inventory.has_project_as_embedded(project.project_id):
+            if inventory.has_project_embedded(project.project_id):
                 break
             await asyncio.sleep(0.2)
         print('Embedded')

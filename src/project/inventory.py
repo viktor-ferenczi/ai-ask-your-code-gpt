@@ -56,11 +56,11 @@ class Inventory:
                 return project_id
         return None
 
-    def mark_project_as_extracted(self, project_id: str):
+    def mark_project_extracted(self, project_id: str):
         with self.cursor() as cursor:
             cursor.execute('UPDATE Inventory SET extracted = 1 WHERE project_id = ?', (project_id,))
 
-    def has_project_as_extracted(self, project_id: str) -> bool:
+    def has_project_extracted(self, project_id: str) -> bool:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT extracted FROM Inventory WHERE project_id = ?', (project_id,)):
                 return bool(row[0])
@@ -73,11 +73,11 @@ class Inventory:
                 return project_id
         return None
 
-    def mark_project_as_embedded(self, project_id: str):
+    def mark_project_embedded(self, project_id: str):
         with self.cursor() as cursor:
             cursor.execute('UPDATE Inventory SET embedded = 1 WHERE project_id = ?', (project_id,))
 
-    def has_project_as_embedded(self, project_id: str) -> bool:
+    def has_project_embedded(self, project_id: str) -> bool:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT embedded FROM Inventory WHERE project_id = ?', (project_id,)):
                 return bool(row[0])

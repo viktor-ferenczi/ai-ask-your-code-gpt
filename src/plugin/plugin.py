@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import time
 import uuid
 from traceback import print_exc
 from typing import Dict
@@ -11,6 +12,7 @@ from quart import request, Response
 
 from common.constants import C, RX
 from common.server import run_app
+from project.inventory import Inventory
 from project.project import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -62,6 +64,8 @@ async def openapi_spec():
 # noinspection HttpUrlsUsage
 @app.post("/project")
 async def create():
+    deadline = time.time() + C.MAX_WAIT_TIME_AFTER_DOWNLOAD
+
     body: Dict[str, str] = await quart.request.get_json(force=True)
 
     # Validate URL
@@ -90,6 +94,25 @@ async def create():
         print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
         print_exc()
         return Response(response='Failed to create project', status=400)
+
+    # At this point the project is downloaded and registered
+    await asyncio.sleep(2.0)
+
+    # Wait for up to 30 seconds from request for download and indexing, this is to not confuse the user with "still indexing" messages
+    inventory = Inventory()
+    while time.time() < deadline:
+
+        # noinspection PyBroadException
+        try:
+            if inventory.has_project_embedded(project_id):
+                break
+        except Exception:
+            if C.DEVELOPMENT:
+                print('Silenced error while waiting for the project to be indexed:')
+            print_exc()
+            pass
+
+        await asyncio.sleep(max(1.5, deadline - time.time()))
 
     response = {
         'project_id': project_id
@@ -141,7 +164,7 @@ async def search(project_id: str):
     # noinspection PyBroadException
     try:
         project = Project(project_id)
-        hits = await project.search(query, limit)
+        hits, remarks = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
@@ -157,6 +180,10 @@ async def search(project_id: str):
     for result in results:
         if not result['name']:
             del result['name']
+
+    response = dict(results=results)
+    if remarks:
+        response['remarks'] = ' '.join(remarks)
 
     return Response(response=json.dumps(results, indent=2), status=200)
 

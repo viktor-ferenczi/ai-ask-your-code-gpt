@@ -141,19 +141,15 @@ class Project:
                         print(f'Failed to download archive {url!r} for project {self.project_id!r}')
                         raise ProjectError(f'Failed to download archive: {url}')
 
-    async def search(self, query: str, limit: int) -> List[Hit]:
+    async def search(self, query: str, limit: int) -> Tuple[List[Hit], List[str]]:
         if len(query) > C.MAX_QUERY_LENGTH:
             raise ProjectError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
 
         if limit > C.MAX_QUERY_LIMIT:
             raise ProjectError(f'The limit must be at most {C.MAX_QUERY_LIMIT}')
 
-        fragment_count, embedded_count = self.count_embedded_fragments()
-        if not fragment_count:
-            raise ProjectError(f'Your project is being indexed. Please try again later.')
-        if embedded_count < fragment_count:
-            progress = int(round(100.0 * embedded_count / fragment_count))
-            raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
+        embedding_completeness = self.ensure_reasonably_embedded()
+        completeness_warning = f'Searched {embedding_completeness}% of the content.' if embedding_completeness < 100 else ''
 
         query = query.strip()
         if query in ('.', '/', '?'):
@@ -181,10 +177,19 @@ class Project:
                     vector_query.append(part)
 
         if not vector_query and not fragments:
-            return [Hit(score=1.0, uuid=str(uuid.uuid4()), path='', lineno=0, text='The project does not appear to have any supported files.', name='')]
+            if completeness_warning:
+                return [], [completeness_warning]
+            return [], ['The project does not appear to contain any supported files.']
 
         fragments: List[Fragment] = list(fragments)
         fragments.sort(key=(lambda f: (f.path.count('/'), f.path, f.lineno)))
+
+        if not vector_query:
+            hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments[:limit]]
+            remarks = ['Searched only by path, not by content.']
+            if completeness_warning:
+                remarks.append(completeness_warning)
+            return hits, remarks
 
         instruction = doc_types.TextDocType.query_instruction
         for fragment in fragments:
@@ -192,10 +197,6 @@ class Project:
             if doc_type_cls is not None:
                 instruction = doc_type_cls.query_instruction
                 break
-
-        if not vector_query:
-            hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments[:limit]]
-            return hits
 
         vector_query = ' '.join(vector_query)
         embedding = await EMBEDDER_CLIENT.embed_query(instruction, vector_query, timeout=20.0)
@@ -224,4 +225,22 @@ class Project:
             ]
 
         hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
-        return hits
+        return hits, []
+
+    def ensure_reasonably_embedded(self) -> int:
+        inventory = Inventory()
+        if inventory.has_project_embedded(self.project_id):
+            return 100
+
+        fragment_count, embedded_count = self.count_embedded_fragments()
+        if not fragment_count:
+            raise ProjectError(f'Your project is being indexed. Please try again later.')
+
+        progress = 100
+        if embedded_count < fragment_count:
+            progress = int(round(100.0 * embedded_count / fragment_count))
+
+        if progress < C.MINIMUM_PROGRESS_TO_ALLOW_SEARCH:
+            raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
+
+        return progress

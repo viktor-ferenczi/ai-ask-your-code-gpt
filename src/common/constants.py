@@ -28,6 +28,10 @@ class C:
     MAX_INSTRUCTION_SIZE = 512
     MAX_TEXT_SIZE = 8192
 
+    # Project creation and first search
+    MAX_WAIT_TIME_AFTER_DOWNLOAD = 15.0  # s
+    MINIMUM_PROGRESS_TO_ALLOW_SEARCH = 20  # %
+
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     DATA_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
