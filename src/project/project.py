@@ -144,29 +144,21 @@ class Project:
                         print(f'Failed to download archive {url!r} for project {self.project_id!r}')
                         raise ProjectError(f'Failed to download archive: {url}')
 
-    async def search(self, query: str, limit: int, page: int) -> Tuple[List[Hit], List[str]]:
+    async def search(self, query: str, limit: int) -> Tuple[List[Hit], List[str]]:
         remarks = []
 
-        await self.verify_query_limits(query, limit, page)
+        await self.verify_query(query, limit)
         parts = await self.split_query(query)
         fragments, vector_query = await self.separate_query(parts)
 
         embedding_completeness = self.ensure_reasonably_embedded()
 
-        offset = limit * (page - 1)
-        if fragments and offset >= len(fragments):
-            # Page after the last one
-            return [], []
-
         if vector_query:
             # Vector database search
-            vector_results = await self.search_vector_database(fragments, offset + limit, vector_query)
+            vector_results = await self.search_vector_database(fragments, limit, vector_query)
 
             # Stable sort order is determined by the scores (or by UUID if it is a tie)
             vector_results.sort(key=lambda result: (-result.score, result.uuid))
-
-            # Paging only after the sort order is fixed
-            vector_results = vector_results[offset:offset + limit]
 
             # Combine into hits, preserve vector results sort order
             if fragments:
@@ -182,8 +174,8 @@ class Project:
             hits = [Hit(score=sqrt(1.0 / (1.0 + fragment.path.count('/'))), **fragment.__dict__) for fragment in fragments]
             hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
 
-            # Paging only after the sort order is fixed
-            hits = hits[offset:offset + limit]
+            # Limiting only after the sort order is fixed
+            hits = hits[:limit]
 
         # Remark on potential partial content
         if vector_query and embedding_completeness < 100:
@@ -195,19 +187,12 @@ class Project:
 
         return hits, remarks
 
-    async def verify_query_limits(self, query: str, limit: int, page: int):
+    async def verify_query(self, query: str, limit: int):
         if len(query) > C.MAX_QUERY_LENGTH:
             raise ProjectError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
 
         if limit < 1 or limit > C.MAX_QUERY_LIMIT:
-            if C.DEVELOPMENT and limit == -1:
-                # Test override
-                limit = 9999
-            else:
-                raise ProjectError(f'The limit must be between 1 and {C.MAX_QUERY_LIMIT}')
-
-        if page < 1 or page > C.MAX_QUERY_PAGE:
-            raise ProjectError(f'The page must be between 1 and {C.MAX_QUERY_PAGE}')
+            raise ProjectError(f'The limit must be between 1 and {C.MAX_QUERY_LIMIT}')
 
     async def split_query(self, query):
         query = query.strip()

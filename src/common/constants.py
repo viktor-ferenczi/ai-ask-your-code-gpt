@@ -21,9 +21,7 @@ class C:
 
     # Query
     MAX_QUERY_LENGTH = 1000
-    MAX_QUERY_LIMIT = 10
-    MAX_QUERY_PAGE = 100
-    MAX_HIT_COUNT = MAX_QUERY_LIMIT * MAX_QUERY_PAGE
+    MAX_QUERY_LIMIT = 20
 
     # Embedder
     MAX_BATCH_SIZE = 1024

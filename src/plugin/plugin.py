@@ -153,24 +153,18 @@ async def search(project_id: str):
 
     query: str = request.args.get('query', '')
     limit_str: str = request.args.get('limit', '5')
-    page_str: str = request.args.get('page', '1')
 
     try:
         limit: int = max(1, int(limit_str))
     except ValueError:
         limit: int = 5
 
-    try:
-        page: int = max(1, int(page_str))
-    except ValueError:
-        page: int = 1
-
     print(f'Search project {project_id!r} with limit {limit}: {query!r}')
 
     # noinspection PyBroadException
     try:
         project = Project(project_id)
-        hits, remarks = await project.search(query, limit, page)
+        hits, remarks = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:

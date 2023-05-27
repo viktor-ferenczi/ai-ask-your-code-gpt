@@ -92,23 +92,23 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('class Duplicates', 3, 1)
+        hits, remarks = await project.search('class Duplicates', 3)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('.py', 10, 1)
+        hits, remarks = await project.search('.py', 10)
         self.verify_hits(hits, 6, path='find_duplicates.py')
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('find_duplicates.py', 3, 1)
+        hits, remarks = await project.search('find_duplicates.py', 3)
         self.verify_hits(hits, 3, path='find_duplicates.py')
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('find_duplicates.py class Duplicates', 1, 1)
+        hits, remarks = await project.search('find_duplicates.py class Duplicates', 1)
         self.verify_hits(hits, 1, path='find_duplicates.py', contains=['class Duplicates'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('README.md', 10, 1)
+        hits, remarks = await project.search('README.md', 10)
         self.verify_hits(hits, 4, path='README.md')
         self.assertEqual(remarks, [])
 
@@ -121,50 +121,17 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('README.md', 10, 1)
+        hits, remarks = await project.search('README.md', 10)
         self.verify_hits(hits, 3, path='README.md')
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('README.md', 10, 2)
-        self.verify_hits(hits, 0)
-
-        hits, remarks = await project.search('.py class Query', 10, 1)
+        hits, remarks = await project.search('.py class Query', 10)
         self.verify_hits(hits, 10, contains=['class Query'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('query.py', 10, 1)
-        self.verify_hits(hits, 10, contains=['class Query'])
+        hits, remarks = await project.search('query.py', 20)
+        self.verify_hits(hits, 16, contains=['class Query'])
         self.assertEqual(remarks, [])
-
-        hits, remarks = await project.search('query.py', 10, 2)
-        self.verify_hits(hits, 6)
-        self.assertEqual(remarks, [])
-
-        hits, remarks = await project.search('.py class Query', 10, 100)
-        self.verify_hits(hits, 0)
-        self.assertEqual(remarks, [])
-
-        hits, remarks = await project.search('class Query', 10, 100)
-        self.verify_hits(hits, 0)
-        self.assertEqual(remarks, [])
-
-        for query in ['query.py', 'query.py class Query', '.py class Query:']:
-            print(f'Query: {query}')
-
-            hits1, remarks = await project.search(query, -1, 1)
-
-            hits2 = []
-            for page in range(1, 101):
-                hits, remarks = await project.search(query, 7, page)
-                hits2.extend(hits)
-                if len(hits) < 7:
-                    break
-                if len(hits2) >= len(hits1):
-                    del hits2[len(hits1):]
-                    break
-
-            self.assertEqual(len(hits1), len(hits2))
-            self.assertEqual(uuid_list_of(hits1), uuid_list_of(hits2))
 
         await project.delete()
 
