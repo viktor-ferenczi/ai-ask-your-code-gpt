@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: AskYourCode
-  description: Allows for searching and retrieving the documentation and source code of a software project to assist in reasoning.
+  description: Allows for searching, retrieving and summarizing documentation and program code for reasoning about a software project.
   version: 'v1'
 servers:
   - url: https://plugin.askyourcode.ai
@@ -9,7 +9,7 @@ paths:
   /project:
     post:
       operationId: download
-      summary: Downloads a project archive, extracts it, then stores the code and text fragments into the database.
+      summary: Downloads a project archive, extracts it, then indexes the documentation and code fragments into a database.
       requestBody:
         required: true
         content:
@@ -33,36 +33,71 @@ paths:
           schema:
             type: string
           required: true
-          description: GUID of the project.
+          description: Project ID
       responses:
         "200":
           description: OK
-  /project/{project_id}/search:
+  /project/{project_id}/summarize:
     get:
-      operationId: search
-      summary: Searches project files.
+      operationId: summarize
+      summary: Summarizes a single documentation file or code construct (function, class or method). Provides a Table of Contents (TOC) for the project if `name` is not specified.
       parameters:
         - in: path
           name: project_id
           schema:
             type: string
           required: true
-          description: GUID of the project.
+          description: Project ID
         - in: query
-          name: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: File extension, filename or path of the documentation file to summarize. Fully qualified name or short name of the code construct to summarize.
+          example: .md
+      responses:
+        "200":
+          description: Summary
+          content:
+            text/plain:
+              schema:
+                type: string
+  /project/{project_id}/search:
+    get:
+      operationId: search
+      summary: Searches for documentation or code constructs (function, class or method).
+      parameters:
+        - in: path
+          name: project_id
           schema:
             type: string
           required: true
-          description: A question on documentation or a code search. Code searches must include .extension, filename or tail of path.
+          description: Project ID
         - in: query
-          name: limit
+          name: ext
           schema:
-            type: integer
-            minimum: 1
-            maximum: 20
-            default: 5
+            type: string
+          required: true
+          description: File extension to narrow down the search to a specific document type.
+          example: .py
+        - in: query
+          name: path
+          schema:
+            type: string
           required: false
-          description: Maximum number of results to return.
+          description: Patch of a project directory or file to narrow down the search.
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Fully qualified or simple name of the code construct to search for.
+        - in: query
+          name: text
+          schema:
+            type: string
+          required: false
+          description: Free text search on the file contents to further narrow down the results.
       responses:
         "200":
           description: OK
@@ -89,7 +124,7 @@ components:
       properties:
         project_id:
           type: string
-          description: Project ID (GUID).
+          description: Project ID (GUID)
           required: true
         message:
           type: string
@@ -106,35 +141,26 @@ components:
     searchResponse:
       type: object
       required:
-        - results
+        - score
+        - text
+        - path
+        - lineno
       properties:
-        results:
-          type: array
-          items:
-            type: object
-            required:
-              - score
-              - text
-              - path
-              - lineno
-            properties:
-              score:
-                type: number
-                description: Score (relevance).
-              text:
-                type: string
-                description: Code or text fragment.
-              path:
-                type: string
-                description: Relative file path (inside project).
-              lineno:
-                type: integer
-                description: Line number to reconstruct fragment order.
-              name:
-                type: string
-                description: Name of the definition or declaration (program code only).
-          description: Search results in decreasing score order.
-          required: true
+        score:
+          type: number
+          description: Score (relevance).
+        text:
+          type: string
+          description: Code or text fragment.
+        path:
+          type: string
+          description: Relative file path (inside project).
+        lineno:
+          type: integer
+          description: Line number to reconstruct the order of text fragments inside the same file.
+        name:
+          type: string
+          description: Name of the definition or declaration (program code only).
         progress:
           type: integer
-          description: Progress of content indexing in percentages. Missing if indexing is complete.
+          description: Percentage progress of content indexing, signifies a potentially incomplete search. Present only if indexing is still in progress.
