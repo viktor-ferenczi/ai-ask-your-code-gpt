@@ -135,7 +135,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(remarks, [])
 
         hits, remarks = await project.search('procedure.py', 20)
-        self.verify_hits(hits, 8, contains=['class BaseProcedure'])
+        self.verify_hits(hits, 8, path='lib/dblayer/model/procedure.py', contains=['class BaseProcedure'])
         self.assertEqual(remarks, [])
 
         await project.delete()

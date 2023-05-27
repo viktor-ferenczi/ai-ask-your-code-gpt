@@ -53,9 +53,12 @@
                '            file_size = os.path.getsize(file_path)\n'
                '            files_by_size[file_size].append(file_path)\n'
                '\n'
-               '    total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() if len(file_list) > 1)\n'
-               '\n'
-               '    # Calculate the hash only for groups with more than one file\n'
+               '    total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() if len(file_list) > 1)',
+          name='Duplicates.collect',
+          uuid='TEST-04',
+          path='find_duplicates.py'),
+ Fragment(lineno=39,
+          text='# Calculate the hash only for groups with more than one file\n'
                '    with ProcessPoolExecutor() as executor, tqdm(total=total_size, unit=\'B\', unit_scale=True, desc="Processing files") as pbar:\n'
                '        for file_size, file_list in files_by_size.items():\n'
                '            if len(file_list) > 1:\n'
@@ -66,7 +69,7 @@
                '\n'
                '    self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)',
           name='Duplicates.collect',
-          uuid='TEST-04',
+          uuid='TEST-05',
           path='find_duplicates.py'),
  Fragment(lineno=52,
           text='def main():\n'
@@ -97,5 +100,5 @@
                '\n'
                '    print(f"\\nTotal disk space that could be saved by deleting duplicates: {total_space_saved} bytes")',
           name='main',
-          uuid='TEST-05',
+          uuid='TEST-06',
           path='find_duplicates.py')]

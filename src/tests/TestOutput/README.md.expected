@@ -29,34 +29,34 @@
           name='',
           uuid='TEST-01',
           path='README.md'),
- Fragment(lineno=26,
-          text='Some long section\n'
-               '\n'
-               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu tellus libero.\n'
+ Fragment(lineno=26, text='Some long section', name='', uuid='TEST-02', path='README.md'),
+ Fragment(lineno=27,
+          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu tellus libero.\n'
                'Maecenas consectetur ex id libero malesuada consequat. Fusce dapibus, ipsum vel efficitur lobortis,\n'
                'libero dui tristique eros, id volutpat tellus neque a velit. Etiam id ante dui.\n'
                'Donec quis tortor tempus libero congue tempor vitae eget mauris. Aliquam tincidunt lacinia semper.\n'
                'Etiam tincidunt nisl dapibus, tempor sem nec, fringilla neque. Nam vulputate sollicitudin sapien\n'
                'sed interdum. Vivamus vel ex vel sem commodo congue nec eget quam. Pellentesque consequat,\n'
-               'lectus eu volutpat sodales, magna dui mattis sem, ut luctus metus ligula dictum nulla.\n'
-               'Vivamus nisi tellus, gravida eu pellentesque at, tempus in massa. Suspendisse potenti.\n'
+               'lectus eu volutpat sodales, magna dui mattis sem, ut luctus metus ligula dictum nulla.',
+          name='',
+          uuid='TEST-03',
+          path='README.md'),
+ Fragment(lineno=34,
+          text='Vivamus nisi tellus, gravida eu pellentesque at, tempus in massa. Suspendisse potenti.\n'
                'Aliquam purus sapien, faucibus vitae eros a, aliquet porta nulla.',
           name='',
-          uuid='TEST-02',
+          uuid='TEST-04',
           path='README.md'),
- Fragment(lineno=37,
+ Fragment(lineno=36,
           text='Sed facilisis tellus ut pretium egestas. Etiam finibus dolor in quam tincidunt fermentum.\n'
                'Aenean viverra est eget velit blandit, ut feugiat purus congue. Maecenas semper nunc molestie,\n'
                'tincidunt est eget, ullamcorper mi. Duis convallis velit sed libero suscipit, eu iaculis\n'
                'tortor interdum. Nam faucibus viverra tortor, a tincidunt nunc eleifend id. Proin pharetra\n'
                'eros vel eros tincidunt, aliquam consequat libero condimentum. Integer aliquam felis aliquet\n'
                'nunc pretium bibendum. Aliquam sodales dapibus nisi, sit amet tincidunt sem egestas nec.\n'
-               'Mauris maximus nulla nunc, non dapibus nunc semper vitae. Suspendisse viverra neque in\n'
-               'interdum rhoncus. Sed in quam egestas, facilisis massa ut, maximus elit.\n'
-               '\n'
-               '# End\n'
-               '\n'
-               'End of test doc.',
+               'Mauris maximus nulla nunc, non dapibus nunc semper vitae. Suspendisse viverra neque in',
           name='',
-          uuid='TEST-03',
-          path='README.md')]
+          uuid='TEST-05',
+          path='README.md'),
+ Fragment(lineno=43, text='interdum rhoncus. Sed in quam egestas, facilisis massa ut, maximus elit.', name='', uuid='TEST-06', path='README.md'),
+ Fragment(lineno=44, text='# End\n\nEnd of test doc.', name='', uuid='TEST-07', path='README.md')]
