@@ -13,11 +13,17 @@ from common.constants import C
 from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
+from model.fragment import Fragment
 from model.hit import Hit
 from project.inventory import Inventory
 from project.project import Project
 
 MODULE_DIR = os.path.dirname(__file__)
+
+
+# FIXME: Move this to model and reuse everywhere, same for path or name if needed
+def uuid_list_of(fragments: List[Fragment]) -> List[str]:
+    return [fragment.uuid for fragment in fragments]
 
 
 class TestProject(unittest.IsolatedAsyncioTestCase):
@@ -126,20 +132,35 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.verify_hits(hits, 10, contains=['class Query'])
         self.assertEqual(remarks, [])
 
-        hits1, remarks = await project.search('query.py', 20, 1)
-        self.verify_hits(hits1, 16, contains=['class Query'])
+        hits, remarks = await project.search('query.py', 20, 1)
+        self.verify_hits(hits, 16, contains=['class Query'])
         self.assertEqual(remarks, [])
-
-        hits2 = []
-        for page in range(1, 101):
-            hits, remarks = await project.search('query.py', 7, page)
-            hits2.extend(hits)
-            if len(hits) < 7:
-                break
-        self.assertEqual(hits1, hits2)
 
         hits, remarks = await project.search('.py class Query', 50, 50)
         self.verify_hits(hits, 0)
+        self.assertEqual(remarks, [])
+
+        hits, remarks = await project.search('class Query', 50, 50)
+        self.verify_hits(hits, 0)
+        self.assertEqual(remarks, [])
+
+        for query in ['query.py', 'query.py class Query', '.py class Query:']:
+            print(f'Query: {query}')
+
+            hits1, remarks = await project.search(query, 50, 1)
+
+            hits2 = []
+            for page in range(1, 101):
+                hits, remarks = await project.search(query, 7, page)
+                hits2.extend(hits)
+                if len(hits) < 7:
+                    break
+                if len(hits2) >= len(hits1):
+                    del hits2[len(hits1):]
+                    break
+
+            self.assertEqual(len(hits1), len(hits2))
+            self.assertEqual(uuid_list_of(hits1), uuid_list_of(hits2))
 
         await project.delete()
 

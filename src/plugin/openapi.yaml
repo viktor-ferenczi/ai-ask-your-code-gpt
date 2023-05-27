@@ -33,7 +33,7 @@ paths:
           schema:
             type: string
           required: true
-          description: GUID of the project
+          description: GUID of the project.
       responses:
         "200":
           description: OK
@@ -47,13 +47,13 @@ paths:
           schema:
             type: string
           required: true
-          description: GUID of the project
+          description: GUID of the project.
         - in: query
           name: query
           schema:
             type: string
           required: true
-          description: Question on documentation or code search. Code search must include a filter on file path, at least its .extension
+          description: A question on documentation or a code search. Code searches must include .extension, filename or tail of path.
         - in: query
           name: limit
           schema:
@@ -62,7 +62,7 @@ paths:
             maximum: 100
             default: 5
           required: false
-          description: Maximum number of results to return
+          description: Maximum number of results to return.
         - in: query
           name: page
           schema:
@@ -71,7 +71,7 @@ paths:
             maximum: 100
             default: 1
           required: false
-          description: Page number, allows for retrieving more results if available
+          description: Page number, allows for retrieving more results if available.
       responses:
         "200":
           description: OK
@@ -89,7 +89,7 @@ components:
       properties:
         url:
           type: string
-          description: URL of the ZIP archive to download directly without authentication
+          description: URL of the ZIP archive to download directly without authentication.
           required: true
     downloadResponse:
       type: object
@@ -98,11 +98,11 @@ components:
       properties:
         project_id:
           type: string
-          description: GUID of the project
+          description: GUID of the project.
           required: true
         error:
           type: string
-          description: Error message (OK if missing)
+          description: Error message (OK if missing).
     searchResponse:
       type: object
       required:
@@ -120,21 +120,21 @@ components:
             properties:
               score:
                 type: number
-                description: Score (relevance)
+                description: Score (relevance).
               text:
                 type: string
-                description: Code or text fragment
+                description: Code or text fragment.
               path:
                 type: string
-                description: Relative file path (inside project)
+                description: Relative file path (inside project).
               lineno:
                 type: integer
-                description: Line number to reconstruct fragment order
+                description: Line number to reconstruct fragment order.
               name:
                 type: string
-                description: Name of the definition or declaration (program code only)
-          description: Search results in decreasing score order
+                description: Name of the definition or declaration (program code only).
+          description: Search results in decreasing score order.
           required: true
         remarks:
           type: string
-          description: Remarks about the search process
+          description: Relevant details on the search process (if any).
