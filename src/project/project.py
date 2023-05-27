@@ -2,10 +2,10 @@ import json
 import os
 import shutil
 import sqlite3
-import uuid
 from contextlib import contextmanager
+from math import sqrt
 from sqlite3 import Cursor
-from typing import List, ContextManager, Optional, Set, Dict, Tuple
+from typing import List, ContextManager, Optional, Set, Tuple
 
 import aiohttp
 from qdrant_client import QdrantClient
@@ -141,91 +141,79 @@ class Project:
                         print(f'Failed to download archive {url!r} for project {self.project_id!r}')
                         raise ProjectError(f'Failed to download archive: {url}')
 
-    async def search(self, query: str, limit: int) -> Tuple[List[Hit], List[str]]:
+    async def search(self, query: str, limit: int, page: int) -> Tuple[List[Hit], List[str]]:
+        remarks = []
+
+        await self.verify_query_limits(query, limit, page)
+        default_query, parts = await self.split_query(query)
+        embedding_completeness = self.ensure_reasonably_embedded()
+        fragments, vector_query = await self.separate_query(default_query, parts)
+
+        offset = limit * (page - 1)
+        if fragments and offset >= len(fragments):
+            # Page after the last one
+            return [], []
+
+        if vector_query:
+            # Vector database search
+            vector_results = await self.search_vector_database(fragments, offset + limit, vector_query)
+
+            # Stable sort order is determined by the scores (or by UUID if it is a tie)
+            vector_results.sort(key=lambda result: (-result.score, result.uuid))
+
+            # Paging only after the sort order is fixed
+            vector_results = vector_results[offset:offset + limit]
+
+            # Combine into hits, preserve vector results sort order
+            if fragments:
+                fragment_map = {fragment.uuid: fragment for fragment in fragments}
+                hits = [Hit(score=result.score, **fragment_map[result.uuid].__dict__) for result in vector_results]
+            else:
+                uuids = [result.uuid for result in vector_results]
+                with self.cursor() as cursor:
+                    fragment_map = {fragment.uuid: fragment for fragment in self.list_fragments_by_uuid(cursor, uuids)}
+                hits = [Hit(score=result.score, **fragment_map[result.uuid].__dict__) for result in vector_results]
+        else:
+            # Relevant based on depth in tree, so the LLM will look at the broader structure first
+            hits = [Hit(score=sqrt(1.0 / (1.0 + fragment.path.count('/'))), **fragment.__dict__) for fragment in fragments]
+            hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
+
+            # Paging only after the sort order is fixed
+            hits = hits[offset:offset + limit]
+
+        # Remark on potential partial content
+        if vector_query and embedding_completeness < 100:
+            remarks.extend([
+                'Indexing is still in progress.',
+                f'Searched {embedding_completeness}% of the content.',
+                'Paging is not stable until all content is indexed.'
+            ])
+
+        return hits, remarks
+
+    async def verify_query_limits(self, query: str, limit: int, page: int):
         if len(query) > C.MAX_QUERY_LENGTH:
             raise ProjectError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
 
-        if limit > C.MAX_QUERY_LIMIT:
-            raise ProjectError(f'The limit must be at most {C.MAX_QUERY_LIMIT}')
+        if limit < 1 or limit > C.MAX_QUERY_LIMIT:
+            raise ProjectError(f'The limit must be between 1 and {C.MAX_QUERY_LIMIT}')
 
-        embedding_completeness = self.ensure_reasonably_embedded()
-        completeness_warning = f'Searched {embedding_completeness}% of the content.' if embedding_completeness < 100 else ''
+        if page < 1 or page > C.MAX_QUERY_PAGE:
+            raise ProjectError(f'The page must be between 1 and {C.MAX_QUERY_PAGE}')
 
+    async def split_query(self, query):
         query = query.strip()
         if query in ('.', '/', '?'):
             query = ''
 
         parts: List[str] = [part for part in query.split() if part.strip()]
         default_query = not parts
+
         if default_query:
-            query = 'README.md readme.txt TOC.md _TOC.md __TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
+            query = 'README.md readme.txt TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
             parts = query.split()
 
-        vector_query = []
-        fragments: Set[Fragment] = set()
-        with self.cursor() as cursor:
-            for part in parts:
-
-                if '.' not in part:
-                    vector_query.append(part)
-                    continue
-
-                part_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
-                if part_fragments:
-                    fragments.update(part_fragments)
-                elif not default_query:
-                    vector_query.append(part)
-
-        if not vector_query and not fragments:
-            if completeness_warning:
-                return [], [completeness_warning]
-            return [], ['The project does not appear to contain any supported files.']
-
-        fragments: List[Fragment] = list(fragments)
-        fragments.sort(key=(lambda f: (f.path.count('/'), f.path, f.lineno)))
-
-        if not vector_query:
-            hits = [Hit(score=1.0, **fragment.__dict__) for fragment in fragments[:limit]]
-            remarks = ['Searched only by path, not by content.']
-            if completeness_warning:
-                remarks.append(completeness_warning)
-            return hits, remarks
-
-        instruction = doc_types.TextDocType.query_instruction
-        for fragment in fragments:
-            doc_type_cls = doc_types.detect_by_extension(fragment.path)
-            if doc_type_cls is not None:
-                instruction = doc_type_cls.query_instruction
-                break
-
-        vector_query = ' '.join(vector_query)
-        embedding = await EMBEDDER_CLIENT.embed_query(instruction, vector_query, timeout=20.0)
-        assert embedding.shape == (1, 768)
-
-        uuid_filter = [fragment.uuid for fragment in fragments]
-        results = await self.collection.search(embedding[0].tolist(), limit=limit, uuid_filter=uuid_filter)
-
-        result_map = {result.uuid: result.score for result in results}
-
-        if uuid_filter:
-            fragments: List[Fragment] = [fragment for fragment in fragments if fragment.uuid in result_map]
-
-            hits: List[Hit] = [
-                Hit(score=result_map[fragment.uuid], **fragment.__dict__)
-                for fragment in fragments[:limit]
-            ]
-        else:
-            uuids = [result.uuid for result in results[:limit]]
-            with self.cursor() as cursor:
-                fragments: Dict[str, Fragment] = {f.uuid: f for f in self.list_fragments_by_uuid(cursor, uuids)}
-
-            hits: List[Hit] = [
-                Hit(score=result.score, **fragments[result.uuid].__dict__)
-                for result in results if result.uuid in fragments
-            ]
-
-        hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
-        return hits, []
+        return default_query, parts
 
     def ensure_reasonably_embedded(self) -> int:
         inventory = Inventory()
@@ -244,3 +232,43 @@ class Project:
             raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
 
         return progress
+
+    async def separate_query(self, default_query, parts):
+        vector_query = []
+        fragments: Set[Fragment] = set()
+
+        with self.cursor() as cursor:
+            for part in parts:
+
+                if '.' not in part:
+                    vector_query.append(part)
+                    continue
+
+                part_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
+                if part_fragments:
+                    fragments.update(part_fragments)
+                elif not default_query:
+                    vector_query.append(part)
+
+        return list(fragments), vector_query
+
+    async def search_vector_database(self, fragments: List[Fragment], limit, vector_query):
+        instruction = await self.determine_query_instruction(fragments)
+
+        print('>>> ' + repr((instruction, ' '.join(vector_query))))
+
+        embedding = await EMBEDDER_CLIENT.embed_query(instruction, ' '.join(vector_query), timeout=20.0)
+        assert embedding.shape == (1, 768)
+
+        uuid_filter = [fragment.uuid for fragment in fragments]
+
+        vector_search_results = await self.collection.search(embedding[0].tolist(), limit=limit, uuid_filter=uuid_filter)
+        return vector_search_results
+
+    async def determine_query_instruction(self, fragments):
+        for fragment in fragments:
+            doc_type_cls = doc_types.detect_by_extension(fragment.path)
+            if doc_type_cls is not None:
+                return doc_type_cls.query_instruction
+
+        return doc_types.TextDocType.query_instruction

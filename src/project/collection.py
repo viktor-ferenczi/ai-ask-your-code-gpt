@@ -72,4 +72,5 @@ class Collection:
         )
 
         results = [Result(result.id.uuid, result.score) for result in response.result]
+        results.sort(key=lambda result: (-result.score, result.uuid))
         return results

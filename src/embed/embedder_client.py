@@ -42,8 +42,8 @@ class EmbedderClient:
 
         server = await self.find_free_server(timeout=300.0)
         if not server:
-            print(f'Configured embedding servers: {self.servers}')
-            raise EmbedderError('No embedding servers are available')
+            print(f'Configured embedder servers: {self.servers}')
+            raise EmbedderError('No embedder servers are available')
 
         async with aiohttp.ClientSession() as session:
             async with session.post(f'{server}/embed/fragments', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
@@ -65,7 +65,7 @@ class EmbedderClient:
 
         server = await self.find_free_server(timeout=20.0)
         if not server:
-            raise EmbedderError('No embedding servers are available')
+            raise EmbedderError('No embedder servers are available')
 
         async with aiohttp.ClientSession() as session:
             async with session.post(f'{server}/embed/query', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
@@ -78,7 +78,7 @@ class EmbedderClient:
 
     async def find_free_server(self, *, timeout=30.0) -> Optional[str]:
         if not self.servers:
-            raise EmbedderError('No embedding servers are configured')
+            raise EmbedderError('No embedder servers are configured')
 
         deadline = time.time() + timeout
 

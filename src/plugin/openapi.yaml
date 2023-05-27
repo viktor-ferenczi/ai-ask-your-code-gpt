@@ -53,16 +53,25 @@ paths:
           schema:
             type: string
           required: true
-          description: Code or text to look for, filter files by .extension, name or path
+          description: Question on documentation or code search. Code search must include a filter on file path, at least its .extension
         - in: query
           name: limit
           schema:
             type: integer
             minimum: 1
-            maximum: 50
+            maximum: 100
             default: 5
           required: false
           description: Maximum number of results to return
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 1
+          required: false
+          description: Page number, allows for retrieving more results if available
       responses:
         "200":
           description: OK

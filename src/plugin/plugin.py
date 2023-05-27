@@ -152,19 +152,25 @@ async def search(project_id: str):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
 
     query: str = request.args.get('query', '')
-    limit_str: str = request.args.get('limit', '3')
+    limit_str: str = request.args.get('limit', '5')
+    page_str: str = request.args.get('page', '5')
 
     try:
-        limit: int = int(limit_str)
+        limit: int = max(1, int(limit_str))
     except ValueError:
         limit: int = 5
+
+    try:
+        page: int = max(1, int(page_str))
+    except ValueError:
+        page: int = 1
 
     print(f'Search project {project_id!r} with limit {limit}: {query!r}')
 
     # noinspection PyBroadException
     try:
         project = Project(project_id)
-        hits, remarks = await project.search(query, limit)
+        hits, remarks = await project.search(query, limit, page)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:

@@ -1,5 +1,6 @@
 import asyncio
 import os
+import pprint
 import shutil
 import unittest
 import uuid
@@ -85,25 +86,25 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('class Duplicates', 3)
+        hits, remarks = await project.search('class Duplicates', 3, 1)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('.py', 10)
+        hits, remarks = await project.search('.py', 10, 1)
         self.verify_hits(hits, 6, path='find_duplicates.py')
-        self.assertEqual(remarks, ['Searched only by path, not by content.'])
+        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('find_duplicates.py', 3)
+        hits, remarks = await project.search('find_duplicates.py', 3, 1)
         self.verify_hits(hits, 3, path='find_duplicates.py')
-        self.assertEqual(remarks, ['Searched only by path, not by content.'])
+        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('find_duplicates.py class Duplicates', 1)
+        hits, remarks = await project.search('find_duplicates.py class Duplicates', 1, 1)
         self.verify_hits(hits, 1, path='find_duplicates.py', contains=['class Duplicates'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('README.md', 10)
+        hits, remarks = await project.search('README.md', 10, 1)
         self.verify_hits(hits, 4, path='README.md')
-        self.assertEqual(remarks, ['Searched only by path, not by content.'])
+        self.assertEqual(remarks, [])
 
         await project.delete()
 
@@ -114,34 +115,59 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('README.md', 20)
+        hits, remarks = await project.search('README.md', 20, 1)
         self.verify_hits(hits, 3, path='README.md')
-        self.assertEqual(remarks, ['Searched only by path, not by content.'])
+        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('class Query', 10)
+        hits, remarks = await project.search('README.md', 20, 2)
+        self.verify_hits(hits, 0)
+
+        hits, remarks = await project.search('.py class Query', 10, 1)
         self.verify_hits(hits, 10, contains=['class Query'])
         self.assertEqual(remarks, [])
+
+        hits1, remarks = await project.search('query.py', 20, 1)
+        self.verify_hits(hits1, 16, contains=['class Query'])
+        self.assertEqual(remarks, [])
+
+        hits2 = []
+        for page in range(1, 101):
+            hits, remarks = await project.search('query.py', 7, page)
+            hits2.extend(hits)
+            if len(hits) < 7:
+                break
+        self.assertEqual(hits1, hits2)
+
+        hits, remarks = await project.search('.py class Query', 50, 50)
+        self.verify_hits(hits, 0)
 
         await project.delete()
 
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
         print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
 
-        self.assertEqual(len(hits), count)
-        self.assertEqual(len(set(hit.uuid for hit in hits)), count)
+        try:
+            self.assertEqual(len(hits), count)
+            self.assertEqual(len(set(hit.uuid for hit in hits)), count)
 
-        if path:
-            for hit in hits:
-                self.assertEqual(hit.path, path)
+            if path:
+                for hit in hits:
+                    self.assertEqual(hit.path, path)
 
-            self.assertEqual(hits, sorted(hits, key=lambda hit: (hit.path, hit.lineno, -hit.score)))
+                self.assertEqual(hits, sorted(hits, key=lambda hit: (hit.path, hit.lineno, -hit.score)))
 
-        else:
-            self.assertEqual(hits, sorted(hits, key=lambda hit: (-hit.score, hit.path, hit.lineno)))
+            else:
+                self.assertEqual(hits, sorted(hits, key=lambda hit: (-hit.score, hit.path, hit.lineno)))
 
-        if contains:
-            for text in contains:
-                self.assertTrue(any((text in hit.text) for hit in hits))
+            if contains:
+                for text in contains:
+                    self.assertTrue(any((text in hit.text) for hit in hits))
+        except AssertionError:
+            print()
+            print('hits = ')
+            pprint.pprint(hits, width=120)
+            print()
+            raise
 
     async def wait_for_processing(self, project):
         inventory = Inventory()
