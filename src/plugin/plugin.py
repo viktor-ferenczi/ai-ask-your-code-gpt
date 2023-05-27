@@ -160,11 +160,11 @@ async def search(project_id: str):
         limit: int = 5
 
     print(f'Search project {project_id!r} with limit {limit}: {query!r}')
+    project = Project(project_id)
 
     # noinspection PyBroadException
     try:
-        project = Project(project_id)
-        hits, remarks = await project.search(query, limit)
+        hits = await project.search(query, limit)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
@@ -182,8 +182,9 @@ async def search(project_id: str):
             del result['name']
 
     response = dict(results=results)
-    if remarks:
-        response['remarks'] = ' '.join(remarks)
+
+    if project.progress is not None and project.progress < 100:
+        response.progress = project.progress
 
     return Response(response=json.dumps(response, indent=2), status=200)
 

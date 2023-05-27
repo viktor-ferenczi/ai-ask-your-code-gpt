@@ -3,7 +3,7 @@
   "name_for_human": "AskYourCode",
   "name_for_model": "askyourcode",
   "description_for_human": "Ask your source code directly. The intelligent rubber ducky!",
-  "description_for_model": "Allows retrieving the source code and documentation of a software project.",
+  "description_for_model": "Allows for searching and retrieving the documentation and source code of a software project to assist in reasoning.",
   "auth": {
     "type": "none"
   },

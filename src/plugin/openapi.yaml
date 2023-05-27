@@ -1,14 +1,14 @@
 openapi: 3.0.1
 info:
   title: AskYourCode
-  description: Manages a vector database storing the source code and documentation of software projects.
+  description: Allows for searching and retrieving the documentation and source code of a software project to assist in reasoning.
   version: 'v1'
 servers:
   - url: https://plugin.askyourcode.ai
 paths:
   /project:
     post:
-      operationId: downloadProject
+      operationId: download
       summary: Downloads a project archive, extracts it, then stores the code and text fragments into the database.
       requestBody:
         required: true
@@ -25,7 +25,7 @@ paths:
                 $ref: '#/components/schemas/downloadResponse'
   /project/{project_id}:
     delete:
-      operationId: deleteProject
+      operationId: delete
       summary: Deletes a project from the database.
       parameters:
         - in: path
@@ -89,11 +89,20 @@ components:
       properties:
         project_id:
           type: string
-          description: GUID of the project.
+          description: Project ID (GUID).
           required: true
-        error:
+        message:
           type: string
-          description: Error message (OK if missing).
+          description: Additional information on indexing progress or an error message.
+    summarizeResponse:
+      type: object
+      required:
+        - summary
+      properties:
+        results:
+          type: string
+          description: Summary
+          required: true
     searchResponse:
       type: object
       required:
@@ -126,6 +135,6 @@ components:
                 description: Name of the definition or declaration (program code only).
           description: Search results in decreasing score order.
           required: true
-        remarks:
-          type: string
-          description: Relevant details on the search process (if any).
+        progress:
+          type: integer
+          description: Progress of content indexing in percentages. Missing if indexing is complete.

@@ -92,30 +92,24 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('class Duplicates', 3)
+        hits = await project.search('class Duplicates', 3)
         self.verify_hits(hits, 3, contains=['class Duplicates'])
-        self.assertEqual(remarks, [])
-
-        hits, remarks = await project.search('.py', 10)
+        
+        hits = await project.search('.py', 10)
         self.verify_hits(hits, 7, path='find_duplicates.py')
-        self.assertEqual(remarks, [])
 
-        hits1, remarks = await project.search('find_duplicates.py', 10)
+        hits1 = await project.search('find_duplicates.py', 10)
         self.verify_hits(hits1, 7, path='find_duplicates.py')
-        self.assertEqual(remarks, [])
 
-        hits2, remarks = await project.search('find_duplicates.py', 3)
+        hits2 = await project.search('find_duplicates.py', 3)
         self.verify_hits(hits2, 3, path='find_duplicates.py')
         self.assertEqual(uuid_list_of(hits1)[:3], uuid_list_of(hits2))
-        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('find_duplicates.py class Duplicates', 1)
+        hits = await project.search('find_duplicates.py class Duplicates', 1)
         self.verify_hits(hits, 1, path='find_duplicates.py', contains=['class Duplicates'])
-        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('README.md', 10)
+        hits = await project.search('README.md', 10)
         self.verify_hits(hits, 8, path='README.md')
-        self.assertEqual(remarks, [])
 
         await project.delete()
 
@@ -126,17 +120,14 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('README.md', 10)
+        hits = await project.search('README.md', 10)
         self.verify_hits(hits, 4, path='README.md')
-        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('.py class Query', 10)
+        hits = await project.search('.py class Query', 10)
         self.verify_hits(hits, 10, contains=['class Query'])
-        self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('procedure.py', 20)
+        hits = await project.search('procedure.py', 20)
         self.verify_hits(hits, 8, path='lib/dblayer/model/procedure.py', contains=['class BaseProcedure'])
-        self.assertEqual(remarks, [])
 
         await project.delete()
 

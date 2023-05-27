@@ -46,6 +46,8 @@ class Project:
 
         self.__collection: Optional[Collection] = None
 
+        self.progress: Optional[int] = None
+
     @property
     def collection(self) -> Collection:
         if self.__collection is None:
@@ -151,15 +153,13 @@ class Project:
                         raise ProjectError(f'Failed to download archive: {url}')
 
     async def search(self, query: str, limit: int) -> Tuple[List[Hit], List[str]]:
-        remarks = []
-
         await self.verify_query(query, limit)
         parts = await self.split_query(query)
         fragments, vector_query = await self.query_fragments(parts)
 
-        embedding_completeness = self.ensure_reasonably_embedded()
-
         if vector_query:
+            self.progress = self.ensure_reasonably_embedded()
+
             # Vector database search
             vector_results = await self.search_vector_database(fragments, limit, vector_query)
 
@@ -183,11 +183,7 @@ class Project:
             # Limiting only after the sort order is fixed
             hits = hits[:limit]
 
-        # Remark on potential partial content
-        if vector_query and embedding_completeness < 100:
-            remarks.append(f'Searched {embedding_completeness}% of the content, because Indexing is still in progress.')
-
-        return hits, remarks
+        return hits
 
     async def verify_query(self, query: str, limit: int):
         if len(query) > C.MAX_QUERY_LENGTH:
