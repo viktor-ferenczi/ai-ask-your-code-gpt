@@ -97,11 +97,16 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(remarks, [])
 
         hits, remarks = await project.search('.py', 10)
-        self.verify_hits(hits, 6, path='find_duplicates.py')
+        self.verify_hits(hits, 7, path='find_duplicates.py')
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('find_duplicates.py', 3)
-        self.verify_hits(hits, 3, path='find_duplicates.py')
+        hits1, remarks = await project.search('find_duplicates.py', 10)
+        self.verify_hits(hits1, 7, path='find_duplicates.py')
+        self.assertEqual(remarks, [])
+
+        hits2, remarks = await project.search('find_duplicates.py', 3)
+        self.verify_hits(hits2, 3, path='find_duplicates.py')
+        self.assertEqual(uuid_list_of(hits1)[:3], uuid_list_of(hits2))
         self.assertEqual(remarks, [])
 
         hits, remarks = await project.search('find_duplicates.py class Duplicates', 1)
@@ -109,7 +114,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(remarks, [])
 
         hits, remarks = await project.search('README.md', 10)
-        self.verify_hits(hits, 4, path='README.md')
+        self.verify_hits(hits, 8, path='README.md')
         self.assertEqual(remarks, [])
 
         await project.delete()
@@ -122,15 +127,15 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         await self.wait_for_processing(project)
 
         hits, remarks = await project.search('README.md', 10)
-        self.verify_hits(hits, 3, path='README.md')
+        self.verify_hits(hits, 4, path='README.md')
         self.assertEqual(remarks, [])
 
         hits, remarks = await project.search('.py class Query', 10)
         self.verify_hits(hits, 10, contains=['class Query'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('query.py', 20)
-        self.verify_hits(hits, 16, contains=['class Query'])
+        hits, remarks = await project.search('procedure.py', 20)
+        self.verify_hits(hits, 8, contains=['class BaseProcedure'])
         self.assertEqual(remarks, [])
 
         await project.delete()
@@ -139,17 +144,17 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
 
         try:
-            self.assertEqual(len(hits), count)
-            self.assertEqual(len(set(hit.uuid for hit in hits)), count)
+            self.assertEqual(count, len(hits))
+            self.assertEqual(count, len(set(hit.uuid for hit in hits)))
 
             if path:
                 for hit in hits:
-                    self.assertEqual(hit.path, path)
+                    self.assertEqual(path, hit.path)
 
-                self.assertEqual(hits, sorted(hits, key=lambda hit: (hit.path, hit.lineno, -hit.score)))
+                self.assertEqual(sorted(hits, key=lambda hit: (-hit.score, hit.path, hit.lineno)), hits)
 
             else:
-                self.assertEqual(hits, sorted(hits, key=lambda hit: (-hit.score, hit.path, hit.lineno)))
+                self.assertEqual(sorted(hits, key=lambda hit: (-hit.score, hit.uuid)), hits)
 
             if contains:
                 for text in contains:

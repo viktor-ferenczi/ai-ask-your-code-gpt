@@ -185,11 +185,7 @@ class Project:
 
         # Remark on potential partial content
         if vector_query and embedding_completeness < 100:
-            remarks.extend([
-                'Indexing is still in progress.',
-                f'Searched {embedding_completeness}% of the content.',
-                'Paging is not stable until all content is indexed.'
-            ])
+            remarks.append(f'Searched {embedding_completeness}% of the content, because Indexing is still in progress.')
 
         return hits, remarks
 

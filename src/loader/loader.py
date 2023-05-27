@@ -70,7 +70,7 @@ class Toc:
                 lines.extend(f'    - {path} line {lineno}\n' for path, lineno in sorted(paths))
 
                 text = ''.join(lines)
-                while tiktoken_len(text) > 400:
+                while tiktoken_len(text) > C.SPLITTER_CHUNK_SIZE:
                     lines.pop()
                     text = ''.join(lines)
 
@@ -85,7 +85,7 @@ class Toc:
                 lines.extend(f'    - {name} -> Line {lineno}\n' for name, lineno in sorted(names))
 
                 text = ''.join(lines)
-                while tiktoken_len(text) > 400:
+                while tiktoken_len(text) > C.SPLITTER_CHUNK_SIZE:
                     lines.pop()
                     text = ''.join(lines)
 

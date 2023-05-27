@@ -23,6 +23,9 @@ class C:
     MAX_QUERY_LENGTH = 1000
     MAX_QUERY_LIMIT = 20
 
+    # Splitter
+    SPLITTER_CHUNK_SIZE = 200  # Tokens
+
     # Embedder
     MAX_BATCH_SIZE = 1024
     MAX_INSTRUCTION_SIZE = 512

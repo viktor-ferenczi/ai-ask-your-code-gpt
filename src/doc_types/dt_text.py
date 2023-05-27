@@ -5,6 +5,7 @@ from typing import Iterator
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+from common.constants import C
 from model.fragment import Fragment
 from .splitters.tokenization import tiktoken_len
 
@@ -15,7 +16,7 @@ class TextDocType:
 
     splitter_cls = RecursiveCharacterTextSplitter
     splitter_kws = dict(
-        chunk_size=400,
+        chunk_size=C.SPLITTER_CHUNK_SIZE,
         chunk_overlap=0,
         length_function=tiktoken_len
     )
