@@ -185,7 +185,7 @@ async def search(project_id: str):
     if remarks:
         response['remarks'] = ' '.join(remarks)
 
-    return Response(response=json.dumps(results, indent=2), status=200)
+    return Response(response=json.dumps(response, indent=2), status=200)
 
 
 if __name__ == "__main__":
