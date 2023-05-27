@@ -23,4 +23,8 @@ else
   echo "$TITLE: Failed to stop"
 fi
 
+if [ -n "$EXTRA_KILL" ]; then
+    pkill -9 -u $UID -f "$EXTRA_KILL"
+fi
+
 exit 0
