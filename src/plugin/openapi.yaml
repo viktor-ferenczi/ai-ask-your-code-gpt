@@ -40,7 +40,7 @@ paths:
   /project/{project_id}/summarize:
     get:
       operationId: summarize
-      summary: Summarizes a single documentation file or code construct (function, class or method). Provides a Table of Contents (TOC) for the project if `name` is not specified.
+      summary: Summarizes the project, a subdirectory, a file or a code construct (function, class or method).
       parameters:
         - in: path
           name: project_id
@@ -49,11 +49,18 @@ paths:
           required: true
           description: Project ID
         - in: query
+          name: path
+          schema:
+            type: string
+          required: false
+          description: File extension, filename or path of the documentation file to summarize.
+          example: .md
+        - in: query
           name: name
           schema:
             type: string
           required: false
-          description: File extension, filename or path of the documentation file to summarize. Fully qualified name or short name of the code construct to summarize.
+          description: Fully qualified name or short name of the code construct to summarize.
           example: .md
       responses:
         "200":
