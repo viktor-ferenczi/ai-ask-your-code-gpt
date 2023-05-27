@@ -100,14 +100,20 @@ class Project:
     def get_fragments_to_embed(self, cursor: Cursor, limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
 
-    def get_fragments_by_path(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
+    def get_fragments_by_paths(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
 
-    def get_fragments_by_path_tail_unsorted(self, cursor: Cursor, path: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{path}',))]
+    def get_fragments_by_path(self, cursor: Cursor, path: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path = ?', (path,))]
 
-    def get_fragments_by_name_tail_unsorted(self, cursor: Cursor, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ?', (f'%{name}',))]
+    def get_fragments_by_path_tail(self, cursor: Cursor, tail: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{tail}',))]
+
+    def get_fragments_by_name(self, cursor: Cursor, name: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name = ?', (name,))]
+
+    def get_fragments_by_name_tail(self, cursor: Cursor, tail: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ?', (f'%{tail}',))]
 
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
@@ -149,7 +155,7 @@ class Project:
 
         await self.verify_query(query, limit)
         parts = await self.split_query(query)
-        fragments, vector_query = await self.separate_query(parts)
+        fragments, vector_query = await self.query_fragments(parts)
 
         embedding_completeness = self.ensure_reasonably_embedded()
 
@@ -226,7 +232,7 @@ class Project:
 
         return progress
 
-    async def separate_query(self, parts):
+    async def query_fragments(self, parts):
         vector_query = []
         fragments: Set[Fragment] = set()
 
@@ -237,27 +243,26 @@ class Project:
                     vector_query.append(part)
                     continue
 
-                maybe_path = False
-                maybe_name = False
+                if not part.endswith('.'):
 
-                if '.' in part:
-                    maybe_name = True
-                    if not part.endswith('.'):
-                        maybe_path = True
-
-                if '::' in part:
-                    maybe_name = True
-
-                if maybe_path:
-                    path_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
-                    if path_fragments:
-                        fragments.update(path_fragments)
+                    if '.' in part:
+                        if part.startswith('.'):
+                            fragments.update(self.get_fragments_by_path_tail(cursor, part))
+                            fragments.update(self.get_fragments_by_name_tail(cursor, part))
+                        else:
+                            fragments.update(self.get_fragments_by_path(cursor, part))
+                            fragments.update(self.get_fragments_by_name(cursor, part))
+                            fragments.update(self.get_fragments_by_path_tail(cursor, f'/{part}'))
+                            fragments.update(self.get_fragments_by_name_tail(cursor, f'.{part}'))
                         continue
 
-                if maybe_name:
-                    name_fragments = self.get_fragments_by_name_tail_unsorted(cursor, part)
-                    if name_fragments:
-                        fragments.update(name_fragments)
+                    if '::' in part:
+                        if part.startswith('::'):
+                            fragments.update(self.get_fragments_by_name(cursor, part))
+                            fragments.update(self.get_fragments_by_name_tail(cursor, part))
+                        else:
+                            fragments.update(self.get_fragments_by_name(cursor, part))
+                            fragments.update(self.get_fragments_by_name_tail(cursor, f'::{part}'))
                         continue
 
                 vector_query.append(part)
