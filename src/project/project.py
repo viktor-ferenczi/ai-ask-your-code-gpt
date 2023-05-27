@@ -106,6 +106,9 @@ class Project:
     def get_fragments_by_path_tail_unsorted(self, cursor: Cursor, path: str) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{path}',))]
 
+    def get_fragments_by_name_tail_unsorted(self, cursor: Cursor, name: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ?', (f'%{name}',))]
+
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
             return []
@@ -145,9 +148,10 @@ class Project:
         remarks = []
 
         await self.verify_query_limits(query, limit, page)
-        default_query, parts = await self.split_query(query)
+        parts = await self.split_query(query)
+        fragments, vector_query = await self.separate_query(parts)
+
         embedding_completeness = self.ensure_reasonably_embedded()
-        fragments, vector_query = await self.separate_query(default_query, parts)
 
         offset = limit * (page - 1)
         if fragments and offset >= len(fragments):
@@ -196,7 +200,11 @@ class Project:
             raise ProjectError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
 
         if limit < 1 or limit > C.MAX_QUERY_LIMIT:
-            raise ProjectError(f'The limit must be between 1 and {C.MAX_QUERY_LIMIT}')
+            if C.DEVELOPMENT and limit == -1:
+                # Test override
+                limit = 9999
+            else:
+                raise ProjectError(f'The limit must be between 1 and {C.MAX_QUERY_LIMIT}')
 
         if page < 1 or page > C.MAX_QUERY_PAGE:
             raise ProjectError(f'The page must be between 1 and {C.MAX_QUERY_PAGE}')
@@ -213,7 +221,7 @@ class Project:
             query = 'README.md readme.txt TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
             parts = query.split()
 
-        return default_query, parts
+        return parts
 
     def ensure_reasonably_embedded(self) -> int:
         inventory = Inventory()
@@ -233,22 +241,41 @@ class Project:
 
         return progress
 
-    async def separate_query(self, default_query, parts):
+    async def separate_query(self, parts):
         vector_query = []
         fragments: Set[Fragment] = set()
 
         with self.cursor() as cursor:
             for part in parts:
 
-                if '.' not in part:
+                if len(part) < 3:
                     vector_query.append(part)
                     continue
 
-                part_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
-                if part_fragments:
-                    fragments.update(part_fragments)
-                elif not default_query:
-                    vector_query.append(part)
+                maybe_path = False
+                maybe_name = False
+
+                if '.' in part:
+                    maybe_name = True
+                    if not part.endswith('.'):
+                        maybe_path = True
+
+                if '::' in part:
+                    maybe_name = True
+
+                if maybe_path:
+                    path_fragments = self.get_fragments_by_path_tail_unsorted(cursor, part)
+                    if path_fragments:
+                        fragments.update(path_fragments)
+                        continue
+
+                if maybe_name:
+                    name_fragments = self.get_fragments_by_name_tail_unsorted(cursor, part)
+                    if name_fragments:
+                        fragments.update(name_fragments)
+                        continue
+
+                vector_query.append(part)
 
         return list(fragments), vector_query
 

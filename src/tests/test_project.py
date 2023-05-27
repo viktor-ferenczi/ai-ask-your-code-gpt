@@ -121,33 +121,37 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits, remarks = await project.search('README.md', 20, 1)
+        hits, remarks = await project.search('README.md', 10, 1)
         self.verify_hits(hits, 3, path='README.md')
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('README.md', 20, 2)
+        hits, remarks = await project.search('README.md', 10, 2)
         self.verify_hits(hits, 0)
 
         hits, remarks = await project.search('.py class Query', 10, 1)
         self.verify_hits(hits, 10, contains=['class Query'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('query.py', 20, 1)
-        self.verify_hits(hits, 16, contains=['class Query'])
+        hits, remarks = await project.search('query.py', 10, 1)
+        self.verify_hits(hits, 10, contains=['class Query'])
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('.py class Query', 50, 50)
+        hits, remarks = await project.search('query.py', 10, 2)
+        self.verify_hits(hits, 6)
+        self.assertEqual(remarks, [])
+
+        hits, remarks = await project.search('.py class Query', 10, 100)
         self.verify_hits(hits, 0)
         self.assertEqual(remarks, [])
 
-        hits, remarks = await project.search('class Query', 50, 50)
+        hits, remarks = await project.search('class Query', 10, 100)
         self.verify_hits(hits, 0)
         self.assertEqual(remarks, [])
 
         for query in ['query.py', 'query.py class Query', '.py class Query:']:
             print(f'Query: {query}')
 
-            hits1, remarks = await project.search(query, 50, 1)
+            hits1, remarks = await project.search(query, -1, 1)
 
             hits2 = []
             for page in range(1, 101):
