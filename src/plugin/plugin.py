@@ -153,7 +153,7 @@ async def search(project_id: str):
 
     query: str = request.args.get('query', '')
     limit_str: str = request.args.get('limit', '5')
-    page_str: str = request.args.get('page', '5')
+    page_str: str = request.args.get('page', '1')
 
     try:
         limit: int = max(1, int(limit_str))
