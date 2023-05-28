@@ -63,8 +63,6 @@ async def openapi_spec():
 # noinspection HttpUrlsUsage
 @app.post("/project")
 async def create():
-    deadline = time.time() + C.MAX_WAIT_TIME_AFTER_DOWNLOAD
-
     body: Dict[str, str] = await quart.request.get_json(force=True)
 
     # Validate URL
