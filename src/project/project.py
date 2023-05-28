@@ -18,6 +18,7 @@ from model.hit import Hit
 from model.tools import uuid_of_fragments
 from project.collection import Collection
 from project.inventory import Inventory
+from splitters.tokenization import tiktoken_len
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
@@ -237,7 +238,7 @@ class Project:
         if not fragments:
             return ''
 
-        summary = '\n'.join(self.summarize_fragments(fragments))
+        summary = ''.join(f'{line}\n' for line in self.summarize_fragments(fragments))
         return summary
 
     def summarize_fragments(self, fragments: List[Fragment]) -> Iterator[str]:
@@ -250,10 +251,23 @@ class Project:
 
         fragments.sort(key=lambda fragment: (fragment.name, fragment.path.count('/'), fragment.path, fragment.lineno))
 
-        # yield '= Code ='
-        for fragment in fragments:
-            yield fragment.name
-        yield ''
+        names = sorted(set(fragment.name for fragment in fragments))
+
+        # Shorten
+        while names:
+            total = sum(tiktoken_len(name) for name in names)
+            if total <= 1000:
+                break
+            max_dots = max(name.count('.') for name in names)
+            if max_dots:
+                names = [name for name in names if name.count('.') < max_dots]
+            else:
+                if len(set(name.lower() != name for name in names)) == 2:
+                    names = [name for name in names if name.lower() == name]
+                else:
+                    names = names[:len(names) * 1000 // total]
+
+        yield from names
 
     def summarize_docs(self, fragments) -> Iterator[str]:
         if not fragments:
@@ -261,8 +275,6 @@ class Project:
 
         fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
 
-        # yield '= Docs ='
         for fragment in fragments:
             doc_type_cls = doc_types.detect_by_extension(fragment.path) or doc_types.TextDocType
             yield from doc_type_cls.summarize(fragment.text)
-        yield ''

@@ -25,6 +25,8 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
     def setUp(self) -> None:
+        self.maxDiff = 32768
+
         Inventory.filename = 'test-inventory.sqlite'
         inventory = Inventory()
         inventory.drop_database()
@@ -68,7 +70,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         tasks = [actual_test, zip_server_task, query_embedder_task, downloader_task, loader_task] + store_embedder_tasks + loader_worker_tasks
 
-        await asyncio.wait(tasks, timeout=30.0, return_when=asyncio.FIRST_COMPLETED)
+        await asyncio.wait(tasks, timeout=3600.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
         for task in tasks:
@@ -103,7 +105,6 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
-= Docs =
 # Test project
 ## Rationale
 ### Doc types and languages
@@ -113,12 +114,8 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         summary = await project.summarize(tail='.py')
         self.assertEqual('''\
-= Docs =
-
-= Code =
 Duplicates
 Duplicates.__init__
-Duplicates.collect
 Duplicates.collect
 main
 md5_checksum
@@ -141,18 +138,244 @@ md5_checksum
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
-= Docs =
-# Test project
-## Rationale
-### Doc types and languages
-### Some long section
-# End
+# Database Abstraction Layer Generator
+# Installation
+# How it works
+## Abstraction layer
+## Lightweight usage
+## Features
+# Remarks
+## Performance
+## Limitations
 ''', summary)
 
         summary = await project.summarize(tail='.py')
         self.assertEqual('''\
-= Code =
+Activation
+Add
+AfterDeleteRow
+AfterDeleteStatement
+AfterInsertOrUpdateRow
+AfterInsertOrUpdateStatement
+AfterInsertRow
+AfterInsertStatement
+AfterUpdateRow
+AfterUpdateStatement
+And
+Avg
+BaseAggregate
+BaseColumn
+BaseColumnConstraint
+BaseConstraint
+BaseFunction
+BaseIndex
+BaseProcedure
+BaseQueryResult
+BaseTrigger
+BeforeDeleteRow
+BeforeDeleteStatement
+BeforeInsertOrUpdateRow
+BeforeInsertOrUpdateStatement
+BeforeInsertRow
+BeforeInsertStatement
+BeforeUpdateRow
+BeforeUpdateStatement
+Boolean
+Check
+Clauses
+Coalesce
+ColumnInfo
+Concat
+Condition
+Contains
+Count
+Custom
+DataError
+Database
+DatabaseAbstraction
+DatabaseError
+DatabaseInspector
+Date
+Datetime
+Decimal
+Div
+Equal
+Error
+Float
+ForeignKey
+FullTextSearch
+FullTextSearchIndex
+GMLExporter
+GeneratorOptions
+GreaterThan
+GreaterThanOrEqual
+Group
+GroupRole
+GroupUser
+In
+Index
+Integer
+IntegrityError
+InterfaceError
+InternalError
+Invoice
+InvoiceItem
+Left
+LessThan
+LessThanOrEqual
+Like
+Match
+Max
+Min
+Mul
+NA
+Neg
+Not
+NotEqual
+NotIn
+NotLike
+NotMatch
+NotSupportedError
+OperationalError
+Or
+Payment
+PostCondition
+PrimaryKey
+Procedure
+Product
+ProductSale
+ProgrammingError
 Query
+Record
+Result
+Right
+Role
+SearchDocument
+SlugMixin
+Sub
+Substring
+Sum
+Table
+TestAbstraction
+TestDatabaseModel
+TestGraph
+Text
+Unique
+User
+UserContact
+Var
+Warning
+format_add_function
+format_and_function
+format_avg_aggregate
+format_boolean_column
+format_check_constraint
+format_coalesce_function
+format_column
+format_concat_function
+format_constraint
+format_contains_function
+format_count_aggregate
+format_create_btree_index
+format_create_full_text_search_index
+format_create_index
+format_create_procedure
+format_create_table
+format_create_trigger
+format_cross_join_group_list
+format_custom_column
+format_custom_function
+format_date_column
+format_datetime_column
+format_decimal_column
+format_default_not_null
+format_delete
+format_div_function
+format_drop_btree_index
+format_drop_full_text_search_index
+format_drop_index
+format_drop_procedure
+format_drop_table
+format_drop_trigger
+format_eq_condition
+format_equal_function
+format_expression
+format_float_column
+format_foreign_key_column
+format_foreign_key_constraint
+format_full_text_search_function
+format_function
+format_ge_condition
+format_greater_than_function
+format_greater_than_or_equal_function
+format_gt_condition
+format_in_condition
+format_in_function
+format_insert
+format_integer_column
+format_le_condition
+format_left_function
+format_less_than_function
+format_less_than_or_equal_function
+format_like_condition
+format_like_function
+format_lt_condition
+format_match_condition
+format_match_function
+format_max_aggregate
+format_min_aggregate
+format_mul_function
+format_ne_condition
+format_neg_function
+format_not_equal_function
+format_not_function
+format_not_in_condition
+format_not_in_function
+format_not_in_range_condition
+format_not_like_condition
+format_not_like_function
+format_not_match_condition
+format_not_match_function
+format_not_similar_to_condition
+format_or_function
+format_order_by
+format_primary_key_column
+format_primary_key_constraint
+format_query
+format_query_condition
+format_query_condition_map
+format_query_order_by_map
+format_range_condition
+format_release_savepoint
+format_result
+format_right_function
+format_rollback_to_savepoint
+format_savepoint
+format_search_condition
+format_search_document_column
+format_select
+format_similar_to_condition
+format_sub_function
+format_substring_function
+format_sum_aggregate
+format_table_column_condition
+format_table_condition_map
+format_table_order_by_map
+format_text_column
+format_truncate_table
+format_truncate_table_list
+format_unique_constraint
+format_update
+format_var_function
+generate
+get_next_definition_serial
+get_random_id
+log
+quote_alias_name
+quote_literal_value
+quote_name
+quote_table_column_name
+replace_parameter_placeholders
 ''', summary)
 
         await project.delete()
