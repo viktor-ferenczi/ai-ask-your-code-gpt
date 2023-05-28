@@ -250,7 +250,7 @@ class Project:
 
         fragments.sort(key=lambda fragment: (fragment.name, fragment.path.count('/'), fragment.path, fragment.lineno))
 
-        yield '= Code ='
+        # yield '= Code ='
         for fragment in fragments:
             yield fragment.name
         yield ''
@@ -261,7 +261,7 @@ class Project:
 
         fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
 
-        yield '= Docs ='
+        # yield '= Docs ='
         for fragment in fragments:
             doc_type_cls = doc_types.detect_by_extension(fragment.path) or doc_types.TextDocType
             yield from doc_type_cls.summarize(fragment.text)

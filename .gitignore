@@ -134,3 +134,4 @@ dmypy.json
 # Test output
 TestProject.zip
 *.actual
+*-actual
