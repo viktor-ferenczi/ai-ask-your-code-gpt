@@ -21,15 +21,14 @@ class Downloader:
 
     def __init__(self, url: str) -> None:
         self.url: str = url
+        self.inventory = Inventory()
 
     async def download_verify(self) -> str:
         with timer(f'Downloaded archive from {self.url!r}'):
             archive = await self.__download()
 
         checksum = hashlib.sha256(archive).hexdigest()
-
-        inventory = Inventory()
-        project_id = inventory.find_project(self.url, checksum)
+        project_id = self.inventory.find_project(self.url, checksum)
 
         if project_id is not None:
             print(f'Archive matches an existing project: {project_id!r}')
@@ -43,7 +42,7 @@ class Downloader:
         await asyncio.sleep(0)
 
         project_id = str(uuid.uuid4())
-        inventory.register_project(project_id, self.url, checksum)
+        self.inventory.register_project(project_id, self.url, checksum)
 
         await asyncio.sleep(0)
 
