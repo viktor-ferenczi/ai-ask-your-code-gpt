@@ -52,13 +52,13 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
 
         query = 'class GMLExporter'
         query_embeddings = await embedder_model.embed_query(instruction, query)
-        results = await collection.search(query_embeddings[0].tolist(), uuid_filter=[fragments[0].uuid])
+        results = await collection.search(query_embeddings[0].tolist(), uuids=[fragments[0].uuid])
         nums = await nums_from_results(fragments, results)
         self.assertEqual(nums, [0])
 
         query = 'SomeOtherClass class'
         query_embeddings = await embedder_model.embed_query(instruction, query)
-        results = await collection.search(query_embeddings[0].tolist(), uuid_filter=[fragments[1].uuid])
+        results = await collection.search(query_embeddings[0].tolist(), uuids=[fragments[1].uuid])
         nums = await nums_from_results(fragments, results)
         self.assertEqual(nums, [1])
 

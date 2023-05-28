@@ -34,3 +34,14 @@ class TextDocType:
             yield Fragment(uuid=str(uuid.uuid4()), path=path, lineno=lineno, text=paragraph, name='')
             # FIXME: Not exact due to the splitter eating the separators, but good enough for sorting
             lineno += paragraph.count('\n') + 1
+
+    @classmethod
+    def summarize(cls, text: str) -> Iterator[str]:
+        max_width = C.MAX_SUMMARY_WIDTH
+        for section in text.split('\n\n'):
+            section = section.strip()
+            if section and '\n' not in section and section[:1].isdigit():
+                if len(section) <= max_width:
+                    yield section
+                else:
+                    yield f'{section[:max_width]}...'

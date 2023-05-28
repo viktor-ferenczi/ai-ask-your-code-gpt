@@ -19,10 +19,7 @@ def find_common_base_dir(paths: Iterable[str]) -> str:
 
 
 def remove_common_base_dir(common_base_dir: str, documents: Iterable[Document]) -> Iterator[Document]:
-    if not common_base_dir:
-        yield from documents
-    else:
-        strip_len = len(common_base_dir)
-        for doc in documents:
-            doc.path = doc.path[strip_len:]
-            yield doc
+    strip_len = len(common_base_dir)
+    for doc in documents:
+        doc.path = f'/{doc.path[strip_len:]}'
+        yield doc

@@ -3,9 +3,8 @@ import os
 import shutil
 import sqlite3
 from contextlib import contextmanager
-from math import sqrt
 from sqlite3 import Cursor
-from typing import List, ContextManager, Optional, Set, Tuple
+from typing import List, ContextManager, Optional, Tuple, Iterator
 
 import aiohttp
 from qdrant_client import QdrantClient
@@ -16,6 +15,7 @@ from common.timer import timer
 from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
 from model.hit import Hit
+from model.tools import uuid_of_fragments
 from project.collection import Collection
 from project.inventory import Inventory
 
@@ -46,8 +46,6 @@ class Project:
 
         self.__collection: Optional[Collection] = None
 
-        self.progress: Optional[int] = None
-
     @property
     def collection(self) -> Collection:
         if self.__collection is None:
@@ -60,6 +58,19 @@ class Project:
         with sqlite3.connect(self.db_path) as db:
             yield db.cursor()
             db.commit()
+
+    @property
+    def exists(self):
+        return os.path.exists(self.db_path)
+
+    @property
+    def progress(self):
+        inventory = Inventory()
+        if inventory.has_project_embedded(self.project_id):
+            return 100
+
+        fragment_count, embedded_count = self.count_embedded_fragments()
+        return int(round(fragment_count / embedded_count))
 
     async def create_database(self):
         if os.path.exists(self.db_path):
@@ -86,6 +97,9 @@ class Project:
     def index_by_path(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
 
+    def index_by_lineno(self, cursor: Cursor):
+        cursor.execute('CREATE INDEX idx_fragment_lineno ON Fragment(lineno)')
+
     def index_by_name(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_name ON Fragment(name)')
 
@@ -105,17 +119,41 @@ class Project:
     def get_fragments_by_paths(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
 
-    def get_fragments_by_path(self, cursor: Cursor, path: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path = ?', (path,))]
-
     def get_fragments_by_path_tail(self, cursor: Cursor, tail: str) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{tail}',))]
 
-    def get_fragments_by_name(self, cursor: Cursor, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name = ?', (name,))]
-
     def get_fragments_by_name_tail(self, cursor: Cursor, tail: str) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ?', (f'%{tail}',))]
+
+    def get_fragments_by_path_name(self, cursor: Cursor, path: str, name: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND name LIKE ?', (f'%{path}', f'{name}%'))]
+
+    def get_fragments_by_path(self, cursor: Cursor, path: str, name: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{path}',))]
+
+    def get_fragments_by_name(self, cursor: Cursor, path: str, name: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'{name}%',))]
+
+    def get_fragments_by_path_ext(self, cursor: Cursor, path: str, ext: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ?', (f'{path}%', f'%{ext}'))]
+
+    def get_fragments_by_name_ext(self, cursor: Cursor, name: str, ext: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ? AND path LIKE ?', (f'%{name}', f'%{ext}'))]
+
+    def search_by_ext_path(self, cursor: Cursor, ext: str, path: str, limit: int = 1) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'{path}%', limit))]
+
+    def search_by_ext_name(self, cursor: Cursor, ext: str, name: str, limit: int = 1) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'%{name}', limit))]
+
+    def search_by_ext(self, cursor: Cursor, ext: str, limit: int = 1) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', limit))]
+
+    def search_by_path_tail_name(self, cursor: Cursor, path: str, tail: str, name: str, limit: int = 1) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno LIMIT ?", (f'{path}%', f'%{tail}', f'%{name}', limit))]
+
+    def search_by_path_tail_name_unlimited(self, cursor: Cursor, path: str, tail: str, name: str) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno", (f'{path}%', f'%{tail}', f'%{name}'))]
 
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
@@ -152,132 +190,79 @@ class Project:
                         print(f'Failed to download archive {url!r} for project {self.project_id!r}')
                         raise ProjectError(f'Failed to download archive: {url}')
 
-    async def search(self, query: str, limit: int) -> Tuple[List[Hit], List[str]]:
-        await self.verify_query(query, limit)
-        parts = await self.split_query(query)
-        fragments, vector_query = await self.query_fragments(parts)
-
-        if vector_query:
-            self.progress = self.ensure_reasonably_embedded()
-
-            # Vector database search
-            vector_results = await self.search_vector_database(fragments, limit, vector_query)
-
-            # Stable sort order is determined by the scores (or by UUID if it is a tie)
-            vector_results.sort(key=lambda result: (-result.score, result.uuid))
-
-            # Combine into hits, preserve vector results sort order
-            if fragments:
-                fragment_map = {fragment.uuid: fragment for fragment in fragments}
-                hits = [Hit(score=result.score, **fragment_map[result.uuid].__dict__) for result in vector_results]
+    async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
+        with self.cursor() as cursor:
+            if text:
+                fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
             else:
-                uuids = [result.uuid for result in vector_results]
-                with self.cursor() as cursor:
-                    fragment_map = {fragment.uuid: fragment for fragment in self.list_fragments_by_uuid(cursor, uuids)}
-                hits = [Hit(score=result.score, **fragment_map[result.uuid].__dict__) for result in vector_results]
-        else:
-            # Relevant based on depth in tree, so the LLM will look at the broader structure first
-            hits = [Hit(score=sqrt(1.0 / (1.0 + fragment.path.count('/'))), **fragment.__dict__) for fragment in fragments]
-            hits.sort(key=lambda hit: (-hit.score, hit.path, hit.lineno))
+                fragments: List[Fragment] = self.search_by_path_tail_name(cursor, path, tail, name, limit)
 
-            # Limiting only after the sort order is fixed
-            hits = hits[:limit]
+        if not fragments:
+            return []
 
+        if not text:
+            # Ordering and limit was already applied in SQL
+            count = len(fragments)
+            return [Hit.from_fragment(1.0 - i / count, fragment)
+                    for i, fragment in enumerate(fragments)]
+
+        # Vector database search
+        doc_type_cls = (
+                doc_types.detect_by_extension(tail) or
+                doc_types.detect_by_extension(path) or
+                doc_types.TextDocType
+        )
+        instruction = doc_type_cls.query_instruction
+        fragment_uuids = uuid_of_fragments(fragments)
+        results = await self.search_vector_database(fragment_uuids, instruction, text, 1)
+
+        # Stable sort order is determined by the scores (or by UUID if it is a tie)
+        results.sort(key=lambda result: (-result.score, result.uuid))
+
+        # Combine into hits, preserve vector results sort order
+        fragment_map = {fragment.uuid: fragment for fragment in fragments}
+        hits = [Hit.from_fragment(result.score, fragment_map[result.uuid]) for result in results[:limit]]
         return hits
 
-    async def verify_query(self, query: str, limit: int):
-        if len(query) > C.MAX_QUERY_LENGTH:
-            raise ProjectError(f'The query must be at most {C.MAX_QUERY_LENGTH} characters')
-
-        if limit < 1 or limit > C.MAX_QUERY_LIMIT:
-            raise ProjectError(f'The limit must be between 1 and {C.MAX_QUERY_LIMIT}')
-
-    async def split_query(self, query):
-        query = query.strip()
-        if query in ('.', '/', '?'):
-            query = ''
-
-        parts: List[str] = [part for part in query.split() if part.strip()]
-        default_query = not parts
-
-        if default_query:
-            query = 'README.md readme.txt TOC.md .md .txt'  # FIXME: Add these once supported: .doc .docx .pdf
-            parts = query.split()
-
-        return parts
-
-    def ensure_reasonably_embedded(self) -> int:
-        inventory = Inventory()
-        if inventory.has_project_embedded(self.project_id):
-            return 100
-
-        fragment_count, embedded_count = self.count_embedded_fragments()
-        if not fragment_count:
-            raise ProjectError(f'Your project is being indexed. Please try again later.')
-
-        progress = 100
-        if embedded_count < fragment_count:
-            progress = int(round(100.0 * embedded_count / fragment_count))
-
-        if progress < C.MINIMUM_PROGRESS_TO_ALLOW_SEARCH:
-            raise ProjectError(f'Your project is being indexed. Current progress is {progress}%. Please try again later.')
-
-        return progress
-
-    async def query_fragments(self, parts):
-        vector_query = []
-        fragments: Set[Fragment] = set()
-
-        with self.cursor() as cursor:
-            for part in parts:
-
-                if len(part) < 3:
-                    vector_query.append(part)
-                    continue
-
-                if not part.endswith('.'):
-
-                    if '.' in part:
-                        if part.startswith('.'):
-                            fragments.update(self.get_fragments_by_path_tail(cursor, part))
-                            fragments.update(self.get_fragments_by_name_tail(cursor, part))
-                        else:
-                            fragments.update(self.get_fragments_by_path(cursor, part))
-                            fragments.update(self.get_fragments_by_name(cursor, part))
-                            fragments.update(self.get_fragments_by_path_tail(cursor, f'/{part}'))
-                            fragments.update(self.get_fragments_by_name_tail(cursor, f'.{part}'))
-                        continue
-
-                    if '::' in part:
-                        if part.startswith('::'):
-                            fragments.update(self.get_fragments_by_name(cursor, part))
-                            fragments.update(self.get_fragments_by_name_tail(cursor, part))
-                        else:
-                            fragments.update(self.get_fragments_by_name(cursor, part))
-                            fragments.update(self.get_fragments_by_name_tail(cursor, f'::{part}'))
-                        continue
-
-                vector_query.append(part)
-
-        return list(fragments), vector_query
-
-    async def search_vector_database(self, fragments: List[Fragment], limit, vector_query):
-        instruction = await self.determine_query_instruction(fragments)
-
-        print('>>> ' + repr((instruction, ' '.join(vector_query))))
-
-        embedding = await EMBEDDER_CLIENT.embed_query(instruction, ' '.join(vector_query), timeout=20.0)
+    async def search_vector_database(self, uuids: List[str], instruction: str, query: str, limit: int):
+        embedding = await EMBEDDER_CLIENT.embed_query(instruction, query, timeout=20.0)
         assert embedding.shape == (1, 768)
+        results = await self.collection.search(embedding[0].tolist(), limit=limit, uuids=uuids)
+        return results
 
-        uuid_filter = [fragment.uuid for fragment in fragments]
+    async def summarize(self, *, path: str = '', tail: str = '', name: str = '') -> str:
+        with self.cursor() as cursor:
+            fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
 
-        vector_search_results = await self.collection.search(embedding[0].tolist(), limit=limit, uuid_filter=uuid_filter)
-        return vector_search_results
+        if not fragments:
+            return ''
 
-    async def determine_query_instruction(self, fragments):
+        summary = '\n'.join(self.summarize_fragments(fragments))
+        return summary
+
+    def summarize_fragments(self, fragments: List[Fragment]) -> Iterator[str]:
+        yield from self.summarize_docs([fragment for fragment in fragments if not fragment.name])
+        yield from self.summarize_code([fragment for fragment in fragments if fragment.name])
+
+    def summarize_code(self, fragments):
+        if not fragments:
+            return
+
+        fragments.sort(key=lambda fragment: (fragment.name, fragment.path.count('/'), fragment.path, fragment.lineno))
+
+        yield '= Code ='
         for fragment in fragments:
-            doc_type_cls = doc_types.detect_by_extension(fragment.path)
-            if doc_type_cls is not None:
-                return doc_type_cls.query_instruction
+            yield fragment.name
+        yield ''
 
-        return doc_types.TextDocType.query_instruction
+    def summarize_docs(self, fragments):
+        if not fragments:
+            return
+
+        fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
+
+        yield '= Docs ='
+        for fragment in fragments:
+            doc_type_cls = doc_types.detect_by_extension(fragment.path) or doc_types.TextDocType
+            yield from doc_type_cls.summarize(fragment.text)
+        yield ''

@@ -113,6 +113,9 @@ class Extractor:
         await asyncio.sleep(0)
 
         with self.project.cursor() as cursor:
+            self.project.index_by_path(cursor)
+
+        with self.project.cursor() as cursor:
             iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
 
             toc = Toc() if C.INCLUDE_TOC else None
@@ -135,7 +138,7 @@ class Extractor:
                     print('>>> /TOC')
 
         with self.project.cursor() as cursor:
-            self.project.index_by_path(cursor)
+            self.project.index_by_lineno(cursor)
             self.project.index_by_name(cursor)
 
         self.inventory.mark_project_extracted(self.project.project_id)

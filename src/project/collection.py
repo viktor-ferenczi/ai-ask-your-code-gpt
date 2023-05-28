@@ -55,12 +55,12 @@ class Collection:
             )
         )
 
-    async def search(self, embedding: List[float], *, limit: int = 10, uuid_filter: Optional[List[str]] = None) -> List[Result]:
+    async def search(self, embedding: List[float], *, limit: int = 10, uuids: Optional[List[str]] = None) -> List[Result]:
         assert len(embedding) == self.dimensions, (len(embedding), self.dimensions)
 
         point_filter: grpc.Filter = None
-        if uuid_filter:
-            point_filter = grpc.Filter(should=[grpc.Condition(has_id=grpc.HasIdCondition(has_id=[grpc.PointId(uuid=uuid)])) for uuid in uuid_filter])
+        if uuids:
+            point_filter = grpc.Filter(should=[grpc.Condition(has_id=grpc.HasIdCondition(has_id=[grpc.PointId(uuid=uuid)])) for uuid in uuids])
 
         response = await self.database.async_grpc_points.Search(
             grpc.SearchPoints(

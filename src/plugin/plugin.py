@@ -12,7 +12,6 @@ from quart import request, Response
 
 from common.constants import C, RX
 from common.server import run_app
-from project.inventory import Inventory
 from project.project import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -95,28 +94,10 @@ async def create():
         print_exc()
         return Response(response='Failed to create project', status=400)
 
-    # At this point the project is downloaded and registered
-    await asyncio.sleep(2.0)
-
-    # Wait for up to 30 seconds from request for download and indexing, this is to not confuse the user with "still indexing" messages
-    inventory = Inventory()
-    while time.time() < deadline:
-
-        # noinspection PyBroadException
-        try:
-            if inventory.has_project_embedded(project_id):
-                break
-        except Exception:
-            if C.DEVELOPMENT:
-                print('Silenced error while waiting for the project to be indexed:')
-            print_exc()
-            pass
-
-        await asyncio.sleep(max(1.5, deadline - time.time()))
-
-    response = {
-        'project_id': project_id
-    }
+    response = dict(
+        project_id=project_id,
+        progress=project.progress
+    )
     return Response(response=json.dumps(response, indent=2), status=200)
 
 
@@ -140,9 +121,52 @@ async def delete(project_id: str):
     except Exception:
         print(f'ERROR: Failed to delete project {project_id!r}')
         print_exc()
-        return Response(response='Failed to delete project, please try again later', status=400)
+        return Response(response='Failed to delete project, please try again later', status=500)
 
     return Response(response='OK', status=200)
+
+
+@app.get("/project/<string:project_id>/summarize")
+async def summarize(project_id: str):
+    project_id = project_id.lower()
+    if not RX.GUID.match(project_id):
+        return Response(response='Invalid project_id, it must be a GUID', status=400)
+
+    path: str = request.args.get('path', '')
+    tail: str = request.args.get('tail', '')
+    name: str = request.args.get('name', '')
+
+    if path in ('/', '.'):
+        path = ''
+
+    print(f'Summarize project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}')
+
+    project = Project(project_id)
+    if not project.exists:
+        return Response(response='No such project', status=404)
+
+    try:
+        text = await project.summarize(path, tail, name)
+    except KeyboardInterrupt:
+        raise
+    except ProjectError as e:
+        print(f'Failed to summarize project {project_id!r}: {e}')
+        print(f'- path={path!r}')
+        print(f'- tail={tail!r}')
+        print(f'- name={name!r}')
+        return Response(response=str(e), status=400)
+    except Exception:
+        print(f'ERROR: Failed to summarize project {project_id!r}')
+        print(f'- path={path!r}')
+        print(f'- tail={tail!r}')
+        print(f'- name={name!r}')
+        print_exc()
+        return Response(response='Failed to summarize, please try again later', status=500)
+
+    if not text:
+        return Response(response='No match found', status=204)
+
+    return Response(response=text, status=200)
 
 
 @app.get("/project/<string:project_id>/search")
@@ -151,40 +175,53 @@ async def search(project_id: str):
     if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
 
-    query: str = request.args.get('query', '')
-    limit_str: str = request.args.get('limit', '5')
+    path: str = request.args.get('path', '')
+    tail: str = request.args.get('tail', '')
+    name: str = request.args.get('name', '')
+    text: str = request.args.get('text', '')
 
-    try:
-        limit: int = max(1, int(limit_str))
-    except ValueError:
-        limit: int = 5
+    print(f'Search project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}, text={text!r}')
 
-    print(f'Search project {project_id!r} with limit {limit}: {query!r}')
     project = Project(project_id)
+    if not project.exists:
+        return Response(response='No such project', status=404)
 
-    # noinspection PyBroadException
     try:
-        hits = await project.search(query, limit)
+        hits = await project.search(path, tail, name, text)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
         print(f'Failed to search project {project_id!r}: {e}')
+        print(f'- path={path!r}')
+        print(f'- tail={tail!r}')
+        print(f'- name={name!r}')
+        print(f'- text={text!r}')
         return Response(response=str(e), status=400)
     except Exception:
         print(f'ERROR: Failed to search project {project_id!r}')
+        print(f'- path={path!r}')
+        print(f'- tail={tail!r}')
+        print(f'- name={name!r}')
+        print(f'- text={text!r}')
         print_exc()
-        return Response(response='Failed to search project, please try again later', status=400)
+        return Response(response='Failed to search the project contents. Please try again later.', status=500)
 
-    results = [hit.__dict__ for hit in hits]
+    if not hits:
+        return Response(response='No match found', status=204)
 
-    for result in results:
-        if not result['name']:
-            del result['name']
+    hit = hits[0]
 
-    response = dict(results=results)
+    response = dict(
+        path=hit.path,
+        lineno=hit.lineno,
+        text=hit.text,
+    )
 
-    if project.progress is not None and project.progress < 100:
-        response.progress = project.progress
+    if hit.name:
+        response['name'] = hit.name
+
+    if project.progress < 100:
+        response['progress'] = hit.progress
 
     return Response(response=json.dumps(response, indent=2), status=200)
 

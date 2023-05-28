@@ -19,10 +19,6 @@ class C:
     MAX_TOTAL_SIZE = 200 << 20
     MAX_FILE_COUNT = MAX_TOTAL_SIZE >> 10
 
-    # Query
-    MAX_QUERY_LENGTH = 1000
-    MAX_QUERY_LIMIT = 20
-
     # Splitter
     SPLITTER_CHUNK_SIZE = 200  # Tokens
 
@@ -31,9 +27,8 @@ class C:
     MAX_INSTRUCTION_SIZE = 512
     MAX_TEXT_SIZE = 8192
 
-    # Project creation and first search
-    MAX_WAIT_TIME_AFTER_DOWNLOAD = 15.0  # s
-    MINIMUM_PROGRESS_TO_ALLOW_SEARCH = 20  # %
+    # Summary generation
+    MAX_SUMMARY_WIDTH = 80
 
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))

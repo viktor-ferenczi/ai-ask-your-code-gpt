@@ -37,6 +37,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
   /project/{project_id}/summarize:
     get:
       operationId: summarize
@@ -53,18 +57,30 @@ paths:
           schema:
             type: string
           required: false
-          description: File extension, filename or path of the documentation file to summarize.
+          description: Matches the head of the file path. Subdirectory or full file path.
+          example: README.md
+        - in: query
+          name: tail
+          schema:
+            type: string
+          required: false
+          description: Matches the tail of the file path. Extension (.ext), filename.ext or /subdir/filename.ext
           example: .md
         - in: query
           name: name
           schema:
             type: string
           required: false
-          description: Fully qualified name or short name of the code construct to summarize.
-          example: .md
+          description: Fully qualified or simple name of the code construct to search for.
       responses:
         "200":
           description: Summary
+          content:
+            text/plain:
+              schema:
+                type: string
+        "204":
+          description: No match found
           content:
             text/plain:
               schema:
@@ -81,18 +97,19 @@ paths:
           required: true
           description: Project ID
         - in: query
-          name: ext
-          schema:
-            type: string
-          required: true
-          description: File extension to narrow down the search to a specific document type.
-          example: .py
-        - in: query
           name: path
           schema:
             type: string
           required: false
-          description: Patch of a project directory or file to narrow down the search.
+          description: Matches the head of the file path. Subdirectory or full file path.
+          example: /path/to/filename.txt
+        - in: query
+          name: tail
+          schema:
+            type: string
+          required: false
+          description: Matches the tail of the file path. Extension (.ext), filename.ext or /subdir/filename.ext
+          example: .py
         - in: query
           name: name
           schema:
@@ -107,11 +124,13 @@ paths:
           description: Free text search on the file contents to further narrow down the results.
       responses:
         "200":
-          description: OK
+          description: Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/searchResponse'
+        "204":
+          description: No match found
 
 components:
   schemas:

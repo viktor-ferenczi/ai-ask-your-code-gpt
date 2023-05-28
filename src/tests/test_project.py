@@ -13,17 +13,11 @@ from common.constants import C
 from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
-from model.fragment import Fragment
 from model.hit import Hit
 from project.inventory import Inventory
 from project.project import Project
 
 MODULE_DIR = os.path.dirname(__file__)
-
-
-# FIXME: Move this to model and reuse everywhere, same for path or name if needed
-def uuid_list_of(fragments: List[Fragment]) -> List[str]:
-    return [fragment.uuid for fragment in fragments]
 
 
 class TestProject(unittest.IsolatedAsyncioTestCase):
@@ -92,24 +86,37 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits = await project.search('class Duplicates', 3)
-        self.verify_hits(hits, 3, contains=['class Duplicates'])
-        
-        hits = await project.search('.py', 10)
-        self.verify_hits(hits, 7, path='find_duplicates.py')
+        hits = await project.search(tail='.py', name='Duplicates')
+        self.verify_hits(hits, 1, contains=['class Duplicates'])
 
-        hits1 = await project.search('find_duplicates.py', 10)
-        self.verify_hits(hits1, 7, path='find_duplicates.py')
+        hits = await project.search(path='/find_duplicates.py', limit=10)
+        self.verify_hits(hits, 7, path='/find_duplicates.py')
 
-        hits2 = await project.search('find_duplicates.py', 3)
-        self.verify_hits(hits2, 3, path='find_duplicates.py')
-        self.assertEqual(uuid_list_of(hits1)[:3], uuid_list_of(hits2))
+        hits = await project.search(tail='.py', path='/find_duplicates.py', limit=10)
+        self.verify_hits(hits, 7, path='/find_duplicates.py')
 
-        hits = await project.search('find_duplicates.py class Duplicates', 1)
-        self.verify_hits(hits, 1, path='find_duplicates.py', contains=['class Duplicates'])
+        hits = await project.search(path='/README.md', limit=10)
+        self.verify_hits(hits, 8, path='/README.md')
 
-        hits = await project.search('README.md', 10)
-        self.verify_hits(hits, 8, path='README.md')
+        hits = await project.search(tail='.md', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+        self.verify_hits(hits, 1, path='/README.md', contains='Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+
+        summary = await project.summarize(tail='.md')
+        self.assertEqual(summary, '''\
+= Docs =
+# Test project
+## Rationale
+### Doc types and languages
+### Some long section
+# End
+''')
+
+        summary = await project.summarize(tail='.py')
+        self.assertEqual(summary, '''\
+= Code =
+Duplicates
+Duplicates.collect
+''')
 
         await project.delete()
 
@@ -120,14 +127,27 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        hits = await project.search('README.md', 10)
-        self.verify_hits(hits, 4, path='README.md')
+        hits = await project.search(path='/README.md', limit=10)
+        self.verify_hits(hits, 4, path='/README.md')
 
-        hits = await project.search('.py class Query', 10)
-        self.verify_hits(hits, 10, contains=['class Query'])
+        hits = await project.search(tail='.py', name='Query')
+        self.verify_hits(hits, 1, contains=['class Query'])
 
-        hits = await project.search('procedure.py', 20)
-        self.verify_hits(hits, 8, path='lib/dblayer/model/procedure.py', contains=['class BaseProcedure'])
+        summary = await project.summarize(tail='.md')
+        self.assertEqual(summary, '''\
+= Docs =
+# Test project
+## Rationale
+### Doc types and languages
+### Some long section
+# End
+''')
+
+        summary = await project.summarize(tail='.py')
+        self.assertEqual(summary, '''\
+= Code =
+Query
+''')
 
         await project.delete()
 
