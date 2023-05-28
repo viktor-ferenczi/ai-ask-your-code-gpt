@@ -206,9 +206,6 @@ class Project:
             else:
                 fragments: List[Fragment] = self.search_by_path_tail_name(cursor, path, tail, name, limit)
 
-        if not fragments and not text:
-            return []
-
         if not text:
             # Ordering and limit was already applied in SQL
             count = len(fragments)
@@ -228,12 +225,12 @@ class Project:
         # Stable sort order is determined by the scores (or by UUID if it is a tie)
         results.sort(key=lambda result: (-result.score, result.uuid))
 
-        # Source of fragment data
+        # Source of fragments
         if fragments:
-            # Narrow down by path/name search if successful
+            # Text search is
             fragment_map = {fragment.uuid: fragment for fragment in fragments}
         else:
-            # If not indexed in path/name, then rely solely on the vector database search
+            # Pull the fragments referenced from the vector database results
             with self.cursor() as cursor:
                 uuids = [result.uuid for result in results]
                 fragment_map = {fragment.uuid: fragment for fragment in self.list_fragments_by_uuid(cursor, uuids)}
