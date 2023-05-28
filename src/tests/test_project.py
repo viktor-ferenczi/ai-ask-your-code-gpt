@@ -100,8 +100,9 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         hits = await project.search(path='/README.md', limit=10)
         self.verify_hits(hits, 3, path='/README.md')
 
+        # FIXME: Should be limit=1
         hits = await project.search(tail='.md', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit.', limit=3)
-        self.verify_hits(hits, 3, path='/README.md', contains='Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+        self.verify_hits(hits, 3, path='/README.md', contains=['Lorem ipsum dolor sit amet, consectetur adipiscing elit.'])
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\

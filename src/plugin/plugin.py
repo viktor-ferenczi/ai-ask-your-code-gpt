@@ -144,7 +144,7 @@ async def summarize(project_id: str):
         return Response(response='No such project', status=404)
 
     try:
-        text = await project.summarize(path, tail, name)
+        text = await project.summarize(path=path, tail=tail, name=name)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
@@ -185,7 +185,7 @@ async def search(project_id: str):
         return Response(response='No such project', status=404)
 
     try:
-        hits = await project.search(path, tail, name, text)
+        hits = await project.search(path=path, tail=tail, name=name, text=text)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
