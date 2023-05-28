@@ -6,8 +6,8 @@ from typing import Iterator
 from common.constants import C
 from doc_types.dt_text import TextDocType
 from model.fragment import Fragment
-from .splitters.python_splitter import PythonSplitter
-from .splitters.tokenization import tiktoken_len
+from splitters.python_splitter import PythonSplitter
+from splitters.tokenization import tiktoken_len
 
 
 class CSharpDocType(TextDocType):
@@ -17,7 +17,6 @@ class CSharpDocType(TextDocType):
     # FIXME: This is not proper C# parsing!
     splitter_kws = dict(
         chunk_size=C.SPLITTER_CHUNK_SIZE,
-        chunk_overlap=0,
         length_function=tiktoken_len,
         separators=[
             "\nnamespace ",

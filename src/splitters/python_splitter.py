@@ -1,6 +1,7 @@
 from typing import Iterator
 
-from langchain.text_splitter import PythonCodeTextSplitter, RecursiveCharacterTextSplitter
+from langchain.text_splitter import PythonCodeTextSplitter
+from splitters.text_splitter import TextSplitter
 
 from model.chunk import Chunk
 from .python_parser import PythonParser
@@ -10,7 +11,7 @@ class PythonSplitter:
 
     def __init__(self, **kws) -> None:
         self.fallback_splitter = PythonCodeTextSplitter(**kws)
-        self.body_splitter = RecursiveCharacterTextSplitter(**kws)
+        self.body_splitter = TextSplitter(**kws)
 
     def split_code(self, code: str) -> Iterator[Chunk]:
         # noinspection PyBroadException
@@ -25,5 +26,4 @@ class PythonSplitter:
             lineno = 1
             for text in self.fallback_splitter.split_text(code):
                 yield Chunk(lineno, text, '')
-                # FIXME: Not exact due to the splitter eating the separators, but good enough for sorting
-                lineno += text.count('\n') + 1
+                lineno += text.count('\n')

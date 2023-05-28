@@ -3,21 +3,22 @@ __all__ = ['TextDocType']
 import uuid
 from typing import Iterator
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from splitters.text_splitter import TextSplitter
 
 from common.constants import C
 from model.fragment import Fragment
-from .splitters.tokenization import tiktoken_len
+from splitters.tokenization import tiktoken_len
 
 
 class TextDocType:
+    code = False
+
     store_instruction: str = 'Represent the document for retrieval'
     query_instruction: str = 'Represent the question for retrieving relevant paragraphs'
 
-    splitter_cls = RecursiveCharacterTextSplitter
+    splitter_cls = TextSplitter
     splitter_kws = dict(
         chunk_size=C.SPLITTER_CHUNK_SIZE,
-        chunk_overlap=0,
         length_function=tiktoken_len
     )
 
@@ -32,8 +33,7 @@ class TextDocType:
         lineno = 1
         for index, paragraph in enumerate(self.splitter.split_text(text)):
             yield Fragment(uuid=str(uuid.uuid4()), path=path, lineno=lineno, text=paragraph, name='')
-            # FIXME: Not exact due to the splitter eating the separators, but good enough for sorting
-            lineno += paragraph.count('\n') + 1
+            lineno += paragraph.count('\n')
 
     @classmethod
     def summarize(cls, text: str) -> Iterator[str]:

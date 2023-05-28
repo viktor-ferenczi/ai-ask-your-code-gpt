@@ -2,7 +2,7 @@ __all__ = ['MarkdownDocType']
 
 from typing import Iterator
 
-from langchain.text_splitter import MarkdownTextSplitter
+from splitters.text_splitter import MarkdownTextSplitter
 
 from common.constants import C
 from doc_types.dt_text import TextDocType

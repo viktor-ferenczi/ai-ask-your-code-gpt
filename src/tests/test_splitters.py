@@ -28,6 +28,11 @@ class TestSplitters(unittest.TestCase):
                 relpath = path[len(TEST_PROJECT_DIR) + 1:]
                 fragments = list(doc_type.load(relpath, data))
 
+                if not doc_type_cls.code:
+                    joined_texts = ''.join(fragment.text for fragment in fragments).replace('\r\n', '\n')
+                    original_text = data.decode('utf-8').replace('\r\n', '\n')
+                    self.assertEqual(original_text, joined_texts)
+
                 # Replace UUIDs with sequence numbers, so they are stable
                 for index, fragment in enumerate(fragments):
                     fragment.uuid = f'TEST-{index:02d}'
@@ -68,4 +73,4 @@ class TestSplitters(unittest.TestCase):
                     print(line)
                 print()
 
-        self.assertFalse(failed)
+        self.assertFalse(bool(failed))

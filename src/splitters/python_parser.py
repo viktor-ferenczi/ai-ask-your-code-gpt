@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 import libcst as cst
-from langchain.text_splitter import TextSplitter
+from splitters.text_splitter import TextSplitter
 from libcst.metadata import MetadataWrapper, PositionProvider
 
 from model.chunk import Chunk
@@ -32,8 +32,7 @@ class PythonParser(cst.CSTTransformer):
     def split_code(self, lineno: int, code: str, name: str):
         for text in self.splitter.split_text(code):
             yield Chunk(lineno, text, name)
-            # FIXME: Not exact due to the splitter eating the separators, but good enough for sorting
-            lineno += text.count('\n') + 1
+            lineno += text.count('\n')
 
     def visit_Module(self, node: cst.Module):
         self.module = node

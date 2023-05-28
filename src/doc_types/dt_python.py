@@ -5,10 +5,12 @@ from typing import Iterator
 
 from doc_types.dt_text import TextDocType
 from model.fragment import Fragment
-from .splitters.python_splitter import PythonSplitter
+from splitters.python_splitter import PythonSplitter
 
 
 class PythonDocType(TextDocType):
+    code = True
+
     store_instruction: str = 'Represent the Python code for retrieval'
     query_instruction: str = 'Represent the Python question for retrieving relevant code'
 
