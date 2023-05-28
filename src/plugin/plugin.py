@@ -11,6 +11,7 @@ from quart import request, Response
 from common.constants import C, RX
 from common.server import run_app
 from project.project import Project, ProjectError
+from splitters.tokenization import tiktoken_len
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -214,6 +215,11 @@ async def search(project_id: str):
     lineno = hits[0].lineno
     hits = [hit for hit in hits if hit.path == path]
     text = ''.join(hit.text for hit in hits)
+
+    tokens = tiktoken_len(text)
+    if tokens > 1000:
+        lines = text.split('\n')
+        text = '\n'.join(lines[len(lines) * 1000 / tokens])
 
     response = dict(
         path=path,
