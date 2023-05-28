@@ -71,7 +71,7 @@ class Project:
             return 100
 
         fragment_count, embedded_count = self.count_embedded_fragments()
-        return int(round(fragment_count / embedded_count))
+        return int(round(fragment_count / embedded_count)) if embedded_count else 0
 
     async def create_database(self):
         if os.path.exists(self.db_path):
