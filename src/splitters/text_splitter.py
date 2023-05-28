@@ -1,51 +1,73 @@
-from typing import Callable, List, Iterator, Collection
+from typing import Callable, Iterator, Collection
 
 
-def iter_split(fragments: List[str], separator: str) -> Iterator[str]:
-    for text in fragments:
-        start = 0
-        while 1:
-            next = text.find(separator, start)
-            if next < 0:
-                yield text[start:]
-                break
-            yield text[start:next]
-            start = next
+def find_iter(text: str, sub: str) -> Iterator[int]:
+    i = 0
+    e = len(text)
+    while i < e:
+        f = text.find(sub, i)
+        if f < 0:
+            break
+        yield f
+        i = f + len(sub)
 
 
 class TextSplitter:
+    default_separators = (
+        '>\n\n',
+        '>\n',
+        '> '
+    )
 
-    def __init__(self, chunk_size: int, length_function: Callable[[str], int] = len, separators: Collection[str] = ('\n\n', '\n', ' ', '')) -> None:
+    def __init__(self, chunk_size: int, length_function: Callable[[str], int] = len, separators: Collection[str] = ()) -> None:
         self.chunk_size = chunk_size
-        self.separators = separators
+        self.separators = separators or self.default_separators
         self.length_function = length_function
 
     def split_text(self, text: str) -> Iterator[str]:
-        s = 0
-        a = 0
-        b = len(text)
-        while a < b:
+        chunk = []
+        total = 0
+        for part, length in self.__split_recursive(text, 0):
+            if total + length > self.chunk_size:
+                yield ''.join(chunk)
+                chunk.clear()
+                total = 0
+            chunk.append(part)
+            total += length
 
-            # Can the fragment fit?
-            if self.length_function(text[a:b]) <= self.chunk_size:
-                yield text[a:b]
-                a = b
-                b = len(text)
-                s = 0
-                continue
+        if chunk:
+            yield ''.join(chunk)
 
-            # Split
-            c = self.separators[s]
-            if c:
-                n = text.find(c, a + 1)
-                if n < 0 or n >= b:
-                    s += 1
-                    continue
-                b = n
-                continue
+    def __split_recursive(self, text: str, depth: int) -> Iterator[str]:
+        length = self.length_function(text)
+        if length <= self.chunk_size:
+            yield text, length
+            return
 
-            # Just half at the character level to progress faster
-            b = (a + b) // 2
+        if depth >= len(self.separators):
+            if len(text) < 2:
+                yield text
+            else:
+                half = len(text) // 2
+                yield from self.__split_recursive(text[:half], depth)
+                yield from self.__split_recursive(text[half:], depth)
+            return
+
+        sep = self.separators[depth]
+        aff = sep[0]
+        sep = sep[1:]
+
+        parts = text.split(sep)
+        if aff == '>':
+            for part in parts[:-1]:
+                yield from self.__split_recursive(part + sep, depth + 1)
+            yield from self.__split_recursive(parts[-1], depth + 1)
+        elif aff == '<':
+            yield from self.__split_recursive(parts[0], depth + 1)
+            for part in parts[1:]:
+                yield from self.__split_recursive(sep + part, depth + 1)
+        else:
+            raise ValueError(f'Invalid separator affinity: {sep!r}')
 
 
 class MarkdownTextSplitter(TextSplitter):
@@ -56,25 +78,24 @@ class MarkdownTextSplitter(TextSplitter):
             length_function,
             (
                 # First, try to split along Markdown headings (starting with level 2)
-                "\n## ",
-                "\n### ",
-                "\n#### ",
-                "\n##### ",
-                "\n###### ",
+                "<\n## ",
+                "<\n### ",
+                "<\n#### ",
+                "<\n##### ",
+                "<\n###### ",
                 # Note the alternative syntax for headings (below) is not handled here
                 # Heading level 2
                 # ---------------
                 # End of code block
-                "```\n\n",
+                ">```\n\n",
                 # Horizontal lines
-                "\n\n***\n\n",
-                "\n\n---\n\n",
-                "\n\n___\n\n",
+                ">\n\n***\n\n",
+                ">\n\n---\n\n",
+                ">\n\n___\n\n",
                 # Note that this splitter doesn't handle horizontal lines defined
                 # by *three or more* of ***, ---, or ___, but this is not handled
-                "\n\n",
-                "\n",
-                " ",
-                "",
+                ">\n\n",
+                ">\n",
+                "> ",
             )
         )
