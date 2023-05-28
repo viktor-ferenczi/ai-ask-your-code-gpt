@@ -167,11 +167,13 @@ class Project:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT COUNT(1) FROM Fragment'):
                 return row[0]
+            return 0, 0
 
     def count_embedded_fragments(self) -> Tuple[int, int]:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT COUNT(1), SUM(embedded) FROM Fragment'):
                 return tuple(row)
+            return 0, 0
 
     async def delete(self):
         inventory = Inventory()
