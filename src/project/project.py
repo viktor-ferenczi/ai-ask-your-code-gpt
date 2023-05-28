@@ -266,6 +266,7 @@ class Project:
             total = sum(tiktoken_len(name) for name in names)
             if total <= 1000:
                 break
+
             max_dots = max(name.count('.') for name in names)
             if max_dots:
                 names = [name for name in names if name.count('.') < max_dots]
@@ -282,7 +283,22 @@ class Project:
             return
 
         fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
-
+        
+        summary = []
         for fragment in fragments:
             doc_type_cls = doc_types.detect_by_extension(fragment.path) or doc_types.TextDocType
-            yield from doc_type_cls.summarize(fragment.text)
+            summary.extend(doc_type_cls.summarize(fragment.text))
+        
+        # Shorten
+        while summary:
+            total = sum(tiktoken_len(line) for line in summary)
+            if total <= 1000:
+                break
+
+            max_level = max(line.count('#') for line in summary)
+            if max_level:
+                summary = [line for line in summary if line.count('#') < max_level]
+            else:
+                summary = summary[:len(summary) * 1000 // total]
+
+        yield from summary
