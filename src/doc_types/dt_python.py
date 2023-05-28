@@ -12,7 +12,7 @@ class PythonDocType(TextDocType):
     code = True
 
     store_instruction: str = 'Represent the Python code for retrieval'
-    query_instruction: str = 'Represent the Python question for retrieving relevant code'
+    query_instruction: str = 'Represent the query text for retrieving relevant parts of the code'
 
     splitter_cls = PythonSplitter
 

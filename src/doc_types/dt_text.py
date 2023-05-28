@@ -14,7 +14,7 @@ class TextDocType:
     code = False
 
     store_instruction: str = 'Represent the document for retrieval'
-    query_instruction: str = 'Represent the question for retrieving relevant paragraphs'
+    query_instruction: str = 'Represent the query text for retrieving relevant paragraphs'
 
     splitter_cls = TextSplitter
     splitter_kws = dict(
