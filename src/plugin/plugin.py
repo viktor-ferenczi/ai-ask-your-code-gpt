@@ -183,6 +183,12 @@ async def search(project_id: str):
 
     try:
         hits = await project.search(path=path, tail=tail, name=name, text=text)
+        if not hits and name:
+            hits = await project.search(path=path, tail=tail, text=name)
+            if not hits:
+                hits = await project.search(tail=tail, text=name)
+            if not hits:
+                hits = await project.search(text=name)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
@@ -204,16 +210,25 @@ async def search(project_id: str):
     if not hits:
         return Response(response='No match found', status=204)
 
-    hit = hits[0]
+    path = hits[0].path
+    lineno = hits[0].lineno
+    hits = [hit for hit in hits if hit.path == path]
+    text = ''.join(hit.text for hit in hits)
 
     response = dict(
-        path=hit.path,
-        lineno=hit.lineno,
-        text=hit.text,
+        path=path,
+        lineno=lineno,
+        text=text,
     )
 
-    if hit.name:
-        response['name'] = hit.name
+    name = ''
+    for hit in hits:
+        if hit.name:
+            name = hit.name
+            break
+
+    if name:
+        response['name'] = name
 
     if project.progress < 100:
         response['progress'] = project.progress
