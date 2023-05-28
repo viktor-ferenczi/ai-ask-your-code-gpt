@@ -1,0 +1,42 @@
+// Allows for searching, retrieving and summarizing documentation and program code for reasoning about a software project.
+namespace askyourcodedev {
+
+// Downloads a project archive, extracts it, then indexes the documentation and code fragments into a database.
+type download = (_: {
+// URL of the ZIP archive to download directly without authentication.
+url: string,
+}) => any;
+
+// Deletes a project from the database.
+type delete = (_: {
+// Project ID
+project_id: string,
+}) => any;
+
+// Summarizes the project, a subdirectory, a file or a code construct (function, class or method).
+type summarize = (_: {
+// Project ID
+project_id: string,
+// Matches the head of the file path. Subdirectory or full file path.
+path?: string,
+// Matches the tail of the file path. Extension (.ext), filename.ext or /subdir/filename.ext
+tail?: string,
+// Fully qualified or simple name of the code construct to search for.
+name?: string,
+}) => any;
+
+// Searches for documentation or code constructs (function, class or method).
+type search = (_: {
+// Project ID
+project_id: string,
+// Matches the head of the file path. Subdirectory or full file path.
+path?: string,
+// Matches the tail of the file path. Extension (.ext), filename.ext or /subdir/filename.ext
+tail?: string,
+// Fully qualified or simple name of the code construct to search for.
+name?: string,
+// Free text search on the file contents to further narrow down the results.
+text?: string,
+}) => any;
+
+} // namespace askyourcodedev
