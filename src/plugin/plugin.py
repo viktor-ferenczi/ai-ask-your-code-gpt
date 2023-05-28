@@ -124,6 +124,7 @@ async def delete(project_id: str):
 
 @app.get("/project/<string:project_id>/summarize")
 async def summarize(project_id: str):
+    # noinspection DuplicatedCode
     project_id = project_id.lower()
     if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
@@ -141,6 +142,7 @@ async def summarize(project_id: str):
     if not project.exists:
         return Response(response='No such project', status=404)
 
+    # noinspection PyBroadException
     try:
         text = await project.summarize(path=path, tail=tail, name=name)
     except KeyboardInterrupt:
@@ -162,11 +164,15 @@ async def summarize(project_id: str):
     if not text:
         return Response(response='No match found', status=204)
 
+    if not path:
+        text += '\nDocumentation and source code can be searched by path, filename, extension or the name of language construct (class, method, function). The text search functionality can find variable definitions and their usage. Well specified searches usually work better.'
+
     return Response(response=text, status=200)
 
 
 @app.get("/project/<string:project_id>/search")
 async def search(project_id: str):
+    # noinspection DuplicatedCode
     project_id = project_id.lower()
     if not RX.GUID.match(project_id):
         return Response(response='Invalid project_id, it must be a GUID', status=400)
@@ -182,6 +188,7 @@ async def search(project_id: str):
     if not project.exists:
         return Response(response='No such project', status=404)
 
+    # noinspection PyBroadException
     try:
         hits = await project.search(path=path, tail=tail, name=name, text=text)
         if not hits and name:
@@ -211,15 +218,25 @@ async def search(project_id: str):
     if not hits:
         return Response(response='No match found', status=204)
 
-    path = hits[0].path
-    lineno = hits[0].lineno
-    hits = [hit for hit in hits if hit.path == path]
-    text = ''.join(hit.text for hit in hits)
+    hit = hits[0]
+    path = hit.path
+    name = hit.name
+    ln = hit.lineno + hit.text.count('\n')
+    tokens = tiktoken_len(hit.text)
 
-    tokens = tiktoken_len(text)
-    if tokens > 1000:
-        lines = text.split('\n')
-        text = '\n'.join(lines[len(lines) * 1000 / tokens])
+    i = 1
+    total = tokens
+    while i < len(hits):
+        hit = hits[i]
+        if hit.path != path or hit.name != name or hit.lineno != ln:
+            break
+        tokens = tiktoken_len(hit.text)
+        if total + tokens > 1000:
+            break
+        ln = hit.lineno + hit.text.count('\n')
+
+    lineno = hits[0].lineno
+    text = ''.join(hit.text for hit in hits[:i])
 
     response = dict(
         path=path,
