@@ -10,7 +10,7 @@ import aiohttp
 from qdrant_client import QdrantClient
 
 import doc_types
-from common.constants import C
+from common.constants import C, RX
 from common.timer import timer
 from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
@@ -167,7 +167,7 @@ class Project:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT COUNT(1) FROM Fragment'):
                 return row[0] or 0
-            return 0, 0
+            return 0
 
     def count_embedded_fragments(self) -> Tuple[int, int]:
         with self.cursor() as cursor:
@@ -184,14 +184,20 @@ class Project:
         if os.path.isdir(self.data_dir):
             shutil.rmtree(self.data_dir)
 
-    async def download(self, url: str, *, timeout: float = 30.0):
-        with timer(f'Downloaded {url!r} for project {self.project_id!r}'):
+    @classmethod
+    async def download(cls, url: str, *, timeout: float = 30.0) -> str:
+        with timer(f'Downloaded {url!r}'):
             async with aiohttp.ClientSession() as session:
                 data = json.dumps(dict(url=url))
-                async with session.post(f'{DOWNLOADER_URL}/download/{self.project_id}', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
+                async with session.post(f'{DOWNLOADER_URL}/download', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
                     if response.status != 200:
-                        print(f'Failed to download archive {url!r} for project {self.project_id!r}')
+                        print(f'Failed to download archive {url!r}')
                         raise ProjectError(f'Failed to download archive: {url}')
+                    content: bytes = await response.content.read()
+                    project_id = content.decode('utf-8').strip()
+                    assert RX.GUID.match(project_id)
+                    print(f'Project ID is {project_id}')
+                    return project_id
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         with self.cursor() as cursor:

@@ -1,8 +1,6 @@
 import asyncio
 import json
 import os
-import time
-import uuid
 from traceback import print_exc
 from typing import Dict
 
@@ -75,23 +73,22 @@ async def create():
         return Response(response='Invalid URL', status=400)
 
     # Create project, download and verify archive, initiate indexing
-    project_id = str(uuid.uuid4())
-    print(f'Create project {project_id!r} from {url!r}')
+    print(f'Create project from {url!r}')
 
     # noinspection PyBroadException
     try:
-        project = Project(project_id)
-        await project.download(url)
+        project_id = await Project.download(url)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
-        print(f'Failed to download project {project_id!r}: {e}')
+        print(f'Failed to download project from archive URL {url!r}: {e}')
         return Response(response=str(e), status=400)
     except Exception:
-        print(f'ERROR: Failed to create project {project_id!r} from archive URL {url!r}')
+        print(f'ERROR: Failed to create project from archive URL {url!r}')
         print_exc()
         return Response(response='Failed to create project', status=400)
 
+    project = Project(project_id)
     response = dict(
         project_id=project_id,
         progress=project.progress
@@ -219,7 +216,7 @@ async def search(project_id: str):
         response['name'] = hit.name
 
     if project.progress < 100:
-        response['progress'] = hit.progress
+        response['progress'] = project.progress
 
     return Response(response=json.dumps(response, indent=2), status=200)
 

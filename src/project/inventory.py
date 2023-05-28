@@ -29,6 +29,8 @@ class Inventory:
             cursor.execute('''
                     CREATE TABLE Inventory(
                         project_id TEXT PRIMARY KEY,
+                        url TEXT,
+                        checksum TEXT,
                         registered INTEGER NOT NULL,
                         last_used INTEGER NOT NULL,
                         extracted INTEGER DEFAULT 0 NOT NULL,
@@ -39,10 +41,16 @@ class Inventory:
             cursor.execute('CREATE INDEX idx_inventory_project_extracted ON Inventory(extracted)')
             cursor.execute('CREATE INDEX idx_inventory_project_embedded ON Inventory(embedded)')
 
-    def register_project(self, project_id: str):
+    def find_project(self, url: str, checksum: str) -> Optional[str]:
+        with self.cursor() as cursor:
+            for row in cursor.execute('SELECT project_id FROM Inventory WHERE url = ? AND checksum = ?', (url, checksum)):
+                return row[0]
+            return None
+
+    def register_project(self, project_id: str, url: str, checksum: str):
         with self.cursor() as cursor:
             now = int(time.time())
-            cursor.execute('INSERT OR REPLACE INTO Inventory(project_id, registered, last_used) VALUES (?, ?, ?)', (project_id, now, now))
+            cursor.execute('INSERT INTO Inventory(project_id, url, checksum, registered, last_used) VALUES (?, ?, ?, ?, ?)', (project_id, url, checksum, now, now))
 
     def delete_project(self, project_id: str):
         with self.cursor() as cursor:

@@ -82,9 +82,8 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         await self.medium_project()
 
     async def small_project(self):
-        project = Project(str(uuid.uuid4()))
-
-        await project.download(f'http://127.0.0.1:49001/')
+        project_id = await Project.download('http://127.0.0.1:49001/')
+        project = Project(project_id)
 
         await self.wait_for_processing(project)
 
@@ -125,9 +124,8 @@ md5_checksum
         await project.delete()
 
     async def medium_project(self):
-        project = Project(str(uuid.uuid4()))
-
-        await project.download(f'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
+        project_id = await Project.download('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
+        project = Project(project_id)
 
         await self.wait_for_processing(project)
 

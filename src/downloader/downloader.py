@@ -1,12 +1,14 @@
 import asyncio
+import hashlib
 import os
+import uuid
 from traceback import print_exc
 from typing import Dict
 
 from quart import Quart, request, Response
 
 import doc_types
-from common.constants import C, Msg, RX
+from common.constants import C, Msg
 from common.http import download_file
 from common.server import run_app
 from common.timer import timer
@@ -17,25 +19,41 @@ from project.project import Project
 
 class Downloader:
 
-    def __init__(self, project_id: str, url: str) -> None:
-        self.project_id: str = project_id
+    def __init__(self, url: str) -> None:
         self.url: str = url
 
-        self.project = Project(project_id)
-
-    async def download_verify(self):
-        with timer(f'Downloaded archive for project {self.project_id!r}'):
+    async def download_verify(self) -> str:
+        with timer(f'Downloaded archive from {self.url!r}'):
             archive = await self.__download()
+
+        checksum = hashlib.sha256(archive).hexdigest()
+
+        inventory = Inventory()
+        project_id = inventory.find_project(self.url, checksum)
+
+        if project_id is not None:
+            print(f'Archive matches an existing project: {project_id!r}')
+            return project_id
 
         await asyncio.sleep(0)
 
-        with timer(f'Verified archive for project {self.project_id!r}'):
+        with timer(f'Verified archive {self.url!r}'):
             self.__verify(archive)
 
-        with open(self.project.archive_path, 'wb') as f:
+        await asyncio.sleep(0)
+
+        project_id = str(uuid.uuid4())
+        inventory.register_project(project_id, self.url, checksum)
+
+        await asyncio.sleep(0)
+
+        project = Project(project_id)
+        with open(project.archive_path, 'wb') as f:
             f.write(archive)
 
-        await self.project.create_database()
+        await project.create_database()
+
+        return project_id
 
     async def __download(self) -> bytes:
         try:
@@ -43,11 +61,11 @@ class Downloader:
         except KeyboardInterrupt:
             raise
         except Exception:
-            print(f'Failed to download archive {self.url!r} for project {self.project_id!r}')
+            print(f'Failed to download archive {self.url!r}')
             print_exc()
             raise IOError(f'Failed to download archive {self.url!r}')
 
-        print(f'Downloaded archive of {len(archive)} bytes in size for project {self.project_id!r} from {self.url!r}')
+        print(f'Downloaded archive of {len(archive)} bytes in size from {self.url!r}')
         return archive
 
     def __verify(self, archive: bytes):
@@ -63,7 +81,7 @@ class Downloader:
         except KeyboardInterrupt:
             raise
         except Exception:
-            print(f'Failed verify source archive {self.url!r} for project {self.project_id!r}')
+            print(f'Failed verify source archive {self.url!r}')
             print_exc()
             raise IOError(f'Failed verify source archive: {self.url!r}')
 
@@ -81,26 +99,18 @@ async def canary():
     return 'OK', 200
 
 
-@app.post("/download/<string:project_id>")
-async def download(project_id: str):
-    project_id = project_id.lower()
-    if not RX.GUID.match(project_id):
-        return Response(response='Invalid project_id, it must be a GUID', status=400)
-
+@app.post("/download")
+async def download():
     body: Dict[str, any] = await request.get_json(force=True)
     url = body.get('url')
     if not url:
         return Response(response='Missing url', status=400)
 
-    with timer(f'Downloaded archived {url!r} and registered project {project_id!r}'):
+    with timer(f'Downloaded archived {url!r}'):
+        downloader = Downloader(url)
+        project_id = await downloader.download_verify()
 
-        downloader = Downloader(project_id, url)
-        await downloader.download_verify()
-
-        inventory = Inventory()
-        inventory.register_project(project_id)
-
-    return Response(response='OK', status=200)
+    return Response(response=project_id, status=200)
 
 
 def main():
