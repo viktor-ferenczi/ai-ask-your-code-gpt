@@ -206,7 +206,7 @@ class Project:
             else:
                 fragments: List[Fragment] = self.search_by_path_tail_name(cursor, path, tail, name, limit)
 
-        if not fragments:
+        if not fragments and not text:
             return []
 
         if not text:
@@ -228,8 +228,17 @@ class Project:
         # Stable sort order is determined by the scores (or by UUID if it is a tie)
         results.sort(key=lambda result: (-result.score, result.uuid))
 
+        # Source of fragment data
+        if fragments:
+            # Narrow down by path/name search if successful
+            fragment_map = {fragment.uuid: fragment for fragment in fragments}
+        else:
+            # If not indexed in path/name, then rely solely on the vector database search
+            with self.cursor() as cursor:
+                uuids = [result.uuid for result in results]
+                fragment_map = {fragment.uuid: fragment for fragment in self.list_fragments_by_uuid(cursor, uuids)}
+
         # Combine into hits, preserve vector results sort order
-        fragment_map = {fragment.uuid: fragment for fragment in fragments}
         hits = [Hit.from_fragment(result.score, fragment_map[result.uuid]) for result in results[:limit]]
         return hits
 
@@ -283,12 +292,12 @@ class Project:
             return
 
         fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
-        
+
         summary = []
         for fragment in fragments:
             doc_type_cls = doc_types.detect_by_extension(fragment.path) or doc_types.TextDocType
             summary.extend(doc_type_cls.summarize(fragment.text))
-        
+
         # Shorten
         while summary:
             total = sum(tiktoken_len(line) for line in summary)

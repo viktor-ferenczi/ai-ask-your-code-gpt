@@ -3,7 +3,6 @@ import os
 import pprint
 import shutil
 import unittest
-import uuid
 import zipfile
 from typing import List
 
