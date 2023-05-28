@@ -214,7 +214,7 @@ class Project:
         )
         instruction = doc_type_cls.query_instruction
         fragment_uuids = uuid_of_fragments(fragments)
-        results = await self.search_vector_database(fragment_uuids, instruction, text, 1)
+        results = await self.search_vector_database(fragment_uuids, instruction, text, limit)
 
         # Stable sort order is determined by the scores (or by UUID if it is a tie)
         results.sort(key=lambda result: (-result.score, result.uuid))
@@ -244,7 +244,7 @@ class Project:
         yield from self.summarize_docs([fragment for fragment in fragments if not fragment.name])
         yield from self.summarize_code([fragment for fragment in fragments if fragment.name])
 
-    def summarize_code(self, fragments):
+    def summarize_code(self, fragments) -> Iterator[str]:
         if not fragments:
             return
 
@@ -255,7 +255,7 @@ class Project:
             yield fragment.name
         yield ''
 
-    def summarize_docs(self, fragments):
+    def summarize_docs(self, fragments) -> Iterator[str]:
         if not fragments:
             return
 

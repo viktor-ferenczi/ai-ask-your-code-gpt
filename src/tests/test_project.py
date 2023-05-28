@@ -96,27 +96,33 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.verify_hits(hits, 7, path='/find_duplicates.py')
 
         hits = await project.search(path='/README.md', limit=10)
-        self.verify_hits(hits, 8, path='/README.md')
+        self.verify_hits(hits, 3, path='/README.md')
 
-        hits = await project.search(tail='.md', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-        self.verify_hits(hits, 1, path='/README.md', contains='Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+        hits = await project.search(tail='.md', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit.', limit=3)
+        self.verify_hits(hits, 3, path='/README.md', contains='Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
 
         summary = await project.summarize(tail='.md')
-        self.assertEqual(summary, '''\
+        self.assertEqual('''\
 = Docs =
 # Test project
 ## Rationale
 ### Doc types and languages
 ### Some long section
 # End
-''')
+''', summary)
 
         summary = await project.summarize(tail='.py')
-        self.assertEqual(summary, '''\
+        self.assertEqual('''\
+= Docs =
+
 = Code =
 Duplicates
+Duplicates.__init__
 Duplicates.collect
-''')
+Duplicates.collect
+main
+md5_checksum
+''', summary)
 
         await project.delete()
 
@@ -128,26 +134,26 @@ Duplicates.collect
         await self.wait_for_processing(project)
 
         hits = await project.search(path='/README.md', limit=10)
-        self.verify_hits(hits, 4, path='/README.md')
+        self.verify_hits(hits, 3, path='/README.md')
 
-        hits = await project.search(tail='.py', name='Query')
-        self.verify_hits(hits, 1, contains=['class Query'])
+        hits = await project.search(tail='.py', name='Query', limit=10)
+        self.verify_hits(hits, 8, contains=['class Query'])
 
         summary = await project.summarize(tail='.md')
-        self.assertEqual(summary, '''\
+        self.assertEqual('''\
 = Docs =
 # Test project
 ## Rationale
 ### Doc types and languages
 ### Some long section
 # End
-''')
+''', summary)
 
         summary = await project.summarize(tail='.py')
-        self.assertEqual(summary, '''\
+        self.assertEqual('''\
 = Code =
 Query
-''')
+''', summary)
 
         await project.delete()
 

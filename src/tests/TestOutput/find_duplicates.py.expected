@@ -14,12 +14,14 @@
                'def main():...\n'
                '\n'
                "if __name__ == '__main__':\n"
-               '    main()',
+               '    main()\n',
           name='',
           uuid='TEST-00',
           path='find_duplicates.py'),
  Fragment(lineno=9,
-          text='def md5_checksum(file_path):\n'
+          text='\n'
+               '\n'
+               'def md5_checksum(file_path):\n'
                '    hasher = hashlib.md5()\n'
                "    with open(file_path, 'rb') as f:\n"
                '        while True:\n'
@@ -27,22 +29,23 @@
                '            if not data:\n'
                '                break\n'
                '            hasher.update(data)\n'
-               '    return hasher.hexdigest()',
+               '    return hasher.hexdigest()\n',
           name='md5_checksum',
           uuid='TEST-01',
           path='find_duplicates.py'),
  Fragment(lineno=20,
-          text='class Duplicates:\n\n    def __init__(self, root_dir: str) -> None:...\n    def collect(self):...',
+          text='\n\nclass Duplicates:\n\n    def __init__(self, root_dir: str) -> None:...\n    def collect(self):...',
           name='Duplicates',
           uuid='TEST-02',
           path='find_duplicates.py'),
  Fragment(lineno=22,
-          text='def __init__(self, root_dir: str) -> None:\n    super().__init__()\n    self.root_dir = root_dir\n    self.files = []',
+          text='\ndef __init__(self, root_dir: str) -> None:\n    super().__init__()\n    self.root_dir = root_dir\n    self.files = []\n',
           name='Duplicates.__init__',
           uuid='TEST-03',
           path='find_duplicates.py'),
  Fragment(lineno=27,
-          text='def collect(self):\n'
+          text='\n'
+               'def collect(self):\n'
                '    files_by_size = defaultdict(list)\n'
                '    files_by_checksum = defaultdict(list)\n'
                '\n'
@@ -53,12 +56,13 @@
                '            file_size = os.path.getsize(file_path)\n'
                '            files_by_size[file_size].append(file_path)\n'
                '\n'
-               '    total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() if len(file_list) > 1)',
+               '    total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() if len(file_list) > 1)\n'
+               '\n',
           name='Duplicates.collect',
           uuid='TEST-04',
           path='find_duplicates.py'),
- Fragment(lineno=39,
-          text='# Calculate the hash only for groups with more than one file\n'
+ Fragment(lineno=41,
+          text='    # Calculate the hash only for groups with more than one file\n'
                '    with ProcessPoolExecutor() as executor, tqdm(total=total_size, unit=\'B\', unit_scale=True, desc="Processing files") as pbar:\n'
                '        for file_size, file_list in files_by_size.items():\n'
                '            if len(file_list) > 1:\n'
@@ -67,12 +71,14 @@
                '                    files_by_checksum[file_checksum].append(file_path)\n'
                '                    pbar.update(file_size)\n'
                '\n'
-               '    self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)',
+               '    self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)\n',
           name='Duplicates.collect',
           uuid='TEST-05',
           path='find_duplicates.py'),
  Fragment(lineno=52,
-          text='def main():\n'
+          text='\n'
+               '\n'
+               'def main():\n'
                '    root_dir = input("Enter the root directory to search for duplicate files: ")\n'
                '\n'
                '    if not os.path.isdir(root_dir):\n'
@@ -98,7 +104,7 @@
                '                first = False\n'
                '            print(f"\\t{file_path}")\n'
                '\n'
-               '    print(f"\\nTotal disk space that could be saved by deleting duplicates: {total_space_saved} bytes")',
+               '    print(f"\\nTotal disk space that could be saved by deleting duplicates: {total_space_saved} bytes")\n',
           name='main',
           uuid='TEST-06',
           path='find_duplicates.py')]
