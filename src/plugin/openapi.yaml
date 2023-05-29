@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: AskYourCode
-  description: Allows for searching, retrieving and summarizing documentation and program code for reasoning about a software project.
+  description: Provide summarization and targeted search of a software project to aid in reasoning.
   version: 'v1'
 servers:
   - url: https://plugin.askyourcode.ai
@@ -9,7 +9,7 @@ paths:
   /project:
     post:
       operationId: download
-      summary: Downloads a project archive, extracts it, then indexes the documentation and code fragments into a database.
+      summary: Download and index a software project for content retrieval.
       requestBody:
         required: true
         content:
@@ -18,7 +18,7 @@ paths:
               $ref: '#/components/schemas/downloadRequest'
       responses:
         "200":
-          description: Archive downloaded, context indexing is in progress
+          description: Archive downloaded, indexing of its contents is in progress.
           content:
             application/json:
               schema:
@@ -26,7 +26,7 @@ paths:
   /project/{project_id}:
     delete:
       operationId: delete
-      summary: Deletes a project from the database.
+      summary: Delete all information about a project.
       parameters:
         - in: path
           name: project_id
@@ -44,7 +44,7 @@ paths:
   /project/{project_id}/summarize:
     get:
       operationId: summarize
-      summary: Summarizes the project, a subdirectory, a file or a code construct (function, class or method).
+      summary: Summarize the project, a directory, a file or code construct (class, method, function, variable).
       parameters:
         - in: path
           name: project_id
@@ -57,21 +57,21 @@ paths:
           schema:
             type: string
           required: false
-          description: Matches the head of the file path. Subdirectory or full file path.
+          description: Matches the head of the file or folder path. Whole project if missing.
           example: README.md
         - in: query
           name: tail
           schema:
             type: string
           required: false
-          description: Matches the tail of the file path. Extension (.ext), filename.ext or /subdir/filename.ext
+          description: Matches the tail of the file path. For example ".extension" or "filename.extension".
           example: .md
         - in: query
           name: name
           schema:
             type: string
           required: false
-          description: Fully qualified or simple name of the code construct to search for.
+          description: Fully qualified or simple name of the code construct.
       responses:
         "200":
           description: Summary
@@ -88,7 +88,7 @@ paths:
   /project/{project_id}/search:
     get:
       operationId: search
-      summary: Searches for documentation or code constructs (function, class or method).
+      summary: Searches for documentation or a code construct (class, method, function, variable).
       parameters:
         - in: path
           name: project_id
@@ -101,27 +101,27 @@ paths:
           schema:
             type: string
           required: false
-          description: Matches the head of the file path. Subdirectory or full file path.
-          example: /path/to/filename.txt
+          description: Matches the head of the file or folder path. Whole project if missing.
+          example: README.md
         - in: query
           name: tail
           schema:
             type: string
           required: false
-          description: Matches the tail of the file path. Extension (.ext), filename.ext or /subdir/filename.ext
-          example: .py
+          description: Matches the tail of the file path. For example ".extension" or "filename.extension".
+          example: .md
         - in: query
           name: name
           schema:
             type: string
           required: false
-          description: Fully qualified or simple name of the code construct to search for.
+          description: Fully qualified or simple name of the code construct.
         - in: query
           name: text
           schema:
             type: string
           required: false
-          description: Free text search on the file contents to further narrow down the results.
+          description: Free text search on the file contents.
       responses:
         "200":
           description: Found
@@ -173,7 +173,7 @@ components:
       properties:
         path:
           type: string
-          description: Relative file path (inside project).
+          description: Path of the file, where / is the root of the project.
         lineno:
           type: integer
           description: Line number to reconstruct the order of text fragments inside the same file.
@@ -182,7 +182,7 @@ components:
           description: Code or text fragment.
         name:
           type: string
-          description: Name of the definition or declaration (program code only).
+          description: Name of the class, method, function or variable. (program code only)
         progress:
           type: integer
           description: Percentage progress of content indexing. Missing if the indexing has completed. Signifies an incomplete search if present.
