@@ -165,7 +165,16 @@ async def summarize(project_id: str):
         return Response(response='No match found', status=204)
 
     if not path:
-        text += '\nDocumentation and source code can be searched by path, filename, extension or the name of language construct (class, method, function). The text search functionality can find variable definitions and their usage. Well specified searches usually work better.'
+        text = f'''
+High level documentation and code references in the project as a starting point:
+        
+{text}
+        
+Summarize the classes or functions of interest before trying to search for actual code.
+Combine the path, tail and text search parameters as needed.
+Try again with a more relaxed search condition if you don't get a result.
+Use text search to find variable definitions and their usage.
+'''
 
     return Response(response=text, status=200)
 
@@ -233,7 +242,7 @@ async def search(project_id: str):
         if hit.path != path or hit.name != name or hit.lineno != ln:
             break
         tokens = tiktoken_len(hit.text)
-        if total + tokens > 1000:
+        if total + tokens > 2000:
             break
         ln = hit.lineno + hit.text.count('\n')
 
