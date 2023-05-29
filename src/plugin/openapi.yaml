@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: AskYourCode
-  description: Provide summarization and targeted search of a software project to aid in reasoning.
+  description: Provides summarization and search capability over the documentation and source code of a software project to assist in reasoning.
   version: 'v1'
 servers:
   - url: https://plugin.askyourcode.ai
