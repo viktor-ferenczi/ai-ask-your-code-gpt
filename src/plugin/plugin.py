@@ -229,40 +229,33 @@ async def search(project_id: str):
     if not hits:
         return Response(response='No match found', status=204)
 
-    hit = hits[0]
-    path = hit.path
-    name = hit.name
-    ln = hit.lineno + hit.text.count('\n')
-    tokens = tiktoken_len(hit.text)
+    path = hits[0].path
 
-    i = 1
-    total = tokens
-    while i < len(hits):
-        hit = hits[i]
-        if hit.path != path or hit.name != name or hit.lineno != ln:
-            break
-        tokens = tiktoken_len(hit.text)
-        if total + tokens > 2000:
-            break
-        ln = hit.lineno + hit.text.count('\n')
+    if text:
+        hits = hits[:1]
+    else:
+        hits = [hit for hit in hits if hit.path == path]
+        hits.sort(key=lambda hit: hit.lineno)
 
-    lineno = hits[0].lineno
-    text = ''.join(hit.text for hit in hits[:i])
+        tokens = tiktoken_len(hits[0].text)
+        i = 1
+        while i < len(hits):
+            tokens += tiktoken_len(hits[i].text)
+            if tokens > 2000:
+                break
+
+        hits = hits[:i]
 
     response = dict(
         path=path,
-        lineno=lineno,
-        text=text,
+        lineno=hits[0].lineno,
+        text=''.join(hit.text for hit in hits),
     )
 
-    name = ''
     for hit in hits:
         if hit.name:
-            name = hit.name
+            response['name'] = name
             break
-
-    if name:
-        response['name'] = name
 
     if project.progress < 100:
         response['progress'] = project.progress
