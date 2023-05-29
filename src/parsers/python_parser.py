@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 import libcst as cst
-from splitters.text_splitter import TextSplitter
+from parsers.text_splitter import TextSplitter
 from libcst.metadata import MetadataWrapper, PositionProvider
 
 from model.chunk import Chunk

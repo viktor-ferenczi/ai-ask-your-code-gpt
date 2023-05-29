@@ -1,7 +1,7 @@
 from typing import Iterator
 
 from langchain.text_splitter import PythonCodeTextSplitter
-from splitters.text_splitter import TextSplitter
+from parsers.text_splitter import TextSplitter
 
 from model.chunk import Chunk
 from .python_parser import PythonParser

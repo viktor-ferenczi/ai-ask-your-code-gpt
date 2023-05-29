@@ -5,16 +5,16 @@ from typing import Iterator
 
 from doc_types.dt_text import TextDocType
 from model.fragment import Fragment
-from splitters.python_splitter import PythonSplitter
+from parsers.python_splitter import PythonSplitter
 
 
 class PythonDocType(TextDocType):
     code = True
 
     store_instruction: str = 'Represent the Python code for retrieval'
-    query_instruction: str = 'Represent the query text for retrieving relevant parts of the code'
+    query_instruction: str = 'Represent the text query for retrieving relevant parts of the code'
 
-    splitter_cls = PythonSplitter
+    parser_cls = PythonSplitter
 
     def load(self, path: str, data: bytes) -> Iterator[Fragment]:
         # FIXME: Support multiple encodings

@@ -2,7 +2,7 @@ __all__ = ['MarkdownDocType']
 
 from typing import Iterator
 
-from splitters.text_splitter import MarkdownTextSplitter
+from parsers.text_splitter import MarkdownTextSplitter
 
 from common.constants import C
 from doc_types.dt_text import TextDocType
@@ -10,9 +10,9 @@ from doc_types.dt_text import TextDocType
 
 class MarkdownDocType(TextDocType):
     store_instruction: str = 'Represent the Markdown document for retrieval'
-    query_instruction: str = 'Represent the query text for retrieving relevant sections'
+    query_instruction: str = 'Represent the text query for retrieving relevant sections'
 
-    splitter_cls = MarkdownTextSplitter
+    parser_cls = MarkdownTextSplitter
 
     @classmethod
     def summarize(cls, text: str) -> Iterator[str]:

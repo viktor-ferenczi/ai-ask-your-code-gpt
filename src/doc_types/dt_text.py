@@ -3,28 +3,28 @@ __all__ = ['TextDocType']
 import uuid
 from typing import Iterator
 
-from splitters.text_splitter import TextSplitter
+from parsers.text_splitter import TextSplitter
 
 from common.constants import C
 from model.fragment import Fragment
-from splitters.tokenization import tiktoken_len
+from parsers.tokenization import tiktoken_len
 
 
 class TextDocType:
     code = False
 
     store_instruction: str = 'Represent the document for retrieval'
-    query_instruction: str = 'Represent the query text for retrieving relevant paragraphs'
+    query_instruction: str = 'Represent the text query for retrieving relevant paragraphs'
 
-    splitter_cls = TextSplitter
-    splitter_kws = dict(
-        chunk_size=C.SPLITTER_CHUNK_SIZE,
+    parser_cls = TextSplitter
+    parser_kws = dict(
+        chunk_size=C.MAX_TOKENS_PER_FRAGMENT,
         length_function=tiktoken_len
     )
 
     def __init__(self) -> None:
         super().__init__()
-        self.splitter = self.splitter_cls(**self.splitter_kws)
+        self.splitter = self.parser_cls(**self.parser_kws)
 
     def load(self, path: str, data: bytes) -> Iterator[Fragment]:
         # FIXME: Support multiple encodings

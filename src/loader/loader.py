@@ -13,7 +13,7 @@ from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
-from splitters.tokenization import tiktoken_len
+from parsers.tokenization import tiktoken_len
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS, EmbedderError
 from model.document import Document
 from model.fragment import Fragment
@@ -70,7 +70,7 @@ class Toc:
                 lines.extend(f'    - {path} line {lineno}\n' for path, lineno in sorted(paths))
 
                 text = ''.join(lines)
-                while tiktoken_len(text) > C.SPLITTER_CHUNK_SIZE:
+                while tiktoken_len(text) > C.MAX_TOKENS_PER_FRAGMENT:
                     lines.pop()
                     text = ''.join(lines)
 
@@ -85,7 +85,7 @@ class Toc:
                 lines.extend(f'    - {name} -> Line {lineno}\n' for name, lineno in sorted(names))
 
                 text = ''.join(lines)
-                while tiktoken_len(text) > C.SPLITTER_CHUNK_SIZE:
+                while tiktoken_len(text) > C.MAX_TOKENS_PER_FRAGMENT:
                     lines.pop()
                     text = ''.join(lines)
 

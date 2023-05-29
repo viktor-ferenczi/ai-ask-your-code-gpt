@@ -20,7 +20,7 @@ class C:
     MAX_FILE_COUNT = MAX_TOTAL_SIZE >> 10
 
     # Splitter
-    SPLITTER_CHUNK_SIZE = 200  # Tokens
+    MAX_TOKENS_PER_FRAGMENT = 200  # Tokens
 
     # Embedder
     MAX_BATCH_SIZE = 1024

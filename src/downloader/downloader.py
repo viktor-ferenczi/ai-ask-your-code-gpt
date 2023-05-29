@@ -42,15 +42,13 @@ class Downloader:
         await asyncio.sleep(0)
 
         project_id = str(uuid.uuid4())
-        self.inventory.register_project(project_id, self.url, checksum)
-
-        await asyncio.sleep(0)
-
         project = Project(project_id)
         with open(project.archive_path, 'wb') as f:
             f.write(archive)
 
         await project.create_database()
+
+        self.inventory.register_project(project_id, self.url, checksum)
 
         return project_id
 
@@ -105,7 +103,7 @@ async def download():
     if not url:
         return Response(response='Missing url', status=400)
 
-    with timer(f'Downloaded archived {url!r}'):
+    with timer(f'Downloaded archive {url!r}'):
         downloader = Downloader(url)
         project_id = await downloader.download_verify()
 
