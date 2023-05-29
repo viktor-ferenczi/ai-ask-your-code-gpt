@@ -197,6 +197,8 @@ async def search(project_id: str):
                 hits = await project.search(tail=tail, text=name)
             if not hits:
                 hits = await project.search(text=name)
+        if not hits and path:
+            hits = await project.search(tail='/' + path.rsplit('/')[-1], text=text)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
