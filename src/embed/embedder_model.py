@@ -6,10 +6,10 @@ import numpy as np
 import torch
 from InstructorEmbedding import INSTRUCTOR
 
-import doc_types
+import parsers
 from common.timer import timer
-from doc_types import TextDocType
 from model.fragment import Fragment
+from parsers import TextParser
 
 EMBEDDING_BATCH_SIZE = int(os.environ.get('EMBEDDING_BATCH_SIZE', '32'))
 
@@ -47,12 +47,12 @@ class EmbedderModel:
         assert fragments
 
         doc_type_cls_list = [
-            doc_types.detect_by_extension(fragment.path)
+            parsers.detect(fragment.path)
             for fragment in fragments
         ]
 
         instructions = [
-            (doc_type_cls.store_instruction if doc_type_cls else TextDocType.store_instruction)
+            (doc_type_cls.store_instruction if doc_type_cls else TextParser.store_instruction)
             for doc_type_cls in doc_type_cls_list
         ]
 

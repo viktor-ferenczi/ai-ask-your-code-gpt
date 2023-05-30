@@ -10,3 +10,15 @@ class Fragment:
     type: str
     name: str
     text: str
+
+    @staticmethod
+    def clone(fragment: "Fragment") -> "Fragment":
+        return Fragment(
+            fragment.uuid,
+            fragment.path,
+            fragment.lineno,
+            fragment.depth,
+            fragment.type,
+            fragment.name,
+            fragment.text,
+        )

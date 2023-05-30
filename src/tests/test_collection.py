@@ -1,15 +1,13 @@
 import unittest
 import uuid
-from typing import List
 
 import numpy as np
 from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient
 
-from doc_types import PythonDocType
 from embed.embedder_model import EmbedderModel
 from example_fragments import get_test_fragments
-from model.hit import Hit
+from parsers import PythonParser
 from project.collection import Collection
 from tools import nums_from_results
 
@@ -36,7 +34,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         embeddings = [row.tolist() for row in fragment_embeddings]
         await collection.store(uuids, embeddings)
 
-        instruction = PythonDocType.query_instruction
+        instruction = PythonParser.query_instruction
 
         query = 'class GMLExporter'
         query_embeddings = await embedder_model.embed_query(instruction, query)
@@ -61,17 +59,3 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         results = await collection.search(query_embeddings[0].tolist(), uuids=[fragments[1].uuid])
         nums = await nums_from_results(fragments, results)
         self.assertEqual(nums, [1])
-
-    def verify_and_normalize_hits(self, hits: List[Hit]):
-        if not hits:
-            return
-
-        scores = [hit.score for hit in hits]
-        self.assertEqual(sorted(scores, reverse=True), scores)
-
-        uuids = [hit.uuid for hit in hits]
-        self.assertEqual(sorted(uuids), sorted(set(uuids)))
-
-        for hit in hits:
-            hit.score = 0.0
-            hit.uuid = ''
