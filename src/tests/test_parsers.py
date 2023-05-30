@@ -38,9 +38,10 @@ class TestParsers(unittest.TestCase):
                     fragment.uuid = f'TEST-{index:02d}'
 
                 # In case of documentation joining the fragments must reproduce the original document
-                joined_texts = ''.join(fragment.text for fragment in fragments).replace('\r\n', '\n')
-                original_text = content.decode('utf-8').replace('\r\n', '\n')
-                self.assertEqual(original_text, joined_texts)
+                if not parser.is_code():
+                    joined_texts = ''.join(fragment.text for fragment in fragments).replace('\r\n', '\n')
+                    original_text = content.decode('utf-8').replace('\r\n', '\n')
+                    self.assertEqual(original_text, joined_texts)
 
                 actual = f'from model.fragment import Fragment\n\n# Parser: {parser_cls.__name__}\n\n' + ''.join(
                     f'f{i} = {pformat(fragment, width=120)}\n\n'
