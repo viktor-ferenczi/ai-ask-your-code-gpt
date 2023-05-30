@@ -11,6 +11,8 @@ from splitters.text_splitter import TextSplitter
 class TextParser(BaseParser):
     extensions = ('txt',)
     mime_types = ('text/plain',)
+    store_instruction = 'Represent the document for retrieval'
+    query_instruction = 'Represent the text query for retrieving relevant paragraphs'
 
     splitter = TextSplitter(
         chunk_size=C.MAX_TOKENS_PER_FRAGMENT,

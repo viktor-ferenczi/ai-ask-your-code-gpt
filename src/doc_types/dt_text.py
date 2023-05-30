@@ -13,8 +13,6 @@ from common.tools import tiktoken_len
 class TextDocType:
     code = False
 
-    store_instruction: str = 'Represent the document for retrieval'
-    query_instruction: str = 'Represent the text query for retrieving relevant paragraphs'
 
     parser_cls = TextSplitter
     parser_kws = dict(
