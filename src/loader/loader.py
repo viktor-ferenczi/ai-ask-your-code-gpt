@@ -13,7 +13,7 @@ from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
-from parsers.tokenization import tiktoken_len
+from common.tools import tiktoken_len
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS, EmbedderError
 from model.document import Document
 from model.fragment import Fragment
@@ -151,7 +151,7 @@ class Extractor:
                 # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
                 continue
 
-            yield from doc_type_cls().load(doc.path, doc.data)
+            yield from doc_type_cls().load(doc.path, doc.content)
 
 
 async def extract_worker():

@@ -7,19 +7,14 @@ from model.fragment import Fragment
 from parsers.base_parser import BaseParser
 
 
-
-
-
-class PythonParser(BaseParser):
-    extensions = ('py',)
-    mime_types = ('text/python', 'text/x-python')
-    tree_sitter_language_name = 'python'
+class TextParser(BaseParser):
+    extensions = ('txt',)
+    mime_types = ('text/plain',)
 
     def __init__(self) -> None:
         super().__init__()
         self.splitter = TextSplitter(C.MAX_TOKENS_PER_FRAGMENT)
 
-    # FIXME: Replace with parser
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
         text = content.decode('utf-8', errors='surrogateescape')
         lineno = 1

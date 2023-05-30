@@ -3,38 +3,41 @@ import os
 import unittest
 from pprint import pformat
 
-from doc_types import detect_by_extension
+import parsers
+from parsers import BaseParser
 
 MODULE_DIR = os.path.dirname(__file__)
 TEST_PROJECT_DIR = os.path.join(MODULE_DIR, 'TestProject')
 TEST_OUTPUT_DIR = os.path.join(MODULE_DIR, 'TestOutput')
 
 
-class TestSplitters(unittest.TestCase):
+class TestParsers(unittest.TestCase):
 
-    def test_splitters(self):
+    def test_parsers(self):
+        self.maxDiff = 10000
         failed = []
+        strip_len = len(TEST_PROJECT_DIR) + 1
         for root, dirs, files in os.walk(TEST_PROJECT_DIR):
             for filename in files:
                 path = os.path.join(root, filename)
                 output_subdir = os.path.dirname(path)
                 os.makedirs(output_subdir, exist_ok=True)
 
-                doc_type_cls = detect_by_extension(path)
-                self.assertIsNotNone(doc_type_cls)
-                doc_type = doc_type_cls()
-
                 with open(path, 'rb') as f:
-                    data: bytes = f.read()
+                    content: bytes = f.read()
 
-                relpath = path[len(TEST_PROJECT_DIR) + 1:]
-                fragments = list(doc_type.load(relpath, data))
+                relpath = path[strip_len:]
+                parser_cls = parsers.detect(relpath, content)
+                self.assertIsNotNone(parser_cls)
+
+                parser: BaseParser = parser_cls()
+                fragments = list(parser.parse(relpath, content))
 
                 # Replace UUIDs with sequence numbers, so they are stable
                 for index, fragment in enumerate(fragments):
                     fragment.uuid = f'TEST-{index:02d}'
 
-                if doc_type_cls.code:
+                if parser_cls.is_code():
                     # In case of code there is verified reference output, because of "..." in place of bodies
                     actual = ''.join(fragment.text for fragment in fragments)
 
@@ -60,7 +63,7 @@ class TestSplitters(unittest.TestCase):
                 else:
                     # In case of documentation joining the fragments must reproduce the original document
                     joined_texts = ''.join(fragment.text for fragment in fragments).replace('\r\n', '\n')
-                    original_text = data.decode('utf-8').replace('\r\n', '\n')
+                    original_text = content.decode('utf-8').replace('\r\n', '\n')
                     self.assertEqual(original_text, joined_texts)
 
                 actual = pformat(fragments, width=160)

@@ -3,11 +3,11 @@ __all__ = ['TextDocType']
 import uuid
 from typing import Iterator
 
-from parsers.text_splitter import TextSplitter
+from common.text_splitter import TextSplitter
 
 from common.constants import C
 from model.fragment import Fragment
-from parsers.tokenization import tiktoken_len
+from common.tools import tiktoken_len
 
 
 class TextDocType:

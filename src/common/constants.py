@@ -32,7 +32,7 @@ class C:
 
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    DATA_DIR = os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode'))
+    DATA_DIR = os.path.normpath(os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode')))
 
     # HTTP
     FAKE_BROWSER_HEADERS = {

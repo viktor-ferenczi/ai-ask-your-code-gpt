@@ -7,7 +7,7 @@ from common.constants import C
 from doc_types.dt_text import TextDocType
 from model.fragment import Fragment
 from parsers.python_splitter import PythonSplitter
-from parsers.tokenization import tiktoken_len
+from common.tools import tiktoken_len
 
 
 class CSharpDocType(TextDocType):

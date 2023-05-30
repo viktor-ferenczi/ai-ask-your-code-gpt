@@ -1,5 +1,7 @@
 from typing import Callable, Iterator, Collection
 
+from common.tools import tiktoken_len
+
 
 def find_iter(text: str, sub: str) -> Iterator[int]:
     i = 0
@@ -22,7 +24,7 @@ class TextSplitter:
     def __init__(self, chunk_size: int, length_function: Callable[[str], int] = len, separators: Collection[str] = ()) -> None:
         self.chunk_size = chunk_size
         self.separators = separators or self.default_separators
-        self.length_function = length_function
+        self.length_function = length_function or tiktoken_len
 
     def split_text(self, text: str) -> Iterator[str]:
         chunk = []
@@ -70,32 +72,3 @@ class TextSplitter:
             raise ValueError(f'Invalid separator affinity: {sep!r}')
 
 
-class MarkdownTextSplitter(TextSplitter):
-
-    def __init__(self, chunk_size: int, length_function: Callable[[str], int] = len) -> None:
-        super().__init__(
-            chunk_size,
-            length_function,
-            (
-                # First, try to split along Markdown headings (starting with level 2)
-                "<\n## ",
-                "<\n### ",
-                "<\n#### ",
-                "<\n##### ",
-                "<\n###### ",
-                # Note the alternative syntax for headings (below) is not handled here
-                # Heading level 2
-                # ---------------
-                # End of code block
-                ">```\n\n",
-                # Horizontal lines
-                ">\n\n***\n\n",
-                ">\n\n---\n\n",
-                ">\n\n___\n\n",
-                # Note that this splitter doesn't handle horizontal lines defined
-                # by *three or more* of ***, ---, or ___, but this is not handled
-                ">\n\n",
-                ">\n",
-                "> ",
-            )
-        )

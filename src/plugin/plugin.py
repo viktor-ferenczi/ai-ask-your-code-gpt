@@ -11,7 +11,7 @@ from quart import request, Response
 from common.constants import C, RX
 from common.server import run_app
 from project.project import Project, ProjectError
-from parsers.tokenization import tiktoken_len
+from common.tools import tiktoken_len
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')

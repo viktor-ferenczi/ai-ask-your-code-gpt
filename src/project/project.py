@@ -18,7 +18,7 @@ from model.hit import Hit
 from model.tools import uuid_of_fragments
 from project.collection import Collection
 from project.inventory import Inventory
-from parsers.tokenization import tiktoken_len
+from common.tools import tiktoken_len
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
