@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import List, Callable, Iterator
 
 import tiktoken
 
@@ -18,3 +18,14 @@ def tiktoken_len(text):
         disallowed_special=()
     )
     return len(tokens)
+
+
+def find_iter(text: str, sub: str) -> Iterator[int]:
+    i = 0
+    e = len(text)
+    while i < e:
+        f = text.find(sub, i)
+        if f < 0:
+            break
+        yield f
+        i = f + len(sub)

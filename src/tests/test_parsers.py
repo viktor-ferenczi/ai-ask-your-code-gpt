@@ -37,39 +37,18 @@ class TestParsers(unittest.TestCase):
                 for index, fragment in enumerate(fragments):
                     fragment.uuid = f'TEST-{index:02d}'
 
-                if parser_cls.is_code():
-                    # In case of code there is verified reference output, because of "..." in place of bodies
-                    actual = ''.join(fragment.text for fragment in fragments)
+                # In case of documentation joining the fragments must reproduce the original document
+                joined_texts = ''.join(fragment.text for fragment in fragments).replace('\r\n', '\n')
+                original_text = content.decode('utf-8').replace('\r\n', '\n')
+                self.assertEqual(original_text, joined_texts)
 
-                    actual_path = os.path.join(TEST_OUTPUT_DIR, f'{relpath}.text-actual')
-                    expected_path = os.path.join(TEST_OUTPUT_DIR, f'{relpath}.text-expected')
+                actual = f'from model.fragment import Fragment\n\n# Parser: {parser_cls.__name__}\n\n' + ''.join(
+                    f'f{i} = {pformat(fragment, width=120)}\n\n'
+                    for i, fragment in enumerate(fragments)
+                )
 
-                    good = False
-                    if not os.path.exists(expected_path):
-                        with open(expected_path, 'wt') as _:
-                            expected = ''
-                    else:
-                        with open(expected_path, 'rt') as f:
-                            expected = f.read()
-                        good = actual == expected
-
-                    if good:
-                        if os.path.exists(actual_path):
-                            os.remove(actual_path)
-                    else:
-                        failed.append((relpath, actual, expected))
-                        with open(actual_path, 'wt') as f:
-                            f.write(actual)
-                else:
-                    # In case of documentation joining the fragments must reproduce the original document
-                    joined_texts = ''.join(fragment.text for fragment in fragments).replace('\r\n', '\n')
-                    original_text = content.decode('utf-8').replace('\r\n', '\n')
-                    self.assertEqual(original_text, joined_texts)
-
-                actual = pformat(fragments, width=160)
-
-                actual_path = os.path.join(TEST_OUTPUT_DIR, f'{relpath}.fragments-actual')
-                expected_path = os.path.join(TEST_OUTPUT_DIR, f'{relpath}.fragments-expected')
+                actual_path = os.path.join(TEST_OUTPUT_DIR, f'{relpath}.actual.py')
+                expected_path = os.path.join(TEST_OUTPUT_DIR, f'{relpath}.expected.py')
 
                 good = False
                 if not os.path.exists(expected_path):

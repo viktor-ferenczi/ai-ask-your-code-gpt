@@ -40,17 +40,17 @@ TREE_SITTER_LIBRARY = os.path.join(TREE_SITTER_BUILD_DIR, 'my-languages.so')
 Language.build_library(
     TREE_SITTER_LIBRARY,
     [
-        os.path.join(TREE_SITTER_REPOS_DIR, f'tree-sitter-{parser.tree_sitter_language_name}')
-        for parser in PARSERS
-        if parser.tree_sitter_language_name
+        os.path.join(TREE_SITTER_REPOS_DIR, f'tree-sitter-{parser_cls.tree_sitter_language_name}')
+        for parser_cls in PARSERS
+        if parser_cls.tree_sitter_language_name
     ]
 )
 
 
 def set_tree_sitter_languages():
-    for parser in PARSERS:
-        if parser.tree_sitter_language_name:
-            parser.tree_sitter_language = Language(TREE_SITTER_LIBRARY, parser.tree_sitter_language_name)
+    for parser_cls in PARSERS:
+        if parser_cls.tree_sitter_language_name:
+            parser_cls.tree_sitter_language = Language(TREE_SITTER_LIBRARY, parser_cls.tree_sitter_language_name)
 
 
 set_tree_sitter_languages()
