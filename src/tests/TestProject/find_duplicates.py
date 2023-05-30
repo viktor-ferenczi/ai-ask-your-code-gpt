@@ -5,12 +5,14 @@ from concurrent.futures import ProcessPoolExecutor
 
 from tqdm import tqdm
 
+CHUNK_SIZE = 65536
+
 
 def md5_checksum(file_path):
     hasher = hashlib.md5()
     with open(file_path, 'rb') as f:
         while True:
-            data = f.read(65536)  # Read the file in 64KB chunks
+            data = f.read(CHUNK_SIZE)
             if not data:
                 break
             hasher.update(data)
