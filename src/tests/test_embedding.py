@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-from doc_types import PythonDocType
+from parsers import PythonParser
 from embed.embedder_model import EmbedderModel
 from example_fragments import get_random_test_fragments, get_test_fragments
 
@@ -16,7 +16,7 @@ class TestEmbedding(unittest.IsolatedAsyncioTestCase):
         fragments = get_test_fragments()
         fragment_embeddings: np.ndarray = await embedder_model.embed_fragments(fragments)
 
-        python_query_instruction = PythonDocType.query_instruction
+        python_query_instruction = PythonParser.query_instruction
 
         query_embeddings: np.ndarray = await embedder_model.embed_query(python_query_instruction, 'class GMLExporter')
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)

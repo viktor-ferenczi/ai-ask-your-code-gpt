@@ -6,10 +6,10 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 from common.timer import timer
-from doc_types import PythonDocType
-from embed.embedder_client import EmbedderClient, FREE
 from embed.embedder import app
+from embed.embedder_client import EmbedderClient, FREE
 from example_fragments import get_random_test_fragments, get_test_fragments
+from parsers import PythonParser
 
 EMBEDDING_CLIENT = EmbedderClient(['http://127.0.0.1:40100'])
 
@@ -43,7 +43,7 @@ class TestEmbeddingServer(unittest.IsolatedAsyncioTestCase):
         fragments = get_test_fragments()
 
         fragment_embeddings = await EMBEDDING_CLIENT.embed_fragments(fragments)
-        query_embeddings = await EMBEDDING_CLIENT.embed_query(PythonDocType.query_instruction, 'class GMLExporter')
+        query_embeddings = await EMBEDDING_CLIENT.embed_query(PythonParser.query_instruction, 'class GMLExporter')
 
         similarities: np.ndarray = cosine_similarity(query_embeddings, fragment_embeddings)
         print(similarities)
