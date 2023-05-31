@@ -1,5 +1,5 @@
 grpc
-python-magic~=0.4.27
+python-magic-bin~=0.4.14
 quart~=0.18.4
 quart-cors
 tqdm~=4.65.0
