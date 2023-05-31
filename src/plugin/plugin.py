@@ -170,11 +170,13 @@ High level documentation and code references in the project as a starting point:
         
 {text}
         
-Summarize the classes or functions of interest before trying to search for actual code.
-Combine the path, tail and text search parameters as needed.
-Try again with a more relaxed search condition if you don't get a result.
-Use text search to find variable definitions and their usage.
 '''
+
+    # Summarize the classes or functions of interest before trying to search for actual code.
+    # Use the path, tail, name and text search parameters to narrow down your lookups.
+    # Try again with a more relaxed search condition if you don't get a result.
+    # Use the name search to find class, function, method and variable definitions.
+    # Use the text search to find their usages in code.
 
     return Response(response=text, status=200)
 
