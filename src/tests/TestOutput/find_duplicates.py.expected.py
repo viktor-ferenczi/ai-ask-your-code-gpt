@@ -483,9 +483,8 @@ f40 = Fragment(uuid='TEST-40',
          depth=0,
          type='summary',
          name='',
-         text='Summary:\n'
+         text='Python:\n'
               '  Path: find_duplicates.py\n'
-              '  Language: Python\n'
               '  Functions: main md5_checksum\n'
               '  Classes: Duplicates\n'
               '  Methods: __init__ collect\n'
@@ -494,5 +493,5 @@ f40 = Fragment(uuid='TEST-40',
               '  Usages: ProcessPoolExecutor _ __name__ append collections concurrent defaultdict desc dirpath '
               'executor extend f file_checksum file_list filename filenames files futures getsize hashlib hexdigest '
               'input isdir items join len list map md5 open os path pbar print read self str sum super total tqdm unit '
-              'unit_scale update values walk zip')
+              'unit_scale update values walk zip\n')
 

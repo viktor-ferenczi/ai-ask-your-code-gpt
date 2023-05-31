@@ -9,16 +9,16 @@ from typing import List, ContextManager, Optional, Tuple, Iterator
 import aiohttp
 from qdrant_client import QdrantClient
 
-import doc_types
+import parsers
 from common.constants import C, RX
 from common.timer import timer
+from common.tools import tiktoken_len
 from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
 from model.hit import Hit
 from model.tools import uuid_of_fragments
 from project.collection import Collection
 from project.inventory import Inventory
-from common.tools import tiktoken_len
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
@@ -83,8 +83,10 @@ class Project:
                     uuid TEXT PRIMARY KEY,
                     path TEXT NOT NULL,
                     lineno INTEGER NOT NULL,
-                    text TEXT NOT NULL,
+                    depth INTEGER NOT NULL,
+                    type TEXT NOT NULL,
                     name TEXT,
+                    text TEXT NOT NULL,
                     embedded INTEGER DEFAULT 0 NOT NULL
                 )
             ''')
@@ -105,8 +107,8 @@ class Project:
         cursor.execute('CREATE INDEX idx_fragment_name ON Fragment(name)')
 
     def insert_fragment(self, cursor: Cursor, fragment: Fragment):
-        cursor.execute('INSERT INTO Fragment(uuid, path, lineno, text, name) VALUES (?, ?, ?, ?, ?)',
-                       (fragment.uuid, fragment.path, fragment.lineno, fragment.text, fragment.name))
+        cursor.execute('INSERT INTO Fragment(uuid, path, lineno, depth, type, name, text) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                       (fragment.uuid, fragment.path, fragment.lineno, fragment.depth, fragment.type, fragment.name, fragment.text))
 
     def mark_fragments_embedded(self, cursor: Cursor, uuids: List[str]):
         if not uuids:
@@ -115,52 +117,52 @@ class Project:
         cursor.execute(f'UPDATE Fragment SET embedded=1 WHERE uuid IN ({placeholders})', tuple(uuids))
 
     def get_fragments_to_embed(self, cursor: Cursor, limit: int) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
 
     def get_fragments_by_paths(self, cursor: Cursor, paths: List[str], limit: int) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path IN (?) ORDER BY path, lineno LIMIT ?', (paths, limit))]
 
     def get_fragments_by_path_tail(self, cursor: Cursor, tail: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{tail}',))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ?', (f'%{tail}',))]
 
     def get_fragments_by_name_tail(self, cursor: Cursor, tail: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ?', (f'%{tail}',))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE name LIKE ?', (f'%{tail}',))]
 
     def get_fragments_by_path_name(self, cursor: Cursor, path: str, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND name LIKE ?', (f'%{path}', f'{name}%'))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND name LIKE ?', (f'%{path}', f'{name}%'))]
 
     def get_fragments_by_path(self, cursor: Cursor, path: str, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'%{path}',))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ?', (f'%{path}',))]
 
     def get_fragments_by_name(self, cursor: Cursor, path: str, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ?', (f'{name}%',))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ?', (f'{name}%',))]
 
     def get_fragments_by_path_ext(self, cursor: Cursor, path: str, ext: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ?', (f'{path}%', f'%{ext}'))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ?', (f'{path}%', f'%{ext}'))]
 
     def get_fragments_by_name_ext(self, cursor: Cursor, name: str, ext: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute('SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ? AND path LIKE ?', (f'%{name}', f'%{ext}'))]
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE name LIKE ? AND path LIKE ?', (f'%{name}', f'%{ext}'))]
 
     def search_by_ext_path(self, cursor: Cursor, ext: str, path: str, limit: int = 1) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'{path}%', limit))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'{path}%', limit))]
 
     def search_by_ext_name(self, cursor: Cursor, ext: str, name: str, limit: int = 1) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'%{name}', limit))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE name LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'%{name}', limit))]
 
     def search_by_ext(self, cursor: Cursor, ext: str, limit: int = 1) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE name LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', limit))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE name LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', limit))]
 
     def search_by_path_tail_name(self, cursor: Cursor, path: str, tail: str, name: str, limit: int = 1) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno LIMIT ?", (f'{path}%', f'%{tail}', f'%{name}', limit))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno LIMIT ?", (f'{path}%', f'%{tail}', f'%{name}', limit))]
 
     def search_by_path_tail_name_unlimited(self, cursor: Cursor, path: str, tail: str, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT lineno, text, name, uuid, path FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno", (f'{path}%', f'%{tail}', f'%{name}'))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno", (f'{path}%', f'%{tail}', f'%{name}'))]
 
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
             return []
         placeholders = ','.join('?' for _ in uuids)
-        fragments = [Fragment(*row) for row in cursor.execute(f'SELECT lineno, text, name, uuid, path FROM Fragment WHERE uuid IN ({placeholders})', tuple(uuids))]
+        fragments = [Fragment(*row) for row in cursor.execute(f'SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE uuid IN ({placeholders})', tuple(uuids))]
         return fragments
 
     def count_fragments(self) -> int:
@@ -213,12 +215,12 @@ class Project:
                     for i, fragment in enumerate(fragments)]
 
         # Vector database search
-        doc_type_cls = (
-                doc_types.detect_by_extension(tail) or
-                doc_types.detect_by_extension(path) or
-                doc_types.TextDocType
+        parser_cls = (
+                parsers.detect(tail) or
+                parsers.detect(path) or
+                parsers.TextParser
         )
-        instruction = doc_type_cls.query_instruction
+        instruction = parser_cls.query_instruction
         fragment_uuids = uuid_of_fragments(fragments)
         results = await self.search_vector_database(fragment_uuids, instruction, text, limit)
 
@@ -252,59 +254,26 @@ class Project:
         if not fragments:
             return ''
 
-        summary = ''.join(f'{line}\n' for line in self.summarize_fragments(fragments))
-        return summary
+        summary = '\n'.join(self.summarize_fragments(fragments))
+
+        summary = summary.split('\n')
+
+        limit = 2000 if not path and not name else 1000
+        if sum(tiktoken_len(line) for line in summary) > limit:
+            summary = [line for line in summary if not line.lstrip().startswith('Usages:')]
+        if sum(tiktoken_len(line) for line in summary) > limit:
+            summary = [line for line in summary if not line.lstrip().startswith('Variables:')]
+        if sum(tiktoken_len(line) for line in summary) > limit:
+            summary = [line for line in summary if not line.lstrip().startswith('Methods:')]
+
+        total = sum(tiktoken_len(line) for line in summary)
+        if total > limit:
+            summary = summary[:len(summary) * limit // total]
+
+        return '\n'.join(summary)
 
     def summarize_fragments(self, fragments: List[Fragment]) -> Iterator[str]:
-        yield from self.summarize_docs([fragment for fragment in fragments if not fragment.name])
-        yield from self.summarize_code([fragment for fragment in fragments if fragment.name])
-
-    def summarize_code(self, fragments) -> Iterator[str]:
-        if not fragments:
-            return
-
-        fragments.sort(key=lambda fragment: (fragment.name, fragment.path.count('/'), fragment.path, fragment.lineno))
-
-        names = sorted(set(fragment.name for fragment in fragments))
-
-        # Shorten
-        while names:
-            total = sum(tiktoken_len(name) for name in names)
-            if total <= 1000:
-                break
-
-            max_dots = max(name.count('.') for name in names)
-            if max_dots:
-                names = [name for name in names if name.count('.') < max_dots]
-            else:
-                if len(set(name.lower() != name for name in names)) == 2:
-                    names = [name for name in names if name.lower() == name]
-                else:
-                    names = names[:len(names) * 1000 // total]
-
-        yield from names
-
-    def summarize_docs(self, fragments) -> Iterator[str]:
-        if not fragments:
-            return
-
         fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
-
-        summary = []
         for fragment in fragments:
-            doc_type_cls = doc_types.detect_by_extension(fragment.path) or doc_types.TextDocType
-            summary.extend(doc_type_cls.summarize(fragment.text))
-
-        # Shorten
-        while summary:
-            total = sum(tiktoken_len(line) for line in summary)
-            if total <= 1000:
-                break
-
-            max_level = max(line.count('#') for line in summary)
-            if max_level:
-                summary = [line for line in summary if line.count('#') < max_level]
-            else:
-                summary = summary[:len(summary) * 1000 // total]
-
-        yield from summary
+            if fragment.type == 'summary':
+                yield fragment.text

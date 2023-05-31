@@ -66,3 +66,11 @@ f4 = Fragment(uuid='TEST-04',
          name='',
          text='## Summary\n\nThis has been a test document for the Markdown parser.\n\nEnd of test doc.')
 
+f5 = Fragment(uuid='TEST-05',
+         path='README.md',
+         lineno=1,
+         depth=0,
+         type='summary',
+         name='',
+         text='# Test project\n## Rationale\n### Doc types and languages\n### Some long section\n## Summary\n')
+

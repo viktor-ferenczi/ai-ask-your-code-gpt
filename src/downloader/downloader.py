@@ -7,7 +7,7 @@ from typing import Dict
 
 from quart import Quart, request, Response
 
-import doc_types
+import parsers
 from common.constants import C, Msg
 from common.http import download_file
 from common.server import run_app
@@ -72,7 +72,7 @@ class Downloader:
                 max_file_count=C.MAX_FILE_COUNT,
                 max_file_size=C.MAX_FILE_SIZE,
                 max_total_size=C.MAX_TOTAL_SIZE,
-                supported_extensions=doc_types.SUPPORTED_EXTENSIONS,
+                supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
                 verify_only=True
             ))
         except KeyboardInterrupt:

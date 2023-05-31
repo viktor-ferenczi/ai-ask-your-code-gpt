@@ -32,7 +32,7 @@ def register_parsers():
 register_parsers()
 del register_parsers
 
-TREE_SITTER_DIR = os.path.join(C.DATA_DIR, 'tree-sitter')
+TREE_SITTER_DIR = os.path.normpath(os.environ.get('TREE_SITTER_DI', os.path.expanduser('~/.tree-sitter')))
 TREE_SITTER_BUILD_DIR = os.path.join(TREE_SITTER_DIR, 'build')
 TREE_SITTER_REPOS_DIR = os.path.join(TREE_SITTER_DIR, 'repos')
 TREE_SITTER_LIBRARY = os.path.join(TREE_SITTER_BUILD_DIR, 'my-languages.so')

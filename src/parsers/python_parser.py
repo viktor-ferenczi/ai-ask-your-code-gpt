@@ -107,9 +107,8 @@ class PythonParser(BaseParser):
         usages -= functions | classes | methods | variables
 
         summary = [
-            f'Summary:',
+            f'Python:',
             f'  Path: {path}',
-            f'  Language: Python',
         ]
         if functions:
             summary.append(f"  Functions: {' '.join(sorted(functions))}")
@@ -122,6 +121,5 @@ class PythonParser(BaseParser):
         if usages:
             summary.append(f"  Usages: {' '.join(sorted(usages))}")
 
-        summary = '\n'.join(summary)
-        print(summary)
+        summary = ''.join(f'{line}\n' for line in summary)
         yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)

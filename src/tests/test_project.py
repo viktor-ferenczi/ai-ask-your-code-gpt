@@ -89,34 +89,46 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         hits = await project.search(tail='.py', name='Duplicates')
         self.verify_hits(hits, 1, contains=['class Duplicates'])
 
-        hits = await project.search(path='/find_duplicates.py', limit=10)
-        self.verify_hits(hits, 7, path='/find_duplicates.py')
+        hits = await project.search(path='/find_duplicates.py', limit=100)
+        self.verify_hits(hits, 41, path='/find_duplicates.py')
 
-        hits = await project.search(tail='.py', path='/find_duplicates.py', limit=10)
-        self.verify_hits(hits, 7, path='/find_duplicates.py')
+        hits = await project.search(tail='.py', path='/find_duplicates.py', limit=100)
+        self.verify_hits(hits, 41, path='/find_duplicates.py')
 
-        hits = await project.search(path='/README.md', limit=10)
-        self.verify_hits(hits, 3, path='/README.md')
+        hits = await project.search(path='/README.md', limit=100)
+        self.verify_hits(hits, 6, path='/README.md')
 
         hits = await project.search(tail='.md', text='standard set of source code files', limit=1)
         self.verify_hits(hits, 1, path='/README.md', contains=['standard set of source code files'])
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
+# Markdown Syntax Examples
+## Headings
+## Heading 2
+## Emphasis
+## Lists
+## Links
+## Images
+## Blockquotes
+## Code
+
 # Test project
 ## Rationale
 ### Doc types and languages
 ### Some long section
-# End
+## Summary
 ''', summary)
 
         summary = await project.summarize(tail='.py')
         self.assertEqual('''\
-Duplicates
-Duplicates.__init__
-Duplicates.collect
-main
-md5_checksum
+Python:
+  Path: /find_duplicates.py
+  Functions: main md5_checksum
+  Classes: Duplicates
+  Methods: __init__ collect
+  Variables: CHUNK_SIZE data duplicates file_checksums file_path file_size files_by_checksum files_by_size first hasher root_dir self.files self.root_dir total_size total_space_saved
+  Usages: ProcessPoolExecutor _ __name__ append collections concurrent defaultdict desc dirpath executor extend f file_checksum file_list filename filenames files futures getsize hashlib hexdigest input isdir items join len list map md5 open os path pbar print read self str sum super total tqdm unit unit_scale update values walk zip
 ''', summary)
 
         await project.delete()
@@ -127,252 +139,183 @@ md5_checksum
 
         await self.wait_for_processing(project)
 
-        hits = await project.search(path='/README.md', limit=10)
-        self.verify_hits(hits, 3, path='/README.md')
+        hits = await project.search(path='/README.md', limit=100)
+        self.verify_hits(hits, 10, path='/README.md')
 
-        hits = await project.search(tail='.py', name='Query', limit=10)
-        self.verify_hits(hits, 8, contains=['class Query'])
+        hits = await project.search(tail='.py', name='Query', limit=100)
+        self.verify_hits(hits, 34, contains=['class Query'])
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
 # Database Abstraction Layer Generator
-# Installation
-# How it works
 ## Abstraction layer
 ## Lightweight usage
 ## Features
-# Remarks
 ## Performance
 ## Limitations
 ''', summary)
 
         summary = await project.summarize(tail='.py')
+        print('--------')
+        print(summary)
+        print('--------')
         self.assertEqual('''\
-Activation
-Add
-AfterDeleteRow
-AfterDeleteStatement
-AfterInsertOrUpdateRow
-AfterInsertOrUpdateStatement
-AfterInsertRow
-AfterInsertStatement
-AfterUpdateRow
-AfterUpdateStatement
-And
-Avg
-BaseAggregate
-BaseColumn
-BaseColumnConstraint
-BaseConstraint
-BaseFunction
-BaseIndex
-BaseProcedure
-BaseQueryResult
-BaseTrigger
-BeforeDeleteRow
-BeforeDeleteStatement
-BeforeInsertOrUpdateRow
-BeforeInsertOrUpdateStatement
-BeforeInsertRow
-BeforeInsertStatement
-BeforeUpdateRow
-BeforeUpdateStatement
-Boolean
-Check
-Clauses
-Coalesce
-ColumnInfo
-Concat
-Condition
-Contains
-Count
-Custom
-DataError
-Database
-DatabaseAbstraction
-DatabaseError
-DatabaseInspector
-Date
-Datetime
-Decimal
-Div
-Equal
-Error
-Float
-ForeignKey
-FullTextSearch
-FullTextSearchIndex
-GMLExporter
-GeneratorOptions
-GreaterThan
-GreaterThanOrEqual
-Group
-GroupRole
-GroupUser
-In
-Index
-Integer
-IntegrityError
-InterfaceError
-InternalError
-Invoice
-InvoiceItem
-Left
-LessThan
-LessThanOrEqual
-Like
-Match
-Max
-Min
-Mul
-NA
-Neg
-Not
-NotEqual
-NotIn
-NotLike
-NotMatch
-NotSupportedError
-OperationalError
-Or
-Payment
-PostCondition
-PrimaryKey
-Procedure
-Product
-ProductSale
-ProgrammingError
-Query
-Record
-Result
-Right
-Role
-SearchDocument
-SlugMixin
-Sub
-Substring
-Sum
-Table
-TestAbstraction
-TestDatabaseModel
-TestGraph
-Text
-Unique
-User
-UserContact
-Var
-Warning
-format_add_function
-format_and_function
-format_avg_aggregate
-format_boolean_column
-format_check_constraint
-format_coalesce_function
-format_column
-format_concat_function
-format_constraint
-format_contains_function
-format_count_aggregate
-format_create_btree_index
-format_create_full_text_search_index
-format_create_index
-format_create_procedure
-format_create_table
-format_create_trigger
-format_cross_join_group_list
-format_custom_column
-format_custom_function
-format_date_column
-format_datetime_column
-format_decimal_column
-format_default_not_null
-format_delete
-format_div_function
-format_drop_btree_index
-format_drop_full_text_search_index
-format_drop_index
-format_drop_procedure
-format_drop_table
-format_drop_trigger
-format_eq_condition
-format_equal_function
-format_expression
-format_float_column
-format_foreign_key_column
-format_foreign_key_constraint
-format_full_text_search_function
-format_function
-format_ge_condition
-format_greater_than_function
-format_greater_than_or_equal_function
-format_gt_condition
-format_in_condition
-format_in_function
-format_insert
-format_integer_column
-format_le_condition
-format_left_function
-format_less_than_function
-format_less_than_or_equal_function
-format_like_condition
-format_like_function
-format_lt_condition
-format_match_condition
-format_match_function
-format_max_aggregate
-format_min_aggregate
-format_mul_function
-format_ne_condition
-format_neg_function
-format_not_equal_function
-format_not_function
-format_not_in_condition
-format_not_in_function
-format_not_in_range_condition
-format_not_like_condition
-format_not_like_function
-format_not_match_condition
-format_not_match_function
-format_not_similar_to_condition
-format_or_function
-format_order_by
-format_primary_key_column
-format_primary_key_constraint
-format_query
-format_query_condition
-format_query_condition_map
-format_query_order_by_map
-format_range_condition
-format_release_savepoint
-format_result
-format_right_function
-format_rollback_to_savepoint
-format_savepoint
-format_search_condition
-format_search_document_column
-format_select
-format_similar_to_condition
-format_sub_function
-format_substring_function
-format_sum_aggregate
-format_table_column_condition
-format_table_condition_map
-format_table_order_by_map
-format_text_column
-format_truncate_table
-format_truncate_table_list
-format_unique_constraint
-format_update
-format_var_function
-generate
-get_next_definition_serial
-get_random_id
-log
-quote_alias_name
-quote_literal_value
-quote_name
-quote_table_column_name
-replace_parameter_placeholders
+Python:
+  Path: /lib/setup.py
+
+Python:
+  Path: /lib/dblayer/__init__.py
+
+Python:
+  Path: /lib/dblayer/constants.py
+  Classes: NA
+  Methods: __repr__
+
+Python:
+  Path: /lib/dblayer/util.py
+  Functions: get_next_definition_serial get_random_id log
+
+Python:
+  Path: /lib/dblayer/version.py
+
+Python:
+  Path: /lib/dblayer/backend/__init__.py
+
+Python:
+  Path: /lib/dblayer/generator/__init__.py
+
+Python:
+  Path: /lib/dblayer/generator/generator.py
+  Functions: generate
+  Classes: GeneratorOptions
+
+Python:
+  Path: /lib/dblayer/graph/__init__.py
+
+Python:
+  Path: /lib/dblayer/graph/gml.py
+  Classes: GMLExporter
+  Methods: __init__ export
+
+Python:
+  Path: /lib/dblayer/model/__init__.py
+
+Python:
+  Path: /lib/dblayer/model/aggregate.py
+  Classes: Avg BaseAggregate Count Max Min Sum
+  Methods: __init__
+
+Python:
+  Path: /lib/dblayer/model/column.py
+  Classes: BaseColumn Boolean Custom Date Datetime Decimal Float ForeignKey Integer PrimaryKey SearchDocument Text
+  Methods: __init__ __repr__ __str__ clone full_repr get_implicit_definition_list_for_table_class has_custom_default sort_key
+
+Python:
+  Path: /lib/dblayer/model/constraint.py
+  Classes: BaseColumnConstraint BaseConstraint Check ForeignKey PrimaryKey Unique
+  Methods: __init__ __repr__ __str__ clone sort_key
+
+Python:
+  Path: /lib/dblayer/model/database.py
+  Classes: Database
+  Methods: __init__ __new__ __repr__ __str__ generate initialize pretty_format_class
+
+Python:
+  Path: /lib/dblayer/model/function.py
+  Classes: Add And BaseFunction Coalesce Concat Contains Custom Div Equal FullTextSearch GreaterThan GreaterThanOrEqual In Left LessThan LessThanOrEqual Like Match Mul Neg Not NotEqual NotIn NotLike NotMatch Or Right Sub Substring Var
+  Methods: __init__ __repr__ __str__
+
+Python:
+  Path: /lib/dblayer/model/index.py
+  Classes: BaseIndex FullTextSearchIndex Index
+  Methods: __init__ __repr__ __str__ clone get_implicit_definition_list_for_table_class sort_key
+
+Python:
+  Path: /lib/dblayer/model/procedure.py
+  Classes: BaseProcedure Procedure
+  Methods: __init__ __repr__ __str__ clone sort_key
+
+Python:
+  Path: /lib/dblayer/model/query.py
+  Classes: BaseQueryResult Condition PostCondition Query Result
+  Methods: __init__ __new__ __repr__ _collect_result_condition_list clone get_table_list initialize iterate_joined_tables pretty_format_class
+
+Python:
+  Path: /lib/dblayer/model/table.py
+  Classes: Table
+  Methods: __init__ __new__ __repr__ _prepare_table_definition _sort_key initialize join pretty_format_class
+
+Python:
+  Path: /lib/dblayer/model/trigger.py
+  Classes: AfterDeleteRow AfterDeleteStatement AfterInsertOrUpdateRow AfterInsertOrUpdateStatement AfterInsertRow AfterInsertStatement AfterUpdateRow AfterUpdateStatement BaseTrigger BeforeDeleteRow BeforeDeleteStatement BeforeInsertOrUpdateRow BeforeInsertOrUpdateStatement BeforeInsertRow BeforeInsertStatement BeforeUpdateRow BeforeUpdateStatement
+  Methods: __init__ __repr__ __str__ clone sort_key
+
+Python:
+  Path: /lib/dblayer/test/__init__.py
+
+Python:
+  Path: /lib/dblayer/test/constants.py
+
+Python:
+  Path: /lib/dblayer/test/model.py
+  Functions: generate
+  Classes: Activation Group GroupRole GroupUser Invoice InvoiceItem Payment Product ProductSale Role SlugMixin TestDatabaseModel User UserContact
+
+Python:
+  Path: /lib/dblayer/test/test_abstraction.py
+  Classes: TestAbstraction TestGraph
+  Methods: do_failed_transaction load_data modify_data setUp tearDown testGML test_class_formatting test_clauses_class test_database_session test_duplicate_insert test_full_text_search test_insert_select test_inspection test_order_by test_product_sale_query test_random_id_selection test_repr_str test_triggers test_truncate test_tuple_dict test_update_delete test_user_contact_query verify_data
+
+Python:
+  Path: /lib/dblayer/backend/base/__init__.py
+
+Python:
+  Path: /lib/dblayer/backend/base/clauses.py
+  Classes: Clauses
+  Methods: __eq__ __hash__ __init__ __repr__ get_tuple
+
+Python:
+  Path: /lib/dblayer/backend/base/database.py
+  Classes: DatabaseAbstraction
+  Methods: __del__ _connect add_record add_record_list close commit connect connected create_language cursor delete_record delete_record_list disable_transactions enable_transactions execute execute_and_fetch_dict_iter execute_and_fetch_iter execute_and_fetch_one execute_statement_list executemany get_last_value_of_last_sequence_used get_record get_record_iter get_record_list is_primary_key_conflict log_analysis rollback session transaction update_record update_record_list
+
+Python:
+  Path: /lib/dblayer/backend/base/error.py
+  Classes: DataError DatabaseError Error IntegrityError InterfaceError InternalError NotSupportedError OperationalError ProgrammingError Warning
+
+Python:
+  Path: /lib/dblayer/backend/base/format.py
+  Functions: format_add_function format_and_function format_avg_aggregate format_boolean_column format_check_constraint format_coalesce_function format_column format_concat_function format_constraint format_contains_function format_count_aggregate format_create_btree_index format_create_full_text_search_index format_create_index format_create_procedure format_create_table format_create_trigger format_cross_join_group_list format_custom_column format_custom_function format_date_column format_datetime_column format_decimal_column format_default_not_null format_delete format_div_function format_drop_btree_index format_drop_full_text_search_index format_drop_index format_drop_procedure format_drop_table format_drop_trigger format_eq_condition format_equal_function format_expression format_float_column format_foreign_key_column format_foreign_key_constraint format_full_text_search_function format_function format_ge_condition format_greater_than_function format_greater_than_or_equal_function format_gt_condition format_in_condition format_in_function format_insert format_integer_column format_le_condition format_left_function format_less_than_function format_less_than_or_equal_function format_like_condition format_like_function format_lt_condition format_match_condition format_match_function format_max_aggregate format_min_aggregate format_mul_function format_ne_condition format_neg_function format_not_equal_function format_not_function format_not_in_condition format_not_in_function format_not_in_range_condition format_not_like_condition format_not_like_function format_not_match_condition format_not_match_function format_not_similar_to_condition format_or_function format_order_by format_primary_key_column format_primary_key_constraint format_query format_query_condition format_query_condition_map format_query_order_by_map format_range_condition format_release_savepoint format_result format_right_function format_rollback_to_savepoint format_savepoint format_search_condition format_search_document_column format_select format_similar_to_condition format_sub_function format_substring_function format_sum_aggregate format_table_column_condition format_table_condition_map format_table_order_by_map format_text_column format_truncate_table format_truncate_table_list format_unique_constraint format_update format_var_function quote_alias_name quote_literal_value quote_name quote_table_column_name replace_parameter_placeholders
+
+Python:
+  Path: /lib/dblayer/backend/base/record.py
+  Classes: Record
+  Methods: __eq__ __repr__ finalize
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/__init__.py
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/clauses.py
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/database.py
+  Classes: DatabaseAbstraction
+  Methods: _connect
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/error.py
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/format.py
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/inspector.py
+  Classes: ColumnInfo DatabaseInspector
+  Methods: __init__ __repr__ convert_table_name_to_python define_bigint_column define_boolean_column define_custom_column define_date_column define_double_column define_integer_column define_numeric_column define_primary_key_column define_real_column define_text_column define_timestamp_column define_tsvector_column define_varchar_column inspect inspect_tables load_information_schema
+
+Python:
+  Path: /lib/dblayer/backend/postgresql/record.py
 ''', summary)
 
         await project.delete()

@@ -52,8 +52,8 @@ class EmbedderModel:
         ]
 
         instructions = [
-            (doc_type_cls.store_instruction if doc_type_cls else TextParser.store_instruction)
-            for doc_type_cls in doc_type_cls_list
+            (parser_cls.store_instruction if parser_cls else TextParser.store_instruction)
+            for parser_cls in doc_type_cls_list
         ]
 
         sentences = [

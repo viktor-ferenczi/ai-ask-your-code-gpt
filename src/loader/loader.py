@@ -7,7 +7,7 @@ from typing import Iterator, List
 import numpy as np
 from quart import Quart
 
-import doc_types
+import parsers
 from common.constants import C
 from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
@@ -146,12 +146,12 @@ class Extractor:
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
 
-            doc_type_cls = doc_types.detect_by_extension(doc.path)
-            if doc_type_cls is None:
+            parser_cls = parsers.detect(doc.path)
+            if parser_cls is None:
                 # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
                 continue
 
-            yield from doc_type_cls().load(doc.path, doc.content)
+            yield from parser_cls().parse(doc.path, doc.content)
 
 
 async def extract_worker():
