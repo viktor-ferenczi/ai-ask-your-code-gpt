@@ -1,6 +1,5 @@
 import asyncio
 import os
-import uuid
 from traceback import print_exc
 from typing import Iterator, List
 
@@ -13,7 +12,6 @@ from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
-from common.tools import tiktoken_len
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS, EmbedderError
 from model.document import Document
 from model.fragment import Fragment
@@ -21,83 +19,6 @@ from project.inventory import Inventory
 from project.project import Project
 
 EMBEDDER_CLIENT = EmbedderClient(STORE_EMBEDDERS)
-
-
-class Toc:
-    enable_n2p = True
-    enable_p2n = False
-
-    def __init__(self) -> None:
-        self.n2p = {}
-        self.p2n = {}
-        self.paths = set()
-
-    def add(self, fragment: Fragment):
-        path = fragment.path
-        self.paths.add(path)
-
-        name = fragment.name
-        if not name:
-            return
-
-        lineno = fragment.lineno
-
-        if self.enable_n2p:
-            paths = self.n2p.get(name)
-            if paths is None:
-                self.n2p[name] = paths = []
-            paths.append((path, lineno))
-
-        if self.enable_p2n:
-            names = self.p2n.get(path)
-            if names is None:
-                self.p2n[path] = names = []
-            names.append((name, lineno))
-
-    def __iter__(self) -> Iterator[Fragment]:
-        if not self.paths:
-            return
-
-        toc_path = self.get_free_toc_path()
-
-        lineno = 1
-
-        if self.n2p:
-            yield Fragment(uuid=str(uuid.uuid4()), path=toc_path, lineno=lineno, text='Definitions in the project by fully qualified name:\n', name='')
-            lineno += 1
-            for name, paths in sorted(self.n2p.items()):
-                lines = [f'  {name}:\n']
-                lines.extend(f'    - {path} line {lineno}\n' for path, lineno in sorted(paths))
-
-                text = ''.join(lines)
-                while tiktoken_len(text) > C.MAX_TOKENS_PER_FRAGMENT:
-                    lines.pop()
-                    text = ''.join(lines)
-
-                yield Fragment(uuid=str(uuid.uuid4()), path=toc_path, lineno=lineno, text=text, name='')
-                lineno += len(lines) + 1
-
-        if self.p2n:
-            yield Fragment(uuid=str(uuid.uuid4()), path=toc_path, lineno=lineno, text='Definitions of the project by file path:\n', name='')
-            lineno += 1
-            for path, names in sorted(self.p2n.items()):
-                lines = [f'  {path}:\n']
-                lines.extend(f'    - {name} -> Line {lineno}\n' for name, lineno in sorted(names))
-
-                text = ''.join(lines)
-                while tiktoken_len(text) > C.MAX_TOKENS_PER_FRAGMENT:
-                    lines.pop()
-                    text = ''.join(lines)
-
-                yield Fragment(uuid=str(uuid.uuid4()), path=toc_path, lineno=lineno, text=text, name='')
-
-                lineno += len(lines) + 1
-
-    def get_free_toc_path(self):
-        filename = 'TOC.md'
-        while filename in self.paths:
-            filename = f'_{filename}'
-        return filename
 
 
 class Extractor:
@@ -118,24 +39,9 @@ class Extractor:
         with self.project.cursor() as cursor:
             iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
 
-            toc = Toc() if C.INCLUDE_TOC else None
-
             for fragment in self.iter_fragments_from_documents(iter_docs):
                 self.project.insert_fragment(cursor, fragment)
-                if toc is not None:
-                    toc.add(fragment)
                 await asyncio.sleep(0)
-
-            if toc is not None:
-                if C.DEVELOPMENT:
-                    print('>>> TOC:')
-                for fragment in toc:
-                    self.project.insert_fragment(cursor, fragment)
-                    if C.DEVELOPMENT:
-                        print(fragment.text, end='')
-                    await asyncio.sleep(0)
-                if C.DEVELOPMENT:
-                    print('>>> /TOC')
 
         with self.project.cursor() as cursor:
             self.project.index_by_lineno(cursor)

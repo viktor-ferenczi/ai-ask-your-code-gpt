@@ -4,7 +4,6 @@ from typing import Optional, Type
 from magic import Magic
 from tree_sitter import Language
 
-from common.constants import C
 from parsers.base_parser import BaseParser
 from parsers.markdown_parser import MarkdownParser
 from parsers.python_parser import PythonParser
