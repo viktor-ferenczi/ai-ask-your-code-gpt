@@ -112,15 +112,15 @@ class PythonParser(BaseParser):
             f'  Language: Python',
         ]
         if functions:
-            summary.append(f"  Functions: {' '.join(functions)}")
+            summary.append(f"  Functions: {' '.join(sorted(functions))}")
         if classes:
-            summary.append(f"  Classes: {' '.join(classes)}")
+            summary.append(f"  Classes: {' '.join(sorted(classes))}")
         if methods:
-            summary.append(f"  Methods: {' '.join(methods)}")
+            summary.append(f"  Methods: {' '.join(sorted(methods))}")
         if variables:
-            summary.append(f"  Variables: {' '.join(variables)}")
+            summary.append(f"  Variables: {' '.join(sorted(variables))}")
         if usages:
-            summary.append(f"  Usages: {' '.join(usages)}")
+            summary.append(f"  Usages: {' '.join(sorted(usages))}")
 
         summary = '\n'.join(summary)
         print(summary)
