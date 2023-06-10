@@ -4,7 +4,7 @@ quart~=0.18.4
 quart-cors
 tqdm~=4.65.0
 tiktoken~=0.4.0
-tree_sitter
+tree-sitter
 langchain~=0.0.174
 numpy~=1.24.3
 aiohttp~=3.8.4
