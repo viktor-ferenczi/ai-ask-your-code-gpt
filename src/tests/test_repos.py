@@ -134,8 +134,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         good = False
         if not os.path.exists(expected_path):
-            with open(expected_path, 'wt') as _:
-                expected = ''
+            expected = ''
         else:
             with open(expected_path, 'rt') as f:
                 expected = f.read()

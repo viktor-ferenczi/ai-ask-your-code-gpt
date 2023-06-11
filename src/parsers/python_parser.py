@@ -29,6 +29,7 @@ class PythonParser(BaseParser):
                 ('<', r"^\s+class\s+"),
                 ('<', r"^\s+def\s+"),
                 ('<', r"^\s+with\s+"),
+                ('<', r"^\s+while\s+"),
                 ('<', r"^\s+for\s+"),
                 ('<', r"^\s+if\s+"),
                 ('<', r"^\s+elif\s+"),

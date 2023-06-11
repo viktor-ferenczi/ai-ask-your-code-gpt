@@ -26,8 +26,8 @@ class PhpParser(BaseParser):
             length_function=tiktoken_len,
             separators=(
                 ('<', r"^\s+class\s+"),
-                ('<', r"^\s+def\s+"),
-                ('<', r"^\s+with\s+"),
+                ('<', r"^\s+function\s+"),
+                ('<', r"^\s+while\s+"),
                 ('<', r"^\s+for\s+"),
                 ('<', r"^\s+if\s+"),
                 ('<', r"^\s+elif\s+"),
