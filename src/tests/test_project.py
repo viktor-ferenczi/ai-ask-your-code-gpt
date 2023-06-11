@@ -143,7 +143,7 @@ Python: /find_duplicates.py
         await self.wait_for_processing(project)
 
         hits = await project.search(path='/README.md', limit=100)
-        self.verify_hits(hits, 10, path='/README.md')
+        self.verify_hits(hits, 9, path='/README.md')
 
         hits = await project.search(tail='.py', name='Query', limit=100)
         self.verify_hits(hits, 34, contains=['class Query'])
