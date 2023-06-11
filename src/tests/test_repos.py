@@ -1,0 +1,143 @@
+import asyncio
+import difflib
+import os
+import shutil
+import unittest
+
+from quart import Quart, send_file
+
+from common.constants import C
+from common.http import download_file
+from downloader.downloader import app as downloader_app
+from embed.embedder import app as embedder_app
+from loader.loader import app as loader_app, workers as loader_workers
+from parsers import PARSERS_BY_EXTENSION
+from project.inventory import Inventory
+from project.project import Project
+
+MODULE_DIR = os.path.dirname(__file__)
+
+REPOS = [
+    # PHP, HTML, CSS, JavaScript
+    ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+]
+
+
+class TestProject(unittest.IsolatedAsyncioTestCase):
+    test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
+
+    def setUp(self) -> None:
+        self.maxDiff = 32768
+
+        Inventory.filename = 'test-inventory.sqlite'
+        inventory = Inventory()
+        inventory.drop_database()
+
+        Project.dirname = 'test-projects'
+        test_projects_dir = os.path.join(C.DATA_DIR, Project.dirname)
+        if os.path.isdir(test_projects_dir):
+            shutil.rmtree(test_projects_dir)
+
+    async def serve_zip(self):
+        self.app = Quart('test_zip_server')
+
+        @self.app.route('/<string:filename>')
+        async def serve_zip(filename: str):
+            assert '..' not in filename
+            assert '/' not in filename
+            assert '\\' not in filename
+            assert filename.endswith('.zip')
+            return await send_file(os.path.join(self.test_repos_dir, filename), as_attachment=True)
+
+        await self.app.run_task(debug=True, host='localhost', port=49001)
+
+    async def test_project(self):
+        actual_test = asyncio.create_task(self.actual_test())
+        zip_server_task = asyncio.create_task(self.serve_zip())
+        query_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40100))
+        store_embedder_tasks = [asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200 + i)) for i in (0, 1)]
+        downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
+        loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
+        loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
+
+        tasks = [actual_test, zip_server_task, query_embedder_task, downloader_task, loader_task] + store_embedder_tasks + loader_worker_tasks
+
+        await asyncio.wait(tasks, timeout=3600.0, return_when=asyncio.FIRST_COMPLETED)
+
+        actual_test.result()
+        for task in tasks:
+            if task is not actual_test:
+                task.cancel()
+
+    async def actual_test(self):
+        for name, zip_url in REPOS:
+            await self.verify_repo(name, zip_url)
+
+    async def verify_repo(self, name: str, zip_url: str):
+        zip_path = os.path.join(self.test_repos_dir, f'{name}.zip')
+        if not os.path.isfile(zip_path):
+            zip_content = await download_file(zip_url, max_size=20 << 20)
+            with open(zip_path, 'wb') as zip_file:
+                zip_file.write(zip_content)
+
+        self.project_name = name
+        self.project_path = os.path.join(self.test_repos_dir, name)
+        os.makedirs(f'{self.project_path}/actual', exist_ok=True)
+        os.makedirs(f'{self.project_path}/expected', exist_ok=True)
+
+        local_zip_url = f'http://127.0.0.1:49001/{name}.zip'
+        project_id = await Project.download(local_zip_url)
+        project = Project(project_id)
+
+        await self.wait_for_processing(project)
+
+        for extension in PARSERS_BY_EXTENSION:
+            actual = await project.summarize(tail=f'.{extension}')
+            if actual:
+                self.verify(f'summary.{extension}', actual)
+
+    async def wait_for_processing(self, project):
+        inventory = Inventory()
+
+        print('Waiting for extracting fragments...')
+        while 1:
+            if inventory.has_project_extracted(project.project_id):
+                break
+            await asyncio.sleep(0.2)
+        print('Downloaded')
+
+        print('Waiting for embedding fragments...')
+        while 1:
+            if inventory.has_project_embedded(project.project_id):
+                break
+            await asyncio.sleep(0.2)
+        print('Embedded')
+
+    def verify(self, name: str, actual: str):
+        actual_path = os.path.join(self.project_path, 'actual', name)
+        expected_path = os.path.join(self.project_path, 'expected', name)
+
+        good = False
+        if not os.path.exists(expected_path):
+            with open(expected_path, 'wt') as _:
+                expected = ''
+        else:
+            with open(expected_path, 'rt') as f:
+                expected = f.read()
+            good = actual == expected
+
+        if good:
+            if os.path.exists(actual_path):
+                os.remove(actual_path)
+        else:
+            with open(actual_path, 'wt') as f:
+                f.write(actual)
+
+            print('=' * 70)
+            print(f'FAILED: {self.project_name} / {name}')
+            print('=' * 70)
+            for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
+                print(line)
+            print()
+
+            self.fail(f'FAILED: {self.project_name} / {name}')

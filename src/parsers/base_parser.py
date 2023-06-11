@@ -6,6 +6,7 @@ from model.fragment import Fragment
 
 
 class BaseParser:
+    name: str = ''
     extensions: Tuple[str] = ()
     mime_types: Tuple[str] = ()
     store_instruction: str = ''
@@ -14,6 +15,7 @@ class BaseParser:
     tree_sitter_language: tree_sitter.Language  # Set automatically
 
     def __init__(self) -> None:
+        assert self.name
         assert self.extensions
         assert self.mime_types
         assert self.store_instruction

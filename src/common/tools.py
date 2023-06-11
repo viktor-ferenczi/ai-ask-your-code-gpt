@@ -1,3 +1,4 @@
+import uuid
 from typing import List, Callable, Iterator
 
 import tiktoken
@@ -29,3 +30,7 @@ def find_iter(text: str, sub: str) -> Iterator[int]:
             break
         yield f
         i = f + len(sub)
+
+
+def new_uuid() -> str:
+    return str(uuid.uuid4())

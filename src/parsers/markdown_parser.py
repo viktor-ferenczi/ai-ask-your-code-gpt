@@ -10,6 +10,7 @@ from splitters.markdown_splitter import MarkdownSplitter
 
 # FIXME: Replace with proper parser
 class MarkdownParser(BaseParser):
+    name = 'Markdown'
     extensions = ('md',)
     mime_types = ('text/markdown',)
     store_instruction = 'Represent the Markdown document for retrieval'
@@ -24,8 +25,7 @@ class MarkdownParser(BaseParser):
         text = content.decode('utf-8', errors='surrogateescape').replace('\r', '')
         summary = []
         for sentence in self.splitter.split_text(text):
-            if sentence.text.startswith('#'):
-                summary.append(sentence.text.split('\n', 1)[0] + '\n')
+
             yield Fragment(
                 uuid=str(uuid.uuid4()),
                 path=path,
@@ -35,6 +35,10 @@ class MarkdownParser(BaseParser):
                 name='',
                 text=sentence.text,
             )
+
+            for line in sentence.text.split('\n'):
+                if line.startswith('#'):
+                    summary.append(f'{line}\n')
 
         yield Fragment(
             uuid=str(uuid.uuid4()),
