@@ -18,7 +18,10 @@ from project.project import Project
 MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
-    # PHP, HTML, CSS, JavaScript
+    # Markdown, Python
+    ('viktor-ferenczi-dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+
+    # Markdown, PHP, HTML, CSS, JavaScript
     ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 ]
 
@@ -70,8 +73,20 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
                 task.cancel()
 
     async def actual_test(self):
+        self.failures = []
         for name, zip_url in REPOS:
             await self.verify_repo(name, zip_url)
+
+        if self.failures:
+            for project_name, name, expected, actual in self.failures:
+                print('=' * 70)
+                print(f'FAILED: {project_name} / {name}')
+                print('=' * 70)
+                for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
+                    print(line)
+                print()
+
+            self.fail('One of more output were not what was expected. See above.')
 
     async def verify_repo(self, name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{name}.zip')
@@ -133,11 +148,4 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             with open(actual_path, 'wt') as f:
                 f.write(actual)
 
-            print('=' * 70)
-            print(f'FAILED: {self.project_name} / {name}')
-            print('=' * 70)
-            for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
-                print(line)
-            print()
-
-            self.fail(f'FAILED: {self.project_name} / {name}')
+            self.failures.append((self.project_name, name, expected, actual))

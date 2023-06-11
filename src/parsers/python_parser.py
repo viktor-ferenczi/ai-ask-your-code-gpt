@@ -54,7 +54,8 @@ class PythonParser(BaseParser):
 
         for child, depth in walk_children(cursor):
             node: Node = child.node
-            # print(f"|{decode_escape(node.text)} |{node.type}|")
+            # if not node.child_count:
+            #     print(f"|{decode_escape(node.text)} |{node.type}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'import_statement' or node.type == 'import_from_statement':
                 for sentence in self.splitter.split_text(decode_escape(node.text)):
@@ -85,9 +86,11 @@ class PythonParser(BaseParser):
 
         usages -= functions | classes | methods | variables
 
+        variables -= {v for v in variables if len(v) < 3 and not v[:1].isupper()}
+        usages -= {v for v in usages if len(v) < 3 and not v[:1].isupper()}
+
         summary = [
-            f'Python:',
-            f'  Path: {path}',
+            f'{self.name}: {path}',
         ]
         if functions:
             summary.append(f"  Functions: {' '.join(sorted(functions))}")

@@ -134,5 +134,6 @@ dmypy.json
 # Test output
 TestProject.zip
 /src/tests/TestRepos/*.zip
+/src/tests/TestRepos/*/actual/
 *.actual
 *-actual
