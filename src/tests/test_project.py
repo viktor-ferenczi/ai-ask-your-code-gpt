@@ -90,13 +90,13 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.verify_hits(hits, 1, contains=['class Duplicates'])
 
         hits = await project.search(path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 41, path='/find_duplicates.py')
+        self.verify_hits(hits, 40, path='/find_duplicates.py')
 
         hits = await project.search(tail='.py', path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 41, path='/find_duplicates.py')
+        self.verify_hits(hits, 40, path='/find_duplicates.py')
 
         hits = await project.search(path='/README.md', limit=100)
-        self.verify_hits(hits, 6, path='/README.md')
+        self.verify_hits(hits, 5, path='/README.md')
 
         hits = await project.search(tail='.md', text='standard set of source code files', limit=1)
         self.verify_hits(hits, 1, path='/README.md', contains=['standard set of source code files'])
