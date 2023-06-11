@@ -53,7 +53,7 @@ class Extractor:
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
 
-            parser_cls = parsers.detect(doc.path)
+            parser_cls = parsers.detect(doc.path, doc.content)
             if parser_cls is None:
                 try:
                     doc.content.decode('utf-8')
