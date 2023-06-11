@@ -70,8 +70,12 @@ async def create():
         return Response(response='Missing url', status=400)
     if not (url.startswith('http://') or url.startswith('https://')):
         return Response(response='The URL must start with http:// or https://', status=400)
-    if C.PRODUCTION and ('://localhost' in url.lower() or '://127.' in url or '://192.168.' in url or '://10.' in url):
+
+    lc_url = url.lower()
+    if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return Response(response='Invalid URL', status=400)
+    if 'https://drive.google.com/' in lc_url or 'https://1drv.ms/' in lc_url:
+        return Response(response='Google Drive and OneDrive are not supported. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord.', status=400)
 
     # Create project, download and verify archive, initiate indexing
     print(f'Create project from {url!r}')
@@ -199,23 +203,21 @@ async def search(project_id: str):
     if not project.exists:
         return Response(response='No such project', status=404)
 
-    limit = 1
-    if path:
+    limit = 10
+    if path or tail or name:
         limit = 50
-    if tail:
-        limit = 20
 
     # noinspection PyBroadException
     try:
         hits = await project.search(path=path, tail=tail, name=name, text=text, limit=limit)
         if not hits and name:
-            hits = await project.search(path=path, tail=tail, text=name)
+            hits = await project.search(path=path, tail=tail, text=name, limit=limit)
             if not hits:
-                hits = await project.search(tail=tail, text=name)
+                hits = await project.search(tail=tail, text=name, limit=limit)
             if not hits:
-                hits = await project.search(text=name)
+                hits = await project.search(text=name, limit=10)
         if not hits and path:
-            hits = await project.search(tail='/' + path.rsplit('/')[-1], text=text)
+            hits = await project.search(tail='/' + path.rsplit('/')[-1], text=text, limit=limit)
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
@@ -251,6 +253,7 @@ async def search(project_id: str):
             tokens += tiktoken_len(hits[i].text)
             if tokens > 2000:
                 break
+            i += 1
 
         hits = hits[:i]
 
