@@ -144,8 +144,7 @@ If you run into issues or have questions building a plugin, please join our [Dev
 
 ## TODO
 
-- Introduce a cleanup of project folders after 24 hours or if the number of project folders reaches 100 or the free disk space is below 20GB. That's because they make qdrant to low slower and slower, also because of disk consumption. The inventory entry should be kept.
 - Add more doc formats: requirements.txt, C/C++, C#, Java, Rust, Go, Bash, TypeScript, JSON, YAML
-- Allow for more downloads / fixes / redirects
-- Implement portal to let the users buy a professional license. It will give an agent automatically indexing local code and giving access to it.
 - Refactor the whole thing, reduce the need for embedding, use an external embedding service
+- Implement an agent to serve code from a local folder instead of a ZIP download.
+- Implement portal to let the users buy a professional license.
