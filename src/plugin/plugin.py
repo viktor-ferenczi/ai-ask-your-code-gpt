@@ -263,7 +263,7 @@ async def search(project_id: str):
     response = dict(
         path=path,
         lineno=hits[0].lineno,
-        text=''.join(hit.text for hit in hits),
+        text='\n'.join(hit.text for hit in hits),
     )
 
     for hit in hits:
