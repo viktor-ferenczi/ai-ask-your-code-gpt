@@ -25,7 +25,7 @@ REPOS = [
     ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
-    # ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+    ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 ]
 
 
@@ -111,6 +111,9 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         actual = ''.join(hit.text for hit in await project.search(path='/readme.md', limit=50))
         self.verify(f'README.md', actual)
+
+        actual = await project.summarize()
+        self.verify(f'root-summary.txt', actual)
 
         actual = await project.summarize(path='/readme.md')
         self.verify(f'README-summary.md', actual)

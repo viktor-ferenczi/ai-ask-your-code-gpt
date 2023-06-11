@@ -1,0 +1,21 @@
+No directory or file matched the summary query.
+Path of all files in the project:
+/Clones.sol
+/Context.sol
+/DividendPayingToken.sol
+/DividendPayingTokenInterface.sol
+/DividendPayingTokenOptionalInterface.sol
+/ERC20.sol
+/ERC20Upgradeable.sol
+/IERC20.sol
+/IERC20Metadata.sol
+/IUniswapV2Factory.sol
+/IUniswapV2Pair.sol
+/IUniswapV2Router.sol
+/IterableMapping.sol
+/Ownable.sol
+/REDTOKENDividendTracker.sol
+/SafeMath.sol
+/SafeMathInt.sol
+/SafeMathUint.sol
+/token.sol

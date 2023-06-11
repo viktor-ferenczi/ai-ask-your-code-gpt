@@ -25,12 +25,12 @@ class TextParser(BaseParser):
         if not text.strip():
             return
 
-        summary = []
+        summary = [f'{path}:\n']
         for sentence in self.splitter.split_text(text):
 
             for line in sentence.text.split('\n'):
-                for c in '.)/':
-                    if c in line and line.split(c)[0].isdigit():
+                for c in '.:)}]/':
+                    if c in line and line.split(c)[0].strip().isdigit():
                         summary.append(f'{line}\n')
 
             yield Fragment(
@@ -42,10 +42,6 @@ class TextParser(BaseParser):
                 name='',
                 text=sentence.text,
             )
-
-        if not summary:
-            # TODO: Generate a summary using an LLM
-            return
 
         yield Fragment(
             uuid=str(uuid.uuid4()),
