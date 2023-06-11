@@ -197,9 +197,15 @@ class Project:
         inventory = Inventory()
         inventory.delete_project(self.project_id)
 
-        await self.cleanup()
+        await self.drop_db_dir()
 
     async def cleanup(self):
+        inventory = Inventory()
+        inventory.mark_project_cleaned(self.project_id)
+
+        await self.drop_db_dir()
+
+    async def drop_db_dir(self):
         await self.drop_database()
 
         if os.path.isdir(self.data_dir):

@@ -2,7 +2,7 @@ import os.path
 import sqlite3
 import time
 from contextlib import contextmanager
-from typing import Optional, ContextManager, Tuple
+from typing import Optional, ContextManager, Tuple, List
 
 from common.constants import C
 
@@ -72,6 +72,10 @@ class Inventory:
         with self.cursor() as cursor:
             cursor.execute('UPDATE Inventory SET extracted = 1 WHERE project_id = ?', (project_id,))
 
+    def mark_project_cleaned(self, project_id: str):
+        with self.cursor() as cursor:
+            cursor.execute('UPDATE Inventory SET extracted = 2 WHERE project_id = ?', (project_id,))
+
     def has_project_extracted(self, project_id: str) -> bool:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT extracted FROM Inventory WHERE project_id = ?', (project_id,)):
@@ -95,11 +99,10 @@ class Inventory:
                 return bool(row[0])
             return False
 
-    def get_expired_projects(self, cutoff: int, limit: int) -> Optional[Tuple[str, str]]:
+    def get_expired_projects(self, cutoff: int, limit: int) -> List[Tuple[str, str]]:
         with self.cursor() as cursor:
-            for project_id, url in cursor.execute('SELECT project_id, url FROM Inventory WHERE last_used < ? ORDER BY registered LIMIT ?', (cutoff, limit)):
-                return project_id, url
-        return None
+            projects = [tuple(row) for row in cursor.execute('SELECT project_id, url FROM Inventory WHERE extracted < 2 AND last_used < ? ORDER BY registered LIMIT ?', (cutoff, limit))]
+        return projects
 
     def drop_database(self):
         if os.path.isfile(self.db_path):

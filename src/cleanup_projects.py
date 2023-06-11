@@ -15,7 +15,7 @@ async def main():
 
     inventory = Inventory()
     for project_id, url in inventory.get_expired_projects(cutoff=cutoff, limit=1):
-        print(f'Removing: {project_id} ')
+        print(f'Removing: {project_id} {url}')
         project = Project(project_id)
         await project.cleanup()
 
