@@ -21,6 +21,7 @@ class Collection:
                 vectors_config=grpc.VectorsConfig(
                     params=grpc.VectorParams(size=self.dimensions, distance=grpc.Distance.Dot)
                 ),
+                on_disk_payload=True,
                 timeout=10
             )
         )

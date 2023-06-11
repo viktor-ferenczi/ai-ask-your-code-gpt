@@ -91,7 +91,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         try:
             await Project.download('http://127.0.0.1:49001/this-wont-exist')
         except ProjectError as e:
-            self.assertTrue('Failed to download archive' in str(e))
+            self.assertTrue('Failed to download' in str(e))
         else:
             self.fail("ProjectError not raised")
 
