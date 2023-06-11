@@ -23,6 +23,9 @@ REPOS = [
 
     # Markdown, PHP, HTML, CSS, JavaScript
     ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+
+    # Dropbox, SOL files
+    # ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 ]
 
 
@@ -54,7 +57,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.app.run_task(debug=True, host='localhost', port=49001)
 
-    async def test_project(self):
+    async def test_repos(self):
         actual_test = asyncio.create_task(self.actual_test())
         zip_server_task = asyncio.create_task(self.serve_zip())
         query_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40100))
@@ -111,6 +114,9 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         actual = await project.summarize(path='/readme.md')
         self.verify(f'README-summary.md', actual)
+
+        actual = await project.summarize(tail='.sol')
+        self.verify(f'summary.sol', actual)
 
         for extension in PARSERS_BY_EXTENSION:
             actual = await project.summarize(tail=f'.{extension}')

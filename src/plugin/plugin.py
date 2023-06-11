@@ -71,6 +71,9 @@ async def create():
     if not (url.startswith('http://') or url.startswith('https://')):
         return Response(response='The URL must start with http:// or https://', status=400)
 
+    if url.startswith('https://www.dropbox.com/') and url.endswith('?dl=0'):
+        url = f'{url[:-5]}?dl=1'
+
     lc_url = url.lower()
     if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return Response(response='Invalid URL', status=400)

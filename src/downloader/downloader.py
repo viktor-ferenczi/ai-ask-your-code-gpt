@@ -72,7 +72,7 @@ class Downloader:
                 max_file_count=C.MAX_FILE_COUNT,
                 max_file_size=C.MAX_FILE_SIZE,
                 max_total_size=C.MAX_TOTAL_SIZE,
-                supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
+                # supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
                 verify_only=True
             ))
         except KeyboardInterrupt:

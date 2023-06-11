@@ -15,6 +15,7 @@ from common.zip_support import extract_verify_documents, iter_files_from_zip
 from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS, EmbedderError
 from model.document import Document
 from model.fragment import Fragment
+from parsers import TextParser
 from project.inventory import Inventory
 from project.project import Project
 
@@ -54,8 +55,18 @@ class Extractor:
 
             parser_cls = parsers.detect(doc.path)
             if parser_cls is None:
-                # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
-                continue
+                try:
+                    doc.content.decode('utf-8')
+                except UnicodeDecodeError:
+                    # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
+                    continue
+                except:
+                    print('Unexpected failure during file type detection:')
+                    print_exc()
+                    continue
+                else:
+                    # Fallback
+                    parser_cls = TextParser
 
             yield from parser_cls().parse(doc.path, doc.content)
 

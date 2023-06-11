@@ -164,6 +164,9 @@ class Project:
     def search_by_path_tail_name_unlimited(self, cursor: Cursor, path: str, tail: str, name: str) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno", (f'{path}%', f'%{tail}', f'%{name}'))]
 
+    def get_distinct_paths_ordered(self, cursor: Cursor):
+        return [row[0] for row in cursor.execute("SELECT DISTINCT path FROM Fragment ORDER BY path")]
+
     def list_fragments_by_uuid(self, cursor: Cursor, uuids: List[str]) -> List[Fragment]:
         if not uuids:
             return []
@@ -260,10 +263,18 @@ class Project:
         with self.cursor() as cursor:
             fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
 
-        if not fragments:
-            return ''
-
-        summary = '\n'.join(self.summarize_fragments(fragments))
+        if fragments:
+            summary = '\n'.join(self.summarize_fragments(fragments))
+        else:
+            if tail or name:
+                return ''
+            summary = [
+                'No directory or file matched the summary query.\n',
+                'Path of all files in the project:\n'
+            ]
+            with self.cursor() as cursor:
+                summary.extend(f'{p}\n' for p in self.get_distinct_paths_ordered(cursor))
+            summary = ''.join(summary)
 
         summary = summary.split('\n')
 
