@@ -56,7 +56,7 @@ class Extractor:
             parser_cls = parsers.detect(doc.path, doc.content)
             if parser_cls is None:
                 try:
-                    doc.content.decode('utf-8')
+                    doc.content.decode('ascii')
                 except UnicodeDecodeError:
                     # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
                     continue
