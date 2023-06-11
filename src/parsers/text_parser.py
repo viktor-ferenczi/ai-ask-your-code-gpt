@@ -30,7 +30,7 @@ class TextParser(BaseParser):
 
             for line in sentence.text.split('\n'):
                 for c in '.)/':
-                    if c in line and line.split[c][0].isdigit():
+                    if c in line and line.split(c)[0].isdigit():
                         summary.append(f'{line}\n')
 
             yield Fragment(

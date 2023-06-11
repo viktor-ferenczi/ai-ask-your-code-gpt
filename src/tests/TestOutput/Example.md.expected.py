@@ -144,9 +144,13 @@ f9 = Fragment(uuid='TEST-09',
          name='',
          text='# Markdown Syntax Examples\n'
               '## Headings\n'
+              '# Heading 1\n'
               '## Heading 2\n'
+              '### Heading 3\n'
               '## Emphasis\n'
               '## Lists\n'
+              '### Ordered List\n'
+              '### Unordered List\n'
               '## Links\n'
               '## Images\n'
               '## Blockquotes\n'

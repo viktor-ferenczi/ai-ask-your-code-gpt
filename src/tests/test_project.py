@@ -168,8 +168,6 @@ Python: /find_duplicates.py
         self.assertEqual('''\
 Python: /lib/setup.py
 
-Python: /lib/dblayer/__init__.py
-
 Python: /lib/dblayer/constants.py
   Classes: NA
   Methods: __repr__
@@ -179,21 +177,13 @@ Python: /lib/dblayer/util.py
 
 Python: /lib/dblayer/version.py
 
-Python: /lib/dblayer/backend/__init__.py
-
-Python: /lib/dblayer/generator/__init__.py
-
 Python: /lib/dblayer/generator/generator.py
   Functions: generate
   Classes: GeneratorOptions
 
-Python: /lib/dblayer/graph/__init__.py
-
 Python: /lib/dblayer/graph/gml.py
   Classes: GMLExporter
   Methods: __init__ export
-
-Python: /lib/dblayer/model/__init__.py
 
 Python: /lib/dblayer/model/aggregate.py
   Classes: Avg BaseAggregate Count Max Min Sum
@@ -235,8 +225,6 @@ Python: /lib/dblayer/model/trigger.py
   Classes: AfterDeleteRow AfterDeleteStatement AfterInsertOrUpdateRow AfterInsertOrUpdateStatement AfterInsertRow AfterInsertStatement AfterUpdateRow AfterUpdateStatement BaseTrigger BeforeDeleteRow BeforeDeleteStatement BeforeInsertOrUpdateRow BeforeInsertOrUpdateStatement BeforeInsertRow BeforeInsertStatement BeforeUpdateRow BeforeUpdateStatement
   Methods: __init__ __repr__ __str__ clone sort_key
 
-Python: /lib/dblayer/test/__init__.py
-
 Python: /lib/dblayer/test/constants.py
 
 Python: /lib/dblayer/test/model.py
@@ -246,8 +234,6 @@ Python: /lib/dblayer/test/model.py
 Python: /lib/dblayer/test/test_abstraction.py
   Classes: TestAbstraction TestGraph
   Methods: do_failed_transaction load_data modify_data setUp tearDown testGML test_class_formatting test_clauses_class test_database_session test_duplicate_insert test_full_text_search test_insert_select test_inspection test_order_by test_product_sale_query test_random_id_selection test_repr_str test_triggers test_truncate test_tuple_dict test_update_delete test_user_contact_query verify_data
-
-Python: /lib/dblayer/backend/base/__init__.py
 
 Python: /lib/dblayer/backend/base/clauses.py
   Classes: Clauses
@@ -266,8 +252,6 @@ Python: /lib/dblayer/backend/base/format.py
 Python: /lib/dblayer/backend/base/record.py
   Classes: Record
   Methods: __eq__ __repr__ finalize
-
-Python: /lib/dblayer/backend/postgresql/__init__.py
 
 Python: /lib/dblayer/backend/postgresql/clauses.py
 
