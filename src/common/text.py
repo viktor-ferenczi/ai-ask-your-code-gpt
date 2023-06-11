@@ -1,2 +1,2 @@
-def decode_escape(content: bytes) -> str:
-    return content.decode('utf-8', errors='surrogateescape')
+def decode_replace(content: bytes) -> str:
+    return content.decode('utf-8', errors='replace')

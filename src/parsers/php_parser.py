@@ -3,7 +3,7 @@ from typing import Iterator, Set
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
-from common.text import decode_escape
+from common.text import decode_replace
 from common.tools import tiktoken_len, new_uuid
 from common.tree import walk_children
 from model.fragment import Fragment
@@ -42,7 +42,7 @@ class PhpParser(BaseParser):
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        for sentence in self.splitter.split_text(decode_escape(content)):
+        for sentence in self.splitter.split_text(decode_replace(content)):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         classes: Set[str] = set()
@@ -56,23 +56,23 @@ class PhpParser(BaseParser):
             #     print(f"@{depth}|{decode_escape(node.text)}|{node.type}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'class' and node.next_sibling is not None and node.next_sibling.type == 'name':
-                name = decode_escape(node.next_sibling.text)
+                name = decode_replace(node.next_sibling.text)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_escape(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
             elif node.type == 'function' and node.next_sibling is not None and node.next_sibling.type == 'name':
-                name = decode_escape(node.next_sibling.text)
+                name = decode_replace(node.next_sibling.text)
                 functions.add(name)
-                for sentence in self.splitter.split_text(decode_escape(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif (node.type == '$' and
                   node.next_sibling is not None and
                   node.next_sibling.type == 'name'):
-                name = decode_escape(node.next_sibling.text)
+                name = decode_replace(node.next_sibling.text)
 
                 if (node.next_sibling.next_sibling is not None and
                         node.next_sibling.next_sibling.type == '='):
-                    text = decode_escape(node.parent.text)
+                    text = decode_replace(node.parent.text)
                     variables.add(name)
                     for sentence in self.splitter.split_text(text):
                         yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
@@ -81,7 +81,7 @@ class PhpParser(BaseParser):
             elif (node.type == 'name' and
                   node.child_count and
                   node.children[0].type == '('):
-                name = decode_escape(node.text)
+                name = decode_replace(node.text)
                 usages.add(name)
 
         usages -= functions | classes | variables

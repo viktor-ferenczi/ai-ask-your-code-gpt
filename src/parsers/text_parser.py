@@ -21,7 +21,7 @@ class TextParser(BaseParser):
     )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        text = content.decode('utf-8', errors='surrogateescape').replace('\r', '')
+        text = content.decode('utf-8', errors='replace').replace('\r', '')
         if not text.strip():
             return
 

@@ -14,7 +14,7 @@ from qdrant_client import QdrantClient
 
 import parsers
 from common.constants import C, RX
-from common.text import decode_escape
+from common.text import decode_replace
 from common.timer import timer
 from common.tools import tiktoken_len
 from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
@@ -208,7 +208,7 @@ class Project:
                     async with session.post(f'{DOWNLOADER_URL}/download', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
                         content: bytes = await response.content.read()
                         if response.status != 200:
-                            reason = decode_escape(content).strip()
+                            reason = decode_replace(content).strip()
                             print(f'Failed to download archive {url!r}: {reason}')
                             raise ProjectError(reason)
                         project_id = content.decode('utf-8').strip()

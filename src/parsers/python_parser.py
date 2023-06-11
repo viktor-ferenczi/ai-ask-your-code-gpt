@@ -4,7 +4,7 @@ from typing import Iterator, Set
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
-from common.text import decode_escape
+from common.text import decode_replace
 from common.tools import tiktoken_len, new_uuid
 from common.tree import walk_children
 from model.fragment import Fragment
@@ -44,7 +44,7 @@ class PythonParser(BaseParser):
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        for sentence in self.splitter.split_text(decode_escape(content)):
+        for sentence in self.splitter.split_text(decode_replace(content)):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         classes: Set[str] = set()
@@ -59,30 +59,30 @@ class PythonParser(BaseParser):
             #     print(f"@{depth}|{decode_escape(node.text)}|{node.type}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'import_statement' or node.type == 'import_from_statement':
-                for sentence in self.splitter.split_text(decode_escape(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
             elif node.type == 'class_definition':
-                name = decode_escape(node.child_by_field_name('name').text)
+                name = decode_replace(node.child_by_field_name('name').text)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_escape(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
             elif node.type == 'function_definition':
-                name = decode_escape(node.child_by_field_name('name').text)
+                name = decode_replace(node.child_by_field_name('name').text)
                 if depth:
                     methods.add(name)
                 else:
                     functions.add(name)
-                for sentence in self.splitter.split_text(decode_escape(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif node.type == 'expression_statement':
                 if node.child_count > 0 and node.child_count and node.children[0].type == 'assignment':
-                    text = decode_escape(node.text)
+                    text = decode_replace(node.text)
                     name = (text.split('=', 1)[0] if '=' in text else text).split()[0].strip()
                     variables.add(name)
-                    for sentence in self.splitter.split_text(decode_escape(node.text)):
+                    for sentence in self.splitter.split_text(decode_replace(node.text)):
                         yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
             elif node.type == 'identifier':
-                name = decode_escape(node.text)
+                name = decode_replace(node.text)
                 usages.add(name)
 
         usages -= functions | classes | methods | variables

@@ -4,7 +4,7 @@ from typing import Iterator, Set, List
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
-from common.text import decode_escape
+from common.text import decode_replace
 from common.tools import tiktoken_len, new_uuid
 from common.tree import walk_children
 from model.fragment import Fragment
@@ -36,7 +36,7 @@ class CssParser(BaseParser):
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        for sentence in self.splitter.split_text(decode_escape(content)):
+        for sentence in self.splitter.split_text(decode_replace(content)):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         classes: List[str] = []
@@ -48,11 +48,11 @@ class CssParser(BaseParser):
             #     print(f"@{depth}|{decode_escape(node.text)}|{node.type}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'class_name':
-                name = decode_escape(node.text)
+                name = decode_replace(node.text)
                 if name not in class_set:
                     classes.append(name)
                     class_set.add(name)
-                for sentence in self.splitter.split_text(decode_escape(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
 
         if not classes:

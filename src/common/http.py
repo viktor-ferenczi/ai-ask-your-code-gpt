@@ -3,7 +3,7 @@ from typing import Optional, List, Dict
 import aiohttp
 
 from common.constants import C
-from common.text import decode_escape
+from common.text import decode_replace
 
 
 class DownloadError(Exception):
@@ -23,7 +23,7 @@ async def download_file(url: str, *, headers: Optional[List[Dict[str, str]]] = N
 
                 if response.status < 200 or response.status >= 400:
                     content = await response.content.read(500)
-                    reason = decode_escape(content)
+                    reason = decode_replace(content)
                     raise DownloadError(f'Failed to download {url!r} with HTTP {response.status}: {reason}')
 
                 while 1:
