@@ -32,6 +32,7 @@ class Downloader:
 
         if project_id is not None:
             print(f'Archive matches an existing project: {project_id!r}')
+            self.inventory.touch_project(project_id)
             project = Project(project_id)
             if not project.exists:
                 self.inventory.reprocess_project(project_id)

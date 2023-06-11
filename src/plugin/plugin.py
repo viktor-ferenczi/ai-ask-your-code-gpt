@@ -145,9 +145,9 @@ async def summarize(project_id: str):
 
     print(f'Summarize project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}')
 
+    inventory = Inventory()
     project = Project(project_id)
     if not project.exists:
-        inventory = Inventory()
         url = inventory.get_project_url(project_id)
         if not url:
             return Response(response='No such project', status=404)
@@ -159,6 +159,8 @@ async def summarize(project_id: str):
 
     if not project.exists:
         return Response(response='No such project', status=404)
+
+    inventory.touch_project(project_id)
 
     # noinspection PyBroadException
     try:
@@ -213,9 +215,9 @@ async def search(project_id: str):
 
     print(f'Search project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}, text={text!r}')
 
+    inventory = Inventory()
     project = Project(project_id)
     if not project.exists:
-        inventory = Inventory()
         url = inventory.get_project_url(project_id)
         if not url:
             return Response(response='No such project', status=404)
@@ -227,6 +229,8 @@ async def search(project_id: str):
 
     if not project.exists:
         return Response(response='No such project', status=404)
+
+    inventory.touch_project(project_id)
 
     limit = 10
     if path or tail or name:

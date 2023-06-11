@@ -76,6 +76,11 @@ class Inventory:
         with self.cursor() as cursor:
             cursor.execute('UPDATE Inventory SET extracted = 2 WHERE project_id = ?', (project_id,))
 
+    def touch_project(self, project_id: str):
+        now = int(time.time())
+        with self.cursor() as cursor:
+            cursor.execute('UPDATE Inventory SET last_used = ? WHERE project_id = ?', (project_id, now))
+
     def has_project_extracted(self, project_id: str) -> bool:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT extracted FROM Inventory WHERE project_id = ?', (project_id,)):

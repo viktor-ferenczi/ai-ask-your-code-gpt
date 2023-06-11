@@ -14,7 +14,7 @@ async def main():
     cutoff = int(time.time()) - 3600 * hours
 
     inventory = Inventory()
-    for project_id, url in inventory.get_expired_projects(cutoff=cutoff, limit=1):
+    for project_id, url in inventory.get_expired_projects(cutoff=cutoff, limit=100):
         print(f'Removing: {project_id} {url}')
         project = Project(project_id)
         await project.cleanup()

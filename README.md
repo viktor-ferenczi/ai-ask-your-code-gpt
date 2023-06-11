@@ -144,11 +144,6 @@ If you run into issues or have questions building a plugin, please join our [Dev
 
 ## TODO
 
-- Introduce compression of logs older than 3 days.
-- Introduce cleanup of logs older than 90 days.
-- Keep inventory entries for 90 days to allow for continuing the conversation and for diagnostics purposes, even if the actual project folder is deleted. Introduce a "deleted" field for this.
-- If a search or summary request arrives referring a project marked as "deleted", then it should be re-downloaded and loaded.
-- If a project receives a request its project folder must be touch'd to make cleanup easier. Update last used in database only if older than 4 hours to reduce DB writes.
 - Introduce a cleanup of project folders after 24 hours or if the number of project folders reaches 100 or the free disk space is below 20GB. That's because they make qdrant to low slower and slower, also because of disk consumption. The inventory entry should be kept.
 - Add more doc formats: requirements.txt, C/C++, C#, Java, Rust, Go, Bash, TypeScript, JSON, YAML
 - Allow for more downloads / fixes / redirects
