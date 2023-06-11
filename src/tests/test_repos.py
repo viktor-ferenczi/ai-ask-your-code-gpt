@@ -129,8 +129,8 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         print('Embedded')
 
     def verify(self, name: str, actual: str):
-        actual_path = os.path.join(self.project_path, 'actual', name)
-        expected_path = os.path.join(self.project_path, 'expected', name)
+        actual_path = os.path.join(self.project_path, 'actual', f'{name}.txt')
+        expected_path = os.path.join(self.project_path, 'expected', f'{name}.txt')
 
         good = False
         if not os.path.exists(expected_path):
