@@ -17,8 +17,11 @@ if check_process "$COMMAND_LINE"; then
   exit 0
 fi
 
+TODAY=$(date -I)
+LOG_PATH="${LOG_PATH_BASENAME}.${TODAY}.log"
+
 cd "$WORKING_DIR"
-nohup $WRAPPER $COMMAND_LINE >>"$LOG_PATH" 2>&1 &
+nohup $WRAPPER $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &
 echo "$TITLE: Started"
 
 exit 0

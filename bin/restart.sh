@@ -10,4 +10,5 @@ fi
 set -euo pipefail
 
 bash ~/bin/stop.sh "$@"
+sleep 1
 bash ~/bin/start.sh "$@"

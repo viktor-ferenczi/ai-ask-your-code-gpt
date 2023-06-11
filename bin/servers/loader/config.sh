@@ -6,7 +6,7 @@ TITLE="Loader"
 WORKING_DIR="$HOME/src/loader"
 COMMAND_LINE="python -O -u loader.py"
 
-LOG_PATH="$HOME/log/$NAME.log"
+LOG_PATH_BASENAME="$HOME/log/$NAME"
 
 export HTTP_PORT=40002
 

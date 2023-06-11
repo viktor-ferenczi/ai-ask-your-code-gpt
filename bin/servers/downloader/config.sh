@@ -6,7 +6,7 @@ TITLE="Downloader"
 WORKING_DIR="$HOME/src/downloader"
 COMMAND_LINE="python -O -u downloader.py"
 
-LOG_PATH="$HOME/log/$NAME.log"
+LOG_PATH_BASENAME="$HOME/log/$NAME"
 
 export HTTP_PORT=40001
 

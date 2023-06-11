@@ -6,7 +6,7 @@ TITLE="Query Embedder"
 WORKING_DIR="$HOME/src/embed"
 COMMAND_LINE="python -O -u embedder.py query"
 
-LOG_PATH="$HOME/log/$NAME.log"
+LOG_PATH_BASENAME="$HOME/log/$NAME"
 
 export HTTP_PORT=40100
 
