@@ -112,7 +112,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         actual = ''.join(hit.text for hit in await project.search(path='/readme.md', limit=50))
         self.verify(f'README.md', actual)
 
-        actual = ''.join(hit.text for hit in await project.search(name='Kernel', limit=50))
+        actual = '\n'.join(hit.text for hit in await project.search(name='Kernel', limit=50))
         self.verify(f'name-Kernel.txt', actual)
 
         actual = await project.summarize()

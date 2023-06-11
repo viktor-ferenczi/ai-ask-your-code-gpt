@@ -1,0 +1,305 @@
+/.env.example:
+
+/.gitattributes:
+
+/.gitignore:
+
+/artisan:
+
+/composer.json:
+
+JavaScript: /gulpfile.js
+
+HTML: /index.html
+# AskYourCode
+### The intelligent rubber ducky!
+
+/package.json:
+
+/phpspec.yml:
+
+/phpunit.xml:
+
+# Ribbbon
+# Features
+# Get involved
+# Installation
+
+PHP: /server.php
+
+PHP: /app/Beta.php
+  Classes: Beta
+
+PHP: /app/Client.php
+  Functions: projects
+  Classes: Client
+
+PHP: /app/Credential.php
+  Classes: Credential
+
+PHP: /app/Project.php
+  Functions: client credentials isMember isOwner members tasks totalWeight uploads
+  Classes: Project
+
+PHP: /app/Projectuser.php
+  Classes: Projectuser
+
+PHP: /app/Task.php
+  Functions: project
+  Classes: Task
+
+PHP: /app/Upload.php
+  Functions: project user
+  Classes: Upload
+
+PHP: /app/User.php
+  Functions: clients get_gravatar inProjects projects tasks weight
+  Classes: User
+
+PHP: /bootstrap/app.php
+
+PHP: /bootstrap/autoload.php
+
+/database/.gitignore:
+
+/public/.htaccess:
+
+PHP: /public/index.php
+
+/public/robots.txt:
+
+PHP: /tests/ExampleTest.php
+  Functions: testBasicExample
+  Classes: ExampleTest
+
+PHP: /tests/TestCase.php
+  Functions: createApplication
+  Classes: TestCase
+
+PHP: /app/Console/Kernel.php
+  Functions: schedule
+  Classes: Kernel
+
+PHP: /app/Events/Event.php
+  Classes: Event
+
+PHP: /app/Exceptions/Handler.php
+  Functions: render report
+  Classes: Handler
+
+PHP: /app/Helpers/Helpers.php
+  Functions: isOwner logoUrl sendProjectInviteMail sendWelcomeMail
+  Classes: Helpers
+
+PHP: /app/Http/Kernel.php
+  Classes: Kernel
+
+PHP: /app/Jobs/Job.php
+  Classes: Job
+
+PHP: /app/Providers/AppServiceProvider.php
+  Functions: boot register
+  Classes: AppServiceProvider
+
+PHP: /app/Providers/EventServiceProvider.php
+  Functions: boot
+  Classes: EventServiceProvider
+
+PHP: /app/Providers/RouteServiceProvider.php
+  Functions: boot map
+  Classes: RouteServiceProvider
+
+/bootstrap/cache/.gitignore:
+
+PHP: /database/factories/ModelFactory.php
+
+PHP: /database/migrations/2014_08_09_052124_create_clients_table.php
+  Functions: down up
+  Classes: CreateClientsTable
+
+PHP: /database/migrations/2014_08_09_063112_create_users_table.php
+  Functions: down up
+  Classes: CreateUsersTable
+
+PHP: /database/migrations/2014_08_28_023252_add_phone_number_to_clients_table.php
+  Functions: down up
+  Classes: AddPhoneNumberToClientsTable
+
+PHP: /database/migrations/2014_08_28_023852_add_point_of_contact_to_clients_table.php
+  Functions: down up
+  Classes: AddPointOfContactToClientsTable
+
+PHP: /database/migrations/2014_08_28_230406_add_email_to_clients_table.php
+  Functions: down up
+  Classes: AddEmailToClientsTable
+
+PHP: /database/migrations/2014_08_30_065400_create_projects_table.php
+  Functions: down up
+  Classes: CreateProjectsTable
+
+PHP: /database/migrations/2014_09_08_015054_create_tasks_table.php
+  Functions: down up
+  Classes: CreateTasksTable
+
+PHP: /database/migrations/2014_10_12_100000_create_password_resets_table.php
+  Functions: down up
+  Classes: CreatePasswordResetsTable
+
+PHP: /database/migrations/2014_11_10_020932_create_beta_table.php
+  Functions: down up
+  Classes: CreateBetaTable
+
+PHP: /database/migrations/2014_11_14_024037_add_urls_to_projects_table.php
+  Functions: down up
+  Classes: AddUrlsToProjectsTable
+
+PHP: /database/migrations/2014_11_15_040228_create_credentials_table.php
+  Functions: down up
+  Classes: CreateCredentialsTable
+
+PHP: /database/migrations/2014_12_04_060354_create_project_user_table.php
+  Functions: down up
+  Classes: CreateProjectUserTable
+
+PHP: /database/migrations/2015_02_27_031522_create_files_table.php
+  Functions: down up
+  Classes: CreateFilesTable
+
+PHP: /database/migrations/2015_08_04_005928_addDescriptionAndWishColumnsToTasks.php
+  Functions: down up
+  Classes: AddDescriptionAndWishColumnsToTasks
+
+PHP: /database/migrations/2015_11_04_030315_add_extra_task-columns.php
+  Functions: down up
+  Classes: AddExtraTaskColumns
+
+PHP: /database/migrations/2016_01_15_011034_new_user_columns.php
+  Functions: down up
+  Classes: NewUserColumns
+
+PHP: /database/migrations/2016_02_29_031524_add_priority_column_to_tasks.php
+  Functions: down up
+  Classes: AddPriorityColumnToTasks
+
+PHP: /database/migrations/2016_05_09_005222_drop_wish_column.php
+  Functions: down up
+  Classes: DropWishColumn
+
+PHP: /database/seeds/ClientsTableSeeder.php
+  Functions: run
+  Classes: ClientsTableSeeder
+
+PHP: /database/seeds/CredentialsTableSeeder.php
+  Functions: run
+  Classes: CredentialsTableSeeder
+
+PHP: /database/seeds/DatabaseSeeder.php
+  Functions: run
+  Classes: DatabaseSeeder
+
+PHP: /database/seeds/ProjectsTableSeeder.php
+  Functions: run
+  Classes: ProjectsTableSeeder
+
+PHP: /database/seeds/TasksTableSeeder.php
+  Functions: run
+  Classes: TasksTableSeeder
+
+PHP: /database/seeds/UsersTableSeeder.php
+  Functions: run
+  Classes: UsersTableSeeder
+
+/storage/app/.gitignore:
+
+/storage/framework/.gitignore:
+
+/storage/logs/.gitignore:
+
+PHP: /app/Console/Commands/Inspire.php
+  Functions: handle
+  Classes: Inspire
+
+PHP: /app/Http/Controllers/AdminController.php
+  Functions: index
+  Classes: AdminController
+
+PHP: /app/Http/Controllers/ApiController.php
+  Classes: ApiController
+
+PHP: /app/Http/Controllers/BaseController.php
+  Functions: getStatusCode makeResponse setStatusCode setupLayout
+  Classes: BaseController
+
+PHP: /app/Http/Controllers/ClientsController.php
+  Functions: getAllUserClients index removeClient storeClient updateClient
+  Classes: ClientsController
+
+PHP: /app/Http/Controllers/Controller.php
+  Classes: Controller
+
+PHP: /app/Http/Controllers/CredentialsController.php
+  Functions: getProjectCredentials removeCredential storeCredential updateCredential
+  Classes: CredentialsController
+
+PHP: /app/Http/Controllers/FilesController.php
+  Functions: destroy store
+  Classes: FilesController
+
+PHP: /app/Http/Controllers/HomeController.php
+  Functions: index search
+  Classes: HomeController
+
+PHP: /app/Http/Controllers/ProjectsController.php
+  Functions: getAllMemberProjects getAllUserProjects getMembers getOwner getProject invite removeMember show storeProject updateProject
+  Classes: ProjectsController
+
+PHP: /app/Http/Controllers/TasksController.php
+  Functions: getAllUserOpenTasks removeTask storeTask updateTask
+  Classes: TasksController
+
+PHP: /app/Http/Controllers/UsersController.php
+  Functions: deleteUser getUser index login logout register resetPassword updateUser
+  Classes: UsersController
+
+PHP: /app/Http/Middleware/Authenticate.php
+  Functions: __construct handle
+  Classes: Authenticate
+
+PHP: /app/Http/Middleware/EncryptCookies.php
+  Classes: EncryptCookies
+
+PHP: /app/Http/Middleware/RedirectIfAuthenticated.php
+  Functions: __construct handle
+  Classes: RedirectIfAuthenticated
+
+PHP: /app/Http/Middleware/VerifyCsrfToken.php
+  Classes: VerifyCsrfToken
+
+PHP: /app/Http/Requests/Request.php
+  Classes: Request
+
+CSS: /public/assets/css/animate.css
+  Classes: animated infinite hinge bounce flash pulse rubberBand shake swing tada wobble bounceIn bounceInDown bounceInLeft bounceInRight bounceInUp bounceOut bounceOutDown bounceOutLeft bounceOutRight bounceOutUp fadeIn fadeInDown fadeInDownBig fadeInLeft fadeInLeftBig fadeInRight fadeInRightBig fadeInUp fadeInUpBig fadeOut fadeOutDown fadeOutDownBig fadeOutLeft fadeOutLeftBig fadeOutRight fadeOutRightBig fadeOutUp fadeOutUpBig flip flipInX flipInY flipOutX flipOutY lightSpeedIn lightSpeedOut rotateIn rotateInDownLeft rotateInDownRight rotateInUpLeft rotateInUpRight rotateOut rotateOutDownLeft rotateOutDownRight rotateOutUpLeft rotateOutUpRight rollIn rollOut zoomIn zoomInDown zoomInLeft zoomInRight zoomInUp zoomOut zoomOutDown zoomOutLeft zoomOutRight zoomOutUp
+
+CSS: /public/assets/css/style.css
+  Classes: hover form-control focus label-default color-primary color-badge no-padding-left no-padding-right no-side-padding show-on-hover status-msg error-msg success-msg noScroll dim circle weight panel panel-heading panel-list panel-body with-number side-nav logo-section user-section search menu active last-child line footer btn btn-wide btn-default btn-primary btn-line btn-special popup-form actions nth-child minimized new-task update-task mega-menu links first-child inactive content item client-update-form mega-menu-tab client page-title-section task-list-row col-md-4 task-list title backlog priority-circle priority-low priority-normal priority-medium priority-high priority-highest content-area label settings-container left-side info name bio right-side progress progress-bar table credential-form form-group type-0 special-form hug hug-header register hug-hero mascot hug-skyline skyline hug-features new feature centered hug-info row arrow hug-ui text-bucket hug-exit img hug-footer special last-line project-list-container pull-left
+
+/public/assets/css/style.css.map:
+
+/public/assets/css/style.scss:
+
+JavaScript: /public/assets/js/main.js
+  Functions: closeModule openModule
+
+JavaScript: /public/assets/js/ui.js
+  Functions: closePrompt makePrompt megaMenuInit showSheet
+
+/resources/assets/sass/app.scss:
+
+/storage/framework/cache/.gitignore:
+
+/storage/framework/sessions/.gitignore:
+
+/storage/framework/views/.gitignore:
+
+PHP: /app/Http/Controllers/Auth/AuthController.php

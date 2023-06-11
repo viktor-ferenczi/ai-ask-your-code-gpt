@@ -2,7 +2,7 @@ import os.path
 import sqlite3
 import time
 from contextlib import contextmanager
-from typing import Optional, ContextManager
+from typing import Optional, ContextManager, Tuple
 
 from common.constants import C
 
@@ -52,6 +52,10 @@ class Inventory:
             now = int(time.time())
             cursor.execute('INSERT INTO Inventory(project_id, url, checksum, registered, last_used) VALUES (?, ?, ?, ?, ?)', (project_id, url, checksum, now, now))
 
+    def reprocess_project(self, project_id: str):
+        with self.cursor() as cursor:
+            cursor.execute('UPDATE Inventory SET extracted=0, embedded=0 WHERE project_id=?', (project_id,))
+
     def delete_project(self, project_id: str):
         with self.cursor() as cursor:
             cursor.execute('DELETE FROM Inventory WHERE project_id=?', (project_id,))
@@ -89,15 +93,20 @@ class Inventory:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT embedded FROM Inventory WHERE project_id = ?', (project_id,)):
                 return bool(row[0])
+            return False
 
-    def get_expired_projects(self, cutoff: int, limit: int) -> Optional[str]:
+    def get_expired_projects(self, cutoff: int, limit: int) -> Optional[Tuple[str, str]]:
         with self.cursor() as cursor:
-            for project_id, registered in cursor.execute('SELECT project_id, registered FROM Inventory WHERE last_used < ? ORDER BY registered LIMIT ?', (cutoff, limit)):
-                wait_time = int(time.time()) - registered
-                print(f'Project {project_id} loading queue duration: {wait_time}s')
-                return project_id
+            for project_id, url in cursor.execute('SELECT project_id, url FROM Inventory WHERE last_used < ? ORDER BY registered LIMIT ?', (cutoff, limit)):
+                return project_id, url
         return None
 
     def drop_database(self):
         if os.path.isfile(self.db_path):
             os.remove(self.db_path)
+
+    def get_project_url(self, project_id: str) -> str:
+        with self.cursor() as cursor:
+            for row in cursor.execute('SELECT url FROM Inventory WHERE project_id = ?', (project_id,)):
+                return row[0]
+            return ''

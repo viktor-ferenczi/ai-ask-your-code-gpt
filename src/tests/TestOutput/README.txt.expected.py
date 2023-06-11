@@ -105,3 +105,5 @@ f11 = Fragment(uuid='TEST-11',
          name='',
          text='\nEnd of test doc.')
 
+f12 = Fragment(uuid='TEST-12', path='README.txt', lineno=1, depth=0, type='summary', name='', text='README.txt:\n')
+

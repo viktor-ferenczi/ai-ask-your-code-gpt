@@ -70,6 +70,9 @@ class Project:
 
     @property
     def progress(self):
+        if not self.exists:
+            return 0
+
         inventory = Inventory()
         if inventory.has_project_embedded(self.project_id):
             return 100
@@ -194,6 +197,9 @@ class Project:
         inventory = Inventory()
         inventory.delete_project(self.project_id)
 
+        await self.cleanup()
+
+    async def cleanup(self):
         await self.drop_database()
 
         if os.path.isdir(self.data_dir):

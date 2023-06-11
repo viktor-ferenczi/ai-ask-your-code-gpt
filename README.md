@@ -144,7 +144,6 @@ If you run into issues or have questions building a plugin, please join our [Dev
 
 ## TODO
 
-- Introduce log rotation by adding a date suffix to all log files.
 - Introduce compression of logs older than 3 days.
 - Introduce cleanup of logs older than 90 days.
 - Keep inventory entries for 90 days to allow for continuing the conversation and for diagnostics purposes, even if the actual project folder is deleted. Introduce a "deleted" field for this.

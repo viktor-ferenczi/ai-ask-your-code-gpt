@@ -32,6 +32,9 @@ class Downloader:
 
         if project_id is not None:
             print(f'Archive matches an existing project: {project_id!r}')
+            project = Project(project_id)
+            if not project.exists:
+                self.inventory.reprocess_project(project_id)
             return project_id
 
         await asyncio.sleep(0)

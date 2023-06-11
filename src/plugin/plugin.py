@@ -10,6 +10,7 @@ from quart import request, Response
 
 from common.constants import C, RX
 from common.server import run_app
+from project.inventory import Inventory
 from project.project import Project, ProjectError
 from common.tools import tiktoken_len
 
@@ -146,6 +147,17 @@ async def summarize(project_id: str):
 
     project = Project(project_id)
     if not project.exists:
+        inventory = Inventory()
+        url = inventory.get_project_url(project_id)
+        if not url:
+            return Response(response='No such project', status=404)
+        await project.download(url)
+        for _ in range(10):
+            await asyncio.sleep(1.0)
+            if inventory.has_project_extracted(project_id):
+                break
+
+    if not project.exists:
         return Response(response='No such project', status=404)
 
     # noinspection PyBroadException
@@ -202,6 +214,17 @@ async def search(project_id: str):
     print(f'Search project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}, text={text!r}')
 
     project = Project(project_id)
+    if not project.exists:
+        inventory = Inventory()
+        url = inventory.get_project_url(project_id)
+        if not url:
+            return Response(response='No such project', status=404)
+        await project.download(url)
+        for _ in range(10):
+            await asyncio.sleep(1.0)
+            if inventory.has_project_extracted(project_id):
+                break
+
     if not project.exists:
         return Response(response='No such project', status=404)
 

@@ -14,10 +14,11 @@ PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/u
 02 08            *   *   *  /bin/bash $HOME/bin/restart.sh >>$HOME/log/restart.log 2>&1
 02 16            *   *   *  /bin/bash $HOME/bin/restart.sh >>$HOME/log/restart.log 2>&1
 
+# Cleanup
+# mm hh         dom mon dow command
+07 07            *   *   *  /bin/bash $HOME/bin/cleanup_logs.sh >>$HOME/log/cleanup_logs.log 2>&1
+12  *            *   *   *  /bin/bash $HOME/bin/cleanup_projects.sh >>$HOME/log/cleanup_projects.log 2>&1
+
 # Backup
 # mm hh         dom mon dow command
 #31 07            *   *   *  /bin/bash $HOME/bin/backup.sh >>$HOME/log/backup.log 2>&1
-
-# Cleanup
-# mm hh         dom mon dow command
-#16 08            *   *   *  /bin/bash $HOME/bin/cleanup.sh >>$HOME/log/cleanup.log 2>&1
