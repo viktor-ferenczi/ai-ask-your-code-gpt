@@ -9,7 +9,7 @@ from quart import Quart, request, Response
 
 import parsers
 from common.constants import C, Msg
-from common.http import download_file
+from common.http import download_file, DownloadError
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents
@@ -57,8 +57,11 @@ class Downloader:
             archive: bytes = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE)
         except KeyboardInterrupt:
             raise
-        except Exception:
-            print(f'Failed to download archive {self.url!r}')
+        except DownloadError as e:
+            print(str(e))
+            raise
+        except Exception as e:
+            print(f'Failed to download archive {self.url!r}: {e}')
             print_exc()
             raise IOError(f'Failed to download archive {self.url!r}')
 
@@ -103,9 +106,18 @@ async def download():
     if not url:
         return Response(response='Missing url', status=400)
 
-    with timer(f'Downloaded archive {url!r}'):
-        downloader = Downloader(url)
-        project_id = await downloader.download_verify()
+    try:
+        with timer(f'Downloaded archive {url!r}'):
+            downloader = Downloader(url)
+            project_id = await downloader.download_verify()
+    except KeyboardInterrupt:
+        raise
+    except DownloadError as e:
+        return Response(response=str(e), status=400)
+    except Exception:
+        print(f'Unexpected error while trying to download the archive {url!r}:')
+        print_exc()
+        return Response(response='Unexpected error while trying to download the archive. Please try again later.', status=500)
 
     return Response(response=project_id, status=200)
 

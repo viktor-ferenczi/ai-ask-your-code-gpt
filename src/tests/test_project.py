@@ -9,12 +9,13 @@ from typing import List
 from quart import Quart, send_file
 
 from common.constants import C
+from common.http import DownloadError
 from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
 from model.hit import Hit
 from project.inventory import Inventory
-from project.project import Project
+from project.project import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -49,10 +50,15 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         except (IOError, OSError):
             pass
 
+    def test_download_server_not_running(self):
+        def should_fail():
+            asyncio.run(Project.download('http://127.0.0.1:57575/this-wont-exist'))
+        self.assertRaises(ProjectError, should_fail)
+
     async def serve_zip(self):
         self.app = Quart('test_zip_server')
 
-        @self.app.route('/')
+        @self.app.route('/test.zip')
         async def serve_zip():
             return await send_file(self.zip_path, as_attachment=True)
 
@@ -77,11 +83,20 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
                 task.cancel()
 
     async def actual_test(self):
+        await self.download_error()
         await self.small_project()
         await self.medium_project()
 
+    async def download_error(self):
+        try:
+            await Project.download('http://127.0.0.1:49001/this-wont-exist')
+        except ProjectError as e:
+            self.assertTrue('Failed to download archive' in str(e))
+        else:
+            self.fail("ProjectError not raised")
+
     async def small_project(self):
-        project_id = await Project.download('http://127.0.0.1:49001/')
+        project_id = await Project.download('http://127.0.0.1:49001/test.zip')
         project = Project(project_id)
 
         await self.wait_for_processing(project)
@@ -162,9 +177,6 @@ Python: /find_duplicates.py
 ''', summary)
 
         summary = await project.summarize(tail='.py')
-        print('--------')
-        print(summary)
-        print('--------')
         self.assertEqual('''\
 Python: /lib/setup.py
 

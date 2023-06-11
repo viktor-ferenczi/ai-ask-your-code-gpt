@@ -89,7 +89,6 @@ async def create():
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
-        print(f'Failed to download project from archive URL {url!r}: {e}')
         return Response(response=str(e), status=400)
     except Exception:
         print(f'ERROR: Failed to create project from archive URL {url!r}')

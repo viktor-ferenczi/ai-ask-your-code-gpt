@@ -9,10 +9,12 @@ from sqlite3 import Cursor
 from typing import List, ContextManager, Optional, Tuple, Iterator
 
 import aiohttp
+from aiohttp import ClientError
 from qdrant_client import QdrantClient
 
 import parsers
 from common.constants import C, RX
+from common.text import decode_escape
 from common.timer import timer
 from common.tools import tiktoken_len
 from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
@@ -199,18 +201,22 @@ class Project:
 
     @classmethod
     async def download(cls, url: str, *, timeout: float = 30.0) -> str:
-        with timer(f'Downloaded {url!r}'):
-            async with aiohttp.ClientSession() as session:
-                data = json.dumps(dict(url=url))
-                async with session.post(f'{DOWNLOADER_URL}/download', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
-                    if response.status != 200:
-                        print(f'Failed to download archive {url!r}')
-                        raise ProjectError(f'Failed to download archive: {url}')
-                    content: bytes = await response.content.read()
-                    project_id = content.decode('utf-8').strip()
-                    assert RX.GUID.match(project_id)
-                    print(f'Project ID is {project_id}')
-                    return project_id
+        try:
+            with timer(f'Downloaded {url!r}'):
+                async with aiohttp.ClientSession() as session:
+                    data = json.dumps(dict(url=url))
+                    async with session.post(f'{DOWNLOADER_URL}/download', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
+                        content: bytes = await response.content.read()
+                        if response.status != 200:
+                            reason = decode_escape(content).strip()
+                            print(f'Failed to download archive {url!r}: {reason}')
+                            raise ProjectError(reason)
+                        project_id = content.decode('utf-8').strip()
+                        assert RX.GUID.match(project_id)
+                        print(f'Project ID is {project_id}')
+                        return project_id
+        except ClientError as e:
+            raise ProjectError(f'Failed to download archive {url!r}: [{e.__class__.__name__}] {e}')
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         while 1:
