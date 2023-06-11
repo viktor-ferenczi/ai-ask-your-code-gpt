@@ -106,6 +106,12 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
+        actual = ''.join(hit.text for hit in await project.search(path='/readme.md', limit=50))
+        self.verify(f'README.md', actual)
+
+        actual = await project.summarize(path='/readme.md')
+        self.verify(f'README-summary.md', actual)
+
         for extension in PARSERS_BY_EXTENSION:
             actual = await project.summarize(tail=f'.{extension}')
             if actual:

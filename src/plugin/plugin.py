@@ -199,9 +199,15 @@ async def search(project_id: str):
     if not project.exists:
         return Response(response='No such project', status=404)
 
+    limit = 1
+    if path:
+        limit = 50
+    if tail:
+        limit = 20
+
     # noinspection PyBroadException
     try:
-        hits = await project.search(path=path, tail=tail, name=name, text=text)
+        hits = await project.search(path=path, tail=tail, name=name, text=text, limit=limit)
         if not hits and name:
             hits = await project.search(path=path, tail=tail, text=name)
             if not hits:

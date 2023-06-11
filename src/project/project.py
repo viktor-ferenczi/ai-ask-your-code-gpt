@@ -214,6 +214,9 @@ class Project:
             else:
                 fragments: List[Fragment] = self.search_by_path_tail_name(cursor, path, tail, name, limit)
 
+        # FIXME: Integrate this into the query
+        fragments = [fragment for fragment in fragments if fragment.type != 'summary']
+
         if not text:
             # Ordering and limit was already applied in SQL
             count = len(fragments)
