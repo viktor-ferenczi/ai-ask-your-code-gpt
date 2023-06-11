@@ -22,7 +22,17 @@ class TextParser(BaseParser):
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
         text = content.decode('utf-8', errors='surrogateescape').replace('\r', '')
+        if not text.strip():
+            return
+
+        summary = []
         for sentence in self.splitter.split_text(text):
+
+            for line in sentence.text.split('\n'):
+                for c in '.)/':
+                    if c in line and line.split[c][0].isdigit():
+                        summary.append(f'{line}\n')
+
             yield Fragment(
                 uuid=str(uuid.uuid4()),
                 path=path,
@@ -32,3 +42,17 @@ class TextParser(BaseParser):
                 name='',
                 text=sentence.text,
             )
+
+        if not summary:
+            # TODO: Generate a summary using an LLM
+            return
+
+        yield Fragment(
+            uuid=str(uuid.uuid4()),
+            path=path,
+            lineno=1,
+            depth=0,
+            type='summary',
+            name='',
+            text=''.join(summary),
+        )

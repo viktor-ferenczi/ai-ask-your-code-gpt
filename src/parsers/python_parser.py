@@ -55,7 +55,7 @@ class PythonParser(BaseParser):
         for child, depth in walk_children(cursor):
             node: Node = child.node
             # if not node.child_count:
-            #     print(f"|{decode_escape(node.text)} |{node.type}|")
+            #     print(f"@{depth}|{decode_escape(node.text)}|{node.type}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'import_statement' or node.type == 'import_from_statement':
                 for sentence in self.splitter.split_text(decode_escape(node.text)):
@@ -74,7 +74,7 @@ class PythonParser(BaseParser):
                 for sentence in self.splitter.split_text(decode_escape(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif node.type == 'expression_statement':
-                if node.child_count > 0 and node.children[0].type == 'assignment':
+                if node.child_count > 0 and node.child_count and node.children[0].type == 'assignment':
                     text = decode_escape(node.text)
                     name = (text.split('=', 1)[0] if '=' in text else text).split()[0].strip()
                     variables.add(name)
@@ -88,6 +88,9 @@ class PythonParser(BaseParser):
 
         variables -= {v for v in variables if len(v) < 3 and not v[:1].isupper()}
         usages -= {v for v in usages if len(v) < 3 and not v[:1].isupper()}
+
+        if not functions and not classes and not methods and not variables and not usages:
+            return
 
         summary = [
             f'{self.name}: {path}',

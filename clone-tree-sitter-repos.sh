@@ -49,6 +49,5 @@ clone_pull tree-sitter-fluent
 clone_pull tree-sitter-toml
 clone_pull tree-sitter-swift
 clone_pull tree-sitter-agda
-clone_pull afl-tree-sitter
 
 echo Done

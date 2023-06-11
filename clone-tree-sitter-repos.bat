@@ -29,4 +29,3 @@ git clone https://github.com/tree-sitter/tree-sitter-fluent.git
 git clone https://github.com/tree-sitter/tree-sitter-toml.git
 git clone https://github.com/tree-sitter/tree-sitter-swift.git
 git clone https://github.com/tree-sitter/tree-sitter-agda.git
-git clone https://github.com/tree-sitter/afl-tree-sitter.git

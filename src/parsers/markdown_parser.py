@@ -23,6 +23,9 @@ class MarkdownParser(BaseParser):
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
         text = content.decode('utf-8', errors='surrogateescape').replace('\r', '')
+        if not text.strip():
+            return
+
         summary = []
         for sentence in self.splitter.split_text(text):
 
@@ -39,6 +42,10 @@ class MarkdownParser(BaseParser):
             for line in sentence.text.split('\n'):
                 if line.startswith('#'):
                     summary.append(f'{line}\n')
+
+        if not summary:
+            # TODO: Generate a summary using an LLM
+            return
 
         yield Fragment(
             uuid=str(uuid.uuid4()),

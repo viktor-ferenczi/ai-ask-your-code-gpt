@@ -1,0 +1,310 @@
+PHP: /server.php
+  Usages: _SERVER uri
+
+PHP: /app/Beta.php
+  Classes: Beta
+  Usages: fillable table
+
+PHP: /app/Client.php
+  Functions: projects
+  Classes: Client
+  Usages: fillable hidden table this
+
+PHP: /app/Credential.php
+  Classes: Credential
+  Usages: fillable hidden
+
+PHP: /app/Project.php
+  Functions: client credentials isMember isOwner members tasks totalWeight uploads
+  Classes: Project
+  Usages: fillable hidden this
+
+PHP: /app/Projectuser.php
+  Classes: Projectuser
+  Usages: fillable hidden table
+
+PHP: /app/Task.php
+  Functions: project
+  Classes: Task
+  Usages: fillable hidden this
+
+PHP: /app/Upload.php
+  Functions: project user
+  Classes: Upload
+  Usages: fillable this
+
+PHP: /app/User.php
+  Functions: clients get_gravatar inProjects projects tasks weight
+  Classes: User
+  Usages: atts email fillable hidden img key result table this url val
+
+PHP: /bootstrap/app.php
+  Usages: app
+
+PHP: /bootstrap/autoload.php
+  Usages: compiledPath
+
+PHP: /public/index.php
+  Usages: app kernel request response
+
+PHP: /tests/ExampleTest.php
+  Functions: testBasicExample
+  Classes: ExampleTest
+  Usages: this
+
+PHP: /tests/TestCase.php
+  Functions: createApplication
+  Classes: TestCase
+  Usages: app baseUrl
+
+PHP: /app/Console/Kernel.php
+  Functions: schedule
+  Classes: Kernel
+  Usages: commands
+
+PHP: /app/Events/Event.php
+  Classes: Event
+
+PHP: /app/Exceptions/Handler.php
+  Functions: render report
+  Classes: Handler
+  Usages: dontReport request
+
+PHP: /app/Helpers/Helpers.php
+  Functions: isOwner logoUrl sendProjectInviteMail sendWelcomeMail
+  Classes: Helpers
+  Usages: data email message project_id project_name project_url user_id
+
+PHP: /app/Http/Kernel.php
+  Classes: Kernel
+  Usages: middleware routeMiddleware
+
+PHP: /app/Jobs/Job.php
+  Classes: Job
+
+PHP: /app/Providers/AppServiceProvider.php
+  Functions: boot register
+  Classes: AppServiceProvider
+
+PHP: /app/Providers/EventServiceProvider.php
+  Functions: boot
+  Classes: EventServiceProvider
+  Usages: events listen
+
+PHP: /app/Providers/RouteServiceProvider.php
+  Functions: boot map
+  Classes: RouteServiceProvider
+  Usages: namespace router this
+
+PHP: /database/factories/ModelFactory.php
+  Usages: factory faker
+
+PHP: /database/migrations/2014_08_09_052124_create_clients_table.php
+  Functions: down up
+  Classes: CreateClientsTable
+  Usages: table
+
+PHP: /database/migrations/2014_08_09_063112_create_users_table.php
+  Functions: down up
+  Classes: CreateUsersTable
+  Usages: table
+
+PHP: /database/migrations/2014_08_28_023252_add_phone_number_to_clients_table.php
+  Functions: down up
+  Classes: AddPhoneNumberToClientsTable
+  Usages: table
+
+PHP: /database/migrations/2014_08_28_023852_add_point_of_contact_to_clients_table.php
+  Functions: down up
+  Classes: AddPointOfContactToClientsTable
+  Usages: table
+
+PHP: /database/migrations/2014_08_28_230406_add_email_to_clients_table.php
+  Functions: down up
+  Classes: AddEmailToClientsTable
+  Usages: table
+
+PHP: /database/migrations/2014_08_30_065400_create_projects_table.php
+  Functions: down up
+  Classes: CreateProjectsTable
+  Usages: table
+
+PHP: /database/migrations/2014_09_08_015054_create_tasks_table.php
+  Functions: down up
+  Classes: CreateTasksTable
+  Usages: table
+
+PHP: /database/migrations/2014_10_12_100000_create_password_resets_table.php
+  Functions: down up
+  Classes: CreatePasswordResetsTable
+  Usages: table
+
+PHP: /database/migrations/2014_11_10_020932_create_beta_table.php
+  Functions: down up
+  Classes: CreateBetaTable
+  Usages: table
+
+PHP: /database/migrations/2014_11_14_024037_add_urls_to_projects_table.php
+  Functions: down up
+  Classes: AddUrlsToProjectsTable
+  Usages: table
+
+PHP: /database/migrations/2014_11_15_040228_create_credentials_table.php
+  Functions: down up
+  Classes: CreateCredentialsTable
+  Usages: table
+
+PHP: /database/migrations/2014_12_04_060354_create_project_user_table.php
+  Functions: down up
+  Classes: CreateProjectUserTable
+  Usages: table
+
+PHP: /database/migrations/2015_02_27_031522_create_files_table.php
+  Functions: down up
+  Classes: CreateFilesTable
+  Usages: table
+
+PHP: /database/migrations/2015_08_04_005928_addDescriptionAndWishColumnsToTasks.php
+  Functions: down up
+  Classes: AddDescriptionAndWishColumnsToTasks
+  Usages: table
+
+PHP: /database/migrations/2015_11_04_030315_add_extra_task-columns.php
+  Functions: down up
+  Classes: AddExtraTaskColumns
+  Usages: table
+
+PHP: /database/migrations/2016_01_15_011034_new_user_columns.php
+  Functions: down up
+  Classes: NewUserColumns
+  Usages: table
+
+PHP: /database/migrations/2016_02_29_031524_add_priority_column_to_tasks.php
+  Functions: down up
+  Classes: AddPriorityColumnToTasks
+  Usages: table
+
+PHP: /database/migrations/2016_05_09_005222_drop_wish_column.php
+  Functions: down up
+  Classes: DropWishColumn
+  Usages: table
+
+PHP: /database/seeds/ClientsTableSeeder.php
+  Functions: run
+  Classes: ClientsTableSeeder
+  Usages: faker
+
+PHP: /database/seeds/CredentialsTableSeeder.php
+  Functions: run
+  Classes: CredentialsTableSeeder
+  Usages: faker index
+
+PHP: /database/seeds/DatabaseSeeder.php
+  Functions: run
+  Classes: DatabaseSeeder
+  Usages: this
+
+PHP: /database/seeds/ProjectsTableSeeder.php
+  Functions: run
+  Classes: ProjectsTableSeeder
+  Usages: faker
+
+PHP: /database/seeds/TasksTableSeeder.php
+  Functions: run
+  Classes: TasksTableSeeder
+  Usages: faker
+
+PHP: /database/seeds/UsersTableSeeder.php
+  Functions: run
+  Classes: UsersTableSeeder
+  Usages: faker
+
+PHP: /app/Console/Commands/Inspire.php
+  Functions: handle
+  Classes: Inspire
+  Usages: description signature this
+
+PHP: /app/Http/Controllers/AdminController.php
+  Functions: index
+  Classes: AdminController
+  Usages: n_clients n_projects n_tasks n_users users
+
+PHP: /app/Http/Controllers/ApiController.php
+  Classes: ApiController
+
+PHP: /app/Http/Controllers/BaseController.php
+  Functions: getStatusCode makeResponse setStatusCode setupLayout
+  Classes: BaseController
+  Usages: data message statusCode this
+
+PHP: /app/Http/Controllers/ClientsController.php
+  Functions: getAllUserClients index removeClient storeClient updateClient
+  Classes: ClientsController
+  Usages: client clients input project this weight withWeight
+
+PHP: /app/Http/Controllers/Controller.php
+  Classes: Controller
+
+PHP: /app/Http/Controllers/CredentialsController.php
+  Functions: getProjectCredentials removeCredential storeCredential updateCredential
+  Classes: CredentialsController
+  Usages: input this
+
+PHP: /app/Http/Controllers/FilesController.php
+  Functions: destroy store
+  Classes: FilesController
+  Usages: current_file directory file filename messages rules upload validator
+
+PHP: /app/Http/Controllers/HomeController.php
+  Functions: index search
+  Classes: HomeController
+  Usages: clients pTitle projects tasks
+
+PHP: /app/Http/Controllers/ProjectsController.php
+  Functions: getAllMemberProjects getAllUserProjects getMembers getOwner getProject invite removeMember show storeProject updateProject
+  Classes: ProjectsController
+  Usages: completedWeight email input invited_user member member_id members members_id owner owner_id project project_id project_ids project_name project_url projects sharedProjects this totalWeight
+
+PHP: /app/Http/Controllers/TasksController.php
+  Functions: getAllUserOpenTasks removeTask storeTask updateTask
+  Classes: TasksController
+  Usages: client_id input project_id tasks this
+
+PHP: /app/Http/Controllers/UsersController.php
+  Functions: deleteUser getUser index login logout register resetPassword updateUser
+  Classes: UsersController
+  Usages: completed created current_pwd email fullName input new_pwd password this user validator
+
+PHP: /app/Http/Middleware/Authenticate.php
+  Functions: __construct handle
+  Classes: Authenticate
+  Usages: auth next request this
+
+PHP: /app/Http/Middleware/EncryptCookies.php
+  Classes: EncryptCookies
+  Usages: except
+
+PHP: /app/Http/Middleware/RedirectIfAuthenticated.php
+  Functions: __construct handle
+  Classes: RedirectIfAuthenticated
+  Usages: auth next request this
+
+PHP: /app/Http/Middleware/VerifyCsrfToken.php
+  Classes: VerifyCsrfToken
+  Usages: except
+
+PHP: /app/Http/Requests/Request.php
+  Classes: Request
+
+PHP: /app/Http/Controllers/Auth/AuthController.php
+  Functions: __construct create validator
+  Classes: AuthController
+  Usages: data this
+
+PHP: /app/Http/Controllers/Auth/PasswordController.php
+  Functions: __construct
+  Classes: PasswordController
+  Usages: this
+
+PHP: /resources/views/ins/projects/index.blade.php
+  Usages: counter

@@ -11,13 +11,13 @@ from parsers.base_parser import BaseParser
 from splitters.text_splitter import TextSplitter
 
 
-class JavaScriptParser(BaseParser):
-    name = 'JavaScript'
-    extensions = ('js',)
-    mime_types = ('text/javascript',)
-    store_instruction = 'Represent the JavaScript code for retrieval'
+class PhpParser(BaseParser):
+    name = 'PHP'
+    extensions = ('php',)
+    mime_types = ('application/x-httpd-php',)
+    store_instruction = 'Represent the PHP code for retrieval'
     query_instruction = 'Represent the text query for retrieving relevant parts of the code'
-    tree_sitter_language_name = 'javascript'
+    tree_sitter_language_name = 'php'
 
     def __init__(self) -> None:
         super().__init__()
@@ -25,8 +25,9 @@ class JavaScriptParser(BaseParser):
             chunk_size=C.MAX_TOKENS_PER_FRAGMENT,
             length_function=tiktoken_len,
             separators=(
-                ('<', r"^.*?function\s+"),
-                ('<', r"^\s+while\s+"),
+                ('<', r"^\s+class\s+"),
+                ('<', r"^\s+def\s+"),
+                ('<', r"^\s+with\s+"),
                 ('<', r"^\s+for\s+"),
                 ('<', r"^\s+if\s+"),
                 ('<', r"^\s+elif\s+"),
@@ -44,6 +45,7 @@ class JavaScriptParser(BaseParser):
         for sentence in self.splitter.split_text(decode_escape(content)):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
+        classes: Set[str] = set()
         functions: Set[str] = set()
         variables: Set[str] = set()
         usages: Set[str] = set()
@@ -53,45 +55,41 @@ class JavaScriptParser(BaseParser):
             # if not node.child_count:
             #     print(f"@{depth}|{decode_escape(node.text)}|{node.type}|")
             lineno = 1 + node.start_point[0]
-            if node.type == 'import_statement':
+            if node.type == 'class' and node.next_sibling is not None and node.next_sibling.type == 'name':
+                name = decode_escape(node.next_sibling.text)
+                classes.add(name)
                 for sentence in self.splitter.split_text(decode_escape(node.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
-            elif (node.type == 'function' and
-                  node.next_sibling is not None and
-                  node.next_sibling.type == 'identifier'):
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
+            elif node.type == 'function' and node.next_sibling is not None and node.next_sibling.type == 'name':
                 name = decode_escape(node.next_sibling.text)
                 functions.add(name)
                 for sentence in self.splitter.split_text(decode_escape(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
-            elif (node.type == 'identifier' and
+            elif (node.type == '$' and
                   node.next_sibling is not None and
-                  node.next_sibling.type == '=' and
-                  node.next_sibling.next_sibling is not None and
-                  node.next_sibling.next_sibling.type == 'function'):
-                name = decode_escape(node.text)
-                functions.add(name)
-                for sentence in self.splitter.split_text(decode_escape(node.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
-            elif (node.type == 'variable_declarator' and
+                  node.next_sibling.type == 'name'):
+                name = decode_escape(node.next_sibling.text)
+
+                if (node.next_sibling.next_sibling is not None and
+                        node.next_sibling.next_sibling.type == '='):
+                    text = decode_escape(node.text)
+                    variables.add(name)
+                    for sentence in self.splitter.split_text(text):
+                        yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
+                else:
+                    usages.add(name)
+            elif (node.type == 'name' and
                   node.child_count and
-                  node.children[0].type == 'identifier'):
-                text = decode_escape(node.text)
-                name = decode_escape(node.children[0].text)
-                variables.add(name)
-                for sentence in self.splitter.split_text(text):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
-            elif node.type == 'identifier':
+                  node.children[0].type == '('):
                 name = decode_escape(node.text)
                 usages.add(name)
 
-        usages -= functions | variables
-
-        variables.discard('$')
+        usages -= functions | classes | variables
 
         variables -= {v for v in variables if len(v) < 3 and not v[:1].isupper()}
         usages -= {v for v in usages if len(v) < 3 and not v[:1].isupper()}
 
-        if not functions and not variables and not usages:
+        if not functions and not classes and not variables and not usages:
             return
 
         summary = [
@@ -99,6 +97,8 @@ class JavaScriptParser(BaseParser):
         ]
         if functions:
             summary.append(f"  Functions: {' '.join(sorted(functions))}")
+        if classes:
+            summary.append(f"  Classes: {' '.join(sorted(classes))}")
         if variables:
             summary.append(f"  Variables: {' '.join(sorted(variables))}")
         if usages:

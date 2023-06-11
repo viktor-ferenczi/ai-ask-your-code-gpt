@@ -1,4 +1,6 @@
+import json
 import os
+import shutil
 from typing import Optional, Type
 
 from magic import Magic
@@ -7,6 +9,7 @@ from tree_sitter import Language
 from parsers.base_parser import BaseParser
 from parsers.javascript_parser import JavaScriptParser
 from parsers.markdown_parser import MarkdownParser
+from parsers.php_parser import PhpParser
 from parsers.python_parser import PythonParser
 from parsers.text_parser import TextParser
 
@@ -15,6 +18,7 @@ PARSERS = (
     MarkdownParser,
     PythonParser,
     JavaScriptParser,
+    PhpParser,
 )
 
 PARSERS_BY_EXTENSION = {}
@@ -34,18 +38,40 @@ register_parsers()
 del register_parsers
 
 TREE_SITTER_DIR = os.path.normpath(os.environ.get('TREE_SITTER_DI', os.path.expanduser('~/.tree-sitter')))
-TREE_SITTER_BUILD_DIR = os.path.join(TREE_SITTER_DIR, 'build')
 TREE_SITTER_REPOS_DIR = os.path.join(TREE_SITTER_DIR, 'repos')
+TREE_SITTER_BUILD_DIR = os.path.join(TREE_SITTER_DIR, 'build')
 TREE_SITTER_LIBRARY = os.path.join(TREE_SITTER_BUILD_DIR, 'my-languages.so')
+TREE_SITTER_LANGUAGES = os.path.join(TREE_SITTER_BUILD_DIR, 'languages.json')
 
-Language.build_library(
-    TREE_SITTER_LIBRARY,
-    [
-        os.path.join(TREE_SITTER_REPOS_DIR, f'tree-sitter-{parser_cls.tree_sitter_language_name}')
+os.makedirs(TREE_SITTER_REPOS_DIR, exist_ok=True)
+os.makedirs(TREE_SITTER_BUILD_DIR, exist_ok=True)
+
+
+def build_tree_sitter_library():
+    languages = sorted(
+        parser_cls.tree_sitter_language_name
         for parser_cls in PARSERS
         if parser_cls.tree_sitter_language_name
-    ]
-)
+    )
+    assert len(set(languages)) == len(languages), 'More than one class is using the same tree-sitter language'
+
+    if os.path.isfile(TREE_SITTER_LANGUAGES):
+        with open(TREE_SITTER_LANGUAGES, 'rt') as f:
+            built_langs = json.load(f)
+        if built_langs == languages:
+            return
+
+    shutil.rmtree(TREE_SITTER_BUILD_DIR)
+    os.mkdir(TREE_SITTER_BUILD_DIR)
+
+    repo_dirs = [os.path.join(TREE_SITTER_REPOS_DIR, f'tree-sitter-{name}') for name in languages]
+    Language.build_library(TREE_SITTER_LIBRARY, repo_dirs)
+
+    with open(TREE_SITTER_LANGUAGES, 'wt') as f:
+        json.dump(languages, f, indent=2)
+
+
+build_tree_sitter_library()
 
 
 def set_tree_sitter_languages():
