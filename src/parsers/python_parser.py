@@ -56,7 +56,7 @@ class PythonParser(BaseParser):
         for child, depth in walk_children(cursor):
             node: Node = child.node
             # if not node.child_count:
-            #     print(f"@{depth}|{decode_escape(node.text)}|{node.type}|")
+            #     print(f"@{depth}|{decode_replace(node.text)}|{node.type}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'import_statement' or node.type == 'import_from_statement':
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
