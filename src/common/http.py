@@ -3,6 +3,7 @@ from typing import Optional, List, Dict
 import aiohttp
 
 from common.constants import C
+from common.text import decode_escape
 
 
 class DownloadError(Exception):
@@ -19,6 +20,12 @@ async def download_file(url: str, *, headers: Optional[List[Dict[str, str]]] = N
     try:
         async with aiohttp.ClientSession(headers=headers) as session:
             async with session.get(url) as response:
+
+                if response.status < 200 or response.status >= 400:
+                    content = await response.content.read(500)
+                    reason = decode_escape(content)
+                    raise DownloadError(f'Failed to download {url!r} with HTTP {response.status}: {reason}')
+
                 while 1:
                     chunk = await response.content.read(32768)
                     if not chunk:
