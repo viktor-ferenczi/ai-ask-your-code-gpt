@@ -1,5 +1,7 @@
+import asyncio
 import json
 import os
+import random
 import shutil
 import sqlite3
 from contextlib import contextmanager
@@ -211,6 +213,16 @@ class Project:
                     return project_id
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
+        while 1:
+            try:
+                return await self.search_inner(path=path, tail=tail, name=name, text=text, limit=limit)
+            except sqlite3.OperationalError as e:
+                if 'database is locked' in str(e):
+                    await asyncio.sleep(0.2 + random.random())
+                    continue
+                raise
+
+    async def search_inner(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         with self.cursor() as cursor:
             if text:
                 fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
@@ -260,6 +272,16 @@ class Project:
         return results
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '') -> str:
+        while 1:
+            try:
+                return await self.summarize_inner(path=path, tail=tail, name=name)
+            except sqlite3.OperationalError as e:
+                if 'database is locked' in str(e):
+                    await asyncio.sleep(0.2 + random.random())
+                    continue
+                raise
+
+    async def summarize_inner(self, *, path: str = '', tail: str = '', name: str = '') -> str:
         with self.cursor() as cursor:
             fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
 
