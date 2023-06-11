@@ -39,9 +39,3 @@ class C:
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
     }
-
-
-class Msg:
-    # Error messages
-    ArchiveIsGoodTryAgainLater = 'The archive is good, but the backend failed to process it. Please try again later.'
-    EmptyArchive = 'The archive does not contain any supported documents'

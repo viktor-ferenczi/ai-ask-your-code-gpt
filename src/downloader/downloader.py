@@ -4,11 +4,11 @@ import os
 import uuid
 from traceback import print_exc
 from typing import Dict
+from zipfile import BadZipFile, LargeZipFile
 
 from quart import Quart, request, Response
 
-import parsers
-from common.constants import C, Msg
+from common.constants import C
 from common.http import download_file, DownloadError
 from common.server import run_app
 from common.timer import timer
@@ -80,13 +80,21 @@ class Downloader:
             ))
         except KeyboardInterrupt:
             raise
-        except Exception:
-            print(f'Failed verify source archive {self.url!r}')
+        except BadZipFile:
+            print(f'Not a ZIP file: {self.url!r}')
             print_exc()
-            raise IOError(f'Failed verify source archive: {self.url!r}')
+            raise DownloadError(f'Not a ZIP file: {self.url!r}')
+        except LargeZipFile:
+            print(f'ZIP file is too large: {self.url!r}')
+            print_exc()
+            raise DownloadError(f'ZIP file is too large: {self.url!r}')
+        except Exception:
+            print(f'Failed to verify source archive {self.url!r}')
+            print_exc()
+            raise Exception(f'Failed to verify source archive: {self.url!r}')
 
         if not document_count:
-            raise IOError(Msg.EmptyArchive)
+            raise DownloadError('The archive does not contain any supported documents')
 
         print(f'Extracted {document_count} files')
 
