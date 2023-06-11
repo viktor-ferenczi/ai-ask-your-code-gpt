@@ -94,8 +94,14 @@ class Project:
         await self.collection.create()
 
     async def drop_database(self):
-        os.remove(self.db_path)
-        await self.collection.delete()
+        if os.path.exists(self.db_path):
+            os.remove(self.db_path)
+        try:
+            await self.collection.delete()
+        except KeyboardInterrupt:
+            raise
+        except:
+            pass
 
     def index_by_path(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
