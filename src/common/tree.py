@@ -17,3 +17,8 @@ def walk_children(cursor: TreeCursor, depth=0) -> Iterator[TreeCursor]:
         yield from walk_children(cursor, depth + 1)
 
     cursor.goto_parent()
+
+
+def walk_nodes(cursor: TreeCursor) -> Iterator[Node]:
+    for c in walk_children(cursor):
+        yield c.node

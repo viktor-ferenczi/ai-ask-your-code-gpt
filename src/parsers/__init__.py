@@ -7,8 +7,11 @@ from magic import Magic, MagicException
 from tree_sitter import Language
 
 from parsers.base_parser import BaseParser
+from parsers.cpp_parser import CppParser
+from parsers.csharp_parser import CSharpParser
 from parsers.css_parser import CssParser
 from parsers.html_parser import HtmlParser
+from parsers.java_parser import JavaParser
 from parsers.javascript_parser import JavaScriptParser
 from parsers.markdown_parser import MarkdownParser
 from parsers.php_parser import PhpParser
@@ -23,6 +26,9 @@ PARSERS = (
     PhpParser,
     HtmlParser,
     CssParser,
+    CSharpParser,
+    CppParser,
+    JavaParser,
 )
 
 PARSERS_BY_EXTENSION = {}
