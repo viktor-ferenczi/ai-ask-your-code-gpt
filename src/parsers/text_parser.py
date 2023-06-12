@@ -25,13 +25,7 @@ class TextParser(BaseParser):
         if not text.strip():
             return
 
-        summary = [f'{path}:\n']
         for sentence in self.splitter.split_text(text):
-
-            for line in sentence.text.split('\n'):
-                for c in '.:)}]/':
-                    if c in line and line.split(c)[0].strip().isdigit():
-                        summary.append(f'{line}\n')
 
             yield Fragment(
                 uuid=str(uuid.uuid4()),
@@ -50,5 +44,5 @@ class TextParser(BaseParser):
             depth=0,
             type='summary',
             name='',
-            text=''.join(summary),
+            text=f'File: {path}\n',
         )

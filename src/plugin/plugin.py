@@ -79,7 +79,7 @@ async def create():
     if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return Response(response='Invalid URL', status=400)
     if 'https://drive.google.com/' in lc_url or 'https://1drv.ms/' in lc_url:
-        return Response(response='Google Drive and OneDrive are not supported. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord.', status=400)
+        return Response(response='Google Drive and OneDrive are not supported, Dropbox works. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord.', status=400)
 
     # Create project, download and verify archive, initiate indexing
     print(f'Create project from {url!r}')
@@ -231,6 +231,9 @@ async def search(project_id: str):
         return Response(response='No such project', status=404)
 
     inventory.touch_project(project_id)
+
+    if path and not path.startswith('/'):
+        path = f'/{path}'
 
     limit = 10
     if path or tail or name:

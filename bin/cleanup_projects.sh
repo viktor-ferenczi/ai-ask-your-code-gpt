@@ -5,6 +5,6 @@
 set -euo pipefail
 
 cd ~/src
-python -O -u cleanup_projects.py 12
+python -O -u cleanup_projects.py 24
 
 exit 0

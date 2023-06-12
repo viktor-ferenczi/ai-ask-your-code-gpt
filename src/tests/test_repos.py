@@ -19,13 +19,19 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # Markdown, Python
-    # ('viktor-ferenczi-dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    ('viktor-ferenczi-dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+
+    # Markdown, Python, GitHub Workflow, YAML
+    ('matthewhand-sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
 
     # Markdown, PHP, HTML, CSS, JavaScript
     ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
-    # ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+    ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+
+    # Vim, C, Lua, CMake
+    # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 ]
 
 
@@ -113,13 +119,13 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.verify(f'README.md', actual)
 
         actual = '\n'.join(hit.text for hit in await project.search(name='Kernel', limit=50))
-        self.verify(f'name-Kernel.txt', actual)
+        self.verify(f'name-Kernel', actual)
 
         actual = await project.summarize()
-        self.verify(f'root-summary.txt', actual)
+        self.verify(f'root-summary', actual)
 
         actual = await project.summarize(path='/readme.md')
-        self.verify(f'README-summary.md', actual)
+        self.verify(f'README-summary', actual)
 
         actual = await project.summarize(tail='.sol')
         self.verify(f'summary.sol', actual)

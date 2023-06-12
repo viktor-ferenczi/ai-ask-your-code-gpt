@@ -3,7 +3,7 @@ import os
 import shutil
 from typing import Optional, Type
 
-from magic import Magic
+from magic import Magic, MagicException
 from tree_sitter import Language
 
 from parsers.base_parser import BaseParser
@@ -98,7 +98,11 @@ def detect(path: str, content: Optional[bytes] = None) -> Optional[Type[BasePars
         parser_cls = PARSERS_BY_EXTENSION.get(extension)
 
     if parser_cls is None and content is not None:
-        mime_type = MAGIC.from_buffer(content)
-        parser_cls = PARSERS_BY_MIME_TYPE.get(mime_type)
+        try:
+            mime_type = MAGIC.from_buffer(content)
+        except MagicException:
+            pass
+        else:
+            parser_cls = PARSERS_BY_MIME_TYPE.get(mime_type)
 
     return parser_cls
