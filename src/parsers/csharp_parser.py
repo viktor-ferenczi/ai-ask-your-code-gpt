@@ -76,6 +76,8 @@ class CSharpParser(BaseParser):
         ]
         for key, label in table:
             names = name_map.get(key)
+            if not names:
+                continue
             names = [name.name for name in names]
             names = [name for name in names if len(name) >= 3 or name[:1].isupper()]
             if names:
@@ -86,35 +88,39 @@ class CSharpParser(BaseParser):
 
     def collect_names(self, nodes: Iterator[Node]):
         for node in nodes:
-            if node.type in ['namespace_declaration', 'class_declaration', 'interface_declaration']:
-                yield Name(
-                    category=node.type.split('_')[0],
-                    name=node.children[1].value,
-                    definition=True
-                )
-            elif node.type == 'method_declaration':
-                yield Name(
-                    category='method',
-                    name=node.children[1].children[0].value,
-                    definition=True
-                )
-            elif node.type == 'property_declaration':
-                yield Name(
-                    category='variable',
-                    name=node.children[1].value,
-                    definition=True
-                )
-            elif node.type == 'identifier':
-                sibling = node.next_sibling
-                if sibling and sibling.type == 'assignment_expression':
-                    yield Name(
-                        category='variable',
-                        name=node.text,
-                        definition=True
-                    )
-                else:
-                    yield Name(
-                        category='variable',
-                        name=node.text,
-                        definition=False
-                    )
+            # namespace
+            if node.type == "namespace_declaration":
+                for child in node.children:
+                    if child.type == "identifier":
+                        yield Name(category="namespace", name=child.text, definition=True)
+
+            # interface
+            elif node.type == "interface_declaration":
+                for child in node.children:
+                    if child.type == "identifier":
+                        yield Name(category="interface", name=child.text, definition=True)
+
+            # class
+            elif node.type == "class_declaration":
+                for child in node.children:
+                    if child.type == "identifier":
+                        yield Name(category="class", name=child.text, definition=True)
+
+            # method
+            elif node.type in ("method_declaration", "constructor_declaration"):
+                for child in node.children:
+                    if child.type == "identifier":
+                        yield Name(category="method", name=child.text, definition=True)
+
+            # variable (definition)
+            elif node.type == "variable_declaration":
+                for child in node.children:
+                    if child.type == "identifier":
+                        yield Name(category="variable", name=child.text, definition=True)
+
+            # variable (usage)
+            elif node.type == "identifier":
+                if node.parent and node.parent.type not in ("variable_declaration", "method_declaration",
+                                                            "constructor_declaration", "class_declaration",
+                                                            "interface_declaration", "namespace_declaration"):
+                    yield Name(category="variable", name=node.text, definition=False)
