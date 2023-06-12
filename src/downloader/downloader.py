@@ -30,13 +30,16 @@ class Downloader:
         checksum = hashlib.sha256(archive).hexdigest()
         project_id = self.inventory.find_project(self.url, checksum)
 
-        if project_id is not None:
+        new_project = True
+        if project_id is None:
+            project_id = str(uuid.uuid4())
+        else:
             print(f'Archive matches an existing project: {project_id!r}')
+            new_project = False
             self.inventory.touch_project(project_id)
             project = Project(project_id)
             if not project.exists:
                 self.inventory.reprocess_project(project_id)
-            return project_id
 
         await asyncio.sleep(0)
 
@@ -45,14 +48,14 @@ class Downloader:
 
         await asyncio.sleep(0)
 
-        project_id = str(uuid.uuid4())
         project = Project(project_id)
         with open(project.archive_path, 'wb') as f:
             f.write(archive)
 
         await project.create_database()
 
-        self.inventory.register_project(project_id, self.url, checksum)
+        if new_project:
+            self.inventory.register_project(project_id, self.url, checksum)
 
         return project_id
 
