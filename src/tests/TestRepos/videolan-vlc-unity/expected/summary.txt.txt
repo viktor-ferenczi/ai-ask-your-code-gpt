@@ -1,5 +1,0 @@
-File: /ProjectSettings/ProjectVersion.txt
-
-File: /Assets/VLCUnity/documentation.txt
-
-File: /Assets/VLCUnity/notice.txt
