@@ -20,28 +20,28 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # Markdown, Python
-    # ('viktor-ferenczi-dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    ('viktor-ferenczi-dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
-    # ('matthewhand-sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
+    ('matthewhand-sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
 
     # Markdown, PHP, HTML, CSS, JavaScript
-    # ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+    ('thebestbradley-hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
-    # ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+    ('dropbox-redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 
-    # Vim, C, Lua, CMake
+    # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
     # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 
     # C++, CMake
     ('Rustam-Z-cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    # ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    # ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 ]
 
 

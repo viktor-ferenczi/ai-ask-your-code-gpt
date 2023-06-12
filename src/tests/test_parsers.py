@@ -38,7 +38,7 @@ class TestParsers(unittest.TestCase):
                     fragment.uuid = f'TEST-{index:02d}'
 
                 # In case of documentation joining the fragments must reproduce the original document
-                if not parser.is_code():
+                if not parser.is_code:
                     joined_texts = ''.join(fragment.text for fragment in fragments if fragment.type == 'documentation').replace('\r\n', '\n')
                     original_text = content.decode('utf-8').replace('\r\n', '\n')
                     self.assertEqual(original_text, joined_texts)

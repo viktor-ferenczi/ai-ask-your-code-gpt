@@ -5,7 +5,6 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="EMBEDDER_BATCH_SIZE" value="1" />
       <env name="HTTP_PORT" value="40200" />
     </envs>
     <option name="SDK_HOME" value="" />
