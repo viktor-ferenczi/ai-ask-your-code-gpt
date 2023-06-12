@@ -143,6 +143,17 @@ async def summarize(project_id: str):
     if path in ('/', '.'):
         path = ''
 
+    if path and not path.startswith('/'):
+        path = f'/{path}'
+
+    if path and tail and not name:
+        path = f'{path.rstrip("/")}/{tail.lstrip("/")}'
+        tail = ''
+
+    if path and name and not tail:
+        path = f'{path.rstrip("/")}/{name.lstrip("/")}'
+        name = ''
+
     print(f'Summarize project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}')
 
     inventory = Inventory()
