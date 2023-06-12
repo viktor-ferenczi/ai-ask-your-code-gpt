@@ -20,11 +20,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
         database = QdrantClient('localhost', port=6334, prefer_grpc=True, timeout=5.0)
         collection = Collection(database, f'TEST-{uuid.uuid4()}')
 
-        try:
-            await collection.delete()
-        except AioRpcError:
-            pass
-
+        await collection.delete()
         await collection.create()
 
         fragments = get_test_fragments()

@@ -2,6 +2,7 @@
 """
 from typing import List, Optional
 
+from grpc.aio import AioRpcError
 from qdrant_client import QdrantClient, grpc
 
 from model.result import Result
@@ -15,16 +16,25 @@ class Collection:
         self.dimensions = dimensions
 
     async def create(self):
-        await self.database.async_grpc_collections.Create(
-            grpc.CreateCollection(
-                collection_name=self.name,
-                vectors_config=grpc.VectorsConfig(
-                    params=grpc.VectorParams(size=self.dimensions, distance=grpc.Distance.Dot)
-                ),
-                on_disk_payload=True,
-                timeout=10
+        async def fn():
+            await self.database.async_grpc_collections.Create(
+                grpc.CreateCollection(
+                    collection_name=self.name,
+                    vectors_config=grpc.VectorsConfig(
+                        params=grpc.VectorParams(size=self.dimensions, distance=grpc.Distance.Dot)
+                    ),
+                    on_disk_payload=True,
+                    timeout=10
+                )
             )
-        )
+
+        try:
+            await fn()
+        except AioRpcError as e:
+            if 'already exists' not in str(e):
+                raise
+            await self.delete()
+            await fn()
 
     async def delete(self):
         await self.database.async_grpc_collections.Delete(
