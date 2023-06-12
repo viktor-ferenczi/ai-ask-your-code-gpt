@@ -90,11 +90,11 @@ async def create():
     except KeyboardInterrupt:
         raise
     except ProjectError as e:
-        return Response(response=str(e), status=400)
+        return Response(response=f'{e}; Please find the FAQ, HowTo and bug-reports at https://askyourcode.ai', status=400)
     except Exception:
         print(f'ERROR: Failed to create project from archive URL {url!r}')
         print_exc()
-        return Response(response='Failed to create project. Please find the FAQ, HowTo and bug-reports at https://askyourcode.ai', status=400)
+        return Response(response='Failed to create project; Please find the FAQ, HowTo and bug-reports at https://askyourcode.ai', status=400)
 
     project = Project(project_id)
     response = dict(
