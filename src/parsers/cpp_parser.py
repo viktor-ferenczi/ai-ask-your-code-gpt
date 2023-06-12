@@ -76,8 +76,9 @@ class CppParser(BaseParser):
         ]
         for key, label in table:
             names = name_map.get(key)
+            names = [name.name for name in names]
+            names = [name for name in names if len(name) >= 3 or name[:1].isupper()]
             if names:
-                names = [name.name for name in names]
                 summary.append(f"  {label}: {' '.join(sorted(names))}\n")
 
         summary = ''.join(summary)
