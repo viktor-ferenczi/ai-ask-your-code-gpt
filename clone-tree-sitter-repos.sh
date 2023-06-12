@@ -50,4 +50,6 @@ clone_pull tree-sitter-toml
 clone_pull tree-sitter-swift
 clone_pull tree-sitter-agda
 
+mv tree-sitter-c-sharp tree-sitter-c_sharp
+
 echo Done

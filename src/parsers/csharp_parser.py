@@ -18,7 +18,7 @@ class CSharpParser(BaseParser):
     mime_types = ('text/x-csharp',)
     store_instruction = 'Represent the C# code for retrieval'
     query_instruction = 'Represent the text query for retrieving relevant parts of the code'
-    tree_sitter_language_name = 'c-sharp'
+    tree_sitter_language_name = 'c_sharp'
 
     def __init__(self) -> None:
         super().__init__()
