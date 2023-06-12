@@ -79,7 +79,7 @@ async def create():
     if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return Response(response='Invalid URL', status=400)
     if 'https://drive.google.com/' in lc_url or 'https://1drv.ms/' in lc_url:
-        return Response(response='Google Drive and OneDrive are not supported, Dropbox works. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord.', status=400)
+        return Response(response='Google Drive and OneDrive are not supported, Dropbox works. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord. Please find the FAQ, HowTo and bug-reports at https://askyourcode.ai', status=400)
 
     # Create project, download and verify archive, initiate indexing
     print(f'Create project from {url!r}')
@@ -94,7 +94,7 @@ async def create():
     except Exception:
         print(f'ERROR: Failed to create project from archive URL {url!r}')
         print_exc()
-        return Response(response='Failed to create project', status=400)
+        return Response(response='Failed to create project. Please find the FAQ, HowTo and bug-reports at https://askyourcode.ai', status=400)
 
     project = Project(project_id)
     response = dict(
