@@ -11,6 +11,7 @@ from parsers import BaseParser
 
 class TreeSitterParser(BaseParser):
     categories: List[Tuple[str, str]] = []
+    is_code = True
 
     def __init__(self) -> None:
         super().__init__()

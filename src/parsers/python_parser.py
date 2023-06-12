@@ -19,6 +19,7 @@ class PythonParser(BaseParser):
     store_instruction = 'Represent the Python code for retrieval'
     query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'python'
+    is_code = True
 
     def __init__(self) -> None:
         super().__init__()

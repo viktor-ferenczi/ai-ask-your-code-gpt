@@ -13,6 +13,7 @@ class BaseParser:
     query_instruction: str = ''
     tree_sitter_language_name: str = ''
     tree_sitter_language: tree_sitter.Language  # Set automatically
+    is_code = False
 
     def __init__(self) -> None:
         assert self.name
@@ -20,10 +21,6 @@ class BaseParser:
         assert self.mime_types
         assert self.store_instruction
         assert self.query_instruction
-
-    @classmethod
-    def is_code(cls) -> bool:
-        return bool(cls.tree_sitter_language_name)
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
         raise NotImplementedError()

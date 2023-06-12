@@ -1,22 +1,32 @@
-from typing import Iterator, Tuple
+import io
+from typing import Iterator
 
-from tree_sitter import Node
+import clang
+import clang.cindex
 
 from common.constants import C
 from common.text import decode_replace
-from common.tools import tiktoken_len
-from parsers.model import Name
-from parsers.tree_sitter_parser import TreeSitterParser
+from common.tools import tiktoken_len, new_uuid
+from model.fragment import Fragment
+from parsers import BaseParser
 from splitters.text_splitter import TextSplitter
 
 
-class CppParser(TreeSitterParser):
+def depth(node):
+    d = 0
+    while node:
+        d += 1
+        node = node.semantic_parent
+    return d
+
+
+class CppParser(BaseParser):
     name = 'C++'
-    extensions = ('c', 'cpp', 'c++', 'h', 'hpp', 'h++')
+    extensions = ('c', 'cc', 'cpp', 'c++', 'h', 'hh', 'hpp', 'h++')
     mime_types = ('text/c', 'text/x-cpp', 'text/x-cplusplus')
     store_instruction = 'Represent the C++ code for retrieval'
     query_instruction = 'Represent the text query for retrieving relevant parts of the code'
-    tree_sitter_language_name = 'cpp'
+    is_code = True
 
     categories = [
         ('macro', 'Macro'),
@@ -35,6 +45,7 @@ class CppParser(TreeSitterParser):
             length_function=tiktoken_len,
             separators=(
                 ('<', r"^\s+class\s+"),
+                ('<', r"^\s+struct\s+"),
                 ('<', r"^\s+while\s+"),
                 ('<', r"^\s+for\s+"),
                 ('<', r"^\s+if\s+"),
@@ -44,65 +55,75 @@ class CppParser(TreeSitterParser):
                 ('<', r"^\s+#if\s+"),
                 ('<', r"^\s+#ifdef\s+"),
                 ('<', r"^\s+#ifndef\s+"),
+                ('<', r"^\s+#else\s+"),
             )
         )
 
-    def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]):
-        for node, lineno, depth in nodes:
-            if not node.child_count:
-                print(f'@{depth}|{node.type}|{decode_replace(node.text)}')
+    categories = {
+        'class_decl': 'Classes',
+        'cxx_method': 'Methods',
+        'enum_decl': 'Enums',
+        'function_decl': 'Functions',
+        'function_template': 'Templates',
+        'namespace': 'Namespaces',
+        'struct_decl': 'Structs',
+        'using_declaration': 'Using declarations',
+        'using_directive': 'Using directives',
+        'var_decl': 'Variable declarations',
+    }
 
-            if node.type == 'class' and node.parent:
-                sibling: Node = node.next_sibling
-                while sibling:
-                    if sibling.type == '{':
-                        yield Name(category='class', name=node.text, definition=node.parent.text, lineno=lineno, depth=depth)
-                        break
-                    sibling = sibling.next_sibling
+    def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
 
-            elif node.type == 'identifier':
-                category = ''
-                sibling: Node = node.next_sibling
-                while sibling:
-                    if sibling.type == '(':
-                        category = 'function'
-                        break
-                    sibling = sibling.next_sibling
+        lines = decode_replace(content).replace('\r\n', '\n').replace('\r', '').split('\n')
 
-                if category == 'function':
-                    if node.prev_sibling and node.prev_sibling.type == '::' and node.prev_sibling.prev_sibling and node.prev_sibling.prev_sibling.type == 'namespace_identifier':
-                        yield Name(category='method', name=node.prev_sibling.prev_sibling.text + b'::' + node.text, definition=node.prev_sibling.prev_sibling.text, lineno=lineno, depth=depth)
-                    else:
-                        for child in node.parent.children:
-                            if child.type == 'class':
-                                category = 'method'
-                                break
-                        yield Name(category=category, name=node.text, definition=node.parent.text, lineno=lineno, depth=depth)
+        def get_extent_as_string(node) -> str:
+            start = node.extent.start
+            end = node.extent.end
+            return ''.join(f'{line}\n' for line in lines[start.line - 1:end.line])
 
-                elif node.prev_sibling and node.prev_sibling.type == '#define':
-                    yield Name(category='macro', name=node.text, definition=node.prev_sibling.text, lineno=lineno, depth=depth)
+        def traverse(node, filename):
+            for child in node.get_children():
+                if child.location.file.name != filename:
+                    continue
+                lineno = child.location.line
+                type_name = str(child.kind).split(".")[1].lower()
+                name = child.spelling
+                uuid = new_uuid()
+                depth_in_code = depth(child)
+                text = get_extent_as_string(child) if child.is_definition() else ''
+                fragment = Fragment(uuid, filename, lineno, depth_in_code, type_name, name, text)
+                yield fragment
+                traverse(child, filename)
 
-                elif node.prev_sibling and node.prev_sibling.type == 'class':
-                    yield Name(category='class', name=node.text, definition=node.prev_sibling.text, lineno=lineno, depth=depth)
+        def parse_cpp_file(filename, content):
+            index = clang.cindex.Index.create()
+            bio = io.BytesIO(content)
+            tu = index.parse(path, unsaved_files=[(path, bio)])
+            yield from traverse(tu.cursor, filename)
 
-                elif node.prev_sibling and node.prev_sibling.type == '=':
-                    yield Name(category='variable', name=node.text, definition=node.text, lineno=lineno, depth=depth)
+        # test the parser with a file
+        name_map = {}
+        for fragment in parse_cpp_file(path, content):
+            yield fragment
 
-                elif node.prev_sibling and node.prev_sibling.type == '::' and node.prev_sibling.prev_sibling and node.prev_sibling.prev_sibling.type == 'namespace_identifier':
-                    yield Name(category='method', name=node.prev_sibling.prev_sibling.text + b'::' + node.text, definition=node.prev_sibling.prev_sibling.text, lineno=lineno, depth=depth)
+            if fragment.type not in self.categories:
+                continue
 
-                else:
-                    yield Name(category='variable', name=node.text, definition='', lineno=lineno, depth=depth)
+            if not fragment.name:
+                continue
 
-            elif node.type == 'field_identifier' and node.parent:
-                category = 'field'
-                sibling: Node = node.next_sibling
-                while sibling:
-                    if sibling.type == '(':
-                        category = 'method'
-                        break
-                    sibling = sibling.next_sibling
-                yield Name(category=category, name=node.text, definition=node.parent.text, lineno=lineno, depth=depth)
+            names = name_map.get(fragment.type)
+            if names is None:
+                name_map[fragment.type] = names = set()
 
-            elif node.type == 'type_identifier':
-                yield Name(category='class', name=node.text, definition='', lineno=lineno, depth=depth)
+            names.add(fragment.name)
+
+        summary = [f'C: {path}\n']
+        for key in sorted(self.categories):
+            names = name_map.get(key)
+            if not names:
+                continue
+            summary.append(f'  {self.categories[key]}: {", ".join(sorted(names))}\n')
+
+        summary = ''.join(summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)

@@ -252,7 +252,7 @@ class Project:
                     continue
                 raise
 
-    async def search_inner(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
+    async def search_inner(self, *, path: str, tail: str, name: str, text: str, limit: int) -> List[Hit]:
         with self.cursor() as cursor:
             if text:
                 fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
@@ -301,17 +301,17 @@ class Project:
         results = await self.collection.search(embedding[0].tolist(), limit=limit, uuids=uuids)
         return results
 
-    async def summarize(self, *, path: str = '', tail: str = '', name: str = '') -> str:
+    async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         while 1:
             try:
-                return await self.summarize_inner(path=path, tail=tail, name=name)
+                return await self.summarize_inner(path=path, tail=tail, name=name, token_limit=token_limit)
             except sqlite3.OperationalError as e:
                 if 'database is locked' in str(e):
                     await asyncio.sleep(0.2 + random.random())
                     continue
                 raise
 
-    async def summarize_inner(self, *, path: str = '', tail: str = '', name: str = '') -> str:
+    async def summarize_inner(self, *, path: str, tail: str, name: str, token_limit: int) -> str:
         with self.cursor() as cursor:
             fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
 
@@ -330,17 +330,21 @@ class Project:
 
         summary = summary.split('\n')
 
-        limit = 2000 if not path and not name else 1000
-        if sum(tiktoken_len(line) for line in summary) > limit:
-            summary = [line for line in summary if not line.lstrip().startswith('Usages:')]
-        if sum(tiktoken_len(line) for line in summary) > limit:
-            summary = [line for line in summary if not line.lstrip().startswith('Variables:')]
-        if sum(tiktoken_len(line) for line in summary) > limit:
-            summary = [line for line in summary if not line.lstrip().startswith('Methods:')]
+        if not token_limit:
+            token_limit = 2000 if not path and not name else 1000
+
+        if sum(tiktoken_len(line) for line in summary) > token_limit:
+            summary = [line for line in summary if not line.lstrip().startswith('Usage')]
+
+        if sum(tiktoken_len(line) for line in summary) > token_limit:
+            summary = [line for line in summary if not line.lstrip().startswith('Variable')]
+
+        if sum(tiktoken_len(line) for line in summary) > token_limit:
+            summary = [line for line in summary if not line.lstrip().startswith('Method')]
 
         total = sum(tiktoken_len(line) for line in summary)
-        if total > limit:
-            summary = summary[:len(summary) * limit // total]
+        if total > token_limit:
+            summary = summary[:len(summary) * token_limit // total]
 
         return '\n'.join(summary)
 

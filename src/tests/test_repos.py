@@ -131,17 +131,17 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         actual = '\n'.join(hit.text for hit in await project.search(name='Kernel', limit=50))
         self.verify(f'name-Kernel', actual)
 
-        actual = await project.summarize()
+        actual = await project.summarize(token_limit=999999999)
         self.verify(f'root-summary', actual)
 
-        actual = await project.summarize(path='/readme.md')
+        actual = await project.summarize(path='/readme.md', token_limit=999999999)
         self.verify(f'README-summary', actual)
 
-        actual = await project.summarize(tail='.sol')
+        actual = await project.summarize(tail='.sol', token_limit=999999999)
         self.verify(f'summary.sol', actual)
 
         for extension in PARSERS_BY_EXTENSION:
-            actual = await project.summarize(tail=f'.{extension}')
+            actual = await project.summarize(tail=f'.{extension}', token_limit=999999999)
             if actual:
                 self.verify(f'summary.{extension}', actual)
 

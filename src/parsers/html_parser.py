@@ -20,6 +20,7 @@ class HtmlParser(BaseParser):
     store_instruction = 'Represent the HTML document for retrieval'
     query_instruction = 'Represent the text query for retrieving relevant parts of the document'
     # tree_sitter_language_name = 'html'
+    is_code = True
 
     def __init__(self) -> None:
         super().__init__()

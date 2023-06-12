@@ -15,5 +15,6 @@ qdrant_client
 InstructorEmbedding~=1.0.0
 sentence_transformers
 aioquic
+libclang
 
 torch~=2.0.1+cu118
