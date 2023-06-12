@@ -1,0 +1,7 @@
+File extensions: .ipynb
+
+
+PythonNotebook: /scripts/crosswords/search_crosswords-dfs.ipynb
+  Functions: dfs get_candidates_to_scores parse_line parse_response prompt_wrap propose_score
+  Variables: actions best board, candidates candidates_to_scores candidates_to_scores[candidate] cnt_per_state confidence_to_value count done env env.cache[obs] env_ info infos infoss lines match obs obs, parsed_lines parsed_response parts pattern responses
+  Usages: MiniCrosswordsEnv action any append board cache candidate copy crosswords deepcopy dump format fout get gpt group idx import input input_str items json key len line lower max max_per_state model models open pop print prompt_status prompts propose_prompt prune range render render_board reset response reverse score sorted split status step steps tasks time_limit value_prompt

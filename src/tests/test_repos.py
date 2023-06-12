@@ -43,7 +43,7 @@ REPOS = [
     # Java
     # ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
-    # Python, Shell, JSON, CSV
+    # Python, Shell, JSON, CSV, Python Notebook
     ('princeton-nlp-tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 ]
 
