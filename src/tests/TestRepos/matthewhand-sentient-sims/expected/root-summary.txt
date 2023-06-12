@@ -1,0 +1,64 @@
+File: /.gitignore
+
+# Sentient Sims FAQ
+## What is Sentient Sims?
+## What are the features of Sentient Sims?
+## Which interactions are supported?
+## Where can I download Sentient Sims?
+## What is Open AI API and the API key used for?
+## How can I get support or report issues?
+## Is Sentient Sims compatible with other mods?
+## How do I make my interactions from my mod generate dialogue?
+## What is the Sentient Sims Companion App?
+
+# How to install Sentient Sims
+## Download and install the Sentient Sims Companion App
+### Windows
+## Click Update to Install The Mod
+## Open AI API Key
+## Playing the Mod
+## Do Something
+## Edit Location and Sim Description
+
+File: /LICENSE
+
+# Sentient Sims Mod
+## Description
+## Contributing
+## Testing Locally
+## Supporting Interactions from Other Mods
+## Opening Issues
+
+# TODO
+
+Python: /ci_compile.py
+  Functions: compile_py start_compile
+  Variables: compile_pyc desc_path relative_path src_py
+  Usages: Path PyZipFile ZIP_STORED compile dest dirs filename files filter fnmatch pathlib prepare_directory print py_compile relative_to replace root src str string utils walk zipfile
+
+Python: /sentient_sims/career_descriptions.py
+  Variables: career_descriptions
+
+Python: /sentient_sims/interaction_descriptions.py
+  Variables: interaction_descriptions num_keys
+  Usages: __name__ len print
+
+Python: /sentient_sims/sim_descriptions.py
+  Variables: sim_descriptions
+
+Python: /sentient_sims/trait_descriptions.py
+  Variables: trait_descriptions
+
+Python: /sentient_sims/zone_descriptions.py
+  Variables: zone_descriptions
+  Usages: join
+
+Python: /utils/check_github_workflow.py
+  Variables: failed_runs pylint_workflow repo runs workflows
+  Usages: Github conclusion get_repo get_runs get_workflows getenv github html_url name print run workflow
+
+Python: /utils/utils.py
+  Functions: clean_directory create_directory prepare_directory
+  Usages: Path exist_ok exists isdir mkdir parents path pathlib rmtree shutil string
+
+File: /.github/workflows/build.yml

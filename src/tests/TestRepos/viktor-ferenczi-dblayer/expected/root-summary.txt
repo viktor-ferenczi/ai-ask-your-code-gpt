@@ -1,4 +1,4 @@
-/.gitignore:
+File: /.gitignore
 
 # Database Abstraction Layer Generator
 # Installation
@@ -10,11 +10,11 @@
 ## Performance
 ## Limitations
 
-/lib/MANIFEST.in:
+File: /lib/MANIFEST.in
 
-/lib/PKG-INFO:
+File: /lib/PKG-INFO
 
-/lib/setup.cfg:
+File: /lib/setup.cfg
 
 Python: /lib/setup.py
 
@@ -119,4 +119,5 @@ Python: /lib/dblayer/backend/postgresql/inspector.py
 
 Python: /lib/dblayer/backend/postgresql/record.py
 
-/lib/dblayer/generator/template/database.tpl:
+Python: /lib/dblayer/generator/template/database.tpl
+  Methods: _count _iter _list _name create_all_languages create_all_procedures create_all_tables create_all_triggers create_procedure_ create_structure create_table_ create_trigger_ delete_ dict drop_all_procedures drop_all_tables drop_all_triggers drop_procedure_ drop_structure drop_table_ drop_trigger_ truncate_ truncate_all_tables tuple update_

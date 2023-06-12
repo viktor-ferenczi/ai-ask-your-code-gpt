@@ -1,12 +1,12 @@
-/.env.example:
+File: /.env.example
 
-/.gitattributes:
+File: /.gitattributes
 
-/.gitignore:
+File: /.gitignore
 
-/artisan:
+File: /artisan
 
-/composer.json:
+File: /composer.json
 
 JavaScript: /gulpfile.js
 
@@ -14,11 +14,11 @@ HTML: /index.html
 # AskYourCode
 ### The intelligent rubber ducky!
 
-/package.json:
+File: /package.json
 
-/phpspec.yml:
+File: /phpspec.yml
 
-/phpunit.xml:
+File: /phpunit.xml
 
 # Ribbbon
 # Features
@@ -60,13 +60,13 @@ PHP: /bootstrap/app.php
 
 PHP: /bootstrap/autoload.php
 
-/database/.gitignore:
+File: /database/.gitignore
 
-/public/.htaccess:
+File: /public/.htaccess
 
 PHP: /public/index.php
 
-/public/robots.txt:
+File: /public/robots.txt
 
 PHP: /tests/ExampleTest.php
   Functions: testBasicExample
@@ -109,7 +109,7 @@ PHP: /app/Providers/RouteServiceProvider.php
   Functions: boot map
   Classes: RouteServiceProvider
 
-/bootstrap/cache/.gitignore:
+File: /bootstrap/cache/.gitignore
 
 PHP: /database/factories/ModelFactory.php
 
@@ -209,11 +209,11 @@ PHP: /database/seeds/UsersTableSeeder.php
   Functions: run
   Classes: UsersTableSeeder
 
-/storage/app/.gitignore:
+File: /storage/app/.gitignore
 
-/storage/framework/.gitignore:
+File: /storage/framework/.gitignore
 
-/storage/logs/.gitignore:
+File: /storage/logs/.gitignore
 
 PHP: /app/Console/Commands/Inspire.php
   Functions: handle
@@ -284,22 +284,11 @@ CSS: /public/assets/css/animate.css
 CSS: /public/assets/css/style.css
   Classes: hover form-control focus label-default color-primary color-badge no-padding-left no-padding-right no-side-padding show-on-hover status-msg error-msg success-msg noScroll dim circle weight panel panel-heading panel-list panel-body with-number side-nav logo-section user-section search menu active last-child line footer btn btn-wide btn-default btn-primary btn-line btn-special popup-form actions nth-child minimized new-task update-task mega-menu links first-child inactive content item client-update-form mega-menu-tab client page-title-section task-list-row col-md-4 task-list title backlog priority-circle priority-low priority-normal priority-medium priority-high priority-highest content-area label settings-container left-side info name bio right-side progress progress-bar table credential-form form-group type-0 special-form hug hug-header register hug-hero mascot hug-skyline skyline hug-features new feature centered hug-info row arrow hug-ui text-bucket hug-exit img hug-footer special last-line project-list-container pull-left
 
-/public/assets/css/style.css.map:
+File: /public/assets/css/style.css.map
 
-/public/assets/css/style.scss:
+File: /public/assets/css/style.scss
 
 JavaScript: /public/assets/js/main.js
   Functions: closeModule openModule
 
 JavaScript: /public/assets/js/ui.js
-  Functions: closePrompt makePrompt megaMenuInit showSheet
-
-/resources/assets/sass/app.scss:
-
-/storage/framework/cache/.gitignore:
-
-/storage/framework/sessions/.gitignore:
-
-/storage/framework/views/.gitignore:
-
-PHP: /app/Http/Controllers/Auth/AuthController.php

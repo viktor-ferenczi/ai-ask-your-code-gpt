@@ -1,37 +1,37 @@
-/Clones.sol:
+File: /Clones.sol
 
-/Context.sol:
+File: /Context.sol
 
-/DividendPayingToken.sol:
+File: /DividendPayingToken.sol
 
-/DividendPayingTokenInterface.sol:
+File: /DividendPayingTokenInterface.sol
 
-/DividendPayingTokenOptionalInterface.sol:
+File: /DividendPayingTokenOptionalInterface.sol
 
-/ERC20.sol:
+File: /ERC20.sol
 
-/ERC20Upgradeable.sol:
+File: /ERC20Upgradeable.sol
 
-/IERC20.sol:
+File: /IERC20.sol
 
-/IERC20Metadata.sol:
+File: /IERC20Metadata.sol
 
-/IUniswapV2Factory.sol:
+File: /IUniswapV2Factory.sol
 
-/IUniswapV2Pair.sol:
+File: /IUniswapV2Pair.sol
 
-/IUniswapV2Router.sol:
+File: /IUniswapV2Router.sol
 
-/IterableMapping.sol:
+File: /IterableMapping.sol
 
-/Ownable.sol:
+File: /Ownable.sol
 
-/REDTOKENDividendTracker.sol:
+File: /REDTOKENDividendTracker.sol
 
-/SafeMath.sol:
+File: /SafeMath.sol
 
-/SafeMathInt.sol:
+File: /SafeMathInt.sol
 
-/SafeMathUint.sol:
+File: /SafeMathUint.sol
 
-/token.sol:
+File: /token.sol
