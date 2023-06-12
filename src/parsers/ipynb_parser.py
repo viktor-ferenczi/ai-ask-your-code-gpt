@@ -41,7 +41,7 @@ class PythonNotebookParser(BaseParser):
         )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        content = content.decode('utf8', errors='replace').replace('\r\n', '\n').replace('\r', '').strip()
+        content = decode_replace(content).replace('\r\n', '\n').replace('\r', '').strip()
         try:
             data = json.loads(content)
         except json.JSONDecodeError:
@@ -51,20 +51,20 @@ class PythonNotebookParser(BaseParser):
         source = '\n\n'.join(''.join(cell.get('source', [])) for cell in data.get('cells', []) if cell.get('cell_type') == 'code')
         markdown = '\n\n'.join(''.join(cell.get('source', [])) for cell in data.get('cells', []) if cell.get('cell_type') == 'markdown')
         del data
-        del content
-
-        content = source.encode('utf-8')
 
         parser = Parser()
         parser.set_language(self.tree_sitter_language)
-        tree: Tree = parser.parse(content)
+        tree: Tree = parser.parse(source.encode('utf-8'))
         cursor: TreeCursor = tree.walk()
 
+        for sentence in self.splitter.split_text(content):
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text)
+
         for sentence in self.splitter.split_text(source):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook_code', '', sentence.text)
 
         for sentence in self.splitter.split_text(markdown):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'documentation', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook_markdown', '', sentence.text)
 
         # FIXME: From here redundant code
 
