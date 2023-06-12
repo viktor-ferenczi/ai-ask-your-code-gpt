@@ -85,17 +85,35 @@ class CSharpParser(BaseParser):
 
     def collect_names(self, nodes: Iterator[Node]):
         for node in nodes:
-            if node.type in ('namespace_declaration', 'interface_declaration', 'class_declaration'):
-                yield Name(node.type.split('_')[0], node.children[1].text, True)
+            if node.type in ['namespace_declaration', 'class_declaration', 'interface_declaration']:
+                yield Name(
+                    category=node.type.split('_')[0],
+                    name=node.children[1].value,
+                    definition=True
+                )
             elif node.type == 'method_declaration':
-                method_type = 'method' if node.parent and node.parent.type == 'class_declaration' else 'function'
-                yield Name(method_type, node.children[1].text, True)
-            elif node.type == 'variable_declarator':
-                yield Name('variable', node.children[0].text, True)
-            elif node.type in ('qualified_name', 'identifier_name'):
-                ref_type = 'variable' if node.parent and node.parent.type == 'variable_declarator' else None
-                if ref_type:
-                    yield Name(ref_type, node.text, False)
-            elif node.type == 'method_invocation':
-                method_type = 'method' if node.parent and node.parent.type == 'class_declaration' else 'function'
-                yield Name(method_type, node.children[0].text, False)
+                yield Name(
+                    category='method',
+                    name=node.children[1].children[0].value,
+                    definition=True
+                )
+            elif node.type == 'property_declaration':
+                yield Name(
+                    category='variable',
+                    name=node.children[1].value,
+                    definition=True
+                )
+            elif node.type == 'identifier':
+                sibling = node.next_sibling
+                if sibling and sibling.type == 'assignment_expression':
+                    yield Name(
+                        category='variable',
+                        name=node.value,
+                        definition=True
+                    )
+                else:
+                    yield Name(
+                        category='variable',
+                        name=node.value,
+                        definition=False
+                    )

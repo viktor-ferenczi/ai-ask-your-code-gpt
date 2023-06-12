@@ -85,18 +85,23 @@ class CppParser(BaseParser):
 
     def collect_names(self, nodes: Iterator[Node]):
         for node in nodes:
-            field_name = node.child_by_field_name('name')
-            if node.type in ('namespace', 'class', 'function', 'method'):
-                category = node.type
-                if field_name is not None:
-                    name = field_name.text
-                    definition = node.child_by_field_name('definition') is not None
-                    yield Name(category, name, definition)
-            elif node.type == 'variable':
-                variable_node = node
-                while variable_node is not None and variable_node.type != 'declaration':
-                    variable_node = variable_node.parent
-                if variable_node is not None and field_name is not None:
-                    name = field_name.text
-                    definition = variable_node.child_by_field_name('initializer') is not None
-                    yield Name('variable', name, definition)
+            if node.type in ['namespace', 'class', 'function', 'method', 'variable']:
+                if node.type in ['namespace', 'class']:
+                    for child in node.children:
+                        if child.type == 'identifier':
+                            yield Name(category=node.type, name=child.text, definition=True)
+                elif node.type in ['function', 'method']:
+                    for child in node.children:
+                        if child.type == 'identifier':
+                            yield Name(category=node.type, name=child.text, definition=True)
+                        if child.type == 'call_expression':
+                            for grandchild in child.children:
+                                if grandchild.type == 'identifier':
+                                    yield Name(category=node.type, name=grandchild.text, definition=False)
+                elif node.type == 'variable':
+                    for child in node.children:
+                        if child.type == 'identifier':
+                            if child.prev_sibling and child.prev_sibling.type == 'type':
+                                yield Name(category=node.type, name=child.text, definition=True)
+                            else:
+                                yield Name(category=node.type, name=child.text, definition=False)

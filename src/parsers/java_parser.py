@@ -82,30 +82,30 @@ class JavaParser(BaseParser):
 
     def collect_names(self, nodes: Iterator[Node]):
         for node in nodes:
-            if node.type in ('class_declaration', 'interface_declaration'):
-                yield Name(category=node.type.split('_')[0],
-                           name=node.child_by_field_name('identifier').text,
-                           definition=True)
+            if node.type == 'interface_declaration':
+                yield Name('interface', node.children[1].text, True)
+                for child in node.children:
+                    if child.type == 'method_declaration':
+                        yield Name('method', child.children[1].text, True)
+            elif node.type == 'class_declaration':
+                yield Name('class', node.children[1].text, True)
+                for child in node.children:
+                    if child.type == 'method_declaration':
+                        yield Name('method', child.children[1].text, True)
+                    elif child.type == 'variable_declarator':
+                        yield Name('variable', child.children[0].text, True)
             elif node.type == 'method_declaration':
-                yield Name(category='method',
-                           name=node.child_by_field_name('identifier').text,
-                           definition=True)
-            elif node.type in ('local_variable_declaration', 'field_declaration'):
-                for declarator in node.child_by_field_name('declarators').children:
-                    yield Name(category='variable',
-                               name=declarator.child_by_field_name('identifier').text,
-                               definition=True)
+                yield Name('method', node.children[1].text, True)
+            elif node.type == 'variable_declarator':
+                yield Name('variable', node.children[0].text, True)
             elif node.type == 'identifier':
+                name = node.text
                 parent = node.parent
-                if parent.type in ('class_declaration', 'interface_declaration'):
-                    yield Name(category=parent.type.split('_')[0],
-                               name=node.text,
-                               definition=False)
-                elif parent.type == 'method_declaration':
-                    yield Name(category='method',
-                               name=node.text,
-                               definition=False)
-                elif parent.type in ('local_variable_declaration', 'field_declaration'):
-                    yield Name(category='variable',
-                               name=node.text,
-                               definition=False)
+                if parent.type in ['method_invocation', 'member_reference_expression']:
+                    if parent.type == 'member_reference_expression' and parent.children[0].type == 'this':
+                        continue  # Ignore 'this' references
+                    yield Name('method' if parent.type == 'method_invocation' else 'variable', name, False)
+                elif parent.type == 'type_identifier':
+                    if parent.parent and parent.parent.type in ['class_declaration', 'interface_declaration']:
+                        yield Name(parent.parent.type.split('_')[0], name, False)
+
