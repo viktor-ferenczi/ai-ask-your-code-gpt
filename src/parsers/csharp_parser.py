@@ -109,12 +109,12 @@ class CSharpParser(BaseParser):
                 if sibling and sibling.type == 'assignment_expression':
                     yield Name(
                         category='variable',
-                        name=node.value,
+                        name=node.text,
                         definition=True
                     )
                 else:
                     yield Name(
                         category='variable',
-                        name=node.value,
+                        name=node.text,
                         definition=False
                     )
