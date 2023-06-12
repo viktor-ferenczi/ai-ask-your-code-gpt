@@ -1,0 +1,68 @@
+C#: /Assets/VLCUnity/Editor/Build.cs
+  Classes: CopyLibVLCFiles
+  Methods: CopyFile CopyFolder OnPostprocessBuild
+  Usages: Application Build BuildReport Combine Copy CopyFile CopyFolder CreateDirectory Data Directory Exists File GetDirectories GetDirectoryName GetFileName GetFiles IO IPostprocessBuildWithReport Path Plugins Reporting System ToString UnityEditor UnityEngine VLCUnity buildOutput callbackOrder dataPath dest destFile destFolder file files folder folders hrtfs libvlcBuildOutput locale lua name outputPath overwrite platform plugins pluginsDat productName report sourceFile sourceFolder sourceLibvlcLocation sourcePluginsLibvlcLocation standaloneWindows summary x64
+
+C#: /Assets/VLCUnity/Editor/PreBuild.cs
+  Classes: PreProcessBuild
+  Methods: GetGraphicsApiIndex OnPreprocessBuild ShowAbortDialog
+  Usages: Android AndroidVulkanErrorMessage Build BuildFailedException BuildReport BuildTarget Collections DisplayDialog Editor EditorUtility Generic GetGraphicsAPIs GetGraphicsApiIndex GraphicsDeviceType IPreprocessBuildWithReport IsVulkanConfigured Length OnPreprocessBuild PlayerSettings Rendering Reporting ShowAbortDialog System UNITY_2018_1_OR_NEWER UNITY_SUPPORTS_BUILD_REPORT UnityEditor UnityEngine VLCUnity Videolabs Vulkan api callbackOrder devices message outputPath path platform report result summary target
+
+C#: /Assets/VLCUnity/Editor/VLCNativePluginProcessor.cs
+  Classes: VLCNativePluginProcessor
+  Methods: ConfigureAndroidNativePlugins ConfigureUWPNativePlugins ConfigureWindowsNativePlugins OnPreprocessBuild
+  Usages: ANDROID_PATH Android Build BuildReport BuildTarget Collections ConfigureAndroidNativePlugins ConfigureUWPNativePlugins ConfigureWindowsNativePlugins Contains Editor Generic GetAllImporters GetCompatibleWithAnyPlatform GetCompatibleWithEditor GetCompatibleWithPlatform GetPlatformData IO IPreprocessBuildWithReport Linq OnPreprocessBuild PluginImporter Rendering Reporting SDK SaveAndReimport SetCompatibleWithAnyPlatform SetCompatibleWithEditor SetCompatibleWithPlatform SetPlatformData StandaloneWindows64 System UNITY_2018_1_OR_NEWER UNITY_SUPPORTS_BUILD_REPORT UWP_ARCH UWP_PATH UnityEditor UnityEngine VLCUnity Videolabs WINDOWS_PATH WSAPlayer assetPath callbackOrder cpu dirty importers isNativePlugin isX64 outputPath path platform report sdkPath summary target
+
+C#: /Assets/VLCUnity/Internal/OnLoad.cs
+  Namespaces: LibVLCSharp
+  Classes: OnLoad
+  Methods: GetRenderEventFunc IntPtr OnBeforeSceneLoadRuntimeMethod SetColorSpace
+  Usages: BeforeSceneLoad CallingConvention Cdecl DllImport EntryPoint GL Gamma GetRenderEventFunc InteropServices IssuePluginEvent Linear PlayerColorSpace QualitySettings Runtime RuntimeInitializeLoadType RuntimeInitializeOnLoadMethod SetColorSpace System UNITY_ANDROID UnityColorSpace UnityEngine UnityPlugin activeColorSpace colorSpace
+
+C#: /Assets/VLCUnity/Internal/TextureHelper.cs
+  Namespaces: LibVLCSharp
+  Classes: TextureHelper
+  Methods: FlipTextures
+  Variables: Vector3
+  Usages: LibVLCSharp Rotate System Transform UNITY_ANDROID UNITY_EDITOR UnityEngine Vector3 rotationToAdd transform
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCMinimalPlayback.cs
+  Classes: VLCMinimalPlayback
+  Methods: Awake OnDisable PlayPause SeekBackward SeekForward Stop Update
+  Variables: LibVLC MediaPlayer Texture2D
+  Usages: Application Core CreateExternalTexture Debug Dispose FlipTextures GetComponent GetTexture Initialize IntPtr IsPlaying LibVLC LibVLCSharp Log LogType Media MediaPlayer MonoBehaviour None Pause Play PlayPause RGBA32 Renderer SetStackTraceLogType SetTime Size StackTraceLogType Stop System Texture2D TextureFormat TextureHelper Time UnityEngine UpdateExternalTexture Uri Zero _libVLC _mediaPlayer dataPath enableDebugLogs height i_videoHeight i_videoWidth mainTexture material playing seekTimeDelta tex texptr transform updated width
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCPlayerExample.cs
+  Classes: VLCPlayerExample
+  Methods: Awake ConvertMediaTrackList CreateLibVLC CreateMediaPlayer DestroyMediaPlayer GetVideoOrientation Log MediaTrack OnDestroy Open Pause Play ResizeOutputTextures Seek Select SelectedTrack SetTime SetVolume Stop Tracks Unselect Update
+  Variables: LibVLC MediaPlayer RawImage RenderTexture Renderer Texture2D
+  Usages: ARGB32 Add Android Application Blit BottomRight Collections ConvertMediaTrackList Core Count CreateExternalTexture CreateLibVLC CreateMediaPlayer Data Debug DestroyMediaPlayer Dispose Duration Exception FormattedLog Generic GetComponent GetTexture GetVideoOrientation Graphics Initialize IntPtr IsPlaying LibVLC LibVLCSharp List Log LogType Media MediaPlayer MediaTrack MediaTrackList MonoBehaviour Name None Open Orientation Pause Play RGBA32 RawImage RenderTexture RenderTextureFormat Renderer ResizeOutputTextures RuntimePlatform Select SelectedTrack SetStackTraceLogType SetTime SetVolume Size StackTraceLogType Stop System Texture2D TextureFormat Time ToString TrackType Tracks Trim UI UnityEngine Unselect UpdateExternalTexture Uri Vector2 Video VideoOrientation Volume Zero _vlcTexture automaticallyFlipOnAndroid canvasScreen dataPath enableDebugLogs flip flipTextureX flipTextureY height libVLC logToConsole mainTexture material mediaPlayer message orientation path platform playOnAwake screen swap texptr texture time timeDelta track tracklist tracks trimmedPath type updated volume width zero
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCPlayerExampleCamera.cs
+  Classes: VLCPlayerExampleCamera
+  Methods: OnDisable StartLooking StopLooking Update
+  Usages: A Collections Cursor CursorLockMode D DownArrow E F Generic GetAxis GetKey GetKeyDown GetKeyUp Input KeyCode LeftArrow LeftShift Linq Locked MonoBehaviour Mouse1 None PageDown PageUp Q R RightArrow RightShift S StartLooking StopLooking System Text Time UnityEngine UpArrow Vector3 W axis deltaTime fastMode fastMovementSpeed fastZoomSensitivity forward freeLookSensitivity localEulerAngles lockState looking movementSpeed newRotationX newRotationY position right transform visible zoomSensitivity
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCPlayerExampleGui.cs
+  Classes: VLCPlayerExampleGui
+  Methods: ClearTrackButtons SetupTrackButtons SetupTrackButtonsGroup Start ToggleElement Update UpdatePlayPauseButton UpdateSeekBar
+  Variables: AspectRatioFitter Button Color GameObject InputField RawImage Slider VLCPlayerExample
+  Usages: Add AddListener Audio Button Clear ClearTrackButtons Collections Count Debug Destroy Duration Entry EventArgs EventSystems EventTrigger EventTriggerType Exception GameObject Generic GetChild GetComponent GetComponentInChildren Id Instantiate LibVLCSharp List Log LogError MonoBehaviour Name Open Pause Paused Play Playing PointerDown PointerUp Select SelectedTrack SetActive SetTime SetVolume SetupTrackButtons SetupTrackButtonsGroup Stop Stopped System Text Time ToString ToggleElement TrackType Tracks UI UnityEngine Unselect UpdatePlayPauseButton UpdateSeekBar Video Volume _audioTracksButtons _isDraggingSeekBar _isPlaying _shouldClearTracks _shouldUpdateTracks _textTracksButtons _videoTracksButtons activeInHierarchy aspectRatio button buttonList callback childCount color data duration element eventID gameObject height includeNone label maxValue maxVolume mediaPlayer newButton newLabel onClick onValueChanged openButton path pathButton pathGroup pathInputField pauseButton playButton playOnAwake playing screen screenAspectRatioFitter seekBar seekBarEvents seekBarPointerDown seekBarPointerUp selected selectedButtonColor sender stopButton text textMeshPro texture toggled track trackButtonPrefab trackLabelPrefab tracks tracksButton tracksButtonsGroup transform triggers type unselectedButtonColor value vlcPlayer volumeBar volumeButton wholeNumbers width
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCSubtitles.cs
+  Classes: VLCSubtitles
+  Methods: Awake OnDisable PlayPause SeekBackward SeekForward Stop Update
+  Variables: LibVLC MediaPlayer Texture2D
+  Usages: Application Core CreateExternalTexture Debug Dispose Equals FlipTextures GetComponent GetTexture Id Initialize IntPtr IsPlaying Language LibVLC LibVLCSharp Linq Log LogType Media MediaPlayer MonoBehaviour None Pause PlayAsync PlayPause RGBA32 Renderer Select SetStackTraceLogType SetTime Single Size StackTraceLogType Stop System Tasks Text Texture2D TextureFormat TextureHelper Threading Time TrackType Tracks UnityEngine UpdateExternalTexture Uri Zero _libVLC _mediaPlayer dataPath enableDebugLogs height i_videoHeight i_videoWidth mainTexture material playing seekTimeDelta tex texptr track trackList transform updated width
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCThreeSixty.cs
+  Classes: VLCThreeSixty
+  Methods: Awake Do360Navigation OnDisable OnGUI PlayPause Update
+  Variables: LibVLC MediaPlayer Texture2D
+  Usages: Application Core CreateExternalTexture Data Debug Dispose Do360Navigation DownArrow Equirectangular GetComponent GetKey GetTexture Initialize Input IntPtr IsPlaying KeyCode LeftArrow LibVLC LibVLCSharp Log LogType Math Max Media MediaParseOptions MediaPlayer MonoBehaviour None ParseAsync ParseNetwork Pause Pitch Play PlayPause Projection RGBA32 Renderer RightArrow Roll Run Screen SetStackTraceLogType Size StackTraceLogType Stop System Task Tasks Texture2D TextureFormat Threading TrackList TrackType UnityEngine UpArrow UpdateExternalTexture UpdateViewpoint Uri Video VideoProjection Viewpoint Yaw Zero _libVLC _mediaPlayer dataPath enableDebugLogs fov height i_videoHeight i_videoWidth is360 mainTexture material media playing range result seekTimeDelta tex texptr trackList updated width
+
+C#: /Assets/VLCUnity/Demos/Scripts/VLCYouTubePlayback.cs
+  Classes: VLCYouTubePlayback
+  Methods: Awake OnDisable PlayPause SeekBackward SeekForward StartPlayback Stop Task Update
+  Variables: LibVLC MediaPlayer Texture2D
+  Usages: Application Core CreateExternalTexture Debug Dispose First FlipTextures GetComponent GetTexture Initialize IntPtr IsPlaying LibVLC LibVLCSharp Linq Log LogType Media MediaParseOptions MediaPlayer MonoBehaviour None ParseAsync ParseNetwork Pause Play RGBA32 Renderer SetStackTraceLogType SetTime Size StackTraceLogType StartPlayback Stop SubItems System Tasks Texture2D TextureFormat TextureHelper Threading Time UnityEngine UpdateExternalTexture Uri Zero _libVLC _mediaPlayer dataPath enableDebugLogs height i_videoHeight i_videoWidth mainTexture material playing seekTimeDelta tex texptr transform updated width youtubeLink

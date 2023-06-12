@@ -13,7 +13,7 @@ from splitters.text_splitter import TextSplitter
 
 
 class CSharpParser(BaseParser):
-    name = 'C#'
+    name = 'CSharp'
     extensions = ('cs',)
     mime_types = ('text/x-csharp',)
     store_instruction = 'Represent the C# code for retrieval'

@@ -34,10 +34,10 @@ REPOS = [
     # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 
     # C, C++, C#
-    ('videolan-vlc-unity', 'https://github.com/videolan/vlc-unity/archive/refs/heads/master.zip'),
+    # ('videolan-vlc-unity', 'https://github.com/videolan/vlc-unity/archive/refs/heads/master.zip'),
 
     # C#, Batch
-    ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    # ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
     ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
