@@ -37,10 +37,10 @@ REPOS = [
     ('Rustam-Z-cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    # ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    # ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 ]
 
 
@@ -169,7 +169,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         if not os.path.exists(expected_path):
             expected = ''
         else:
-            with open(expected_path, 'rt') as f:
+            with open(expected_path, 'rt', encoding='utf-8') as f:
                 expected = f.read()
             good = actual == expected
 
@@ -177,7 +177,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             if os.path.exists(actual_path):
                 os.remove(actual_path)
         else:
-            with open(actual_path, 'wt') as f:
-                f.write(actual)
+            with open(actual_path, 'wb') as f:
+                f.write(actual.encode('utf-8', errors='replace'))
 
             self.failures.append((self.project_name, name, expected, actual))

@@ -1,62 +1,62 @@
-C#: /ToolbarManager/Plugin.cs
+CSharp: /ToolbarManager/Plugin.cs
   Namespaces: ToolbarManager
   Classes: Plugin
   Methods: Dispose Init Update
   Variables: Storage
 
-C#: /ToolbarManager/Extensions/MyGuiSandboxExt.cs
+CSharp: /ToolbarManager/Extensions/MyGuiSandboxExt.cs
   Classes: MyGuiSandboxExt
   Methods: Show
 
-C#: /ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs
+CSharp: /ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs
   Classes: MyGuiScreenToolbarConfigBaseExt
   Methods: AddGridItemToToolbar
   Variables: MethodInfo
 
-C#: /ToolbarManager/Extensions/PathExt.cs
+CSharp: /ToolbarManager/Extensions/PathExt.cs
   Classes: PathExt
   Methods: SanitizeFileName
 
-C#: /ToolbarManager/Gui/CustomSearchCondition.cs
+CSharp: /ToolbarManager/Gui/CustomSearchCondition.cs
   Classes: CustomSearchCondition
   Methods: AddDefinitionGroup Clean CleanDefinitionGroups GetSortedBlocks MatchesCondition
 
-C#: /ToolbarManager/Gui/CustomToolbarConfigScreen.cs
+CSharp: /ToolbarManager/Gui/CustomToolbarConfigScreen.cs
   Classes: CustomToolbarConfigScreen
   Methods: AddToolsAndAnimations CustomToolbarConfigScreen HandleInput LoadSelectedItem RecreateControls SetSearchText UpdateGridBlocksBySearchCondition
   Variables: CustomSearchCondition MyGuiControlLabel
 
-C#: /ToolbarManager/Gui/ListDialog.cs
+CSharp: /ToolbarManager/Gui/ListDialog.cs
   Classes: ListDialog
   Methods: AddRowForFile CallResultCallback CellTextComparison CountUsedSlots CreateButtons CreateListBox GetFriendlyName JsonData ListDialog ListFiles OnCancel OnDelete OnDeleteForSure OnItemDoubleClicked OnLoad OnMerge OnNewNameSpecified OnOverwriteForSure OnRename ReadJson RecreateControls ReturnLoad ReturnMerge TextComparison TryFindListItem XmlToJsonPath
   Variables: MyGuiControlButton MyGuiControlTable
 
-C#: /ToolbarManager/Gui/NameDialog.cs
+CSharp: /ToolbarManager/Gui/NameDialog.cs
   Classes: NameDialog
   Methods: CallResultCallback GetFriendlyName NameDialog OnCancel OnOk RecreateControls ReturnOk
   Variables: MyGuiControlButton MyGuiControlTextbox
 
-C#: /ToolbarManager/Logic/Slot.cs
+CSharp: /ToolbarManager/Logic/Slot.cs
   Classes: Slot
   Methods: Activate Clear Get Merge Set Slot
 
-C#: /ToolbarManager/Logic/Storage.cs
+CSharp: /ToolbarManager/Logic/Storage.cs
   Classes: Storage
   Methods: FormatDir FormatPath OnItemSelected OnLoadToolbar OnNameSpecified OnOverwriteForSure OnSaveToolbar Storage
 
-C#: /ToolbarManager/Logic/Toolbar.cs
+CSharp: /ToolbarManager/Logic/Toolbar.cs
   Classes: Toolbar
   Methods: Associate CalculateDisplayNameTextChecksum Clear Dissociate Merge Read Set Toolbar Write WriteJson
   Variables: MyToolbarType
 
-C#: /ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs
+CSharp: /ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs
   Classes: MyGuiScreenGamePlayPatch
   Methods: GetPressedKeys HandleUnhandledInputPrefix OpenCubeBuilder
   Variables: StringBuilder
 
-C#: /ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs
+CSharp: /ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs
   Classes: MyGuiScreenToolbarConfigBasePatch
   Methods: RecreateControlsPostfix createLoadButton createSaveButton
   Variables: Action
 
-C#: /ToolbarManager/Properties/AssemblyInfo.cs
+CSharp: /ToolbarManager/Properties/AssemblyInfo.cs
