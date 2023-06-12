@@ -23,15 +23,19 @@ class TreeSitterParser(BaseParser):
         cursor: TreeCursor = tree.walk()
 
         for sentence in self.splitter.split_text(decode_replace(content)):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text.replace('\r\n', '\n').replace('\r', ''))
 
         name_map = {}
+        print(f'Parsing: {path}')
         for name in self.collect_names(walk_nodes(cursor)):
+
             if isinstance(name.name, bytes):
                 name.name = decode_replace(name.name)
+            name.name = name.name.replace('\r\n', '\n').replace('\r', '').strip()
 
             if isinstance(name.definition, bytes):
                 name.definition = decode_replace(name.definition)
+            name.definition = name.definition.replace('\r\n', '\n').replace('\r', '').strip()
 
             names = name_map.get(name.category)
             if names is None:
@@ -59,17 +63,18 @@ class TreeSitterParser(BaseParser):
             if not names:
                 continue
 
-            for name in names:
-                if name.definition:
-                    yield Fragment(
-                        uuid=new_uuid(),
-                        path=path,
-                        lineno=name.lineno,
-                        depth=name.depth,
-                        type=name.category,
-                        name=name.name,
-                        text=name.definition,
-                    )
+            if key != 'usage':
+                for name in names:
+                    if name.definition:
+                        yield Fragment(
+                            uuid=new_uuid(),
+                            path=path,
+                            lineno=name.lineno,
+                            depth=name.depth,
+                            type=name.category,
+                            name=name.name,
+                            text=name.definition,
+                        )
 
             summary.append(f"  {label}: {' '.join(name.name for name in names)}\n")
 

@@ -3,6 +3,7 @@ from typing import Iterator, Tuple
 from tree_sitter import Node
 
 from common.constants import C
+from common.text import decode_replace
 from common.tools import tiktoken_len
 from parsers.model import Name
 from parsers.tree_sitter_parser import TreeSitterParser
@@ -18,6 +19,7 @@ class CppParser(TreeSitterParser):
     tree_sitter_language_name = 'cpp'
 
     categories = [
+        ('macro', 'Macro'),
         ('namespace', 'Namespaces'),
         ('interface', 'Interfaces'),
         ('class', 'Classes'),
@@ -32,38 +34,75 @@ class CppParser(TreeSitterParser):
             chunk_size=C.MAX_TOKENS_PER_FRAGMENT,
             length_function=tiktoken_len,
             separators=(
-                ('<', r"^\s+namespace\s+"),
-                ('<', r"^\s+interface\s+"),
                 ('<', r"^\s+class\s+"),
-                ('<', r"^\s+using\s+"),
                 ('<', r"^\s+while\s+"),
                 ('<', r"^\s+for\s+"),
                 ('<', r"^\s+if\s+"),
                 ('<', r"^\s+elif\s+"),
                 ('<', r"^\s+else\s+"),
                 ('<', r"^\s+try\s+"),
+                ('<', r"^\s+#if\s+"),
+                ('<', r"^\s+#ifdef\s+"),
+                ('<', r"^\s+#ifndef\s+"),
             )
         )
 
     def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]):
         for node, lineno, depth in nodes:
-            if node.type in ['namespace', 'class', 'function', 'method', 'variable']:
-                if node.type in ['namespace', 'class']:
-                    for child in node.children:
-                        if child.type == 'identifier':
-                            yield Name(category=node.type, name=child.text, definition=node.text, lineno=lineno, depth=depth)
-                elif node.type in ['function', 'method']:
-                    for child in node.children:
-                        if child.type == 'identifier':
-                            yield Name(category=node.type, name=child.text, definition=node.text, lineno=lineno, depth=depth)
-                        if child.type == 'call_expression':
-                            for grandchild in child.children:
-                                if grandchild.type == 'identifier':
-                                    yield Name(category=node.type, name=grandchild.text, definition='', lineno=lineno, depth=depth)
-                elif node.type == 'variable':
-                    for child in node.children:
-                        if child.type == 'identifier':
-                            if child.prev_sibling and child.prev_sibling.type == 'type':
-                                yield Name(category=node.type, name=child.text, definition=node.text, lineno=lineno, depth=depth)
-                            else:
-                                yield Name(category=node.type, name=child.text, definition='', lineno=lineno, depth=depth)
+            if not node.child_count:
+                print(f'@{depth}|{node.type}|{decode_replace(node.text)}')
+
+            if node.type == 'class' and node.parent:
+                sibling: Node = node.next_sibling
+                while sibling:
+                    if sibling.type == '{':
+                        yield Name(category='class', name=node.text, definition=node.parent.text, lineno=lineno, depth=depth)
+                        break
+                    sibling = sibling.next_sibling
+
+            elif node.type == 'identifier':
+                category = ''
+                sibling: Node = node.next_sibling
+                while sibling:
+                    if sibling.type == '(':
+                        category = 'function'
+                        break
+                    sibling = sibling.next_sibling
+
+                if category == 'function':
+                    if node.prev_sibling and node.prev_sibling.type == '::' and node.prev_sibling.prev_sibling and node.prev_sibling.prev_sibling.type == 'namespace_identifier':
+                        yield Name(category='method', name=node.prev_sibling.prev_sibling.text + b'::' + node.text, definition=node.prev_sibling.prev_sibling.text, lineno=lineno, depth=depth)
+                    else:
+                        for child in node.parent.children:
+                            if child.type == 'class':
+                                category = 'method'
+                                break
+                        yield Name(category=category, name=node.text, definition=node.parent.text, lineno=lineno, depth=depth)
+
+                elif node.prev_sibling and node.prev_sibling.type == '#define':
+                    yield Name(category='macro', name=node.text, definition=node.prev_sibling.text, lineno=lineno, depth=depth)
+
+                elif node.prev_sibling and node.prev_sibling.type == 'class':
+                    yield Name(category='class', name=node.text, definition=node.prev_sibling.text, lineno=lineno, depth=depth)
+
+                elif node.prev_sibling and node.prev_sibling.type == '=':
+                    yield Name(category='variable', name=node.text, definition=node.text, lineno=lineno, depth=depth)
+
+                elif node.prev_sibling and node.prev_sibling.type == '::' and node.prev_sibling.prev_sibling and node.prev_sibling.prev_sibling.type == 'namespace_identifier':
+                    yield Name(category='method', name=node.prev_sibling.prev_sibling.text + b'::' + node.text, definition=node.prev_sibling.prev_sibling.text, lineno=lineno, depth=depth)
+
+                else:
+                    yield Name(category='variable', name=node.text, definition='', lineno=lineno, depth=depth)
+
+            elif node.type == 'field_identifier' and node.parent:
+                category = 'field'
+                sibling: Node = node.next_sibling
+                while sibling:
+                    if sibling.type == '(':
+                        category = 'method'
+                        break
+                    sibling = sibling.next_sibling
+                yield Name(category=category, name=node.text, definition=node.parent.text, lineno=lineno, depth=depth)
+
+            elif node.type == 'type_identifier':
+                yield Name(category='class', name=node.text, definition='', lineno=lineno, depth=depth)

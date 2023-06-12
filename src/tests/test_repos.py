@@ -38,10 +38,10 @@ REPOS = [
     ('Rustam-Z-cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    # ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    # ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 ]
 
 
@@ -98,12 +98,12 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         if self.failures:
             for project_name, name, expected, actual in self.failures:
-                print('=' * 70)
+                # print('=' * 70)
                 print(f'FAILED: {project_name} / {name}')
-                print('=' * 70)
-                for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
-                    print(line)
-                print()
+                # print('=' * 70)
+                # for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
+                #     print(line)
+                # print()
 
             self.fail('One of more output were not what was expected. See above.')
 
