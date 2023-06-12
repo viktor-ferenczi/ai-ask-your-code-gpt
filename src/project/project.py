@@ -138,6 +138,9 @@ class Project:
         placeholders = ','.join('?' for _ in uuids)
         cursor.execute(f'UPDATE Fragment SET embedded=1 WHERE uuid IN ({placeholders})', tuple(uuids))
 
+    def get_all_fragments(self, cursor: Cursor) -> List[Fragment]:
+        return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment ORDER BY path, lineno')]
+
     def get_fragments_to_embed(self, cursor: Cursor, limit: int) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE embedded=0 ORDER BY path, lineno LIMIT ?', (limit,))]
 

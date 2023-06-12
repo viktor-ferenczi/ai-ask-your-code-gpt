@@ -6,7 +6,7 @@ CSharp: /ToolbarManager/Plugin.cs
 
 CSharp: /ToolbarManager/Extensions/MyGuiSandboxExt.cs
   Classes: MyGuiSandboxExt
-  Methods: Show
+  Methods: Show Show
 
 CSharp: /ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs
   Classes: MyGuiScreenToolbarConfigBaseExt
@@ -19,26 +19,26 @@ CSharp: /ToolbarManager/Extensions/PathExt.cs
 
 CSharp: /ToolbarManager/Gui/CustomSearchCondition.cs
   Classes: CustomSearchCondition
-  Methods: AddDefinitionGroup Clean CleanDefinitionGroups GetSortedBlocks MatchesCondition
+  Methods: AddDefinitionGroup Clean CleanDefinitionGroups GetSortedBlocks MatchesCondition MatchesCondition
 
 CSharp: /ToolbarManager/Gui/CustomToolbarConfigScreen.cs
   Classes: CustomToolbarConfigScreen
-  Methods: AddToolsAndAnimations CustomToolbarConfigScreen HandleInput LoadSelectedItem RecreateControls SetSearchText UpdateGridBlocksBySearchCondition
+  Methods: AddToolsAndAnimations CustomToolbarConfigScreen CustomToolbarConfigScreen HandleInput LoadSelectedItem RecreateControls SetSearchText UpdateGridBlocksBySearchCondition
   Variables: CustomSearchCondition MyGuiControlLabel
 
 CSharp: /ToolbarManager/Gui/ListDialog.cs
   Classes: ListDialog
   Methods: AddRowForFile CallResultCallback CellTextComparison CountUsedSlots CreateButtons CreateListBox GetFriendlyName JsonData ListDialog ListFiles OnCancel OnDelete OnDeleteForSure OnItemDoubleClicked OnLoad OnMerge OnNewNameSpecified OnOverwriteForSure OnRename ReadJson RecreateControls ReturnLoad ReturnMerge TextComparison TryFindListItem XmlToJsonPath
-  Variables: MyGuiControlButton MyGuiControlTable
+  Variables: MyGuiControlButton MyGuiControlButton MyGuiControlButton MyGuiControlButton MyGuiControlButton MyGuiControlTable
 
 CSharp: /ToolbarManager/Gui/NameDialog.cs
   Classes: NameDialog
   Methods: CallResultCallback GetFriendlyName NameDialog OnCancel OnOk RecreateControls ReturnOk
-  Variables: MyGuiControlButton MyGuiControlTextbox
+  Variables: MyGuiControlButton MyGuiControlButton MyGuiControlTextbox
 
 CSharp: /ToolbarManager/Logic/Slot.cs
   Classes: Slot
-  Methods: Activate Clear Get Merge Set Slot
+  Methods: Activate Clear Get Merge Set Slot Slot Slot Slot Slot
 
 CSharp: /ToolbarManager/Logic/Storage.cs
   Classes: Storage
@@ -46,7 +46,7 @@ CSharp: /ToolbarManager/Logic/Storage.cs
 
 CSharp: /ToolbarManager/Logic/Toolbar.cs
   Classes: Toolbar
-  Methods: Associate CalculateDisplayNameTextChecksum Clear Dissociate Merge Read Set Toolbar Write WriteJson
+  Methods: Associate CalculateDisplayNameTextChecksum Clear Dissociate Merge Read Read Set Toolbar Toolbar Toolbar Toolbar Write Write WriteJson WriteJson
   Variables: MyToolbarType
 
 CSharp: /ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs
@@ -57,6 +57,6 @@ CSharp: /ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs
 CSharp: /ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs
   Classes: MyGuiScreenToolbarConfigBasePatch
   Methods: RecreateControlsPostfix createLoadButton createSaveButton
-  Variables: Action
+  Variables: Action Action
 
 CSharp: /ToolbarManager/Properties/AssemblyInfo.cs

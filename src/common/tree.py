@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, Tuple
 
 from tree_sitter import TreeCursor, Node
 
@@ -19,6 +19,8 @@ def walk_children(cursor: TreeCursor, depth=0) -> Iterator[TreeCursor]:
     cursor.goto_parent()
 
 
-def walk_nodes(cursor: TreeCursor) -> Iterator[Node]:
-    for c, _ in walk_children(cursor):
-        yield c.node
+def walk_nodes(cursor: TreeCursor) -> Iterator[Tuple[Node, int, int]]:
+    for cur, depth in walk_children(cursor):
+        node = cur.node
+        lineno = 1 + node.start_point[0]
+        yield node, lineno, depth

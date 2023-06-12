@@ -1,24 +1,30 @@
-from typing import Iterator
+from typing import Iterator, Tuple
 
-from tree_sitter import Parser, Tree, TreeCursor, Node
+from tree_sitter import Node
 
 from common.constants import C
-from common.text import decode_replace
-from common.tools import tiktoken_len, new_uuid
-from common.tree import walk_nodes
-from model.fragment import Fragment
-from parsers.base_parser import BaseParser
+from common.tools import tiktoken_len
 from parsers.model import Name
+from parsers.tree_sitter_parser import TreeSitterParser
 from splitters.text_splitter import TextSplitter
 
 
-class CppParser(BaseParser):
+class CppParser(TreeSitterParser):
     name = 'C++'
-    extensions = ('cpp',)
-    mime_types = ('text/x-cpp', 'text/x-cplusplus')
+    extensions = ('c', 'cpp', 'c++', 'h', 'hpp', 'h++')
+    mime_types = ('text/c', 'text/x-cpp', 'text/x-cplusplus')
     store_instruction = 'Represent the C++ code for retrieval'
     query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'cpp'
+
+    categories = [
+        ('namespace', 'Namespaces'),
+        ('interface', 'Interfaces'),
+        ('class', 'Classes'),
+        ('method', 'Methods'),
+        ('variable', 'Variables'),
+        ('usage', 'Usages'),
+    ]
 
     def __init__(self) -> None:
         super().__init__()
@@ -39,72 +45,25 @@ class CppParser(BaseParser):
             )
         )
 
-    def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        parser = Parser()
-        parser.set_language(self.tree_sitter_language)
-        tree: Tree = parser.parse(content)
-        cursor: TreeCursor = tree.walk()
-
-        for sentence in self.splitter.split_text(decode_replace(content)):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
-
-        name_map = {}
-        for name in self.collect_names(walk_nodes(cursor)):
-            name.name = decode_replace(name.name)
-            names = name_map.get(name.category)
-            if names is None:
-                names = name_map[name.category] = set()
-            names.add(name)
-
-        usages = set()
-        for key in name_map:
-            names = name_map[key]
-            usages.update(name for name in names if not name.definition)
-            name_map[key] = [name for name in names if name.definition]
-        name_map['usage'] = usages
-
-        summary = [
-            f'{self.name}: {path}\n',
-        ]
-        table = [
-            ('namespace', 'Namespaces'),
-            ('interface', 'Interfaces'),
-            ('class', 'Classes'),
-            ('method', 'Methods'),
-            ('variable', 'Variables'),
-            ('usage', 'Usages'),
-        ]
-        for key, label in table:
-            names = name_map.get(key)
-            if not names:
-                continue
-            names = [name.name for name in names]
-            names = [name for name in names if len(name) >= 3 or name[:1].isupper()]
-            if names:
-                summary.append(f"  {label}: {' '.join(sorted(names))}\n")
-
-        summary = ''.join(summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
-
-    def collect_names(self, nodes: Iterator[Node]):
-        for node in nodes:
+    def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]):
+        for node, lineno, depth in nodes:
             if node.type in ['namespace', 'class', 'function', 'method', 'variable']:
                 if node.type in ['namespace', 'class']:
                     for child in node.children:
                         if child.type == 'identifier':
-                            yield Name(category=node.type, name=child.text, definition=True)
+                            yield Name(category=node.type, name=child.text, definition=node.text, lineno=lineno, depth=depth)
                 elif node.type in ['function', 'method']:
                     for child in node.children:
                         if child.type == 'identifier':
-                            yield Name(category=node.type, name=child.text, definition=True)
+                            yield Name(category=node.type, name=child.text, definition=node.text, lineno=lineno, depth=depth)
                         if child.type == 'call_expression':
                             for grandchild in child.children:
                                 if grandchild.type == 'identifier':
-                                    yield Name(category=node.type, name=grandchild.text, definition=False)
+                                    yield Name(category=node.type, name=grandchild.text, definition='', lineno=lineno, depth=depth)
                 elif node.type == 'variable':
                     for child in node.children:
                         if child.type == 'identifier':
                             if child.prev_sibling and child.prev_sibling.type == 'type':
-                                yield Name(category=node.type, name=child.text, definition=True)
+                                yield Name(category=node.type, name=child.text, definition=node.text, lineno=lineno, depth=depth)
                             else:
-                                yield Name(category=node.type, name=child.text, definition=False)
+                                yield Name(category=node.type, name=child.text, definition='', lineno=lineno, depth=depth)

@@ -3,6 +3,7 @@ import difflib
 import os
 import shutil
 import unittest
+from pprint import pformat
 
 from quart import Quart, send_file
 
@@ -37,10 +38,10 @@ REPOS = [
     ('Rustam-Z-cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    # ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    ('viktor-ferenczi-toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    # ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    ('wrthmn-Hyperskill-Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 ]
 
 
@@ -143,6 +144,11 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             actual = await project.summarize(tail=f'.{extension}')
             if actual:
                 self.verify(f'summary.{extension}', actual)
+
+        with project.cursor() as cursor:
+            fragments = project.get_all_fragments(cursor)
+        actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
+        self.verify('all-fragments', actual)
 
     async def wait_for_processing(self, project):
         inventory = Inventory()

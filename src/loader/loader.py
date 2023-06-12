@@ -88,6 +88,8 @@ async def extract_worker():
                 with timer(f'Extracted fragments of project {project_id!r}'):
                     loader = Extractor(inventory, project)
                     await loader.load()
+                fragment_count = project.count_fragments()
+                print(f'Fragment count: {fragment_count}')
             except KeyboardInterrupt:
                 raise
             except Exception:
