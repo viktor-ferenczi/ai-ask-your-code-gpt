@@ -235,6 +235,14 @@ async def search(project_id: str):
     if path and not path.startswith('/'):
         path = f'/{path}'
 
+    if path and tail and not name:
+        path = f'{path.rstrip("/")}/{tail.lstrip("/")}'
+        tail = ''
+
+    if path and name and not tail:
+        path = f'{path.rstrip("/")}/{name.lstrip("/")}'
+        name = ''
+
     limit = 10
     if path or tail or name:
         limit = 50
