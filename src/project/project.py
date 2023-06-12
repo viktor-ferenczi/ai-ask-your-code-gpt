@@ -73,12 +73,21 @@ class Project:
         if not self.exists:
             return 0
 
-        inventory = Inventory()
-        if inventory.has_project_embedded(self.project_id):
-            return 100
+        for _ in range(5):
+            try:
+                inventory = Inventory()
+                if inventory.has_project_embedded(self.project_id):
+                    return 100
 
-        fragment_count, embedded_count = self.count_embedded_fragments()
-        return int(round(fragment_count / embedded_count)) if embedded_count else 0
+                fragment_count, embedded_count = self.count_embedded_fragments()
+                return int(round(fragment_count / embedded_count)) if embedded_count else 0
+            except sqlite3.OperationalError as e:
+                if 'database is locked' in str(e):
+                    asyncio.run(asyncio.sleep(0.2 + random.random()))
+                    continue
+                raise
+
+        return 0
 
     async def create_database(self):
         if os.path.exists(self.db_path):

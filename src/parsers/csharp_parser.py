@@ -50,15 +50,17 @@ class CSharpParser(BaseParser):
 
         name_map = {}
         for name in self.collect_names(walk_nodes(cursor)):
+            name.name = decode_replace(name.name)
             names = name_map.get(name.category)
             if names is None:
                 names = name_map[name.category] = set()
             names.add(name)
 
         usages = set()
-        for names in name_map.values():
+        for key in name_map:
+            names = name_map[key]
             usages.update(name for name in names if not name.definition)
-            names[:] = [name for name in names if name.definition]
+            name_map[key] = [name for name in names if name.definition]
         name_map['usage'] = usages
 
         summary = [

@@ -50,15 +50,17 @@ class CppParser(BaseParser):
 
         name_map = {}
         for name in self.collect_names(walk_nodes(cursor)):
+            name.name = decode_replace(name.name)
             names = name_map.get(name.category)
             if names is None:
                 names = name_map[name.category] = set()
             names.add(name)
 
         usages = set()
-        for names in name_map.values():
+        for key in name_map:
+            names = name_map[key]
             usages.update(name for name in names if not name.definition)
-            names[:] = [name for name in names if name.definition]
+            name_map[key] = [name for name in names if name.definition]
         name_map['usage'] = usages
 
         summary = [
@@ -83,16 +85,18 @@ class CppParser(BaseParser):
 
     def collect_names(self, nodes: Iterator[Node]):
         for node in nodes:
+            field_name = node.child_by_field_name('name')
             if node.type in ('namespace', 'class', 'function', 'method'):
                 category = node.type
-                name = node.child_by_field_name('name').text
-                definition = node.child_by_field_name('definition') is not None
-                yield Name(category, name, definition)
+                if field_name is not None:
+                    name = field_name.text
+                    definition = node.child_by_field_name('definition') is not None
+                    yield Name(category, name, definition)
             elif node.type == 'variable':
                 variable_node = node
                 while variable_node is not None and variable_node.type != 'declaration':
                     variable_node = variable_node.parent
-                if variable_node is not None:
-                    name = node.child_by_field_name('name').text
+                if variable_node is not None and field_name is not None:
+                    name = field_name.text
                     definition = variable_node.child_by_field_name('initializer') is not None
                     yield Name('variable', name, definition)
