@@ -25,17 +25,22 @@ class TextParser(BaseParser):
         if not text.strip():
             return
 
-        for sentence in self.splitter.split_text(text):
-
-            yield Fragment(
-                uuid=str(uuid.uuid4()),
-                path=path,
-                lineno=sentence.lineno,
-                depth=sentence.depth,
-                type='documentation',
-                name='',
-                text=sentence.text,
-            )
+        # Avoid single line JSON files and such, they are a CPU hog
+        data_file = path.endswith('.json') or path.endswith('.csv') or path.endswith('.tsv') or path.endswith('.dsv')
+        if not data_file:
+            first_line_length = text.find('\n')
+            line_count = text.count('\n')
+            if first_line_length >= 0 and first_line_length < 1000 and line_count < 5000:
+                for sentence in self.splitter.split_text(text):
+                    yield Fragment(
+                        uuid=str(uuid.uuid4()),
+                        path=path,
+                        lineno=sentence.lineno,
+                        depth=sentence.depth,
+                        type='documentation',
+                        name='',
+                        text=sentence.text,
+                    )
 
         yield Fragment(
             uuid=str(uuid.uuid4()),

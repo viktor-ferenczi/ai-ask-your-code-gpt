@@ -61,5 +61,5 @@ async def embed_query():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('HTTP_PORT', '40002'))
+    port = int(os.environ.get('HTTP_PORT', '40200'))
     asyncio.run(run_app(app, host='localhost', port=port, debug=C.DEVELOPMENT))

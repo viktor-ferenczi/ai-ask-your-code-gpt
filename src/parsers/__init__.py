@@ -11,6 +11,7 @@ from parsers.cpp_parser import CppParser
 from parsers.csharp_parser import CSharpParser
 from parsers.css_parser import CssParser
 from parsers.html_parser import HtmlParser
+from parsers.ipynb_parser import PythonNotebookParser
 from parsers.java_parser import JavaParser
 from parsers.javascript_parser import JavaScriptParser
 from parsers.markdown_parser import MarkdownParser
@@ -22,6 +23,7 @@ PARSERS = (
     TextParser,
     MarkdownParser,
     PythonParser,
+    PythonNotebookParser,
     JavaScriptParser,
     PhpParser,
     HtmlParser,
@@ -61,7 +63,7 @@ def build_tree_sitter_library():
     languages = sorted(
         parser_cls.tree_sitter_language_name
         for parser_cls in PARSERS
-        if parser_cls.tree_sitter_language_name
+        if parser_cls.tree_sitter_language_name and parser_cls.name != 'PythonNotebook'
     )
     assert len(set(languages)) == len(languages), 'More than one class is using the same tree-sitter language'
 
