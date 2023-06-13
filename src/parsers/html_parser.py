@@ -64,7 +64,7 @@ class HtmlParser(BaseParser):
         # for child, depth in walk_children(cursor):
         #     node: Node = child.node
         #     if not node.child_count:
-        #         print(f"@{depth}|{decode_replace(node.text)}|{node.type}|")
+        #         print(f"@{depth}|{node.type}|{decode_replace(node.text)}|")
         #     lineno = 1 + node.start_point[0]
         #     continue # TODO: Complete it
         #     if node.type == 'import_statement' or node.type == 'import_from_statement':

@@ -72,46 +72,51 @@ class PythonNotebookParser(BaseParser):
         functions: Set[str] = set()
         methods: Set[str] = set()
         variables: Set[str] = set()
-        usages: Set[str] = set()
 
+        debug = False # b'class PromptTemplate' in content
         for child, depth in walk_children(cursor):
             node: Node = child.node
-            # if not node.child_count:
-            #     print(f"@{depth}|{decode_replace(node.text)}|{node.type}|")
+            if debug and not node.child_count:
+                print(f"@{depth}|{node.type}|{decode_replace(node.text)}|")
+
             lineno = 1 + node.start_point[0]
-            if node.type == 'import_statement' or node.type == 'import_from_statement':
+
+            if node.type == 'import' or node.type == 'from':
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
-            elif node.type == 'class_definition':
-                name = decode_replace(node.child_by_field_name('name').text)
+                continue
+
+            if node.type == 'class' and node.next_sibling:
+                name = decode_replace(node.next_sibling.text)
                 classes.add(name)
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
-            elif node.type == 'function_definition':
-                name = decode_replace(node.child_by_field_name('name').text)
+                continue
+
+            if node.type == 'def' and node.next_sibling:
+                name = decode_replace(node.next_sibling.text)
                 if depth:
                     methods.add(name)
                 else:
                     functions.add(name)
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
-            elif node.type == 'expression_statement':
-                if node.child_count > 0 and node.child_count and node.children[0].type == 'assignment':
-                    text = decode_replace(node.text)
-                    name = (text.split('=', 1)[0] if '=' in text else text).split()[0].strip()
-                    variables.add(name)
-                    for sentence in self.splitter.split_text(decode_replace(node.text)):
-                        yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
-            elif node.type == 'identifier':
+                continue
+
+            if node.type == 'identifier':
                 name = decode_replace(node.text)
-                usages.add(name)
+                variables.add(name)
+                continue
 
-        usages -= functions | classes | methods | variables
+            if node.type == 'string_content' or node.type == 'comment':
+                if node.text and len(node.text) >= 20:
+                    for sentence in self.splitter.split_text(decode_replace(node.text)):
+                        yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'documentation', '', sentence.text)
+                    continue
 
-        variables -= {v for v in variables if len(v) < 3 and not v[:1].isupper()}
-        usages -= {v for v in usages if len(v) < 3 and not v[:1].isupper()}
+        variables = {v for v in variables if len(v) >= 3 or v[:1].isupper()}
 
-        if not functions and not classes and not methods and not variables and not usages:
+        if not functions and not classes and not methods and not variables:
             return
 
         summary = [
@@ -125,8 +130,6 @@ class PythonNotebookParser(BaseParser):
             summary.append(f"  Methods: {' '.join(sorted(methods))}")
         if variables:
             summary.append(f"  Variables: {' '.join(sorted(variables))}")
-        if usages:
-            summary.append(f"  Usages: {' '.join(sorted(usages))}")
 
         summary = ''.join(f'{line}\n' for line in summary)
         yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)

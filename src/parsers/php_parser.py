@@ -51,10 +51,11 @@ class PhpParser(BaseParser):
         variables: Set[str] = set()
         usages: Set[str] = set()
 
+        debug = False
         for child, depth in walk_children(cursor):
             node: Node = child.node
-            # if not node.child_count:
-            #     print(f"@{depth}|{decode_replace(node.text)}|{node.type}|")
+            if debug and not node.child_count:
+                print(f"@{depth}|{node.type}|{decode_replace(node.text)}|")
             lineno = 1 + node.start_point[0]
             if node.type == 'class' and node.next_sibling is not None and node.next_sibling.type == 'name':
                 name = decode_replace(node.next_sibling.text)
