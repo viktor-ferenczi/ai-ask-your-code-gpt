@@ -75,7 +75,7 @@ async def create():
     # A common mistake GPT-4 makes
     # Example: https://github.com/yourusername/yourproject/
     if 'yourusername/yourproject' in url:
-        return Response(response='The URL must start with http:// or https://', status=404)
+        return Response(response='Do not use an example "yourusername/yourproject" download URL', status=404)
 
     if url.startswith('https://www.dropbox.com/') and url.endswith('?dl=0'):
         url = f'{url[:-5]}?dl=1'
