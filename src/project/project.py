@@ -129,8 +129,8 @@ class Project:
         cursor.execute('CREATE INDEX idx_fragment_name ON Fragment(name)')
 
     def insert_fragment(self, cursor: Cursor, fragment: Fragment):
-        cursor.execute('INSERT INTO Fragment(uuid, path, lineno, depth, type, name, text) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                       (fragment.uuid, fragment.path, fragment.lineno, fragment.depth, fragment.type, fragment.name, fragment.text))
+        cursor.execute('INSERT INTO Fragment(uuid, path, lineno, depth, type, name, text, embedded) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                       (fragment.uuid, fragment.path, fragment.lineno, fragment.depth, fragment.type, fragment.name, fragment.text, fragment.type != 'documentation'))
 
     def mark_fragments_embedded(self, cursor: Cursor, uuids: List[str]):
         if not uuids:

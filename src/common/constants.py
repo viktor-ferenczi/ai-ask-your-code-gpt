@@ -14,13 +14,13 @@ class C:
     # Limits
 
     # Archive file
-    MAX_ARCHIVE_SIZE = 20 << 20
-    MAX_FILE_SIZE = 5 << 20
+    MAX_ARCHIVE_SIZE = 200 << 20
     MAX_TOTAL_SIZE = 200 << 20
-    MAX_FILE_COUNT = MAX_TOTAL_SIZE >> 10
+    MAX_FILE_SIZE = 5 << 20
+    MAX_FILE_COUNT = 200 << 10
 
     # Splitter
-    MAX_TOKENS_PER_FRAGMENT = 150  # Tokens
+    MAX_TOKENS_PER_FRAGMENT = 200  # Tokens
 
     # Embedder
     MAX_BATCH_SIZE = 1024

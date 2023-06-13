@@ -113,7 +113,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     async def verify_repo(self, name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{name}.zip')
         if not os.path.isfile(zip_path):
-            zip_content = await download_file(zip_url, max_size=20 << 20)
+            zip_content = await download_file(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
             with open(zip_path, 'wb') as zip_file:
                 zip_file.write(zip_content)
 

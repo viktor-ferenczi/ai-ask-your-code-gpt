@@ -61,10 +61,10 @@ class PythonNotebookParser(BaseParser):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text)
 
         for sentence in self.splitter.split_text(source):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook_code', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'python', '', sentence.text)
 
         for sentence in self.splitter.split_text(markdown):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook_markdown', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'documentation', '', sentence.text)
 
         # FIXME: From here redundant code
 
