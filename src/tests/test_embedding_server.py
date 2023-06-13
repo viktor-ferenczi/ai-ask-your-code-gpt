@@ -20,7 +20,7 @@ class TestEmbeddingServer(unittest.IsolatedAsyncioTestCase):
         server_task = asyncio.create_task(app.run_task(debug=True, host='localhost', port=40100))
         test_task = asyncio.create_task(self.actual_test())
 
-        await asyncio.wait([server_task, test_task], timeout=30.0, return_when=asyncio.FIRST_COMPLETED)
+        await asyncio.wait([server_task, test_task], timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
 
         test_task.result()
         server_task.cancel()

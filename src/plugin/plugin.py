@@ -290,11 +290,6 @@ async def search(project_id: str):
     if not hits:
         return Response(response='No match found', status=204)
 
-    if name and hits:
-        exact_hits = [hit for hit in hits if hit.name == name]
-        if exact_hits:
-            hits = exact_hits
-
     path = hits[0].path
 
     if text:

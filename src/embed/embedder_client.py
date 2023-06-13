@@ -37,10 +37,10 @@ class EmbedderClient:
     def server_count(self):
         return len(self.servers)
 
-    async def embed_fragments(self, fragments: List[Fragment], *, timeout=30.0) -> np.ndarray:
+    async def embed_fragments(self, fragments: List[Fragment], *, timeout=30.0 if C.PRODUCTION else 999999.0) -> np.ndarray:
         data = json.dumps(dict(fragments=[fragment.__dict__ for fragment in fragments]), indent=2)
 
-        server = await self.find_free_server(timeout=300.0)
+        server = await self.find_free_server(timeout=300.0 if C.PRODUCTION else 999999.0)
         if not server:
             print(f'Configured embedder servers: {self.servers}')
             raise EmbedderError('No embedder servers are available')
@@ -54,7 +54,7 @@ class EmbedderClient:
         embeddings = np.frombuffer(content, np.float32).reshape(len(fragments), 768)
         return embeddings
 
-    async def embed_query(self, instruction: str, query: str, *, timeout=20.0) -> np.ndarray:
+    async def embed_query(self, instruction: str, query: str, *, timeout=20.0 if C.PRODUCTION else 999999.0) -> np.ndarray:
         if not instruction.strip():
             raise EmbedderError('Empty instruction')
 
@@ -63,7 +63,7 @@ class EmbedderClient:
 
         data = json.dumps(dict(instruction=instruction, query=query), indent=2)
 
-        server = await self.find_free_server(timeout=20.0)
+        server = await self.find_free_server(timeout=30.0 if C.PRODUCTION else 999999.0)
         if not server:
             raise EmbedderError('No embedder servers are available')
 
@@ -76,7 +76,7 @@ class EmbedderClient:
         embedding = np.frombuffer(content, np.float32).reshape(1, 768)
         return embedding
 
-    async def find_free_server(self, *, timeout=30.0) -> Optional[str]:
+    async def find_free_server(self, *, timeout=30.0 if C.PRODUCTION else 999999.0) -> Optional[str]:
         if not self.servers:
             raise EmbedderError('No embedder servers are configured')
 

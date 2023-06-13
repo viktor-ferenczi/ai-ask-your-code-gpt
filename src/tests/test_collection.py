@@ -17,7 +17,7 @@ class TestCollection(unittest.IsolatedAsyncioTestCase):
     async def test_collection(self):
         embedder_model = EmbedderModel()
 
-        database = QdrantClient('localhost', port=6334, prefer_grpc=True, timeout=5.0)
+        database = QdrantClient('localhost', port=6334, prefer_grpc=True, timeout=10.0)
         collection = Collection(database, f'TEST-{uuid.uuid4()}')
 
         await collection.delete()

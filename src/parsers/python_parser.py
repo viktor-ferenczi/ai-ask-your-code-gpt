@@ -100,8 +100,8 @@ class PythonParser(BaseParser):
         variables -= classes
         variables -= functions
         variables -= methods
-        variables -= {'self', 'set', 'dict', 'list', 'bool', 'int', 'float', 'dir', 'zip', '__dict__', '__class__', '__name__', 'isinstance', 'issubclass', 'is', '__init__', 'super'}
-        variables = {v for v in variables if len(v) > 3 or v[:1].isupper()}
+        variables -= {'self', 'set', 'dict', 'list', 'bool', 'int', 'float', 'dir', 'zip', 'isinstance', 'issubclass', 'is', 'super'}
+        variables = {v for v in variables if not v.startswith('__') and (len(v) > 3 or v[:1].isupper())}
 
         if not functions and not classes and not methods and not variables:
             return

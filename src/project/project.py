@@ -174,10 +174,10 @@ class Project:
         return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE name LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', limit))]
 
     def search_by_path_tail_name(self, cursor: Cursor, path: str, tail: str, name: str, limit: int = 1) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno LIMIT ?", (f'{path}%', f'%{tail}', f'%{name}', limit))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY LENGTH(name), path, lineno LIMIT ?", (f'{path}%', f'%{tail}', f'%{name}', limit))]
 
     def search_by_path_tail_name_unlimited(self, cursor: Cursor, path: str, tail: str, name: str) -> List[Fragment]:
-        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY path, lineno", (f'{path}%', f'%{tail}', f'%{name}'))]
+        return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? AND name LIKE ? ORDER BY LENGTH(name), path, lineno", (f'{path}%', f'%{tail}', f'%{name}'))]
 
     def get_distinct_paths_ordered(self, cursor: Cursor):
         return [row[0] for row in cursor.execute("SELECT DISTINCT path FROM Fragment ORDER BY path")]
@@ -197,7 +197,7 @@ class Project:
 
     def count_embedded_fragments(self) -> Tuple[int, int]:
         with self.cursor() as cursor:
-            for row in cursor.execute('SELECT COUNT(1), SUM(embedded) FROM Fragment'):
+            for row in cursor.execute("SELECT COUNT(1), SUM(embedded) FROM Fragment WHERE type == 'documentation'"):
                 return (row[0] or 0), (row[1] or 0)
             return 0, 0
 
@@ -220,7 +220,7 @@ class Project:
             shutil.rmtree(self.data_dir)
 
     @classmethod
-    async def download(cls, url: str, *, timeout: float = 30.0) -> str:
+    async def download(cls, url: str, *, timeout: float = 30.0 if C.PRODUCTION else 999999.0) -> str:
         try:
             with timer(f'Downloaded {url!r}'):
                 async with aiohttp.ClientSession() as session:
@@ -326,7 +326,7 @@ class Project:
 
         extensions = ' '.join(sorted(set('.' + fragment.path.rsplit('.', 1)[-1] for fragment in fragments if fragment.path and '.' in fragment.path.replace('/.', '/'))))
         if extensions:
-            summary.insert(0, f'File extensions: {extensions}\n\n')
+            summary.insert(0, f'File extensions: {extensions}\n')
 
         if not token_limit:
             token_limit = 2000 if not path and not name else 1000

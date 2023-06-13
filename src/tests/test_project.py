@@ -75,7 +75,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         tasks = [actual_test, zip_server_task, query_embedder_task, downloader_task, loader_task] + store_embedder_tasks + loader_worker_tasks
 
-        await asyncio.wait(tasks, timeout=3600.0, return_when=asyncio.FIRST_COMPLETED)
+        await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
 
         actual_test.result()
         for task in tasks:

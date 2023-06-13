@@ -10,9 +10,8 @@ PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/u
 
 # Restarts
 # mm hh         dom mon dow command
-02 00            *   *   *  /bin/bash $HOME/bin/restart.sh >>$HOME/log/restart.log 2>&1
+02  *            *   *   *  /bin/bash $HOME/bin/restart-most.sh >>$HOME/log/restart.log 2>&1
 02 08            *   *   *  /bin/bash $HOME/bin/restart.sh >>$HOME/log/restart.log 2>&1
-02 16            *   *   *  /bin/bash $HOME/bin/restart.sh >>$HOME/log/restart.log 2>&1
 
 # Cleanup
 # mm hh         dom mon dow command
