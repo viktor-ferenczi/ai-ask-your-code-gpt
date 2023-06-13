@@ -324,7 +324,7 @@ class Project:
 
         summary = summary.split('\n')
 
-        extensions = ' '.join(sorted(set('.' + fragment.path.rsplit('.', 1)[-1] for fragment in fragments if fragment.path and '.' in fragment.path)))
+        extensions = ' '.join(sorted(set('.' + fragment.path.rsplit('.', 1)[-1] for fragment in fragments if fragment.path and '.' in fragment.path.replace('/.', '/'))))
         if extensions:
             summary.insert(0, f'File extensions: {extensions}\n\n')
 

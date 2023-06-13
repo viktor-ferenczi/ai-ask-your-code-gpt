@@ -40,13 +40,16 @@ class PythonParser(BaseParser):
         )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
+        for sentence in self.splitter.split_text(decode_replace(content)):
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
+
+        yield from self.iter_python_fragments(path, content)
+
+    def iter_python_fragments(self, path: str, content: bytes) -> Iterator[Fragment]:
         parser = Parser()
         parser.set_language(self.tree_sitter_language)
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
-
-        for sentence in self.splitter.split_text(decode_replace(content)):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         classes: Set[str] = set()
         functions: Set[str] = set()
@@ -61,25 +64,25 @@ class PythonParser(BaseParser):
 
             lineno = 1 + node.start_point[0]
 
-            if node.type == 'import' or node.type == 'from':
+            if node.type == 'import' or node.type == 'from' and node.parent:
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
                 continue
 
-            if node.type == 'class' and node.next_sibling:
+            if node.type == 'class' and node.next_sibling and node.parent:
                 name = decode_replace(node.next_sibling.text)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
                 continue
 
-            if node.type == 'def' and node.next_sibling:
+            if node.type == 'def' and node.next_sibling and node.parent:
                 name = decode_replace(node.next_sibling.text)
-                if depth:
+                if depth > 1:
                     methods.add(name)
                 else:
                     functions.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
                 continue
 
@@ -94,7 +97,11 @@ class PythonParser(BaseParser):
                         yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'documentation', '', sentence.text)
                     continue
 
-        variables = {v for v in variables if len(v) >= 3 or v[:1].isupper()}
+        variables -= classes
+        variables -= functions
+        variables -= methods
+        variables -= {'self', 'set', 'dict', 'list', 'bool', 'int', 'float', 'dir', 'zip', '__dict__', '__class__', '__name__', 'isinstance', 'issubclass', 'is', '__init__', 'super'}
+        variables = {v for v in variables if len(v) > 3 or v[:1].isupper()}
 
         if not functions and not classes and not methods and not variables:
             return
@@ -109,7 +116,7 @@ class PythonParser(BaseParser):
         if methods:
             summary.append(f"  Methods: {' '.join(sorted(methods))}")
         if variables:
-            summary.append(f"  Variables: {' '.join(sorted(variables))}")
+            summary.append(f"  Variables and usages: {' '.join(sorted(variables))}")
 
         summary = ''.join(f'{line}\n' for line in summary)
         yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)

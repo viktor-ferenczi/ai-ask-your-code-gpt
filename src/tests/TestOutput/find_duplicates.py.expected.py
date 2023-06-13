@@ -142,52 +142,26 @@ f7 = Fragment(uuid='TEST-07',
               "if __name__ == '__main__':\r\n"
               '    main()\r\n')
 
-f8 = Fragment(uuid='TEST-08',
-         path='find_duplicates.py',
-         lineno=1,
-         depth=0,
-         type='dependency',
-         name='',
-         text='import hashlib')
+f8 = Fragment(uuid='TEST-08', path='find_duplicates.py', lineno=1, depth=1, type='dependency', name='', text='import')
 
-f9 = Fragment(uuid='TEST-09', path='find_duplicates.py', lineno=2, depth=0, type='dependency', name='', text='import os')
+f9 = Fragment(uuid='TEST-09', path='find_duplicates.py', lineno=2, depth=1, type='dependency', name='', text='import')
 
-f10 = Fragment(uuid='TEST-10',
-         path='find_duplicates.py',
-         lineno=3,
-         depth=0,
-         type='dependency',
-         name='',
-         text='from collections import defaultdict')
+f10 = Fragment(uuid='TEST-10', path='find_duplicates.py', lineno=3, depth=1, type='dependency', name='', text='from')
 
-f11 = Fragment(uuid='TEST-11',
-         path='find_duplicates.py',
-         lineno=4,
-         depth=0,
-         type='dependency',
-         name='',
-         text='from concurrent.futures import ProcessPoolExecutor')
+f11 = Fragment(uuid='TEST-11', path='find_duplicates.py', lineno=3, depth=1, type='dependency', name='', text='import')
 
-f12 = Fragment(uuid='TEST-12',
-         path='find_duplicates.py',
-         lineno=6,
-         depth=0,
-         type='dependency',
-         name='',
-         text='from tqdm import tqdm')
+f12 = Fragment(uuid='TEST-12', path='find_duplicates.py', lineno=4, depth=1, type='dependency', name='', text='from')
 
-f13 = Fragment(uuid='TEST-13',
-         path='find_duplicates.py',
-         lineno=8,
-         depth=0,
-         type='variable',
-         name='CHUNK_SIZE',
-         text='CHUNK_SIZE = 65536')
+f13 = Fragment(uuid='TEST-13', path='find_duplicates.py', lineno=4, depth=1, type='dependency', name='', text='import')
 
-f14 = Fragment(uuid='TEST-14',
+f14 = Fragment(uuid='TEST-14', path='find_duplicates.py', lineno=6, depth=1, type='dependency', name='', text='from')
+
+f15 = Fragment(uuid='TEST-15', path='find_duplicates.py', lineno=6, depth=1, type='dependency', name='', text='import')
+
+f16 = Fragment(uuid='TEST-16',
          path='find_duplicates.py',
          lineno=11,
-         depth=0,
+         depth=1,
          type='function',
          name='md5_checksum',
          text='def md5_checksum(file_path):\r\n'
@@ -200,26 +174,10 @@ f14 = Fragment(uuid='TEST-14',
               '            hasher.update(data)\r\n'
               '    return hasher.hexdigest()')
 
-f15 = Fragment(uuid='TEST-15',
-         path='find_duplicates.py',
-         lineno=12,
-         depth=2,
-         type='variable',
-         name='hasher',
-         text='hasher = hashlib.md5()')
-
-f16 = Fragment(uuid='TEST-16',
-         path='find_duplicates.py',
-         lineno=15,
-         depth=6,
-         type='variable',
-         name='data',
-         text='data = f.read(CHUNK_SIZE)')
-
 f17 = Fragment(uuid='TEST-17',
          path='find_duplicates.py',
          lineno=22,
-         depth=0,
+         depth=1,
          type='class',
          name='Duplicates',
          text='class Duplicates:\r\n')
@@ -227,7 +185,7 @@ f17 = Fragment(uuid='TEST-17',
 f18 = Fragment(uuid='TEST-18',
          path='find_duplicates.py',
          lineno=23,
-         depth=0,
+         depth=1,
          type='class',
          name='Duplicates',
          text='\r\n'
@@ -239,7 +197,7 @@ f18 = Fragment(uuid='TEST-18',
 f19 = Fragment(uuid='TEST-19',
          path='find_duplicates.py',
          lineno=28,
-         depth=0,
+         depth=1,
          type='class',
          name='Duplicates',
          text='\r\n'
@@ -262,7 +220,7 @@ f19 = Fragment(uuid='TEST-19',
 f20 = Fragment(uuid='TEST-20',
          path='find_duplicates.py',
          lineno=43,
-         depth=0,
+         depth=1,
          type='class',
          name='Duplicates',
          text="        with ProcessPoolExecutor() as executor, tqdm(total=total_size, unit='B', unit_scale=True, "
@@ -279,7 +237,7 @@ f20 = Fragment(uuid='TEST-20',
 f21 = Fragment(uuid='TEST-21',
          path='find_duplicates.py',
          lineno=24,
-         depth=2,
+         depth=3,
          type='function',
          name='__init__',
          text='def __init__(self, root_dir: str) -> None:\r\n'
@@ -289,24 +247,8 @@ f21 = Fragment(uuid='TEST-21',
 
 f22 = Fragment(uuid='TEST-22',
          path='find_duplicates.py',
-         lineno=26,
-         depth=4,
-         type='variable',
-         name='self.root_dir',
-         text='self.root_dir = root_dir')
-
-f23 = Fragment(uuid='TEST-23',
-         path='find_duplicates.py',
-         lineno=27,
-         depth=4,
-         type='variable',
-         name='self.files',
-         text='self.files = []')
-
-f24 = Fragment(uuid='TEST-24',
-         path='find_duplicates.py',
          lineno=29,
-         depth=2,
+         depth=3,
          type='function',
          name='collect',
          text='def collect(self):\r\n'
@@ -325,10 +267,10 @@ f24 = Fragment(uuid='TEST-24',
               '\r\n'
               '        # Calculate the hash only for groups with more than one file\r\n')
 
-f25 = Fragment(uuid='TEST-25',
+f23 = Fragment(uuid='TEST-23',
          path='find_duplicates.py',
          lineno=43,
-         depth=2,
+         depth=3,
          type='function',
          name='collect',
          text="        with ProcessPoolExecutor() as executor, tqdm(total=total_size, unit='B', unit_scale=True, "
@@ -342,59 +284,26 @@ f25 = Fragment(uuid='TEST-25',
               '\r\n'
               '        self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)')
 
+f24 = Fragment(uuid='TEST-24',
+         path='find_duplicates.py',
+         lineno=33,
+         depth=4,
+         type='documentation',
+         name='',
+         text='# Group files by size\r')
+
+f25 = Fragment(uuid='TEST-25',
+         path='find_duplicates.py',
+         lineno=42,
+         depth=4,
+         type='documentation',
+         name='',
+         text='# Calculate the hash only for groups with more than one file\r')
+
 f26 = Fragment(uuid='TEST-26',
          path='find_duplicates.py',
-         lineno=30,
-         depth=4,
-         type='variable',
-         name='files_by_size',
-         text='files_by_size = defaultdict(list)')
-
-f27 = Fragment(uuid='TEST-27',
-         path='find_duplicates.py',
-         lineno=31,
-         depth=4,
-         type='variable',
-         name='files_by_checksum',
-         text='files_by_checksum = defaultdict(list)')
-
-f28 = Fragment(uuid='TEST-28',
-         path='find_duplicates.py',
-         lineno=36,
-         depth=8,
-         type='variable',
-         name='file_path',
-         text='file_path = os.path.join(dirpath, filename)')
-
-f29 = Fragment(uuid='TEST-29',
-         path='find_duplicates.py',
-         lineno=37,
-         depth=8,
-         type='variable',
-         name='file_size',
-         text='file_size = os.path.getsize(file_path)')
-
-f30 = Fragment(uuid='TEST-30',
-         path='find_duplicates.py',
-         lineno=40,
-         depth=4,
-         type='variable',
-         name='total_size',
-         text='total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() if '
-              'len(file_list) > 1)')
-
-f31 = Fragment(uuid='TEST-31',
-         path='find_duplicates.py',
-         lineno=46,
-         depth=10,
-         type='variable',
-         name='file_checksums',
-         text='file_checksums = list(executor.map(md5_checksum, file_list))')
-
-f32 = Fragment(uuid='TEST-32',
-         path='find_duplicates.py',
          lineno=54,
-         depth=0,
+         depth=1,
          type='function',
          name='main',
          text='def main():\r\n'
@@ -414,18 +323,18 @@ f32 = Fragment(uuid='TEST-32',
               '\r\n'
               '    print("Duplicate files found:")\r\n')
 
-f33 = Fragment(uuid='TEST-33',
+f27 = Fragment(uuid='TEST-27',
          path='find_duplicates.py',
          lineno=70,
-         depth=0,
+         depth=1,
          type='function',
          name='main',
          text='    for file_list in duplicates.files:\r\n        print("Duplicate group:")\r\n        first = True\r\n')
 
-f34 = Fragment(uuid='TEST-34',
+f28 = Fragment(uuid='TEST-28',
          path='find_duplicates.py',
          lineno=73,
-         depth=0,
+         depth=1,
          type='function',
          name='main',
          text='        for file_path in file_list:\r\n'
@@ -437,47 +346,47 @@ f34 = Fragment(uuid='TEST-34',
               '\r\n'
               '    print(f"\\nTotal disk space that could be saved by deleting duplicates: {total_space_saved} bytes")')
 
-f35 = Fragment(uuid='TEST-35',
+f29 = Fragment(uuid='TEST-29',
          path='find_duplicates.py',
          lineno=55,
-         depth=2,
-         type='variable',
-         name='root_dir',
-         text='root_dir = input("Enter the root directory to search for duplicate files: ")')
+         depth=7,
+         type='documentation',
+         name='',
+         text='Enter the root directory to search for duplicate files: ')
 
-f36 = Fragment(uuid='TEST-36',
+f30 = Fragment(uuid='TEST-30',
          path='find_duplicates.py',
-         lineno=61,
-         depth=2,
-         type='variable',
-         name='duplicates',
-         text='duplicates = Duplicates(root_dir)')
+         lineno=58,
+         depth=8,
+         type='documentation',
+         name='',
+         text='Invalid directory path. Please try again.')
 
-f37 = Fragment(uuid='TEST-37',
+f31 = Fragment(uuid='TEST-31',
          path='find_duplicates.py',
-         lineno=63,
-         depth=2,
-         type='variable',
-         name='total_space_saved',
-         text='total_space_saved = 0')
+         lineno=66,
+         depth=8,
+         type='documentation',
+         name='',
+         text='No duplicate files found.')
 
-f38 = Fragment(uuid='TEST-38',
+f32 = Fragment(uuid='TEST-32',
          path='find_duplicates.py',
-         lineno=72,
-         depth=4,
-         type='variable',
-         name='first',
-         text='first = True')
+         lineno=69,
+         depth=6,
+         type='documentation',
+         name='',
+         text='Duplicate files found:')
 
-f39 = Fragment(uuid='TEST-39',
+f33 = Fragment(uuid='TEST-33',
          path='find_duplicates.py',
-         lineno=77,
-         depth=9,
-         type='variable',
-         name='first',
-         text='first = False')
+         lineno=80,
+         depth=6,
+         type='documentation',
+         name='',
+         text='\\nTotal disk space that could be saved by deleting duplicates: ')
 
-f40 = Fragment(uuid='TEST-40',
+f34 = Fragment(uuid='TEST-34',
          path='find_duplicates.py',
          lineno=1,
          depth=0,
@@ -487,10 +396,9 @@ f40 = Fragment(uuid='TEST-40',
               '  Functions: main md5_checksum\n'
               '  Classes: Duplicates\n'
               '  Methods: __init__ collect\n'
-              '  Variables: CHUNK_SIZE data duplicates file_checksums file_path file_size files_by_checksum '
-              'files_by_size first hasher root_dir self.files self.root_dir total_size total_space_saved\n'
-              '  Usages: ProcessPoolExecutor __name__ append collections concurrent defaultdict desc dirpath executor '
-              'extend file_checksum file_list filename filenames files futures getsize hashlib hexdigest input isdir '
-              'items join len list map md5 open path pbar print read self str sum super total tqdm unit unit_scale '
-              'update values walk zip\n')
+              '  Variables: CHUNK_SIZE ProcessPoolExecutor append collections concurrent data defaultdict desc dirpath '
+              'duplicates executor extend file_checksum file_checksums file_list file_path file_size filename '
+              'filenames files files_by_checksum files_by_size first futures getsize hasher hashlib hexdigest input '
+              'isdir items join open path pbar print read root_dir total total_size total_space_saved tqdm unit '
+              'unit_scale update values walk\n')
 
