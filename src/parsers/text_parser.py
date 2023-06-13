@@ -12,8 +12,8 @@ class TextParser(BaseParser):
     name = 'Text'
     extensions = ('txt',)
     mime_types = ('text/plain',)
-    store_instruction = 'Represent the document for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant paragraphs'
+    store_instruction = 'Represent the text document for retrieval'
+    query_instruction = 'Represent the query for retrieving relevant text'
 
     splitter = TextSplitter(
         chunk_size=C.MAX_TOKENS_PER_FRAGMENT,
