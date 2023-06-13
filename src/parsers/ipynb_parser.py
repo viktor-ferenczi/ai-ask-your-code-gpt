@@ -37,6 +37,9 @@ class PythonNotebookParser(PythonParser):
         )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
+        if '/.ipynb_checkpoints' in path:
+            return
+
         content = decode_replace(content).replace('\r\n', '\n').replace('\r', '').strip()
 
         for sentence in self.splitter.split_text(content):
