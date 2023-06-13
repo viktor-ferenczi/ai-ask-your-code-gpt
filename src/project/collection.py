@@ -60,7 +60,7 @@ class Collection:
             for uuid, embedding in zip(uuids, embeddings)
         ]
 
-        def fn():
+        async def fn():
             await self.database.async_grpc_points.Upsert(
                 grpc.UpsertPoints(
                     collection_name=self.name,
@@ -71,14 +71,14 @@ class Collection:
 
         for _ in range(10):
             try:
-                fn()
+                await fn()
             except AioRpcError:
                 await self.create()
                 await asyncio.sleep(0.1 + 0.4 * random.random())
             else:
                 break
         else:
-            fn()
+            await fn()
 
     async def search(self, embedding: List[float], *, limit: int = 10, uuids: Optional[List[str]] = None) -> List[Result]:
         assert len(embedding) == self.dimensions, (len(embedding), self.dimensions)
