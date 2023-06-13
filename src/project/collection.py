@@ -1,5 +1,7 @@
 """Qdrant based vector project
 """
+import asyncio
+import random
 from typing import List, Optional
 
 from grpc.aio import AioRpcError
@@ -58,13 +60,25 @@ class Collection:
             for uuid, embedding in zip(uuids, embeddings)
         ]
 
-        await self.database.async_grpc_points.Upsert(
-            grpc.UpsertPoints(
-                collection_name=self.name,
-                wait=True,
-                points=points
+        def fn():
+            await self.database.async_grpc_points.Upsert(
+                grpc.UpsertPoints(
+                    collection_name=self.name,
+                    wait=True,
+                    points=points
+                )
             )
-        )
+
+        for _ in range(10):
+            try:
+                fn()
+            except AioRpcError:
+                await self.create()
+                await asyncio.sleep(0.1 + 0.4 * random.random())
+            else:
+                break
+        else:
+            fn()
 
     async def search(self, embedding: List[float], *, limit: int = 10, uuids: Optional[List[str]] = None) -> List[Result]:
         assert len(embedding) == self.dimensions, (len(embedding), self.dimensions)
