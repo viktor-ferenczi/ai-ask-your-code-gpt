@@ -1,3 +1,5 @@
+File extensions: .md
+
 # Database Abstraction Layer Generator
 # Installation
 # How it works

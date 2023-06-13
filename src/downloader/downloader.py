@@ -1,15 +1,14 @@
 import asyncio
-import hashlib
 import os
 import uuid
 from traceback import print_exc
-from typing import Dict
+from typing import Dict, Tuple
 from zipfile import BadZipFile, LargeZipFile
 
 from quart import Quart, request, Response
 
 from common.constants import C
-from common.http import download_file, DownloadError
+from common.http import download_file, DownloadError, NotModified
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents
@@ -24,22 +23,39 @@ class Downloader:
         self.inventory = Inventory()
 
     async def download_verify(self) -> str:
-        with timer(f'Downloaded archive from {self.url!r}'):
-            archive = await self.__download()
-
-        checksum = hashlib.sha256(archive).hexdigest()
-        project_id = self.inventory.find_project(self.url, checksum)
-
+        # Find existing project with an archive file (not cleaned yet)
+        cached = ''
+        project = None
         new_project = True
-        if project_id is None:
-            project_id = str(uuid.uuid4())
-        else:
-            print(f'Archive matches an existing project: {project_id!r}')
-            new_project = False
-            self.inventory.touch_project(project_id)
+        project_id = self.inventory.find_project(self.url)
+        if project_id:
             project = Project(project_id)
-            if not project.exists:
-                self.inventory.reprocess_project(project_id)
+            if os.path.exists(project.archive_path):
+                cached = self.inventory.get_archive_checksum(project_id)
+
+        # Download, if an archive found then send Etag (cached)
+        with timer(f'Downloaded archive from {self.url!r}'):
+            archive, checksum = await self.__download(cached)
+
+        # Read the old cached archive if exists
+        if not archive and project and cached and checksum == cached:
+            with open(project.archive_path, 'rb') as f:
+                archive = f.read()
+            new_project = False
+        else:
+            project_id = self.inventory.find_project(self.url, checksum)
+            if project_id is None:
+                assert new_project
+                project_id = str(uuid.uuid4())
+            else:
+                new_project = False
+                project = Project(project_id)
+                if not project.exists:
+                    self.inventory.reprocess_project(project_id)
+
+        if not new_project:
+            print(f'Archive matches an existing project: {project.project_id!r}')
+            self.inventory.touch_project(project_id)
 
         await asyncio.sleep(0)
 
@@ -59,11 +75,14 @@ class Downloader:
 
         return project_id
 
-    async def __download(self) -> bytes:
+    async def __download(self, cached='') -> Tuple[bytes, str]:
         try:
-            archive: bytes = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE)
+            archive, checksum = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached=cached)
         except KeyboardInterrupt:
             raise
+        except NotModified:
+            print(f'The archive already downloaded from {self.url!r} has not been modified since, skipping the download')
+            return b'', cached
         except DownloadError as e:
             print(str(e))
             raise
@@ -73,7 +92,7 @@ class Downloader:
             raise IOError(f'Failed to download archive {self.url!r}')
 
         print(f'Downloaded archive of {len(archive)} bytes in size from {self.url!r}')
-        return archive
+        return archive, checksum
 
     def __verify(self, archive: bytes):
         try:

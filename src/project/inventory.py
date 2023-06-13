@@ -41,10 +41,14 @@ class Inventory:
             cursor.execute('CREATE INDEX idx_inventory_project_extracted ON Inventory(extracted)')
             cursor.execute('CREATE INDEX idx_inventory_project_embedded ON Inventory(embedded)')
 
-    def find_project(self, url: str, checksum: str) -> Optional[str]:
+    def find_project(self, url: str, checksum: str = '') -> Optional[str]:
         with self.cursor() as cursor:
-            for row in cursor.execute('SELECT project_id FROM Inventory WHERE url = ? AND checksum = ?', (url, checksum)):
-                return row[0]
+            if checksum:
+                for row in cursor.execute('SELECT project_id FROM Inventory WHERE url = ? AND checksum = ?', (url, checksum)):
+                    return row[0]
+            else:
+                for row in cursor.execute('SELECT project_id FROM Inventory WHERE url = ? AND extracted != 2 ORDER BY registered DESC LIMIT 1', (url,)):
+                    return row[0]
             return None
 
     def register_project(self, project_id: str, url: str, checksum: str):
@@ -116,5 +120,11 @@ class Inventory:
     def get_project_url(self, project_id: str) -> str:
         with self.cursor() as cursor:
             for row in cursor.execute('SELECT url FROM Inventory WHERE project_id = ?', (project_id,)):
+                return row[0]
+            return ''
+
+    def get_archive_checksum(self, project_id: str) -> str:
+        with self.cursor() as cursor:
+            for row in cursor.execute('SELECT checksum FROM Inventory WHERE project_id = ?', (project_id,)):
                 return row[0]
             return ''

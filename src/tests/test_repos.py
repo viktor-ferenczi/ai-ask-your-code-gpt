@@ -20,7 +20,7 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # Markdown, Python
-    # ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
     # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
@@ -47,7 +47,7 @@ REPOS = [
     # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 
     # Python, Markdown
-    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
+    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
 ]
 
 
@@ -116,7 +116,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     async def verify_repo(self, name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{name}.zip')
         if not os.path.isfile(zip_path):
-            zip_content = await download_file(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
+            zip_content, _ = await download_file(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
             with open(zip_path, 'wb') as zip_file:
                 zip_file.write(zip_content)
 

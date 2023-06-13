@@ -9,7 +9,6 @@ from typing import List
 from quart import Quart, send_file
 
 from common.constants import C
-from common.http import DownloadError
 from downloader.downloader import app as downloader_app
 from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
@@ -53,6 +52,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     def test_download_server_not_running(self):
         def should_fail():
             asyncio.run(Project.download('http://127.0.0.1:57575/this-wont-exist'))
+
         self.assertRaises(ProjectError, should_fail)
 
     async def serve_zip(self):
@@ -84,8 +84,33 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
     async def actual_test(self):
         await self.download_error()
-        await self.small_project()
-        await self.medium_project()
+        small_project_id = await self.small_project()
+
+        project = Project(small_project_id)
+        self.assertTrue(project.exists)
+        await project.cleanup()
+        self.assertFalse(project.exists)
+
+        medium_project_id_1 = await self.medium_project()
+        self.assertNotEquals(small_project_id, medium_project_id_1)
+        project = Project(medium_project_id_1)
+
+        await self.medium_project(medium_project_id_1)
+
+        await project.cleanup()
+        self.assertFalse(project.exists)
+
+        await self.medium_project(medium_project_id_1, False)
+
+        await project.delete()
+        self.assertFalse(project.exists)
+
+        medium_project_id_2 = await self.medium_project()
+        self.assertNotEquals(medium_project_id_1, medium_project_id_2)
+
+        project = Project(medium_project_id_2)
+        await project.delete()
+        self.assertFalse(project.exists)
 
     async def download_error(self):
         try:
@@ -95,7 +120,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         else:
             self.fail("ProjectError not raised")
 
-    async def small_project(self):
+    async def small_project(self) -> str:
         project_id = await Project.download('http://127.0.0.1:49001/test.zip')
         project = Project(project_id)
 
@@ -105,10 +130,10 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         self.verify_hits(hits, 1, contains=['class Duplicates'])
 
         hits = await project.search(path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 40, path='/find_duplicates.py')
+        self.verify_hits(hits, 34, path='/find_duplicates.py')
 
         hits = await project.search(tail='.py', path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 40, path='/find_duplicates.py')
+        self.verify_hits(hits, 34, path='/find_duplicates.py')
 
         hits = await project.search(path='/README.md', limit=100)
         self.verify_hits(hits, 5, path='/README.md')
@@ -118,6 +143,8 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
+File extensions: .md
+
 # Markdown Syntax Examples
 ## Headings
 # Heading 1
@@ -141,21 +168,29 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         summary = await project.summarize(tail='.py')
         self.assertEqual('''\
+File extensions: .py
+
 Python: /find_duplicates.py
   Functions: main md5_checksum
   Classes: Duplicates
   Methods: __init__ collect
-  Variables: CHUNK_SIZE data duplicates file_checksums file_path file_size files_by_checksum files_by_size first hasher root_dir self.files self.root_dir total_size total_space_saved
-  Usages: ProcessPoolExecutor __name__ append collections concurrent defaultdict desc dirpath executor extend file_checksum file_list filename filenames files futures getsize hashlib hexdigest input isdir items join len list map md5 open path pbar print read self str sum super total tqdm unit unit_scale update values walk zip
+  Variables and usages: CHUNK_SIZE ProcessPoolExecutor append collections concurrent data defaultdict desc dirpath duplicates executor extend file_checksum file_checksums file_list file_path file_size filename filenames files files_by_checksum files_by_size first futures getsize hasher hashlib hexdigest input isdir items join open path pbar print read root_dir total total_size total_space_saved tqdm unit unit_scale update values walk
 ''', summary)
 
-        await project.delete()
+        return project_id
 
-    async def medium_project(self):
+    async def medium_project(self, expect_project_id: str = '', expect_already_embedded: bool = True) -> str:
         project_id = await Project.download('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
         project = Project(project_id)
 
-        await self.wait_for_processing(project)
+        if expect_project_id:
+            self.assertEqual(project_id, expect_project_id)
+
+        if not expect_project_id or not expect_already_embedded:
+            await self.wait_for_processing(project)
+
+        progress = await project.get_progress()
+        self.assertEqual(progress, 100)
 
         hits = await project.search(path='/README.md', limit=100)
         self.verify_hits(hits, 9, path='/README.md')
@@ -165,6 +200,8 @@ Python: /find_duplicates.py
 
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
+File extensions: .md
+
 # Database Abstraction Layer Generator
 # Installation
 # How it works
@@ -178,6 +215,8 @@ Python: /find_duplicates.py
 
         summary = await project.summarize(tail='.py')
         self.assertEqual('''\
+File extensions: .py
+
 Python: /lib/setup.py
 
 Python: /lib/dblayer/constants.py
@@ -186,8 +225,6 @@ Python: /lib/dblayer/constants.py
 
 Python: /lib/dblayer/util.py
   Functions: get_next_definition_serial get_random_id log
-
-Python: /lib/dblayer/version.py
 
 Python: /lib/dblayer/generator/generator.py
   Functions: generate
@@ -282,7 +319,7 @@ Python: /lib/dblayer/backend/postgresql/inspector.py
 Python: /lib/dblayer/backend/postgresql/record.py
 ''', summary)
 
-        await project.delete()
+        return project.project_id
 
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
         print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
