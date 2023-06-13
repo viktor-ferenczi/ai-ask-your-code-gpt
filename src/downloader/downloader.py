@@ -147,7 +147,10 @@ async def download():
     except KeyboardInterrupt:
         raise
     except DownloadError as e:
-        return Response(response=str(e), status=400)
+        message = str(e)
+        if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
+            message += '; Test your URL in a private browser tab without authentication. Private repositories do not work. Authentication is currently not supported by AskYourCode.'
+        return Response(response=message, status=400)
     except Exception:
         print(f'Unexpected error while trying to download the archive {url!r}:')
         print_exc()
