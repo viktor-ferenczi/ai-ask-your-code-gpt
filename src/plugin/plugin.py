@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import re
 from traceback import print_exc
 from typing import Dict
 
@@ -10,9 +11,9 @@ from quart import request, Response
 
 from common.constants import C, RX
 from common.server import run_app
+from common.tools import tiktoken_len
 from project.inventory import Inventory
 from project.project import Project, ProjectError
-from common.tools import tiktoken_len
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -60,6 +61,9 @@ async def openapi_spec():
     return Response(text, mimetype="text/yaml", status=200)
 
 
+RX_GITHUB_CODELOAD = re.compile(r'https://codeload\.github\.com/(.+?)/(.+?)/zip/refs/heads/(.+)', re.I)
+
+
 # noinspection HttpUrlsUsage
 @app.post("/project")
 async def create():
@@ -72,11 +76,22 @@ async def create():
     if not (url.startswith('http://') or url.startswith('https://')):
         return Response(response='The URL must start with http:// or https://', status=400)
 
+    # Workarounds
+
     # A common mistake GPT-4 makes
     # Example: https://github.com/yourusername/yourproject/
     if 'yourusername/yourproject' in url:
         return Response(response='Do not use an example "yourusername/yourproject" download URL', status=404)
 
+    # Translate GitHub codeload URLs to normal ZIP download URLs. For example:
+    # https://codeload.github.com/ShiZiqiang/dual-path-RNNs-DPRNNs-based-speech-separation/zip/refs/heads/master
+    # =>
+    # https://github.com/ShiZiqiang/dual-path-RNNs-DPRNNs-based-speech-separation/archive/refs/heads/master.zip
+    m = RX_GITHUB_CODELOAD.match(url)
+    if m is not None:
+        url = f'https://github.com/{m.group(1)}/{m.group(2)}/archive/refs/heads/{m.group(3)}.zip'
+
+    # Convert Dropbox links for direct download
     if url.startswith('https://www.dropbox.com/') and url.endswith('?dl=0'):
         url = f'{url[:-5]}?dl=1'
 
