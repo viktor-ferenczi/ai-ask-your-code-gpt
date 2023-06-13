@@ -68,8 +68,7 @@ class Project:
     def exists(self):
         return os.path.exists(self.db_path)
 
-    @property
-    def progress(self):
+    async def get_progress(self):
         if not self.exists:
             return 0
 
@@ -81,11 +80,8 @@ class Project:
 
                 fragment_count, embedded_count = self.count_embedded_fragments()
                 return int(round(fragment_count / embedded_count)) if embedded_count else 0
-            except sqlite3.OperationalError as e:
-                if 'database is locked' in str(e):
-                    asyncio.run(asyncio.sleep(0.2 + random.random()))
-                    continue
-                raise
+            except sqlite3.OperationalError:
+                await asyncio.sleep(0.1 + 0.4 * random.random())
 
         return 0
 
@@ -243,14 +239,13 @@ class Project:
             raise ProjectError(f'Failed to download archive {url!r}: [{e.__class__.__name__}] {e}')
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
-        while 1:
+        for _ in range(5):
             try:
                 return await self.search_inner(path=path, tail=tail, name=name, text=text, limit=limit)
-            except sqlite3.OperationalError as e:
-                if 'database is locked' in str(e):
-                    await asyncio.sleep(0.2 + random.random())
-                    continue
-                raise
+            except sqlite3.OperationalError:
+                await asyncio.sleep(0.1 + 0.4 * random.random())
+
+        return await self.search_inner(path=path, tail=tail, name=name, text=text, limit=limit)
 
     async def search_inner(self, *, path: str, tail: str, name: str, text: str, limit: int) -> List[Hit]:
         with self.cursor() as cursor:
@@ -302,14 +297,13 @@ class Project:
         return results
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
-        while 1:
+        for _ in range(5):
             try:
                 return await self.summarize_inner(path=path, tail=tail, name=name, token_limit=token_limit)
-            except sqlite3.OperationalError as e:
-                if 'database is locked' in str(e):
-                    await asyncio.sleep(0.2 + random.random())
-                    continue
-                raise
+            except sqlite3.OperationalError:
+                await asyncio.sleep(0.1 + 0.4 * random.random())
+
+        return await self.summarize_inner(path=path, tail=tail, name=name, token_limit=token_limit)
 
     async def summarize_inner(self, *, path: str, tail: str, name: str, token_limit: int) -> str:
         with self.cursor() as cursor:

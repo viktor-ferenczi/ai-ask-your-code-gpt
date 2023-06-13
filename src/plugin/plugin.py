@@ -99,7 +99,7 @@ async def create():
     project = Project(project_id)
     response = dict(
         project_id=project_id,
-        progress=project.progress
+        progress=await project.get_progress()
     )
     return Response(response=json.dumps(response, indent=2), status=200)
 
@@ -324,8 +324,9 @@ async def search(project_id: str):
             response['name'] = name
             break
 
-    if project.progress < 100:
-        response['progress'] = project.progress
+    progress = await project.get_progress()
+    if progress < 100:
+        response['progress'] = progress
 
     return Response(response=json.dumps(response, indent=2), status=200)
 
