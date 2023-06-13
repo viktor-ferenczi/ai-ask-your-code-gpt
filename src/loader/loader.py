@@ -4,6 +4,7 @@ from traceback import print_exc
 from typing import Iterator, List
 
 import numpy as np
+from aiohttp import ServerDisconnectedError
 from quart import Quart
 
 import parsers
@@ -145,7 +146,7 @@ class Embedder:
                     continue
 
                 # Wait for a task to complete
-                done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED, timeout=30.0)
+                done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED, timeout=30.0 if C.PRODUCTION else 999999.0)
 
                 # Collect results
                 for task in done:
@@ -164,7 +165,10 @@ class Embedder:
         self.inventory.mark_project_embedded(self.project.project_id)
 
     async def embed_batch(self, fragments: List[Fragment]):
-        embeddings_array: np.ndarray = await EMBEDDER_CLIENT.embed_fragments(fragments)
+        try:
+            embeddings_array: np.ndarray = await EMBEDDER_CLIENT.embed_fragments(fragments)
+        except ServerDisconnectedError:
+            return []
         embeddings = [row.tolist() for row in embeddings_array]
         uuids: List[str] = [fragment.uuid for fragment in fragments]
         await self.project.collection.store(uuids, embeddings)
