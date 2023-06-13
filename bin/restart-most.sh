@@ -1,4 +1,5 @@
 #!/bin/bash
+date -Is
 ~/bin/restart.sh downloader
 ~/bin/restart.sh loader
 ~/bin/restart.sh plugin
