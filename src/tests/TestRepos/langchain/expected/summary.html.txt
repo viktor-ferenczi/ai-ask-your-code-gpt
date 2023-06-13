@@ -1,0 +1,11 @@
+File extensions: .html
+
+
+HTML: /tests/integration_tests/examples/example-utf8.html
+## Chase the red dot
+
+HTML: /tests/integration_tests/examples/example.html
+## Chase the red dot
+
+HTML: /docs/modules/indexes/document_loaders/examples/example_data/fake-content.html
+# My First Heading
