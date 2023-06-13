@@ -93,7 +93,9 @@ async def create():
 
     # Convert Dropbox links for direct download
     if url.startswith('https://www.dropbox.com/') and url.endswith('?dl=0'):
-        url = f'{url[:-5]}?dl=1'
+        url = url[:-5] + '?dl=1'
+    if url.startswith('https://www.dropbox.com/') and '?dl=0&' in url:
+        url = url.replace('?dl=0&', '?dl=1&')
 
     lc_url = url.lower()
     if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
