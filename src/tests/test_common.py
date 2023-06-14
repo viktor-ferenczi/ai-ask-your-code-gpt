@@ -7,6 +7,12 @@ from common.http import download_file, NotModified, DownloadError
 class TestCommonDoc(unittest.TestCase):
 
     def test_find_common_base_dir(self):
+        self.assertEqual(find_common_base_dir(['a']), '')
+        self.assertEqual(find_common_base_dir(['/a']), '/')
+
+        self.assertEqual(find_common_base_dir(['a/b']), 'a/')
+        self.assertEqual(find_common_base_dir(['/a/b']), '/a/')
+
         self.assertEqual(find_common_base_dir(['a/b/c', 'b/c/d']), '')
         self.assertEqual(find_common_base_dir(['/a/b/c', '/b/c/d']), '/')
 

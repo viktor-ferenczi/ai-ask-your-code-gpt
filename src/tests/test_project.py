@@ -84,6 +84,13 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
     async def actual_test(self):
         await self.download_error()
+
+        project_id = await self.github_user_content()
+        project = Project(project_id)
+        self.assertTrue(project.exists)
+        await project.delete()
+        self.assertFalse(project.exists)
+
         small_project_id = await self.small_project()
 
         project = Project(small_project_id)
@@ -363,3 +370,15 @@ Python: /lib/dblayer/backend/postgresql/record.py
                 break
             await asyncio.sleep(0.2)
         print('Embedded')
+
+    async def github_user_content(self) -> str:
+        url = 'https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py'
+        project_id = await Project.download(url)
+        project = Project(project_id)
+
+        await self.wait_for_processing(project)
+
+        hits = await project.search(tail='.py')
+        self.assertTrue(len(hits) > 0)
+
+        return project_id

@@ -20,7 +20,7 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # Markdown, Python
-    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    #('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
     # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),

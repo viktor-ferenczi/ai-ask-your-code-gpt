@@ -82,6 +82,8 @@ async def create():
     # Example: https://github.com/yourusername/yourproject/
     if 'yourusername/yourproject' in url:
         return Response(response='Do not use an example "yourusername/yourproject" download URL', status=404)
+    if 'username/project' in url:
+        return Response(response='Do not use an example "yourusername/yourproject" download URL', status=404)
 
     # Translate GitHub codeload URLs to normal ZIP download URLs. For example:
     # https://codeload.github.com/ShiZiqiang/dual-path-RNNs-DPRNNs-based-speech-separation/zip/refs/heads/master

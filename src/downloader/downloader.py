@@ -1,6 +1,10 @@
 import asyncio
+import hashlib
+import io
 import os
+import re
 import uuid
+import zipfile
 from traceback import print_exc
 from typing import Dict, Tuple
 from zipfile import BadZipFile, LargeZipFile
@@ -14,6 +18,8 @@ from common.timer import timer
 from common.zip_support import extract_verify_documents
 from project.inventory import Inventory
 from project.project import Project
+
+RX_GITHUB_USER_CONTENT = re.compile(r'https://raw.githubusercontent.com/(.+?)(/.+?)/(.*)')
 
 
 class Downloader:
@@ -36,6 +42,16 @@ class Downloader:
         # Download, if an archive found then send Etag (cached)
         with timer(f'Downloaded archive from {self.url!r}'):
             archive, checksum = await self.__download(cached)
+
+        # Workaround: Process raw GitHub user content as well
+        # Example: https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py
+        m = RX_GITHUB_USER_CONTENT.match(self.url)
+        if m is not None:
+            mem_file = io.BytesIO()
+            with zipfile.ZipFile(mem_file, 'a', zipfile.ZIP_DEFLATED, False) as zf:
+                zf.writestr(m.group(3), archive)
+            zf.close()
+            archive = mem_file.getvalue()
 
         # Read the old cached archive if exists
         if not archive and project and cached and checksum == cached:
