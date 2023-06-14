@@ -31,7 +31,7 @@ if check_process "$COMMAND_LINE"; then
   # Process is running, but verify whether it is functional
 
   # Canary check
-  for RETRY in 1 2 3 4 5; do
+  for RETRY in {1..$CANARY_TIMEOUT}; do
     if check_canary; then
       exit 0
     fi
