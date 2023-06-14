@@ -31,12 +31,12 @@ if check_process "$COMMAND_LINE"; then
   # Process is running, but verify whether it is functional
 
   # Canary check
-  for RETRY in {1..$CANARY_TIMEOUT}; do
+  for RETRY in {1..10}; do
     if check_canary; then
       exit 0
     fi
     echo "$(date -Is): $TITLE canary check failed, retry #$RETRY"
-    sleep 1
+    sleep 2
   done
 
   if check_canary; then
