@@ -19,35 +19,38 @@ from project.project import Project
 MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
-    # Markdown, Python
-    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    # # Markdown, Python
+    # ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    #
+    # # Markdown, Python, GitHub Workflow, YAML
+    # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
+    #
+    # # Markdown, PHP, HTML, CSS, JavaScript
+    # ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+    #
+    # # Dropbox, SOL files
+    # ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+    #
+    # # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
+    # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
+    #
+    # # C++, CMake
+    # ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
+    #
+    # # C#, Batch
+    # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    #
+    # # Java
+    # ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    #
+    # # Python, Shell, JSON, CSV, Python Notebook
+    # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
+    #
+    # # Python, Markdown
+    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
 
-    # Markdown, Python, GitHub Workflow, YAML
-    ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
-
-    # Markdown, PHP, HTML, CSS, JavaScript
-    ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
-
-    # Dropbox, SOL files
-    ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
-
-    # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
-    ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
-
-    # C++, CMake
-    ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
-
-    # C#, Batch
-    ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
-
-    # Java
-    ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
-
-    # Python, Shell, JSON, CSV, Python Notebook
-    ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
-
-    # Python, Markdown
-    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
+    # TypeScript
+    ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip')
 ]
 
 
