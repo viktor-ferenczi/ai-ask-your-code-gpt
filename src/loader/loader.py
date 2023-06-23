@@ -1,10 +1,9 @@
 import asyncio
 import os
+import sqlite3
 from traceback import print_exc
-from typing import Iterator, List
+from typing import Iterator
 
-import numpy as np
-from aiohttp import ServerDisconnectedError
 from quart import Quart
 
 import parsers
@@ -33,17 +32,26 @@ class Extractor:
 
         with self.project.cursor() as cursor:
             self.project.index_by_path(cursor)
-
-        with self.project.cursor() as cursor:
-            iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
-
-            for fragment in self.iter_fragments_from_documents(iter_docs):
-                self.project.insert_fragment(cursor, fragment)
-                await asyncio.sleep(0)
-
-        with self.project.cursor() as cursor:
             self.project.index_by_lineno(cursor)
             self.project.index_by_name(cursor)
+
+        with self.project.cursor() as cursor:
+            already_inserted_fragment_keys = set(self.project.get_inserted_fragment_keys(cursor))
+
+        iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
+
+        with self.project.cursor() as cursor:
+
+            for i, fragment in enumerate(self.iter_fragments_from_documents(iter_docs)):
+
+                fragment_key = (fragment.path, fragment.type, fragment.lineno)
+                if fragment_key in already_inserted_fragment_keys:
+                    continue
+
+                self.project.insert_fragment(cursor, fragment)
+
+                if i & 255 == 255:
+                    await asyncio.sleep(0)
 
         self.inventory.mark_project_extracted(self.project.project_id)
 
@@ -74,9 +82,14 @@ async def extract_worker():
     while 1:
         # noinspection PyBroadException
         try:
-            project_id: str = inventory.get_next_project_to_extract()
-            if not project_id:
+            try:
+                project_id: str = inventory.get_next_project_to_extract()
+            except sqlite3.Error:
                 await asyncio.sleep(1.0)
+                continue
+
+            if not project_id:
+                await asyncio.sleep(0.5)
                 continue
 
             # noinspection PyBroadException
