@@ -241,7 +241,7 @@ class Project:
         # Full text search
         fts_uuids = await self.free_text_search(text, 1000 + limit if fragments else limit)
         if not fts_uuids:
-            raise ProjectError('No hits with this search expression. Try to pass an SQLite FTS5 full-text query expression in the `text` parameter instead. Always prepend `?FTS5:` before FTS5 search expressions.')
+            return []
 
         if fragments:
             # Consider only the fragments selected by name, tail or path
@@ -275,12 +275,9 @@ class Project:
     See: https://www.sqlite.org/fts5.html
     """
     async def free_text_search(self, query: str, limit: int) -> List[str]:
-        if query.startswith('?FTS5:'):
-            query = query[6:].strip()
-        else:
-            def edq(s):
-                return s.replace('"', '""')
-            query = ' '.join(f'"{edq(s)}"' for s in query.split() if s.strip())
+        def edq(s):
+            return s.replace('"', '""')
+        query = ' '.join(f'"{edq(s)}"' for s in query.split() if s.strip())
 
         if not query:
             return []

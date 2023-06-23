@@ -178,10 +178,10 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             except ProjectError as e:
                 self.assertTrue('No hits with this search expression.' in str(e))
 
-            hits = await project.search(text='?FTS5:using+namespace+taso', limit=10)
+            hits = await project.search(text='using namespace taso', limit=10)
             normalize_fragments(hits)
             actual = '\n\n'.join(pformat(hit) for hit in hits)
-            self.verify('fts5_using+namespace+taso.txt', actual)
+            self.verify('fts5_using_namespace_taso.txt', actual)
 
     async def wait_for_processing(self, project):
         inventory = Inventory()
