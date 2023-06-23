@@ -396,9 +396,9 @@ f34 = Fragment(uuid='TEST-34',
               '  Functions: main md5_checksum\n'
               '  Classes: Duplicates\n'
               '  Methods: __init__ collect\n'
-              '  Variables: CHUNK_SIZE ProcessPoolExecutor append collections concurrent data defaultdict desc dirpath '
-              'duplicates executor extend file_checksum file_checksums file_list file_path file_size filename '
-              'filenames files files_by_checksum files_by_size first futures getsize hasher hashlib hexdigest input '
-              'isdir items join open path pbar print read root_dir total total_size total_space_saved tqdm unit '
+              '  Variables and usages: CHUNK_SIZE ProcessPoolExecutor append collections concurrent data defaultdict '
+              'desc dirpath duplicates executor extend file_checksum file_checksums file_list file_path file_size '
+              'filename filenames files files_by_checksum files_by_size first futures getsize hasher hashlib hexdigest '
+              'input isdir items join open path pbar print read root_dir total total_size total_space_saved tqdm unit '
               'unit_scale update values walk\n')
 

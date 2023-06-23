@@ -17,8 +17,6 @@ class HtmlParser(BaseParser):
     name = 'HTML'
     extensions = ('htm', 'html')
     mime_types = ('text/html',)
-    store_instruction = 'Represent the HTML document for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the document'
     # tree_sitter_language_name = 'html'
     is_code = True
 

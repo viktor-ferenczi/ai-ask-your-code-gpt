@@ -1,3 +1,5 @@
+File extensions: .md
+
 # Sentient Sims Mod
 ## Description
 ## Contributing

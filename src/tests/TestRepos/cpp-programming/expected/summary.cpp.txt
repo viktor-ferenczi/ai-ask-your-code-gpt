@@ -1,3 +1,5 @@
+File extensions: .cpp
+
 C: /Bank management system/main.cpp
   Functions: MainMenu, main
 

@@ -15,8 +15,6 @@ class PhpParser(BaseParser):
     name = 'PHP'
     extensions = ('php',)
     mime_types = ('application/x-httpd-php',)
-    store_instruction = 'Represent the PHP code for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'php'
     is_code = True
 

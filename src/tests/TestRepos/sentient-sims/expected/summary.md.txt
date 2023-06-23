@@ -1,3 +1,5 @@
+File extensions: .md
+
 # Sentient Sims FAQ
 ## What is Sentient Sims?
 ## What are the features of Sentient Sims?

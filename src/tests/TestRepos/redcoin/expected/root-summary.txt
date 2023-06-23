@@ -1,3 +1,5 @@
+File extensions: .sol
+
 File: /Clones.sol
 
 File: /Context.sol

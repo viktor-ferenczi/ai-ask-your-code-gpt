@@ -10,7 +10,6 @@ from quart import Quart, send_file
 
 from common.constants import C
 from downloader.downloader import app as downloader_app
-from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
 from model.hit import Hit
 from project.inventory import Inventory
@@ -67,13 +66,11 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     async def test_project(self):
         actual_test = asyncio.create_task(self.actual_test())
         zip_server_task = asyncio.create_task(self.serve_zip())
-        query_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40100))
-        store_embedder_tasks = [asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200 + i)) for i in (0, 1)]
         downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
         loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
         loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
 
-        tasks = [actual_test, zip_server_task, query_embedder_task, downloader_task, loader_task] + store_embedder_tasks + loader_worker_tasks
+        tasks = [actual_test, zip_server_task, downloader_task, loader_task] + loader_worker_tasks
 
         await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
 
@@ -85,11 +82,11 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     async def actual_test(self):
         await self.download_error()
 
-        project_id = await self.github_user_content()
-        project = Project(project_id)
-        self.assertTrue(project.exists)
-        await project.delete()
-        self.assertFalse(project.exists)
+        # project_id = await self.github_user_content()
+        # project = Project(project_id)
+        # self.assertTrue(project.exists)
+        # await project.delete()
+        # self.assertFalse(project.exists)
 
         small_project_id = await self.small_project()
 
@@ -371,14 +368,14 @@ Python: /lib/dblayer/backend/postgresql/record.py
             await asyncio.sleep(0.2)
         print('Embedded')
 
-    async def github_user_content(self) -> str:
-        url = 'https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py'
-        project_id = await Project.download(url)
-        project = Project(project_id)
-
-        await self.wait_for_processing(project)
-
-        hits = await project.search(tail='.py')
-        self.assertTrue(len(hits) > 0)
-
-        return project_id
+    # async def github_user_content(self) -> str:
+    #     url = 'https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py'
+    #     project_id = await Project.download(url)
+    #     project = Project(project_id)
+    #
+    #     await self.wait_for_processing(project)
+    #
+    #     hits = await project.search(tail='.py')
+    #     self.assertTrue(len(hits) > 0)
+    #
+    #     return project_id

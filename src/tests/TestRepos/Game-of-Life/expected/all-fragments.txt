@@ -1,4 +1,4 @@
-Fragment(uuid='68137ad9-99b1-493f-ac30-dca4d267fdbf',
+Fragment(uuid='NORMALIZED-000000',
          path='/GameOfLife.java',
          lineno=1,
          depth=0,
@@ -29,7 +29,7 @@ Fragment(uuid='68137ad9-99b1-493f-ac30-dca4d267fdbf',
               '        setSize(720, 789);\n'
               '        setLocati')
 
-Fragment(uuid='6f353e90-809a-4624-9bcc-cb8c17c6ea32',
+Fragment(uuid='NORMALIZED-000001',
          path='/GameOfLife.java',
          lineno=1,
          depth=0,
@@ -63,7 +63,7 @@ Fragment(uuid='6f353e90-809a-4624-9bcc-cb8c17c6ea32',
               'universe universe universe universe universe universe universe '
               'universe universe universePanel waitFor\n')
 
-Fragment(uuid='1efd67f5-309a-45c5-bc83-d9affb2425ba',
+Fragment(uuid='NORMALIZED-000002',
          path='/GameOfLife.java',
          lineno=7,
          depth=0,
@@ -154,7 +154,7 @@ Fragment(uuid='1efd67f5-309a-45c5-bc83-d9affb2425ba',
               '    }\n'
               '}')
 
-Fragment(uuid='69f0662b-56fc-4ead-95ca-15785fd980a1',
+Fragment(uuid='NORMALIZED-000003',
          path='/GameOfLife.java',
          lineno=24,
          depth=0,
@@ -181,7 +181,7 @@ Fragment(uuid='69f0662b-56fc-4ead-95ca-15785fd980a1',
               '        aliveLabel = new JLabel();\n'
               '        aliveLa')
 
-Fragment(uuid='f01b8d3c-163e-479a-901d-f8a4ed6031fe',
+Fragment(uuid='NORMALIZED-000004',
          path='/GameOfLife.java',
          lineno=41,
          depth=0,
@@ -205,7 +205,7 @@ Fragment(uuid='f01b8d3c-163e-479a-901d-f8a4ed6031fe',
               '        pauseButton.setName("PlayToggleButton");\n'
               '        ActionListener pauseListener = new Pau')
 
-Fragment(uuid='dde44f83-6152-401f-9280-673b9e5e90a1',
+Fragment(uuid='NORMALIZED-000005',
          path='/GameOfLife.java',
          lineno=54,
          depth=0,
@@ -232,7 +232,7 @@ Fragment(uuid='dde44f83-6152-401f-9280-673b9e5e90a1',
               '        universe.setSize(35);\n'
               '        evolution.setGenerations(500);\n')
 
-Fragment(uuid='332a5c43-c55e-462b-af09-66a980a7c9f3',
+Fragment(uuid='NORMALIZED-000006',
          path='/GameOfLife.java',
          lineno=68,
          depth=2,
@@ -255,7 +255,7 @@ Fragment(uuid='332a5c43-c55e-462b-af09-66a980a7c9f3',
               '        }\n'
               '    }')
 
-Fragment(uuid='603870e9-9a68-409c-a2d2-ae9d10174e0a',
+Fragment(uuid='NORMALIZED-000007',
          path='/GameOfLife.java',
          lineno=73,
          depth=0,
@@ -274,7 +274,7 @@ Fragment(uuid='603870e9-9a68-409c-a2d2-ae9d10174e0a',
               '    }\n'
               '}\n')
 
-Fragment(uuid='f8ad815c-823d-46a9-a014-03f6d55bcab6',
+Fragment(uuid='NORMALIZED-000008',
          path='/GameOfLife.java',
          lineno=85,
          depth=0,
@@ -320,7 +320,7 @@ Fragment(uuid='f8ad815c-823d-46a9-a014-03f6d55bcab6',
               '\n'
               '        this.field = new char[size][size];\n')
 
-Fragment(uuid='c5c00014-eced-4659-893e-e77004f8908d',
+Fragment(uuid='NORMALIZED-000009',
          path='/GameOfLife.java',
          lineno=86,
          depth=0,
@@ -401,7 +401,7 @@ Fragment(uuid='c5c00014-eced-4659-893e-e77004f8908d',
               '    }\n'
               '}')
 
-Fragment(uuid='ade41e5e-4dad-4109-893d-1b860aaae607',
+Fragment(uuid='NORMALIZED-000010',
          path='/GameOfLife.java',
          lineno=96,
          depth=2,
@@ -409,7 +409,7 @@ Fragment(uuid='ade41e5e-4dad-4109-893d-1b860aaae607',
          name='getSize',
          text='public int getSize() {\n\n        return this.size;\n\n    }')
 
-Fragment(uuid='bd4aaf75-c177-45eb-b54f-af94c7308e9d',
+Fragment(uuid='NORMALIZED-000011',
          path='/GameOfLife.java',
          lineno=102,
          depth=2,
@@ -430,7 +430,7 @@ Fragment(uuid='bd4aaf75-c177-45eb-b54f-af94c7308e9d',
               '\n'
               '    }')
 
-Fragment(uuid='43e420d7-2fea-4e12-aa6d-8a6763698771',
+Fragment(uuid='NORMALIZED-000012',
          path='/GameOfLife.java',
          lineno=116,
          depth=2,
@@ -462,7 +462,7 @@ Fragment(uuid='43e420d7-2fea-4e12-aa6d-8a6763698771',
               '        }\n'
               '    }')
 
-Fragment(uuid='00063dd4-2c59-40ac-9e6d-0531df04ff34',
+Fragment(uuid='NORMALIZED-000013',
          path='/GameOfLife.java',
          lineno=123,
          depth=0,
@@ -470,7 +470,7 @@ Fragment(uuid='00063dd4-2c59-40ac-9e6d-0531df04ff34',
          name='',
          text='\n        for (int i = 0; i < this.size; i++) {\n')
 
-Fragment(uuid='cfd00f33-778d-4d35-ba99-8012a483ec81',
+Fragment(uuid='NORMALIZED-000014',
          path='/GameOfLife.java',
          lineno=125,
          depth=0,
@@ -499,7 +499,7 @@ Fragment(uuid='cfd00f33-778d-4d35-ba99-8012a483ec81',
               'GameOfLife.universe.alive);\n'
               '        System.out.println("Alive: " + this.alive);\n')
 
-Fragment(uuid='4185feb6-1e12-4391-a1b4-76617b449772',
+Fragment(uuid='NORMALIZED-000015',
          path='/GameOfLife.java',
          lineno=142,
          depth=2,
@@ -522,7 +522,7 @@ Fragment(uuid='4185feb6-1e12-4391-a1b4-76617b449772',
               '        }\n'
               '    }')
 
-Fragment(uuid='6ecd6021-9222-4a96-8df0-f74ffc6b6b09',
+Fragment(uuid='NORMALIZED-000016',
          path='/GameOfLife.java',
          lineno=146,
          depth=0,
@@ -530,7 +530,7 @@ Fragment(uuid='6ecd6021-9222-4a96-8df0-f74ffc6b6b09',
          name='',
          text='\n        for (int i = 0; i < this.size; i++) {\n')
 
-Fragment(uuid='d2b547d9-eebe-455f-874c-095b73571bd7',
+Fragment(uuid='NORMALIZED-000017',
          path='/GameOfLife.java',
          lineno=148,
          depth=0,
@@ -547,7 +547,7 @@ Fragment(uuid='d2b547d9-eebe-455f-874c-095b73571bd7',
               '    }\n'
               '}\n')
 
-Fragment(uuid='dfbf5a20-8627-422a-9e3b-75d9ebd5a22a',
+Fragment(uuid='NORMALIZED-000018',
          path='/GameOfLife.java',
          lineno=157,
          depth=0,
@@ -588,7 +588,7 @@ Fragment(uuid='dfbf5a20-8627-422a-9e3b-75d9ebd5a22a',
               '\n'
               '            try {\n')
 
-Fragment(uuid='d706dbe6-869e-4800-93a2-f5c8852c00b6',
+Fragment(uuid='NORMALIZED-000019',
          path='/GameOfLife.java',
          lineno=158,
          depth=0,
@@ -748,7 +748,7 @@ Fragment(uuid='d706dbe6-869e-4800-93a2-f5c8852c00b6',
               '    }\n'
               '}')
 
-Fragment(uuid='db005677-0819-48df-aeb4-1d764256b0cf',
+Fragment(uuid='NORMALIZED-000020',
          path='/GameOfLife.java',
          lineno=166,
          depth=2,
@@ -885,7 +885,7 @@ Fragment(uuid='db005677-0819-48df-aeb4-1d764256b0cf',
               '        }\n'
               '    }')
 
-Fragment(uuid='ef11cfa1-7e77-4375-b874-2761cacd01d1',
+Fragment(uuid='NORMALIZED-000021',
          path='/GameOfLife.java',
          lineno=190,
          depth=0,
@@ -913,7 +913,7 @@ Fragment(uuid='ef11cfa1-7e77-4375-b874-2761cacd01d1',
               '\n'
               '            universe.alive = 0;\n')
 
-Fragment(uuid='d0292227-4ea9-45b6-ab1e-f9c0dade06c4',
+Fragment(uuid='NORMALIZED-000022',
          path='/GameOfLife.java',
          lineno=210,
          depth=0,
@@ -921,7 +921,7 @@ Fragment(uuid='d0292227-4ea9-45b6-ab1e-f9c0dade06c4',
          name='',
          text='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
 
-Fragment(uuid='b4b40ef7-6374-4d37-b04a-5e80e867909b',
+Fragment(uuid='NORMALIZED-000023',
          path='/GameOfLife.java',
          lineno=212,
          depth=0,
@@ -936,7 +936,7 @@ Fragment(uuid='b4b40ef7-6374-4d37-b04a-5e80e867909b',
               '                    int w = j - 1;\n'
               '                    int e = j + 1;\n')
 
-Fragment(uuid='bb8094ab-3b2f-4f1f-a07c-e87c0bb394b3',
+Fragment(uuid='NORMALIZED-000024',
          path='/GameOfLife.java',
          lineno=220,
          depth=0,
@@ -953,7 +953,7 @@ Fragment(uuid='bb8094ab-3b2f-4f1f-a07c-e87c0bb394b3',
               '\n'
               '                    }\n')
 
-Fragment(uuid='b527cf0b-7d0e-4e59-ac8c-2a6f1bcc5f2a',
+Fragment(uuid='NORMALIZED-000025',
          path='/GameOfLife.java',
          lineno=230,
          depth=0,
@@ -976,7 +976,7 @@ Fragment(uuid='b527cf0b-7d0e-4e59-ac8c-2a6f1bcc5f2a',
               '1 : 0;\n'
               '                    neighbours += u')
 
-Fragment(uuid='11231672-b6ec-4d49-a704-0525c085057c',
+Fragment(uuid='NORMALIZED-000026',
          path='/GameOfLife.java',
          lineno=243,
          depth=0,
@@ -994,7 +994,7 @@ Fragment(uuid='11231672-b6ec-4d49-a704-0525c085057c',
               "                    neighbours += universe.field[s][e] == 'O' ? "
               '1 : 0;\n')
 
-Fragment(uuid='f39c10ab-541a-4607-b146-473eb31c9df2',
+Fragment(uuid='NORMALIZED-000027',
          path='/GameOfLife.java',
          lineno=249,
          depth=0,
@@ -1015,7 +1015,7 @@ Fragment(uuid='f39c10ab-541a-4607-b146-473eb31c9df2',
               '                }\n'
               '            }\n')
 
-Fragment(uuid='0e158776-284d-469a-85ae-85c388c014aa',
+Fragment(uuid='NORMALIZED-000028',
          path='/GameOfLife.java',
          lineno=261,
          depth=0,
@@ -1023,7 +1023,7 @@ Fragment(uuid='0e158776-284d-469a-85ae-85c388c014aa',
          name='',
          text='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
 
-Fragment(uuid='d252e94d-d28d-4af4-9d78-c86ddb9b057f',
+Fragment(uuid='NORMALIZED-000029',
          path='/GameOfLife.java',
          lineno=263,
          depth=0,
@@ -1034,7 +1034,7 @@ Fragment(uuid='d252e94d-d28d-4af4-9d78-c86ddb9b057f',
               '\n'
               '                    universe.field[i][j] = this.field[i][j];\n')
 
-Fragment(uuid='50179cc6-f077-40d5-9353-a581f198748b',
+Fragment(uuid='NORMALIZED-000030',
          path='/GameOfLife.java',
          lineno=267,
          depth=0,
@@ -1060,7 +1060,7 @@ Fragment(uuid='50179cc6-f077-40d5-9353-a581f198748b',
               '\n'
               '    public void setGenerations(int generations) {\n')
 
-Fragment(uuid='1530e700-bde0-4af5-abe2-495f2ead6925',
+Fragment(uuid='NORMALIZED-000031',
          path='/GameOfLife.java',
          lineno=284,
          depth=2,
@@ -1080,7 +1080,7 @@ Fragment(uuid='1530e700-bde0-4af5-abe2-495f2ead6925',
               '        }\n'
               '    }')
 
-Fragment(uuid='f379eb39-91cc-4029-ab7f-8c406afe405d',
+Fragment(uuid='NORMALIZED-000032',
          path='/GameOfLife.java',
          lineno=285,
          depth=0,
@@ -1100,7 +1100,7 @@ Fragment(uuid='f379eb39-91cc-4029-ab7f-8c406afe405d',
               '    }\n'
               '}\n')
 
-Fragment(uuid='ac5f7494-4552-4ca1-bd34-3b2a904bd9e3',
+Fragment(uuid='NORMALIZED-000033',
          path='/GameOfLife.java',
          lineno=297,
          depth=0,
@@ -1121,7 +1121,7 @@ Fragment(uuid='ac5f7494-4552-4ca1-bd34-3b2a904bd9e3',
               '\n'
               '        super.paintComponent(g);\n')
 
-Fragment(uuid='b666a20c-eaa4-4dec-a680-330410166f99',
+Fragment(uuid='NORMALIZED-000034',
          path='/GameOfLife.java',
          lineno=298,
          depth=0,
@@ -1165,7 +1165,7 @@ Fragment(uuid='b666a20c-eaa4-4dec-a680-330410166f99',
               '    }\n'
               '}')
 
-Fragment(uuid='69f4ca69-7647-4671-bc91-307ddc50076a',
+Fragment(uuid='NORMALIZED-000035',
          path='/GameOfLife.java',
          lineno=307,
          depth=2,
@@ -1198,7 +1198,7 @@ Fragment(uuid='69f4ca69-7647-4671-bc91-307ddc50076a',
               '        }\n'
               '    }')
 
-Fragment(uuid='984e8ff6-9766-4833-aef0-53c86db81930',
+Fragment(uuid='NORMALIZED-000036',
          path='/GameOfLife.java',
          lineno=310,
          depth=0,
@@ -1213,7 +1213,7 @@ Fragment(uuid='984e8ff6-9766-4833-aef0-53c86db81930',
               '\n'
               '        }\n')
 
-Fragment(uuid='1c526a59-c68d-4753-8a4d-5fd8debdaee3',
+Fragment(uuid='NORMALIZED-000037',
          path='/GameOfLife.java',
          lineno=317,
          depth=0,
@@ -1223,7 +1223,7 @@ Fragment(uuid='1c526a59-c68d-4753-8a4d-5fd8debdaee3',
               '        for (int i = 0; i < GameOfLife.universe.getSize(); i++) '
               '{\n')
 
-Fragment(uuid='9846bbc8-859c-4e1f-949d-0c9ccaa982e2',
+Fragment(uuid='NORMALIZED-000038',
          path='/GameOfLife.java',
          lineno=319,
          depth=0,
@@ -1243,7 +1243,7 @@ Fragment(uuid='9846bbc8-859c-4e1f-949d-0c9ccaa982e2',
               '    }\n'
               '}\n')
 
-Fragment(uuid='b2ef1d22-cf6d-4f8b-8eef-6dd5e0ca6b5c',
+Fragment(uuid='NORMALIZED-000039',
          path='/GameOfLife.java',
          lineno=331,
          depth=0,
@@ -1259,7 +1259,7 @@ Fragment(uuid='b2ef1d22-cf6d-4f8b-8eef-6dd5e0ca6b5c',
               '    }\n'
               '}\n')
 
-Fragment(uuid='0c33d35c-0722-48fc-8eb7-b685ef89d838',
+Fragment(uuid='NORMALIZED-000040',
          path='/GameOfLife.java',
          lineno=332,
          depth=0,
@@ -1274,7 +1274,7 @@ Fragment(uuid='0c33d35c-0722-48fc-8eb7-b685ef89d838',
               '    }\n'
               '}')
 
-Fragment(uuid='17b8c01c-4e3b-4629-8fd9-d3a7043f5a9b',
+Fragment(uuid='NORMALIZED-000041',
          path='/GameOfLife.java',
          lineno=334,
          depth=2,
@@ -1286,7 +1286,7 @@ Fragment(uuid='17b8c01c-4e3b-4629-8fd9-d3a7043f5a9b',
               '\n'
               '    }')
 
-Fragment(uuid='27286d52-2a6a-4363-b9de-04f24dc44ebb',
+Fragment(uuid='NORMALIZED-000042',
          path='/GameOfLife.java',
          lineno=340,
          depth=0,
@@ -1302,7 +1302,7 @@ Fragment(uuid='27286d52-2a6a-4363-b9de-04f24dc44ebb',
               '    }\n'
               '}\n')
 
-Fragment(uuid='0720b31a-e7d3-4251-bf1d-89adb7b9c0f7',
+Fragment(uuid='NORMALIZED-000043',
          path='/GameOfLife.java',
          lineno=341,
          depth=0,
@@ -1317,7 +1317,7 @@ Fragment(uuid='0720b31a-e7d3-4251-bf1d-89adb7b9c0f7',
               '    }\n'
               '}')
 
-Fragment(uuid='2031001a-61e3-46f6-bdb8-f03320464e5a',
+Fragment(uuid='NORMALIZED-000044',
          path='/GameOfLife.java',
          lineno=343,
          depth=2,
@@ -1329,7 +1329,7 @@ Fragment(uuid='2031001a-61e3-46f6-bdb8-f03320464e5a',
               '\n'
               '    }')
 
-Fragment(uuid='e39f8554-24ef-4cc2-870b-b258346a0684',
+Fragment(uuid='NORMALIZED-000045',
          path='/README.md',
          lineno=1,
          depth=0,
@@ -1348,7 +1348,7 @@ Fragment(uuid='e39f8554-24ef-4cc2-870b-b258346a0684',
               '- generation number and alive cells counters;\n'
               '- pause and restart buttons.\n')
 
-Fragment(uuid='aea6a1ac-05ae-44cd-85e3-1089a2072811',
+Fragment(uuid='NORMALIZED-000046',
          path='/README.md',
          lineno=1,
          depth=0,

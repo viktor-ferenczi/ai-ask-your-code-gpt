@@ -15,8 +15,6 @@ class JavaScriptParser(BaseParser):
     name = 'JavaScript'
     extensions = ('js',)
     mime_types = ('text/javascript',)
-    store_instruction = 'Represent the JavaScript code for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'javascript'
     is_code = True
 

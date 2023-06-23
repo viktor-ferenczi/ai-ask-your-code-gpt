@@ -6,31 +6,21 @@ import shutil
 import sqlite3
 from contextlib import contextmanager
 from sqlite3 import Cursor
-from typing import List, ContextManager, Optional, Tuple, Iterator
+from typing import List, ContextManager, Tuple, Iterator
 
 import aiohttp
 from aiohttp import ClientError
-from qdrant_client import QdrantClient
 
-import parsers
 from common.constants import C, RX
 from common.text import decode_replace
 from common.timer import timer
 from common.tools import tiktoken_len
-from embed.embedder_client import EmbedderClient, QUERY_EMBEDDERS
 from model.fragment import Fragment
 from model.hit import Hit
 from model.tools import uuid_of_fragments
-from project.collection import Collection
 from project.inventory import Inventory
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
-
-EMBEDDER_CLIENT = EmbedderClient(QUERY_EMBEDDERS)
-
-QDRANT_LOCATION = os.environ.get('QDRANT_LOCATION', 'localhost')
-QDRANT_HTTP_PORT = int(os.environ.get('QDRANT_HTTP_PORT', '6333'))
-QDRANT_GRPC_PORT = int(os.environ.get('QDRANT_GRPC_PORT', '6334'))
 
 
 class ProjectError(Exception):
@@ -48,15 +38,6 @@ class Project:
 
         self.archive_path: str = os.path.join(self.data_dir, 'archive.zip')
         self.db_path: str = os.path.join(self.data_dir, 'project.sqlite')
-
-        self.__collection: Optional[Collection] = None
-
-    @property
-    def collection(self) -> Collection:
-        if self.__collection is None:
-            database = QdrantClient(location=QDRANT_LOCATION, port=QDRANT_HTTP_PORT, grpc_port=QDRANT_GRPC_PORT, prefer_grpc=True)
-            self.__collection = Collection(database, self.project_id)
-        return self.__collection
 
     @contextmanager
     def cursor(self) -> ContextManager[Cursor]:
@@ -103,17 +84,9 @@ class Project:
                 )
             ''')
 
-        await self.collection.create()
-
     async def drop_database(self):
         if os.path.exists(self.db_path):
             os.remove(self.db_path)
-        try:
-            await self.collection.delete()
-        except KeyboardInterrupt:
-            raise
-        except:
-            pass
 
     def index_by_path(self, cursor: Cursor):
         cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
@@ -263,37 +236,32 @@ class Project:
             return [Hit.from_fragment(1.0 - i / count, fragment)
                     for i, fragment in enumerate(fragments)]
 
-        # Vector database search
-        parser_cls = (
-                parsers.detect(tail) or
-                parsers.detect(path) or
-                parsers.TextParser
-        )
-        instruction = parser_cls.query_instruction
+        # Full text search
         fragment_uuids = uuid_of_fragments(fragments)
-        results = await self.search_vector_database(fragment_uuids, instruction, text, limit)
+        result_uuids = await self.free_text_search(fragment_uuids, text, limit)
+        if not result_uuids:
+            return []
 
-        # Stable sort order is determined by the scores (or by UUID if it is a tie)
-        results.sort(key=lambda result: (-result.score, result.uuid))
-
-        # Source of fragments
-        if fragments:
-            # Text search is
-            fragment_map = {fragment.uuid: fragment for fragment in fragments}
-        else:
-            # Pull the fragments referenced from the vector database results
+        # Pull the fragments referenced from the full text search uuids if needed
+        if not fragments:
             with self.cursor() as cursor:
-                uuids = [result.uuid for result in results]
-                fragment_map = {fragment.uuid: fragment for fragment in self.list_fragments_by_uuid(cursor, uuids)}
+                fragments = self.list_fragments_by_uuid(cursor, result_uuids)
+        fragment_map = {fragment.uuid: fragment for fragment in fragments}
 
-        # Combine into hits, preserve vector results sort order
-        hits = [Hit.from_fragment(result.score, fragment_map[result.uuid]) for result in results[:limit]]
+        # Combine into hits, preserve full text search result_uuids sort order
+        count = len(result_uuids)
+        hits = [Hit.from_fragment(1.0 - i / count, fragment_map[uuid]) for i, uuid in enumerate(result_uuids[:limit])]
         return hits
 
-    async def search_vector_database(self, uuids: List[str], instruction: str, query: str, limit: int):
-        embedding = await EMBEDDER_CLIENT.embed_query(instruction, query, timeout=20.0)
-        assert embedding.shape == (1, 768)
-        results = await self.collection.search(embedding[0].tolist(), limit=limit, uuids=uuids)
+    async def free_text_search(self, uuids: List[str], query: str, limit: int) -> List[str]:
+        if not uuids:
+            return []
+
+        sql = f'SELECT uuid FROM FragText WHERE uuid IN ({",".join("?" * len(uuids))}) AND text MATCH ? ORDER BY rank LIMIT ?'
+
+        with self.cursor() as cursor:
+            results = [row[0] for row in cursor.execute(sql, tuple(uuids) + (query, limit))]
+
         return results
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:

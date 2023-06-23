@@ -1,5 +1,4 @@
-File extensions: .csv .gitignore .ipynb .json .md .py .sh .txt
-
+File extensions: .csv .ipynb .json .md .py .sh .txt
 
 File: /.gitignore
 
@@ -8,8 +7,7 @@ File: /LICENSE
 Python: /models.py
   Functions: chatgpt gpt gpt_usage
   Methods: completions_with_backoff
-  Variables: api_base api_key cnt completion_tokens cost messages openai.api_base openai.api_key outputs res
-  Usages: ChatCompletion OpenAIError backend backoff choice create error expo extend format getenv kwargs list max_tokens min model on_exception openai print prompt prompt_tokens stop temperature
+  Variables and usages: ChatCompletion OpenAIError api_base api_key backend backoff choice completion_tokens cost create error expo extend format getenv kwargs max_tokens messages model on_exception openai outputs print prompt prompt_tokens stop temperature
 
 # Offical Repo of Tree of Thoughts (ToT)
 ## Setup
@@ -19,46 +17,41 @@ Python: /models.py
 
 Python: /run.py
   Functions: get_proposals get_samples get_value get_values get_votes naive_solve parse_args run solve
-  Variables: accs args file gpt ids infos local_value_cache local_value_cache[y] logs, new_ys prompt proposals propose_prompt samples select_ids select_new_ys sorted_new_ys, task task.value_cache[value_prompt] value value_outputs value_prompt values vote_outputs vote_prompt ys,
-  Usages: ArgumentParser ValueError __name__ action add_argument any append argparse array backend cache_value chain choice choices cnt_any cnt_avg cot_prompt_wrap default dirname dump exist_ok float functools get_input get_task gpt_usage idx indent info int itertools json key len list logs makedirs method_evaluate method_generate method_select model models n_evaluate_sample n_generate_sample n_select_sample naive_run numpy open partial path print prompt_sample propose_prompt_wrap random range required reverse select_id size sorted sorted_new_ys sorted_values split standard_prompt_wrap step steps stop stops str sum task_end_index task_file_path task_start_index tasks temperature test_output to_print tolist type update value_cache value_outputs_unwrap value_prompt_wrap vote_outputs_unwrap vote_prompt_wrap zip
+  Variables and usages: ArgumentParser ValueError accs action add_argument append argparse args array backend cache_value chain choice choices cnt_any cnt_avg cot_prompt_wrap default dirname dump exist_ok file functools get_input get_task gpt_usage indent info infos itertools json local_value_cache logs makedirs method_evaluate method_generate method_select model models n_evaluate_sample n_generate_sample n_select_sample naive_run new_ys numpy open partial path print prompt prompt_sample proposals propose_prompt propose_prompt_wrap random range required reverse samples select_id select_ids select_new_ys size sorted sorted_new_ys sorted_values split standard_prompt_wrap step steps stop stops task task_end_index task_file_path task_start_index tasks temperature test_output to_print tolist type update value value_cache value_outputs value_outputs_unwrap value_prompt value_prompt_wrap values vote_outputs vote_outputs_unwrap vote_prompt vote_prompt_wrap
 
 Python: /prompts/crosswords.py
-  Variables: cot_prompt propose_prompt standard_prompt value_prompt
+  Variables and usages: cot_prompt propose_prompt standard_prompt value_prompt
 
 Python: /prompts/game24.py
-  Variables: cot_prompt propose_prompt standard_prompt value_last_step_prompt value_prompt
+  Variables and usages: cot_prompt propose_prompt standard_prompt value_last_step_prompt value_prompt
 
 Python: /prompts/text.py
-  Variables: compare_prompt cot_prompt score_prompt standard_prompt vote_prompt
+  Variables and usages: compare_prompt cot_prompt score_prompt standard_prompt vote_prompt
 
 Python: /tasks/__init__.py
   Functions: get_task
-  Usages: Game24Task MiniCrosswordsTask NotImplementedError TextTask crosswords file game24 name text
+  Variables and usages: Game24Task MiniCrosswordsTask NotImplementedError TextTask crosswords file game24 name text
 
 Python: /tasks/base.py
   Classes: Task
   Methods: __init__ __len__ get_input test_output
-  Variables: DATA_PATH
-  Usages: idx int output self str
+  Variables and usages: DATA_PATH output
 
 Python: /tasks/crosswords.py
   Classes: MiniCrosswordsEnv MiniCrosswordsTask
   Methods: __init__ __len__ cot_prompt_wrap evaluate get_ans get_input prompt_status propose_outputs_unwrap propose_prompt_wrap render render_ans render_board render_clues render_gt_ans render_gt_board reset set_status standard_prompt_wrap step test_output
-  Variables: action ans ans[i+5] ans[i] confidence_to_value count idx info info['r'] letters line lines match output parts pattern pos, prompt proposal proposals proposals_to_scores proposals_to_scores[proposal] r_all r_letter r_word res score self.ans self.ans_gt self.board self.board[idx*5:(idx+1)*5] self.board[idx::5] self.cache self.cache_proposals self.cache_proposals[(x, self.data, self.env self.file self.idx self.n self.new_ans self.prompt_status_cache self.prompt_status_cache[prompt] self.status self.status[idx] self.steps self.times self.xs word
-  Usages: DATA_PATH Task ans_gt any append base board board_gt cache cache_proposals cot_prompt crosswords data enumerate env file format get gpt group index input int items join json key len letter list load lower models n_evaluate_sample n_max_propose new_ans new_letter open outputs pos print prompt_status_cache prompts propose_prompt range reverse self sorted split standard_prompt startswith staticmethod status steps str strip sum super tasks times upper value_prompt zip
+  Variables and usages: DATA_PATH Task action ans_gt append base board board_gt cache cache_proposals confidence_to_value cot_prompt count crosswords data enumerate file format group index info input items join json letter letters line lines load lower match models n_evaluate_sample n_max_propose new_ans new_letter open output outputs parts pattern print prompt prompt_status_cache prompts proposal proposals proposals_to_scores propose_prompt r_all r_letter r_word range reverse score sorted split standard_prompt startswith staticmethod status steps strip tasks times upper value_prompt word
 
 Python: /tasks/game24.py
   Functions: get_current_numbers
   Classes: Game24Task
   Methods: __init__ __len__ cot_prompt_wrap get_input propose_prompt_wrap standard_prompt_wrap test_output value_outputs_unwrap value_prompt_wrap
-  Variables: ans current_numbers expression last_line numbers path problem_numbers prompt self.data self.steps self.stops self.value_cache value value_map value_names
-  Usages: DATA_PATH Exception Task answer base cot_prompt count data file findall float format game24 idx input int items join len list lower name output pandas prompts propose_prompt read_csv replace self simplify sorted split standard_prompt staticmethod steps stops str strip sum super sympy tasks value_cache value_last_step_prompt value_outputs value_prompt
+  Variables and usages: DATA_PATH Exception Task answer base cot_prompt count current_numbers data expression file findall format game24 input items join last_line lower name numbers output pandas path problem_numbers prompt prompts propose_prompt read_csv replace simplify sorted split standard_prompt staticmethod steps stops strip sympy tasks value value_cache value_last_step_prompt value_map value_names value_outputs value_prompt
 
 Python: /tasks/text.py
   Classes: TextTask
   Methods: __init__ __len__ compare_output_unwrap compare_prompt_wrap cot_prompt_wrap get_input standard_prompt_wrap test_output vote_outputs_unwrap vote_prompt_wrap
-  Variables: info match output path pattern prompt score score_outputs scores self.data self.steps self.stops vote vote_results
-  Usages: DATA_PATH DOTALL Task append base compare_output compare_prompt cot_prompt data enumerate file format gpt groups idx input int join len list model models n_candidates open print prompts range readlines score_output score_prompt self split standard_prompt staticmethod steps stops str sum super tasks text vote_output vote_outputs vote_prompt
+  Variables and usages: DATA_PATH DOTALL Task append base compare_output compare_prompt cot_prompt data enumerate file format groups info input join match model models n_candidates open output path pattern print prompt prompts range readlines score score_output score_outputs score_prompt scores split standard_prompt staticmethod steps stops tasks text vote vote_output vote_outputs vote_prompt vote_results
 
 File: /data/24/24.csv
 
@@ -96,8 +89,7 @@ File: /scripts/crosswords/cot_sampling.sh
 
 PythonNotebook: /scripts/crosswords/search_crosswords-dfs.ipynb
   Functions: dfs get_candidates_to_scores parse_line parse_response prompt_wrap propose_score
-  Variables: actions best board, candidates candidates_to_scores candidates_to_scores[candidate] cnt_per_state confidence_to_value count done env env.cache[obs] env_ info infos infoss lines match obs obs, parsed_lines parsed_response parts pattern responses
-  Usages: MiniCrosswordsEnv action any append board cache candidate copy crosswords deepcopy dump format fout get gpt group idx import input input_str items json key len line lower max max_per_state model models open pop print prompt_status prompts propose_prompt prune range render render_board reset response reverse score sorted split status step steps tasks time_limit value_prompt
+  Variables and usages: MiniCrosswordsEnv action actions append best board cache candidate candidates candidates_to_scores cnt_per_state confidence_to_value copy count crosswords deepcopy done dump env_ format fout group import info infos infoss input input_str items json line lines lower match max_per_state model models open parsed_lines parsed_response parts pattern print prompt_status prompts propose_prompt prune range render render_board reset response responses reverse score sorted split status step steps tasks time_limit value_prompt
 
 File: /scripts/crosswords/standard_sampling.sh
 

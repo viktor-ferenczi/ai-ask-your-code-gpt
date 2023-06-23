@@ -1,3 +1,5 @@
+File extensions: .h
+
 C: /Bank management system/Header.h
   Functions: Borrow, CheckBalance, Deposit, MainMenu, Menu, Return, inputNewData, inputUpgradeData, outData
   Structs: accounts

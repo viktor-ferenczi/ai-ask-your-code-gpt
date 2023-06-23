@@ -1,6 +1,5 @@
 File extensions: .html
 
-
 HTML: /tests/integration_tests/examples/example-utf8.html
 ## Chase the red dot
 

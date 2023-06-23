@@ -1,3 +1,5 @@
+File extensions: .java .md
+
 Java: /GameOfLife.java
   Classes: Evolution GameOfLife PauseListener RestartListener Universe UniversePanel
   Methods: actionPerformed actionPerformed create evolve getSize main paintComponent print setGenerations setSize

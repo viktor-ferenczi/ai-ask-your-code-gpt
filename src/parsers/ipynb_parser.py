@@ -13,8 +13,6 @@ class PythonNotebookParser(PythonParser):
     name = 'PythonNotebook'
     extensions = ('ipynb',)
     mime_types = ('text/x-ipynb',)
-    store_instruction = 'Represent the Python code for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'python'
     is_code = True
 

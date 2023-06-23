@@ -16,8 +16,6 @@ class CssParser(BaseParser):
     name = 'CSS'
     extensions = ('css',)
     mime_types = ('text/css',)
-    store_instruction = 'Represent the CSS document for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the document'
     tree_sitter_language_name = 'css'
     is_code = True
 

@@ -13,8 +13,6 @@ class MarkdownParser(BaseParser):
     name = 'Markdown'
     extensions = ('md',)
     mime_types = ('text/markdown',)
-    store_instruction = 'Represent the Markdown document for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant sections'
 
     splitter = MarkdownSplitter(
         chunk_size=C.MAX_TOKENS_PER_FRAGMENT,

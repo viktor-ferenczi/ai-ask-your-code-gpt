@@ -11,9 +11,6 @@ aiohttp~=3.8.4
 scikit-learn~=1.2.2
 azure-core
 python-grpc
-qdrant_client
-InstructorEmbedding~=1.0.0
-sentence_transformers
 aioquic
 libclang
 
