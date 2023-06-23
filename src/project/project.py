@@ -237,32 +237,28 @@ class Project:
                     for i, fragment in enumerate(fragments)]
 
         # Full text search
-        fragment_uuids = uuid_of_fragments(fragments)
-        result_uuids = await self.free_text_search(fragment_uuids, text, limit)
-        if not result_uuids:
+        fts_uuids = await self.free_text_search(text, 1000 + limit if fragments else limit)
+        if not fts_uuids:
             return []
 
-        # Pull the fragments referenced from the full text search uuids if needed
-        if not fragments:
+        if fragments:
+            # Consider only the fragments selected by name, tail or path
+            fragment_map = {fragment.uuid: fragment for fragment in fragments}
+            fts_uuids = [uuid for uuid in fts_uuids if uuid in fragment_map]
+        else:
+            # Pull the fragments referenced from the full text search uuids
             with self.cursor() as cursor:
-                fragments = self.list_fragments_by_uuid(cursor, result_uuids)
-        fragment_map = {fragment.uuid: fragment for fragment in fragments}
+                fragments = self.list_fragments_by_uuid(cursor, fts_uuids)
+            fragment_map = {fragment.uuid: fragment for fragment in fragments}
 
-        # Combine into hits, preserve full text search result_uuids sort order
-        count = len(result_uuids)
-        hits = [Hit.from_fragment(1.0 - i / count, fragment_map[uuid]) for i, uuid in enumerate(result_uuids[:limit])]
+        # Combine into hits, preserve full text search fts_uuids sort order
+        count = len(fts_uuids)
+        hits = [Hit.from_fragment(1.0 - i / count, fragment_map[uuid]) for i, uuid in enumerate(fts_uuids[:limit])]
         return hits
 
-    async def free_text_search(self, uuids: List[str], query: str, limit: int) -> List[str]:
-        if not uuids:
-            return []
-
-        sql = f'SELECT uuid FROM FragText WHERE uuid IN ({",".join("?" * len(uuids))}) AND text MATCH ? ORDER BY rank LIMIT ?'
-
+    async def free_text_search(self, query: str, limit: int) -> List[str]:
         with self.cursor() as cursor:
-            results = [row[0] for row in cursor.execute(sql, tuple(uuids) + (query, limit))]
-
-        return results
+            return [row[0] for row in cursor.execute('SELECT uuid FROM FragText WHERE text MATCH ? ORDER BY rank LIMIT ?', (query, limit))]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         for _ in range(5):
