@@ -39,18 +39,33 @@ class Extractor:
 
         iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
 
-        with self.project.cursor() as cursor:
+        batch = []
+        batch_size = 4096
 
-            for i, fragment in enumerate(self.iter_fragments_from_documents(iter_docs)):
+        def insert_batch():
+            with self.project.cursor() as cursor:
+                for f in batch:
+                    self.project.insert_fragment(cursor, f)
+            batch.clear()
 
-                fragment_key = (fragment.path, fragment.type, fragment.lineno)
-                if fragment_key in already_inserted_fragment_keys:
-                    continue
+        for i, fragment in enumerate(self.iter_fragments_from_documents(iter_docs)):
 
-                self.project.insert_fragment(cursor, fragment)
+            fragment_key = (fragment.path, fragment.type, fragment.lineno)
+            if fragment_key in already_inserted_fragment_keys:
+                continue
 
-                if i & 255 == 255:
-                    await asyncio.sleep(0)
+            batch.append(fragment)
+
+            if len(batch) >= batch_size:
+                insert_batch()
+                await asyncio.sleep(0)
+                continue
+
+            if i & 255 == 0:
+                await asyncio.sleep(0)
+
+        if batch:
+            insert_batch()
 
         self.inventory.mark_project_extracted(self.project.project_id)
 
