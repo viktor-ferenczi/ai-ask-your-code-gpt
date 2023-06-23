@@ -29,7 +29,7 @@ async def download_file(url: str, *, headers: Optional[List[Dict[str, str]]] = N
         if (cached.startswith('"') or cached.startswith('W/"')) and cached.endswith('"'):
             headers: Dict[str, str] = headers.copy()
             headers['If-None-Match'] = cached
-        else:
+        else:  # pragma: no cover
             print(f'WARNING: Ignoring invalid cached Etag: {cached}')
             cached = ''
 

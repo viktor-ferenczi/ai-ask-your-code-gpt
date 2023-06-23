@@ -17,7 +17,6 @@ from common.timer import timer
 from common.tools import tiktoken_len
 from model.fragment import Fragment
 from model.hit import Hit
-from model.tools import uuid_of_fragments
 from project.inventory import Inventory
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
@@ -59,8 +58,8 @@ class Project:
                 if inventory.has_project_embedded(self.project_id):
                     return 100
 
-                fragment_count, embedded_count = self.count_embedded_fragments()
-                return int(round(fragment_count / embedded_count)) if embedded_count else 0
+                # fragment_count, embedded_count = self.count_embedded_fragments()
+                # return int(round(fragment_count / embedded_count)) if embedded_count else 0
             except sqlite3.OperationalError:
                 await asyncio.sleep(0.1 + 0.4 * random.random())
 
