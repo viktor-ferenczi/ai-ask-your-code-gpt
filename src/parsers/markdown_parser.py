@@ -4,7 +4,7 @@ from typing import Iterator
 from common.constants import C
 from common.tools import tiktoken_len
 from model.fragment import Fragment
-from parsers import BaseParser
+from parsers.registrations import BaseParser
 from splitters.markdown_splitter import MarkdownSplitter
 
 

@@ -3,8 +3,7 @@ import os
 import unittest
 from pprint import pformat
 
-import parsers
-from parsers import BaseParser
+from parsers.registrations import BaseParser, detect
 
 MODULE_DIR = os.path.dirname(__file__)
 TEST_PROJECT_DIR = os.path.join(MODULE_DIR, 'TestProject')
@@ -27,7 +26,7 @@ class TestParsers(unittest.TestCase):
                     content: bytes = f.read()
 
                 relpath = path[strip_len:]
-                parser_cls = parsers.detect(relpath, content)
+                parser_cls = detect(relpath, content)
                 self.assertIsNotNone(parser_cls)
 
                 parser: BaseParser = parser_cls()

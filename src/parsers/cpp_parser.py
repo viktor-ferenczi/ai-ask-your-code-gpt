@@ -8,7 +8,7 @@ from common.constants import C
 from common.text import decode_replace
 from common.tools import tiktoken_len, new_uuid
 from model.fragment import Fragment
-from parsers import BaseParser
+from parsers.registrations import BaseParser
 from splitters.text_splitter import TextSplitter
 
 
@@ -36,6 +36,20 @@ class CppParser(BaseParser):
         ('usage', 'Usages'),
     ]
 
+    # FIXME: Which one?
+    # categories = {
+    #     'class_decl': 'Classes',
+    #     'cxx_method': 'Methods',
+    #     'enum_decl': 'Enums',
+    #     'function_decl': 'Functions',
+    #     'function_template': 'Templates',
+    #     'namespace': 'Namespaces',
+    #     'struct_decl': 'Structs',
+    #     'using_declaration': 'Using declarations',
+    #     'using_directive': 'Using directives',
+    #     'var_decl': 'Variable declarations',
+    # }
+
     def __init__(self) -> None:
         super().__init__()
         self.splitter = TextSplitter(
@@ -56,19 +70,6 @@ class CppParser(BaseParser):
                 ('<', r"^\s+#else\s+"),
             )
         )
-
-    categories = {
-        'class_decl': 'Classes',
-        'cxx_method': 'Methods',
-        'enum_decl': 'Enums',
-        'function_decl': 'Functions',
-        'function_template': 'Templates',
-        'namespace': 'Namespaces',
-        'struct_decl': 'Structs',
-        'using_declaration': 'Using declarations',
-        'using_directive': 'Using directives',
-        'var_decl': 'Variable declarations',
-    }
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
 
