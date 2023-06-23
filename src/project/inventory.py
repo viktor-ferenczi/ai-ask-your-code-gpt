@@ -66,7 +66,7 @@ class Inventory:
 
     def get_next_project_to_extract(self) -> Optional[str]:
         with self.cursor() as cursor:
-            for project_id, registered in cursor.execute('SELECT project_id, registered FROM Inventory WHERE extracted = 0 ORDER BY registered LIMIT 1'):
+            for project_id, registered in cursor.execute('SELECT project_id, registered FROM Inventory WHERE extracted = 0 ORDER BY registered DESC LIMIT 1'):
                 wait_time = int(time.time()) - registered
                 print(f'Project {project_id} extract queue duration: {wait_time}s')
                 return project_id

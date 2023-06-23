@@ -89,13 +89,13 @@ class Project:
             os.remove(self.db_path)
 
     def index_by_path(self, cursor: Cursor):
-        cursor.execute('CREATE INDEX idx_fragment_path ON Fragment(path)')
+        cursor.execute('CREATE INDEX IF NOT EXISTS idx_fragment_path ON Fragment(path)')
 
     def index_by_lineno(self, cursor: Cursor):
-        cursor.execute('CREATE INDEX idx_fragment_lineno ON Fragment(lineno)')
+        cursor.execute('CREATE INDEX IF NOT EXISTS idx_fragment_lineno ON Fragment(lineno)')
 
     def index_by_name(self, cursor: Cursor):
-        cursor.execute('CREATE INDEX idx_fragment_name ON Fragment(name)')
+        cursor.execute('CREATE INDEX IF NOT EXISTS idx_fragment_name ON Fragment(name)')
 
     def insert_fragment(self, cursor: Cursor, fragment: Fragment):
         cursor.execute('INSERT INTO Fragment(uuid, path, lineno, depth, type, name, text, embedded) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
@@ -136,6 +136,9 @@ class Project:
 
     def get_fragments_by_name_ext(self, cursor: Cursor, name: str, ext: str) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute('SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE name LIKE ? AND path LIKE ?', (f'%{name}', f'%{ext}'))]
+
+    def get_inserted_fragment_keys(self, cursor: Cursor):
+        return [tuple(row) for row in cursor.execute('SELECT path, type, lineno FROM Fragment')]
 
     def search_by_ext_path(self, cursor: Cursor, ext: str, path: str, limit: int = 1) -> List[Fragment]:
         return [Fragment(*row) for row in cursor.execute("SELECT uuid, path, lineno, depth, type, name, text FROM Fragment WHERE path LIKE ? AND path LIKE ? ORDER BY LENGTH(path) - LENGTH(REPLACE(path, '/', '')), path, lineno LIMIT ?", (f'%{ext}', f'{path}%', limit))]
