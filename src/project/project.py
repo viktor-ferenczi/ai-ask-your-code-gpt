@@ -278,13 +278,14 @@ class Project:
         if query.startswith('?FTS5:'):
             query = query[6:].strip()
         else:
-            def q(s):
-                s = s.replace('"', '""')
-                return f'"{s}"'
-            query = ' '.join(f'"{q(s)}"' for s in query.split() if s.strip())
+            def edq(s):
+                return s.replace('"', '""')
+            query = ' '.join(f'"{edq(s)}"' for s in query.split() if s.strip())
 
         if not query:
             return []
+
+        print(f'FTS5 query: {query}')
 
         with self.cursor() as cursor:
             return [row[0] for row in cursor.execute('SELECT uuid FROM FragText WHERE text MATCH ? ORDER BY rank LIMIT ?', (query, limit))]

@@ -1,0 +1,350 @@
+File extensions: .cc .cmake .cu .h .md .proto .pxd .py .pyx .sh .txt
+
+File: /CMakeLists.txt
+
+# TASO Installation
+## Install from Source
+### Prerequisties
+### Build TASO Runtime
+## Docker Images
+
+File: /LICENSE
+
+# TASO: The Tensor Algebra SuperOptimizer for Deep Learning
+## Install TASO
+## Use TASO
+### Optimize ONNX Models
+### Optimize TensorFlow Models
+### Optimize PyTorch Models
+### Optimize Arbitrary DNN Models using the Python Interface
+#Build DNN model
+#Optimize DNN model
+## Publication
+
+File: /config.cmake
+
+File: /cmake/FindCUDA.cmake
+
+C: /cpp_examples/bert.h
+
+C: /cpp_examples/dnn.cc
+
+C: /cpp_examples/example_utils.h
+
+C: /cpp_examples/nasnet_a.h
+
+C: /cpp_examples/nasrnn.h
+
+C: /cpp_examples/resnet50.h
+
+C: /cpp_examples/resnext50.h
+
+File: /docker/Dockerfile
+
+File: /docker/install_taso.sh
+
+File: /docker/run_docker.sh
+
+Python: /examples/batched_resnet.py
+  Functions: main resnet_block resnet_model shared_resnet_model
+  Variables and usages: ArgumentParser action activation add_argument all_w alpha append argparse args budget conv2d default description dims export_onnx graph help input input_size new_graph new_input new_weight num_models num_shared_blocks onnx optimize optimized_model original_model out_channels padding parse_args parser range relu save save_graphs shared_w split strides taso tuple type use_shared_w weight weights
+
+Python: /examples/bert.py
+  Functions: attention
+  Variables and usages: alpha append batch_size budget d_model dims graph heads hidden_dims input linear logits matmul new_graph new_input new_weight optimize output perm range relu reshape seq_length shape shuffle taso transpose weights
+
+Python: /examples/enas.py
+  Functions: add_skips create_architecture create_layer_weights get_dims main parse_arcs separable_conv
+  Variables and usages: ArgumentParser NUM_LAYERS ValueError action activation add_argument all_arcs all_w alpha append arcs argparse args avgpool2d budget channels conv2d conv_w default description dims enumerate export_onnx graph help input input_file input_size kernel_dim kernel_size kernels layer layer_id layers line maxpool2d min_size new_graph new_input new_weight num_layers num_models onnx onnx_model open optimize padding parse_args parser range save save_models size sizes skips spec split strides strip taso tuple type weight
+
+File: /examples/enas_arcs.txt
+
+Python: /examples/eval_groups.py
+  Variables and usages: activation conv2d dims format graph input kernels maxpool2d new_graph new_input new_weight padding print print_measurements strides weight xflow
+
+Python: /examples/eval_joint.py
+  Variables and usages: format graph load onnx print run_time xflow
+
+Python: /examples/inceptionv3.py
+  Functions: conv2d get_pads inception_a inception_b inception_c inception_d inception_e inception_front inception_logits inception_v3 pool2d
+  Variables and usages: NotImplemented activation alpha avgpool2d batch_size budget channels_7x7 concat dims graph input kernel kernels maxpool2d new_graph new_input new_weight opt_graph optimize out_channels padding pads pool_features pool_type print run_time stride strides taso v1x1 v3x3 v3x3a v3x3b v3x3dbl v3x3dbla v3x3dblb v5x5 v7x7 v7x7dbl v7x7x3 v_pool weight
+
+Python: /examples/nasnet_a.py
+  Functions: fit normal_cell reduction_cell seperable_conv squeeze
+  Variables and usages: activation alpha append avgpool2d budget check_model checker concat conv2d current dims export_onnx format graph input kernels maxpool2d new_graph new_input new_weight onnx onnx_model optimize out_channels outputs padding prev range save strides taso weight weight1 weight2
+
+Python: /examples/nasrnn.py
+  Functions: combine nas_node
+  Variables and usages: alpha append budget dims export_onnx graph hidden_size input length matmul midt new_graph new_input new_weight onnx onnx_model optimize range relu sigmoid state tanh taso
+
+Python: /examples/resnet50.py
+  Functions: resnet_block
+  Variables and usages: activation alpha budget conv2d dims graph input new_graph new_input new_weight optimize out_channels padding range relu strides taso weight
+
+Python: /examples/resnext50.py
+  Functions: resnext_block
+  Variables and usages: activation alpha budget check_model checker conv2d dims export_onnx graph groups input kernels maxpool2d new_graph new_input new_weight onnx onnx_model optimize out_channels padding range relu save strides taso weight
+
+Python: /examples/test_onnx.py
+  Variables and usages: ArgumentParser add_argument alpha argparse args budget check_model checker cost export_onnx file format graph help load_onnx new_graph onnx onnx_model optimize parse_args parser print print_subst required save taso
+
+Python: /python/sample.py
+  Variables and usages: activation alpha budget check_model checker conv2d dims export_onnx graph input kernels maxpool2d new_graph new_input new_weight onnx onnx_model optimize padding save strides weight weight1 xflow
+
+Python: /python/setup.py
+  Functions: config_cython
+  Variables and usages: Build Cython Extension ImportError append argv compiler_directives core cythonize description distutils endswith ext_modules extension extra_compile_args extra_link_args find_packages get_config_var include_dirs install_requires language libraries listdir name packages path print setup setup_args setuptools sys_cflags sysconfig version zip_safe
+
+Python: /tensorflow_py/bert.py
+  Functions: attention
+  Variables and usages: ArgumentParser ConfigProto FileWriter ON_1 OptimizerOptions Session action add_argument append argparse args config d_model default discard_iter float32 global_jit_level graph graph_options heads help input input_dictionary iterations logits make_matmul matmul numpy optimizer_options output output_nodes parse_args parser perm placeholder print print_tensorboard random random_sample range relu reshape sess shape shared_functions summary tensorflow time times total transpose type value writer
+
+Python: /tensorflow_py/nasnet_a.py
+  Functions: fit normal_cell reduction_cell squeeze
+  Variables and usages: ArgumentParser ConfigProto FileWriter ON_1 OptimizerOptions Session actimode action add_argument append argparse args axis concat config current default discard_iter filter_shape float32 global_jit_level graph graph_options help input input0 input_dictionary input_tensor iterations kernels make_activation make_avgpool2d make_conv2d make_maxpool2d make_seperable_conv2d name numpy optimizer_options out_channels output_nodes outputs padding parse_args parser placeholder prev print print_tensorboard random random_sample range sess shape shared_functions strides summary tensorflow time times total type value writer
+
+Python: /tensorflow_py/nasrnn.py
+  Functions: combine nas_node
+  Variables and usages: ArgumentParser ConfigProto FileWriter ON_1 OptimizerOptions Session action add_argument append argparse args config constant default discard_iter dtype float32 global_jit_level graph graph_options help hidden_size input input_dictionary iterations length make_matmul midt multiply numpy optimizer_options output_nodes parse_args parser placeholder print print_tensorboard random random_sample range relu sess shape shared_functions sigmoid state summary tanh tensorflow time times total type writer
+
+Python: /tensorflow_py/resnet50.py
+  Functions: resnet_block
+  Variables and usages: ArgumentParser ConfigProto FileWriter ON_1 OptimizerOptions Session actimode action add_argument append argparse args config default discard_iter filter_shape float32 format global_jit_level graph graph_options help input input_dictionary input_tensor iterations make_activation make_conv2d name numpy optimizer_options out_channels output_nodes padding parse_args parser placeholder print print_tensorboard random random_sample range relu sess shape shared_functions strides summary tensorflow time times total type value writer
+
+Python: /tensorflow_py/resnext50.py
+  Functions: resnext_block
+  Variables and usages: ArgumentParser ConfigProto FileWriter ON_1 OptimizerOptions Session actimode action add_argument append argparse args axis concat config default discard_iter filter_shape float32 format global_jit_level graph graph_options groups help input input_dictionary input_tensor iterations make_activation make_conv2d name numpy optimizer_options out_channels output output_nodes padding parse_args parser placeholder print print_tensorboard random random_sample range relu sess shape shared_functions split strides summary tensorflow time times total type value writer
+
+Python: /tensorflow_py/shared_functions.py
+  Functions: make_activation make_avgpool2d make_conv2d make_matmul make_maxpool2d make_seperable_conv2d
+  Variables and usages: actimode avg_pool constant conv2d conv_name data_format depthwise_filter_shape dp_filter dtype filter_shape float32 input input_tensor kernels matmul max_pool name numpy out_channels padding pointwise_filter_shape print pw_filter random random_sample relu relu_name separable_conv2d shape sigmoid sigmoid_name strides tanh tanh_name tensorflow value weight weight_shape weights weights_name
+
+Python: /verify/rules_pb2.py
+  Variables and usages: DESCRIPTOR Default Descriptor FieldDescriptor FileDescriptor GeneratedProtocolMessageType MapOutput Message Operator Parameter RegisterFileDescriptor RegisterMessage Rule RuleCollection Tensor _MAPOUTPUT _OPERATOR _PARAMETER _RULE _RULECOLLECTION _TENSOR _descriptor _message _reflection _sym_db _symbol_database containing_type cpp_type default_value descriptor descriptor_pb2 encode enum_type enum_types extension_ranges extension_scope extensions fields fields_by_name file filename full_name google has_default_value index is_extendable is_extension label message message_type message_types_by_name name nested_types number oneofs options package protobuf reflection serialized_end serialized_pb serialized_start symbol_database syntax type version_info
+
+Python: /verify/validate_axioms.py
+  Functions: _shape body_to_function check_axiom concat_0 const_iconv_0 const_imm_0 const_one_0 const_pool_0 conv2d_0 enlarge_0 eq ewadd_0 ewmul_0 get_id matmul_0 minimize_core minimize_core_aux2 pool2d_avg_0 pool2d_max_0 print_function relu_0 require scalar_mul_0 split_0 split_1 transpose_0 z3max
+  Classes: BadShapeError MagicConst Tensor
+  Methods: __getitem__ __init__ __setitem__ _ones _tensor _zeros convert function tensor to_tensor zeros
+  Variables and usages: A AC_MODE_NONE AC_MODE_RELU AC_MODE_SIGMOID AC_MODE_TANH And B Bool BoolVal C Const Exception Function I If Implies Not P PD_MODE_SAME PD_MODE_VALID Pool Real RealSort RealVal S Solver T Z3_get_ast_id _relu _to_tensor acti append apply_async as_ast as_long axioms body callback chain check claim classmethod close core cpu_count ctx_ref data datetime decl enumerate flags format func get_var_index globals group group_idx is_app is_forall is_int_value is_sat is_var itertools join lemmas middle model multiprocessing n_proved n_skipped name new_core num_args num_vars object pool posH posW prefix print product range results reversed shape sort space spaces splits to_assume totalPadH totalPadW total_combinations tuple type unknown unsat unsat_core value values var_name var_sort variables verify
+
+Python: /verify/verify.py
+  Functions: to_z3
+  Variables and usages: AC_MODE_NONE AC_MODE_RELU AC_MODE_SIGMOID AC_MODE_TANH Const Consts D DeclareSort ForAll Function IntSort N OP_ANY OP_BATCHNORM OP_CONCAT OP_CONSTANT_ICONV OP_CONSTANT_IMM OP_CONSTANT_ONE OP_CONSTANT_POOL OP_CONV2D OP_DROPOUT OP_ENLARGE OP_EW_ADD OP_EW_MUL OP_INPUT OP_LINEAR OP_MATMUL OP_MERGE_GCONV OP_MUL OP_POOL2D_AVG OP_POOL2D_MAX OP_RELU OP_RESHAPE OP_SIGMOID OP_SPLIT OP_TANH OP_TRANSPOSE OP_WEIGHT P PD_MODE_SAME PD_MODE_VALID PM_ACTI PM_AXIS PM_GROUP PM_KERNEL_H PM_KERNEL_W PM_MERGE_GCONV_COUNT PM_NUMDIM PM_NUM_INPUTS PM_NUM_OUTPUTS PM_OP_TYPE PM_OUTSHUFFLE PM_PAD PM_PERM PM_STRIDE_H PM_STRIDE_W ParseFromString RuleCollection Solver T Tensor acti append args argv axioms basename blacklist check concat_0 const_iconv_0 const_imm_0 const_one_0 const_pool_0 conv2d_0 dstOp dstOpId dstTsId dst_tensor enlarge_0 enumerate ewadd_0 ewmul_0 exit format globals input itertools lemmas mappedOutput matmul_0 name opId open operator_data output para params path pool2d_avg_0 pool2d_max_0 print product range read relu_0 repeat rule rules rules_pb2 scalar_mul_0 split_0 split_1 srcOp srcOpId srcTsId src_tensor tensor transpose_0 tsId tuple type unsat value values
+
+C: /include/taso/cuda_helper.h
+
+C: /include/taso/dnnl_helper.h
+
+C: /include/taso/ops.h
+
+C: /include/taso/substitution.h
+
+Python: /python/taso/__init__.py
+  Functions: _add _add_node_attribute _argmax _argmin _avgpool2d _batchnorm _cast _ceil _check_output _concat _constant _conv2d _crop_and_resize _div _dropout _equal _exp _flatten _gemm _get_conv_pool_pads_attr _get_inputs _get_list_from_initializer _globalavgpool2d _greater _identity _input_tensor_name _leakyrelu _less _log _logical_not _matmul _max _maxpool2d _min _mul _output_tensor_name _pad _parse_attribute _prelu _reducemax _reducemean _reducemin _reduceprod _reducesum _relu _reshape _resize _resize_nearest_neighbor _round _shape _sigmoid _size _slice _split _sqrt _squeeze _strided_slice _sub _sum _transpose _unsqueeze export_onnx load_onnx new_graph onnx_datatype_tostring optimize
+  Classes: InputNotFoundError
+  Variables and usages: AttributeProto Exception FLOAT INT INT64 INTS PyGraph STRING TENSOR TensorProto alpha append attr attribute attributes attrs atts avgpool2d axes axes_ints axes_list axis batchnorm begin_mask budget bytes cast ceil concat conv2d core crop_and_resize data datatype decode dependents dim_value dims dropout dtype ellipsis_mask end_mask epsilon equal filename format get_input_dims get_input_edges get_num_outputs get_operator_attr get_operator_list get_operator_type get_output_dims get_weight_value graph graph_initializers graph_inputs graph_nodes graph_outputs greater group guid helper inedge inedges init initializer input input_node input_tensor input_weight_names inputs int64_data ints intype keepdims kernels leakyrelu less load logical_not make_attribute make_graph make_model make_node make_tensor make_tensor_value_info matmul maxpool2d model mytype nDim name name_to_op new_axis_mask new_height new_input new_weight new_width node node_list numpy_helper onnx onnx_graph onnx_model onnx_output opList op_type operator_attrs opname optype origin_dim out_edges output output_guids outputs padding pads perm perm_ints prelu print print_measurements print_subst producer_name range rate raw_data reduce_argmax reduce_argmin reduce_max reduce_mean reduce_min reduce_prod reduce_sum relu reshape reshaped_bias resize resize_nearest_neighbor ret_in_array round shape shape_in_array shrink_axis_mask shuffle sigmoid size slice slope split split_ints split_list sqrt squeeze start steps strides taso_output tensor tensor_owner tensor_type tensors to_array to_type transpose tuple type unsqueeze weight weight_data xf_operators
+
+C: /src/core/activation.cc
+
+C: /src/core/batchnorm.cc
+
+C: /src/core/broadcast_add.cc
+
+C: /src/core/cast.cc
+
+C: /src/core/concat.cc
+
+C: /src/core/constant.cc
+
+C: /src/core/conv2d.cc
+
+C: /src/core/element.cc
+
+C: /src/core/elementwise_unary.cc
+
+C: /src/core/enlarge.cc
+
+C: /src/core/fuse_conv_batchnorm.cc
+
+C: /src/core/fuse_conv_batchnorm_alpha_var.cc
+
+C: /src/core/fuse_conv_batchnorm_bias.cc
+
+C: /src/core/graph_to_trt.cc
+
+C: /src/core/matmul.cc
+
+C: /src/core/merge_gconv.cc
+
+C: /src/core/mul.cc
+
+C: /src/core/noop.cc
+
+C: /src/core/ops.cc
+
+C: /src/core/pad.cc
+
+C: /src/core/pool2d.cc
+
+C: /src/core/reduce.cc
+
+C: /src/core/reshape.cc
+
+C: /src/core/resize.cc
+
+File: /src/core/rules.proto
+
+C: /src/core/shape.cc
+
+C: /src/core/slice.cc
+
+C: /src/core/split.cc
+
+C: /src/core/squeeze.cc
+
+C: /src/core/substitution.cc
+
+C: /src/core/topk.cc
+
+C: /src/core/transpose.cc
+
+C: /src/core/unsqueeze.cc
+
+C: /src/core/where.cc
+
+File: /src/cudnn/activation_kernel.cu
+
+File: /src/cudnn/batchnorm_kernel.cu
+
+File: /src/cudnn/broadcast_add_kernel.cu
+
+File: /src/cudnn/cast_kernel.cu
+
+File: /src/cudnn/concat_kernel.cu
+
+File: /src/cudnn/constant_kernel.cu
+
+File: /src/cudnn/conv2d_kernel.cu
+
+File: /src/cudnn/cuda_helper.cu
+
+File: /src/cudnn/element_kernel.cu
+
+File: /src/cudnn/elementwise_unary_kernel.cu
+
+File: /src/cudnn/enlarge_kernel.cu
+
+File: /src/cudnn/fuse_conv_batchnorm_alpha_var_kernel.cu
+
+File: /src/cudnn/fuse_conv_batchnorm_bias_kernel.cu
+
+File: /src/cudnn/fuse_conv_batchnorm_kernel.cu
+
+File: /src/cudnn/matmul_kernel.cu
+
+File: /src/cudnn/merge_gconv_kernel.cu
+
+File: /src/cudnn/mul_kernel.cu
+
+File: /src/cudnn/ops_cudnn.cu
+
+File: /src/cudnn/pad_kernel.cu
+
+File: /src/cudnn/pool2d_kernel.cu
+
+File: /src/cudnn/reduce_kernel.cu
+
+File: /src/cudnn/reshape_kernel.cu
+
+File: /src/cudnn/resize_kernel.cu
+
+File: /src/cudnn/shape_kernel.cu
+
+File: /src/cudnn/slice_kernel.cu
+
+File: /src/cudnn/squeeze_kernel.cu
+
+File: /src/cudnn/topk_kernel.cu
+
+File: /src/cudnn/transpose_kernel.cu
+
+File: /src/cudnn/unsqueeze_kernel.cu
+
+File: /src/cudnn/where_kernel.cu
+
+C: /src/dnnl/activation_mkl.cc
+
+C: /src/dnnl/batchnorm_mkl.cc
+
+C: /src/dnnl/broadcast_add_mkl.cc
+
+C: /src/dnnl/cast_mkl.cc
+
+C: /src/dnnl/concat_mkl.cc
+
+C: /src/dnnl/constant_mkl.cc
+
+C: /src/dnnl/conv2d_mkl.cc
+
+C: /src/dnnl/dnnl_helper.cc
+
+C: /src/dnnl/element_mkl.cc
+
+C: /src/dnnl/elementwise_unary_mkl.cc
+
+C: /src/dnnl/enlarge_mkl.cc
+
+C: /src/dnnl/fuse_conv_batchnorm_alpha_var_mkl.cc
+
+C: /src/dnnl/fuse_conv_batchnorm_bias_mkl.cc
+
+C: /src/dnnl/fuse_conv_batchnorm_mkl.cc
+
+C: /src/dnnl/matmul_mkl.cc
+
+C: /src/dnnl/merge_gconv_mkl.cc
+
+C: /src/dnnl/mul_mkl.cc
+
+C: /src/dnnl/ops_mkl.cc
+
+C: /src/dnnl/pad_mkl.cc
+
+C: /src/dnnl/pool2d_mkl.cc
+
+C: /src/dnnl/reduce_mkl.cc
+
+C: /src/dnnl/reshape_mkl.cc
+
+C: /src/dnnl/resize_mkl.cc
+
+C: /src/dnnl/shape_mkl.cc
+
+C: /src/dnnl/slice_mkl.cc
+
+C: /src/dnnl/squeeze_mkl.cc
+
+C: /src/dnnl/topk_mkl.cc
+
+C: /src/dnnl/transpose_mkl.cc
+
+C: /src/dnnl/unsqueeze_mkl.cc
+
+C: /src/dnnl/where_mkl.cc
+
+File: /src/generator/compile.sh
+
+C: /src/generator/generator.cc
+
+C: /src/generator/rules.pb.cc
+
+C: /src/generator/rules.pb.h
+
+File: /python/taso/_cython/CCore.pxd
+
+Python: /python/taso/_cython/core.pyx
+  Functions: __cinit__(self, tensor) __set__ get_activation_mode get_data_type get_padding_mode
+  Classes: PyGraph PyModel PyTensor
+  Methods: __cinit__ __dealloc__ add avgpool2d batchnorm cast ceil concat conv2d cost div dropout equal exp get_input_dims get_input_edges get_num_outputs get_operator_attr get_operator_list get_operator_type get_output_dims get_split_lens get_weight_value greater identity leakyrelu less log logical_not matmul max maxpool2d min mul new_input new_weight optimize prelu print_measurements reduce_argmax reduce_argmin reduce_max reduce_mean reduce_min reduce_prod reduce_sum relu reshape round run_time shape sigmoid size slice split sqrt squeeze sub tanh transpose unsqueeze
+  Variables and usages: AC_MODE_NONE AC_MODE_RELU AC_MODE_SIGMOID AC_MODE_TANH CCore DT_BOOL DT_DOUBLE DT_FLOAT DT_HALF DT_INT32 DT_INT64 DT_INT8 DT_UINT8 Edge Graph Model NULL OP_BATCHNORM OP_BROADCAST_ADD OP_CAST OP_CEIL OP_CONCAT OP_CONV2D OP_DROPOUT OP_EW_ADD OP_EW_DIV OP_EW_EQUAL OP_EW_GREATER OP_EW_LESS OP_EW_MAX OP_EW_MIN OP_EW_MUL OP_EW_SUB OP_EXP OP_INPUT OP_LOG OP_LOGICAL_NOT OP_MATMUL OP_PAD OP_POOL2D_AVG OP_POOL2D_MAX OP_PRELU OP_REDUCE_ARGMAX OP_REDUCE_ARGMIN OP_REDUCE_MAX OP_REDUCE_MEAN OP_REDUCE_MIN OP_REDUCE_PROD OP_REDUCE_SUM OP_RELU OP_RESHAPE OP_RESIZE OP_ROUND OP_SHAPE OP_SIGMOID OP_SIZE OP_SLICE OP_SPLIT OP_SQRT OP_SQUEEZE OP_TANH OP_TOPK OP_TRANSPOSE OP_UNSQUEEZE OP_WEIGHT OP_WHERE Op OpType PD_MODE_SAME PD_MODE_VALID PM_AXIS PM_EPSILON PM_GROUP PM_KERNEL_H PM_KERNEL_W PM_PAD PM_PERM PM_STRIDE_H PM_STRIDE_W PaddingMode Tensor TensorHandle _set_tensor activation alpha append array as_floats attrname axes axis bias budget c_void_p caxes cdef cend cimport cinputs coutputs cperm cpython cshape csizes cstart csteps ctensor ctypes data datatype dim_array dimlist dims edges element else epsilon flatten format from get_operator_float_attr get_operator_int_attr graph guid handle inEdges inline inplace input inputH inputW inputs keepdims kernels lenlist lens long mean nDim ndarray ndim ndims new_graph numDim numEdges numOps numpy numsplits opList op_table outputs p_graph p_model padH padW padding perIdx perm pool2d_avg pool2d_max print_subst property rand random range rate resize return scale shuffle sizes slope split_equal start steps strides tensor tolist total_cost tuple type unsigned value vector weight zeros

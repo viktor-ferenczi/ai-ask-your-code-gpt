@@ -1,0 +1,133 @@
+File extensions: .cc
+
+C: /cpp_examples/dnn.cc
+
+C: /src/core/activation.cc
+
+C: /src/core/batchnorm.cc
+
+C: /src/core/broadcast_add.cc
+
+C: /src/core/cast.cc
+
+C: /src/core/concat.cc
+
+C: /src/core/constant.cc
+
+C: /src/core/conv2d.cc
+
+C: /src/core/element.cc
+
+C: /src/core/elementwise_unary.cc
+
+C: /src/core/enlarge.cc
+
+C: /src/core/fuse_conv_batchnorm.cc
+
+C: /src/core/fuse_conv_batchnorm_alpha_var.cc
+
+C: /src/core/fuse_conv_batchnorm_bias.cc
+
+C: /src/core/graph_to_trt.cc
+
+C: /src/core/matmul.cc
+
+C: /src/core/merge_gconv.cc
+
+C: /src/core/mul.cc
+
+C: /src/core/noop.cc
+
+C: /src/core/ops.cc
+
+C: /src/core/pad.cc
+
+C: /src/core/pool2d.cc
+
+C: /src/core/reduce.cc
+
+C: /src/core/reshape.cc
+
+C: /src/core/resize.cc
+
+C: /src/core/shape.cc
+
+C: /src/core/slice.cc
+
+C: /src/core/split.cc
+
+C: /src/core/squeeze.cc
+
+C: /src/core/substitution.cc
+
+C: /src/core/topk.cc
+
+C: /src/core/transpose.cc
+
+C: /src/core/unsqueeze.cc
+
+C: /src/core/where.cc
+
+C: /src/dnnl/activation_mkl.cc
+
+C: /src/dnnl/batchnorm_mkl.cc
+
+C: /src/dnnl/broadcast_add_mkl.cc
+
+C: /src/dnnl/cast_mkl.cc
+
+C: /src/dnnl/concat_mkl.cc
+
+C: /src/dnnl/constant_mkl.cc
+
+C: /src/dnnl/conv2d_mkl.cc
+
+C: /src/dnnl/dnnl_helper.cc
+
+C: /src/dnnl/element_mkl.cc
+
+C: /src/dnnl/elementwise_unary_mkl.cc
+
+C: /src/dnnl/enlarge_mkl.cc
+
+C: /src/dnnl/fuse_conv_batchnorm_alpha_var_mkl.cc
+
+C: /src/dnnl/fuse_conv_batchnorm_bias_mkl.cc
+
+C: /src/dnnl/fuse_conv_batchnorm_mkl.cc
+
+C: /src/dnnl/matmul_mkl.cc
+
+C: /src/dnnl/merge_gconv_mkl.cc
+
+C: /src/dnnl/mul_mkl.cc
+
+C: /src/dnnl/ops_mkl.cc
+
+C: /src/dnnl/pad_mkl.cc
+
+C: /src/dnnl/pool2d_mkl.cc
+
+C: /src/dnnl/reduce_mkl.cc
+
+C: /src/dnnl/reshape_mkl.cc
+
+C: /src/dnnl/resize_mkl.cc
+
+C: /src/dnnl/shape_mkl.cc
+
+C: /src/dnnl/slice_mkl.cc
+
+C: /src/dnnl/squeeze_mkl.cc
+
+C: /src/dnnl/topk_mkl.cc
+
+C: /src/dnnl/transpose_mkl.cc
+
+C: /src/dnnl/unsqueeze_mkl.cc
+
+C: /src/dnnl/where_mkl.cc
+
+C: /src/generator/generator.cc
+
+C: /src/generator/rules.pb.cc
