@@ -241,7 +241,7 @@ class Project:
         # Full text search
         fts_uuids = await self.free_text_search(text, 1000 + limit if fragments else limit)
         if not fts_uuids:
-            return []
+            raise ProjectError('No hits with this search expression. Try to pass an SQLite FTS5 full-text query expression in the `text` parameter instead. Always prepend `?FTS5:` before FTS5 search expressions.')
 
         if fragments:
             # Consider only the fragments selected by name, tail or path
@@ -258,7 +258,34 @@ class Project:
         hits = [Hit.from_fragment(1.0 - i / count, fragment_map[uuid]) for i, uuid in enumerate(fts_uuids[:limit])]
         return hits
 
+    """ FTS query expression syntax:
+    <phrase>    := string [*]
+    <phrase>    := <phrase> + <phrase>
+    <neargroup> := NEAR ( <phrase> <phrase> ... [, N] )
+    <query>     := [ [-] <colspec> :] [^] <phrase>
+    <query>     := [ [-] <colspec> :] <neargroup>
+    <query>     := [ [-] <colspec> :] ( <query> )
+    <query>     := <query> AND <query>
+    <query>     := <query> OR <query>
+    <query>     := <query> NOT <query>
+    <colspec>   := colname
+    <colspec>   := { colname1 colname2 ... }
+    
+    Phrases are escaped by double quotes.
+    See: https://www.sqlite.org/fts5.html
+    """
     async def free_text_search(self, query: str, limit: int) -> List[str]:
+        if query.startswith('?FTS5:'):
+            query = query[6:].strip()
+        else:
+            def q(s):
+                s = s.replace('"', '""')
+                return f'"{s}"'
+            query = ' '.join(f'"{q(s)}"' for s in query.split() if s.strip())
+
+        if not query:
+            return []
+
         with self.cursor() as cursor:
             return [row[0] for row in cursor.execute('SELECT uuid FROM FragText WHERE text MATCH ? ORDER BY rank LIMIT ?', (query, limit))]
 
