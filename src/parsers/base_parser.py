@@ -10,6 +10,7 @@ class BaseParser:
     extensions: Tuple[str] = ()
     mime_types: Tuple[str] = ()
     tree_sitter_language_name: str = ''
+    tree_sitter_subdir: Tuple[str] = ()
     tree_sitter_language: tree_sitter.Language  # Set automatically
     is_code = False
 

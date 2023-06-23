@@ -14,6 +14,7 @@ from parsers.html_parser import HtmlParser
 from parsers.ipynb_parser import PythonNotebookParser
 from parsers.java_parser import JavaParser
 from parsers.javascript_parser import JavaScriptParser
+from parsers.typescript_parser import TypescriptParser
 from parsers.markdown_parser import MarkdownParser
 from parsers.php_parser import PhpParser
 from parsers.python_parser import PythonParser
@@ -25,6 +26,7 @@ PARSERS = (
     PythonParser,
     PythonNotebookParser,
     JavaScriptParser,
+    TypescriptParser,
     PhpParser,
     HtmlParser,
     CssParser,
@@ -61,7 +63,7 @@ os.makedirs(TREE_SITTER_BUILD_DIR, exist_ok=True)
 
 def build_tree_sitter_library():
     languages = sorted(
-        parser_cls.tree_sitter_language_name
+        (parser_cls.tree_sitter_language_name, parser_cls.tree_sitter_subdir)
         for parser_cls in PARSERS
         if parser_cls.tree_sitter_language_name and parser_cls.name != 'PythonNotebook'
     )
@@ -76,7 +78,7 @@ def build_tree_sitter_library():
     shutil.rmtree(TREE_SITTER_BUILD_DIR)
     os.mkdir(TREE_SITTER_BUILD_DIR)
 
-    repo_dirs = [os.path.join(TREE_SITTER_REPOS_DIR, f'tree-sitter-{name}') for name in languages]
+    repo_dirs = [os.path.join(TREE_SITTER_REPOS_DIR, f'tree-sitter-{name}', *subdir) for name, subdir in languages]
     Language.build_library(TREE_SITTER_LIBRARY, repo_dirs)
 
     with open(TREE_SITTER_LANGUAGES, 'wt') as f:
