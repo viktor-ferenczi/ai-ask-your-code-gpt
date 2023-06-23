@@ -1,17 +1,17 @@
 import asyncio
-import difflib
 import os
 import shutil
 import unittest
 from pprint import pformat
+from typing import List
 
 from quart import Quart, send_file
 
 from common.constants import C
 from common.http import download_file
 from downloader.downloader import app as downloader_app
-from embed.embedder import app as embedder_app
 from loader.loader import app as loader_app, workers as loader_workers
+from model.fragment import Fragment
 from parsers import PARSERS_BY_EXTENSION
 from project.inventory import Inventory
 from project.project import Project
@@ -20,35 +20,40 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # Markdown, Python
-    #('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
-    # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
+    ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
 
     # Markdown, PHP, HTML, CSS, JavaScript
-    # ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+    ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
-    # ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+    ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 
     # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
-    # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
+    ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 
     # C++, CMake
-    # ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
+    ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    # ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
     # Python, Shell, JSON, CSV, Python Notebook
-    # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
+    ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 
     # Python, Markdown
-    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
+    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
 ]
+
+
+def normalize_fragments(fragments: List[Fragment]):
+    for i, fragment in enumerate(fragments):
+        fragment.uuid = f'NORMALIZED-{i:06d}'
 
 
 class TestProject(unittest.IsolatedAsyncioTestCase):
@@ -82,13 +87,11 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     async def test_repos(self):
         actual_test = asyncio.create_task(self.actual_test())
         zip_server_task = asyncio.create_task(self.serve_zip())
-        query_embedder_task = asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40100))
-        store_embedder_tasks = [asyncio.create_task(embedder_app.run_task(debug=True, host='localhost', port=40200 + i)) for i in (0, 1)]
         downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
         loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
         loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
 
-        tasks = [actual_test, zip_server_task, query_embedder_task, downloader_task, loader_task] + store_embedder_tasks + loader_worker_tasks
+        tasks = [actual_test, zip_server_task, downloader_task, loader_task] + loader_worker_tasks
 
         await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
 
@@ -159,6 +162,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         with project.cursor() as cursor:
             fragments = project.get_all_fragments(cursor)
+            normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)
 
@@ -180,6 +184,17 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         print('Embedded')
 
     def verify(self, name: str, actual: str):
+        if len(actual) >= 50_000_000:
+
+            half = len(actual) // 2
+            while actual[half] != '\n':
+                half += 1
+            half += 1
+
+            self.verify(f'{name}-1', actual[:half])
+            self.verify(f'{name}-2', actual[half:])
+            return
+
         actual_path = os.path.join(self.project_path, 'actual', f'{name}.txt')
         expected_path = os.path.join(self.project_path, 'expected', f'{name}.txt')
 

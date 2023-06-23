@@ -1,3 +1,5 @@
+File extensions: .php
+
 PHP: /server.php
   Usages: _SERVER uri
 

@@ -1,3 +1,5 @@
+File extensions: .txt
+
 File: /E-Commerce App V2.0/User_Info.txt
 
 File: /E-Commerce App V3.0/User_Info.txt

@@ -1,0 +1,722 @@
+File extensions: .h
+
+C: /src/bit.h
+  Functions: luaopen_bit
+
+C: /src/cjson/fpconv.h
+  Functions: fpconv_g_fmt, fpconv_init, fpconv_strtod
+
+C: /src/cjson/lua_cjson.h
+  Functions: lua_cjson_new, luaopen_cjson, luaopen_cjson_safe
+
+C: /src/cjson/strbuf.h
+  Functions: strbuf_allocated, strbuf_append_char, strbuf_append_char_unsafe, strbuf_append_fmt, strbuf_append_fmt_retry, strbuf_append_mem, strbuf_append_mem_unsafe, strbuf_append_string, strbuf_empty_length, strbuf_empty_ptr, strbuf_ensure_empty_length, strbuf_ensure_null, strbuf_extend_length, strbuf_free, strbuf_free_to_string, strbuf_init, strbuf_length, strbuf_new, strbuf_reset, strbuf_resize, strbuf_set_increment, strbuf_string
+  Structs: strbuf_t
+
+C: /src/klib/kbtree.h
+
+C: /src/klib/khash.h
+  Functions: __ac_Wang_hash, __ac_X31_hash_string
+
+C: /src/klib/klist.h
+
+C: /src/klib/kvec.h
+
+C: /src/mpack/conv.h
+  Variable declarations: mpack_sintmax_t, mpack_token_t, mpack_uintmax_t
+
+C: /src/mpack/lmpack.h
+  Functions: luaopen_mpack
+
+C: /src/mpack/mpack_core.h
+  Enums: enum (unnamed at /src/mpack/mpack_core.h:40:1), mpack_token_type_t
+  Functions: mpack_read, mpack_rtoken, mpack_tokbuf_init, mpack_write
+  Structs: mpack_tokbuf_s, mpack_token_s, mpack_value_s
+
+C: /src/mpack/object.h
+  Enums: enum (unnamed at /src/mpack/object.h:19:1)
+  Structs: mpack_node_s, struct (unnamed at /src/mpack/object.h:57:9), struct (unnamed at /src/mpack/object.h:63:9)
+
+C: /src/mpack/rpc.h
+  Enums: enum (unnamed at /src/mpack/rpc.h:11:1), enum (unnamed at /src/mpack/rpc.h:18:1)
+  Structs: mpack_rpc_header_s, mpack_rpc_message_s, mpack_rpc_slot_s, struct (unnamed at /src/mpack/rpc.h:51:9), struct (unnamed at /src/mpack/rpc.h:57:9)
+
+C: /src/nvim/arabic.h
+
+C: /src/nvim/arglist.h
+
+C: /src/nvim/ascii.h
+  Functions: ascii_isbdigit, ascii_isdigit, ascii_isident, ascii_isodigit, ascii_isspace, ascii_iswhite, ascii_iswhite_or_nul, ascii_isxdigit
+
+C: /src/nvim/assert.h
+
+C: /src/nvim/autocmd.h
+  Structs: AutoPatCmd_S, struct (unnamed at /src/nvim/autocmd.h:24:9), struct (unnamed at /src/nvim/autocmd.h:36:9), struct (unnamed at /src/nvim/autocmd.h:46:9)
+  Variable declarations: au_did_filetype
+
+C: /src/nvim/buffer.h
+  Enums: bfa_values, bln_values, dobuf_action_values, dobuf_start_values, getf_retvalues, getf_values
+  Functions: buf_get_changedtick, buf_inc_changedtick, buf_is_empty, buf_set_changedtick
+  Variable declarations: msg_loclist, msg_qflist
+
+C: /src/nvim/buffer_defs.h
+  Enums: AlignTextPos, FloatRelative, WinStyle, enum (unnamed at /src/nvim/buffer_defs.h:988:1)
+  Structs: argentry, arglist, buffblock, buffheader, bufref_T, diffblock_S, file_buffer, frame_S, mapblock, matchitem, qf_info_S, save_redo_T, struct (unnamed at /src/nvim/buffer_defs.h:1020:9), struct (unnamed at /src/nvim/buffer_defs.h:1054:9), struct (unnamed at /src/nvim/buffer_defs.h:128:9), struct (unnamed at /src/nvim/buffer_defs.h:309:9), struct (unnamed at /src/nvim/buffer_defs.h:355:9), struct (unnamed at /src/nvim/buffer_defs.h:364:9), struct (unnamed at /src/nvim/buffer_defs.h:433:9), struct (unnamed at /src/nvim/buffer_defs.h:940:9), struct (unnamed at /src/nvim/buffer_defs.h:956:9), tabpage_S, taggy, typebuf_T, w_line, window_S, wininfo_S
+  Variable declarations: curbuf_splice_pending, float_anchor_str, float_relative_str
+
+C: /src/nvim/buffer_updates.h
+
+C: /src/nvim/bufwrite.h
+
+C: /src/nvim/change.h
+
+C: /src/nvim/channel.h
+  Enums: ChannelPart, ChannelStdinMode, ChannelStreamType
+  Functions: callback_reader_set, find_channel
+  Structs: Channel, StderrState, struct (unnamed at /src/nvim/channel.h:47:9), struct (unnamed at /src/nvim/channel.h:56:9), struct (unnamed at /src/nvim/channel.h:61:9)
+  Variable declarations: Callback
+
+C: /src/nvim/charset.h
+  Enums: ChStr2NrFlags
+  Functions: vim_isbreak
+
+C: /src/nvim/cmdexpand.h
+  Enums: enum (unnamed at /src/nvim/cmdexpand.h:11:1), enum (unnamed at /src/nvim/cmdexpand.h:27:1)
+
+C: /src/nvim/cmdhist.h
+  Enums: HistoryType
+  Structs: hist_entry
+
+C: /src/nvim/context.h
+  Enums: ContextTypeFlags
+  Structs: struct (unnamed at /src/nvim/context.h:11:9)
+  Variable declarations: kCtxAll
+
+C: /src/nvim/cursor.h
+
+C: /src/nvim/cursor_shape.h
+  Enums: CursorShape, ModeShape
+  Structs: cursor_entry
+  Variable declarations: shape_table
+
+C: /src/nvim/debugger.h
+
+C: /src/nvim/decoration.h
+  Enums: HlMode, VirtTextPos
+  Functions: decor_has_sign
+  Structs: Decoration, struct (unnamed at /src/nvim/decoration.h:77:9), struct (unnamed at /src/nvim/decoration.h:94:9), virt_line
+  Variable declarations: DecorState, hl_mode_str, virt_text_pos_str
+
+C: /src/nvim/decoration_provider.h
+  Structs: struct (unnamed at /src/nvim/decoration_provider.h:11:9)
+  Variable declarations: provider_active
+
+C: /src/nvim/diff.h
+  Variable declarations: diff_context, diff_foldcolumn, diff_need_scrollbind, need_diff_redraw
+
+C: /src/nvim/digraph.h
+
+C: /src/nvim/drawline.h
+  Structs: struct (unnamed at /src/nvim/drawline.h:16:9), struct (unnamed at /src/nvim/drawline.h:27:9)
+  Variable declarations: conceal_cursor_used
+
+C: /src/nvim/drawscreen.h
+  Enums: enum (unnamed at /src/nvim/drawscreen.h:11:1)
+  Variable declarations: match_T, updating_screen
+
+C: /src/nvim/edit.h
+
+C: /src/nvim/eval.h
+  Enums: DictListType, GetLvalFlags, MessagePackType, TransFunctionNameFlags, VimVarIndex, enum (unnamed at /src/nvim/eval.h:273:1), exprtype_T, var_flavour_T
+  Structs: lval_S, struct (unnamed at /src/nvim/eval.h:193:9), struct (unnamed at /src/nvim/eval.h:220:9), struct (unnamed at /src/nvim/eval.h:261:9)
+  Variable declarations: eval_lavars_used, eval_msgpack_type_lists, evalarg_T
+
+C: /src/nvim/ex_cmds.h
+  Structs: struct (unnamed at /src/nvim/ex_cmds.h:28:9)
+
+C: /src/nvim/ex_cmds2.h
+
+C: /src/nvim/ex_cmds_defs.h
+  Enums: AucmdExecutableType, cmd_addr_T, enum (unnamed at /src/nvim/ex_cmds_defs.h:149:1), enum (unnamed at /src/nvim/ex_cmds_defs.h:172:1), enum (unnamed at /src/nvim/ex_cmds_defs.h:258:1), xp_prefix_T
+  Structs: aucmd_executable_t, cmdname, cstack_T, eslist_elem, exarg, expand, struct (unnamed at /src/nvim/ex_cmds_defs.h:278:9), struct (unnamed at /src/nvim/ex_cmds_defs.h:299:9)
+
+C: /src/nvim/ex_docmd.h
+  Structs: struct (unnamed at /src/nvim/ex_docmd.h:27:9)
+
+C: /src/nvim/ex_eval.h
+
+C: /src/nvim/ex_eval_defs.h
+  Enums: enum (unnamed at /src/nvim/ex_eval_defs.h:27:1), enum (unnamed at /src/nvim/ex_eval_defs.h:8:1), except_type_T
+  Structs: cleanup_stuff, msglist, vim_exception
+
+C: /src/nvim/ex_getln.h
+  Enums: CmdRedraw, enum (unnamed at /src/nvim/ex_getln.h:76:1)
+  Structs: CmdlineColorChunk, cmdline_info, struct (unnamed at /src/nvim/ex_getln.h:31:9)
+
+C: /src/nvim/ex_session.h
+
+C: /src/nvim/extmark.h
+  Enums: ExtmarkType, UndoObjectType
+  Structs: ExtmarkMove, struct (unnamed at /src/nvim/extmark.h:19:9), struct (unnamed at /src/nvim/extmark.h:37:9), struct (unnamed at /src/nvim/extmark.h:63:9), undo_object
+  Variable declarations: extmark_splice_pending
+
+C: /src/nvim/extmark_defs.h
+  Enums: DecorLevel, ExtmarkOp
+  Structs: VirtTextChunk, undo_object
+
+C: /src/nvim/file_search.h
+
+C: /src/nvim/fileio.h
+  Enums: enum (unnamed at /src/nvim/fileio.h:22:1)
+
+C: /src/nvim/fold.h
+  Variable declarations: disable_fold_update
+
+C: /src/nvim/fold_defs.h
+  Structs: foldinfo
+
+C: /src/nvim/func_attr.h
+
+C: /src/nvim/garray.h
+  Functions: ga_append_via_ptr
+  Structs: growarray
+
+C: /src/nvim/getchar.h
+  Enums: RemapValues, enum (unnamed at /src/nvim/getchar.h:28:1), flush_buffers_T
+  Variable declarations: scriptin
+
+C: /src/nvim/gettext.h
+
+C: /src/nvim/globals.h
+  Enums: CdCause, CdScope, WorkingStatus, enum (unnamed at /src/nvim/globals.h:806:1)
+  Structs: caller_scope, nvim_stats_s, struct (unnamed at /src/nvim/globals.h:434:9)
+  Variable declarations: Columns, FILE, IObuff, KeyStuffed, KeyTyped, NameBuff, RedrawingDisabled, Rows, State, TriState, VIsual_active, VIsual_mode, VIsual_reselect, VIsual_select, VIsual_select_reg, alist_T, allbuf_lock, allow_keys, arg_had_last, arrow_used, autocmd_bufnr, autocmd_busy, autocmd_fname, autocmd_fname_full, autocmd_match, autocmd_no_enter, autocmd_no_leave, bangredo, bot_top_msg, buf_T, bufref_T, called_emsg, called_vim_beep, can_si, can_si_back, check_cstack, clear_cmdline, cmd_silent, cmdline_row, cmdline_star, cmdline_was_last_drawn, cmdmod_T, cmdmsg_rl, cmdpreview, cmdwin_level, cmdwin_result, cmdwin_type, colnr_T, ctrl_c_interrupts, debug_backtrace_level, debug_break_level, debug_did_msg, debug_mode, debug_tick, dict_T, did_ai, did_check_timestamps, did_cursorhold, did_emsg, did_emsg_syntax, did_endif, did_filetype, did_outofmem_msg, did_si, did_source_packages, did_swapwrite_msg, did_syncbind, did_throw, did_wait_return, didset_vim, didset_vimruntime, disptick_T, do_profiling, do_redraw, e_abort, e_afterinit, e_api_error, e_api_spawn_failed, e_argreq, e_au_recursive, e_autocmd_close, e_backslash, e_blobidx, e_bufloaded, e_cannot_define_autocommands_for_all_events, e_cannot_edit_other_buf, e_cannot_mod, e_channotpty, e_cmdwin, e_command_too_recursive, e_curdir, e_dictkey, e_dictreq, e_dirnotf, e_duparg2, e_empty_buffer, e_endfor, e_endif, e_endtry, e_endwhile, e_exists, e_failed, e_floatexchange, e_floatonly, e_fnametoolong, e_for, e_fsync, e_highlight_group_name_invalid_char, e_highlight_group_name_too_long, e_illvar, e_intern2, e_internal, e_interr, e_invalblob, e_invalid_line_number_nr, e_invalidreg, e_invalpat, e_invarg, e_invarg2, e_invargNval, e_invargval, e_invchan, e_invchanjob, e_invcmd, e_invexpr2, e_invrange, e_invstream, e_invstreamrpc, e_isadir2, e_jobspawn, e_jobtblfull, e_letwrong, e_libcall, e_line_number_out_of_range, e_listarg, e_listblobreq, e_listdictarg, e_listdictblobarg, e_listreq, e_loclist, e_longname, e_luv_api_disabled, e_markinval, e_marknotset, e_menu_only_exists_in_another_mode, e_missing_close_curly_str, e_missingparen, e_mkdir, e_modifiable, e_nesting, e_no_errors, e_no_spell, e_noabbr, e_noalt, e_nobang, e_nobufnr, e_nogroup, e_noinstext, e_nolastcmd, e_nomap, e_nomatch, e_nomatch2, e_noname, e_nopresub, e_noprev, e_noprevre, e_norange, e_noroom, e_not_callable_type_str, e_notmp, e_notopen, e_notopen_2, e_notread, e_notset, e_null, e_number_exp, e_openerrf, e_outofmem, e_patnotf, e_patnotf2, e_positive, e_prev_dir, e_re_corr, e_re_damg, e_readerrf, e_readonly, e_readonlyvar, e_resulting_text_too_long, e_sandbox, e_screenmode, e_scroll, e_secure, e_shellempty, e_signdata, e_stdiochan2, e_str_not_inside_function, e_stray_closing_curly_str, e_streamkey, e_stringreq, e_swapclose, e_textlock, e_toocompl, e_toofewarg, e_toomany, e_toomanyarg, e_toomsbra, e_trailing, e_trailing_arg, e_trustfile, e_umark, e_undobang_cannot_redo_or_move_branch, e_unknown_option2, e_unsupportedoption, e_using_float_as_string, e_using_number_as_bool_nr, e_usingsid, e_while, e_wildexpand, e_winheight, e_winwidth, e_write, e_zerocount, edit_submode, edit_submode_extra, edit_submode_pre, embedded_mode, empty_option, emsg_assert_fails_context, emsg_assert_fails_lnum, emsg_assert_fails_msg, emsg_noredir, emsg_off, emsg_on_display, emsg_severe, emsg_silent, emsg_skip, end_comment_pending, escape_chars, ex_exitval, ex_nesting_level, ex_no_reprint, ex_normal_busy, except_T, exec_from_reg, exiting, exmode_active, expr_map_lock, fenc_default, finish_op, force_abort, force_restart_edit, frame_T, full_screen, g_do_tagpreview, g_stats, g_tag_at_cursor, garbage_collect_at_exit, garray_T, global_busy, globaldir, got_int, headless_mode, highlight_match, hlf_T, ignore_script, in_assert_fails, include_default, include_link, include_none, info_message, inhibit_delete_count, ins_at_eol, keep_filetype, keep_help_flag, keep_msg, keep_msg_attr, km_startsel, km_stopsel, last_chdir_reason, last_cmdline, last_mode, line_msg, linenr_T, lines_left, listcmd_busy, mapped_ctrl_c, maptick, max_alist_id, may_garbage_collect, mod_mask, mode_displayed, modified_was_set, motion_force, mouse_col, mouse_dragging, mouse_grid, mouse_past_bottom, mouse_past_eol, mouse_row, msg_buf, msg_col, msg_did_scroll, msg_didany, msg_didout, msg_hist_off, msg_no_more, msg_nowait, msg_row, msg_scroll, msg_scrolled, msg_scrolled_ign, msg_silent, msglist_T, must_redraw, must_redraw_pum, need_check_timestamps, need_clr_eos, need_fileinfo, need_highlight_changed, need_maketitle, need_rethrow, need_start_insertmode, need_wait_return, new_last_cmdline, no_abbr, no_check_timestamps, no_hlsearch, no_lines_msg, no_mapping, no_smartcase, no_u_sync, no_wait_return, no_zero_mapping, old_indent, opcount, optmagic_T, os_buf, pending_end_reg_executing, pending_exmode_active, pos_T, postponed_split, postponed_split_flags, postponed_split_tab, provider_call_nesting, provider_caller_scope, quit_more, rc_did_emsg, readonlymode, recoverymode, redir_off, redir_reg, redir_vname, redo_VIsual_busy, redraw_cmdline, redraw_mode, redraw_tabline, redrawing_cmdline, reg_do_extmatch, reg_executing, reg_extmatch_T, reg_recorded, reg_recording, repeat_cmdline, replace_offset, resel_VIsual_mode, restart_VIsual_select, restart_edit, ru_col, ru_wid, sandbox, save_p_ls, save_p_wmh, sc_col, sctx_T, searchcmdlen, secure, silent_mode, skip_redraw, skip_update_topline, skip_win_fix_cursor, skip_win_fix_scroll, starting, stderr_isatty, stdin_fd, stdin_isatty, stdout_isatty, stl_syntax, stop_insert_mode, sub_nsubs, suppress_errthrow, swap_exists_action, swap_exists_did_quit, sys_menu, t_colors, tabpage_T, textlock, top_bot_msg, trylevel, typebuf_T, typebuf_was_empty, typebuf_was_filled, u_sync_once, uint64_t, uint8_t, v_dying, vgetc_busy, vgetc_char, vgetc_mod_mask, vim_ignored, vimmenu_T, vr_lines_changed, want_garbage_collect, wild_menu_showing, win_T, windowsVersion
+
+C: /src/nvim/grid.h
+  Functions: schar_cmp, schar_copy, schar_from_ascii, schar_from_char
+  Variable declarations: ScreenGrid, resizing_screen, sattr_T, schar_T
+
+C: /src/nvim/grid_defs.h
+  Enums: enum (unnamed at /src/nvim/grid_defs.h:16:1)
+  Structs: GridLineEvent, ScreenGrid
+
+C: /src/nvim/hashtab.h
+  Structs: hashitem_S, hashtable_S
+  Variable declarations: hash_removed
+
+C: /src/nvim/help.h
+
+C: /src/nvim/highlight.h
+  Functions: win_hl_attr
+
+C: /src/nvim/highlight_defs.h
+  Enums: HlAttrFlags, HlKind, hlf_T
+  Structs: ColorKey, HlEntry, HlPriId, attr_entry, struct (unnamed at /src/nvim/highlight_defs.h:238:9)
+  Variable declarations: NS, RgbValue, cterm_normal_bg_color, cterm_normal_fg_color, highlight_attr, highlight_attr_last, highlight_stlnc, highlight_user, hl_attr_active, hlf_names
+
+C: /src/nvim/highlight_group.h
+  Structs: struct (unnamed at /src/nvim/highlight_group.h:11:9)
+  Variable declarations: color_name_table
+
+C: /src/nvim/iconv.h
+
+C: /src/nvim/indent.h
+
+C: /src/nvim/indent_c.h
+
+C: /src/nvim/input.h
+
+C: /src/nvim/insexpand.h
+
+C: /src/nvim/keycodes.h
+  Enums: enum (unnamed at /src/nvim/keycodes.h:485:1), enum (unnamed at /src/nvim/keycodes.h:493:1), key_extra
+
+C: /src/nvim/linematch.h
+
+C: /src/nvim/log.h
+
+C: /src/nvim/macros.h
+
+C: /src/nvim/main.h
+  Structs: mparm_T
+  Variable declarations: main_loop
+
+C: /src/nvim/map.h
+  Functions: KHASH_DECLARE, map_ColorKey_ColorItem_del, map_ColorKey_ColorItem_get, map_ColorKey_ColorItem_has, map_ColorKey_ColorItem_put, map_ColorKey_ColorItem_put_ref, map_ColorKey_ColorItem_ref, map_HlEntry_int_del, map_HlEntry_int_get, map_HlEntry_int_has, map_HlEntry_int_put, map_HlEntry_int_put_ref, map_HlEntry_int_ref, map_String_handle_T_del, map_String_handle_T_get, map_String_handle_T_has, map_String_handle_T_put, map_String_handle_T_put_ref, map_String_handle_T_ref, map_String_int_del, map_String_int_get, map_String_int_has, map_String_int_put, map_String_int_put_ref, map_String_int_ref, map_cstr_t_int_del, map_cstr_t_int_get, map_cstr_t_int_has, map_cstr_t_int_put, map_cstr_t_int_put_ref, map_cstr_t_int_ref, map_cstr_t_ptr_t_del, map_cstr_t_ptr_t_get, map_cstr_t_ptr_t_has, map_cstr_t_ptr_t_put, map_cstr_t_ptr_t_put_ref, map_cstr_t_ptr_t_ref, map_int_String_del, map_int_String_get, map_int_String_has, map_int_String_put, map_int_String_put_ref, map_int_String_ref, map_int_cstr_t_del, map_int_cstr_t_get, map_int_cstr_t_has, map_int_cstr_t_put, map_int_cstr_t_put_ref, map_int_cstr_t_ref, map_int_int_del, map_int_int_get, map_int_int_has, map_int_int_put, map_int_int_put_ref, map_int_int_ref, map_int_ptr_t_del, map_int_ptr_t_get, map_int_ptr_t_has, map_int_ptr_t_put, map_int_ptr_t_put_ref, map_int_ptr_t_ref, map_ptr_t_ptr_t_del, map_ptr_t_ptr_t_get, map_ptr_t_ptr_t_has, map_ptr_t_ptr_t_put, map_ptr_t_ptr_t_put_ref, map_ptr_t_ptr_t_ref, map_uint32_t_ptr_t_del, map_uint32_t_ptr_t_get, map_uint32_t_ptr_t_has, map_uint32_t_ptr_t_put, map_uint32_t_ptr_t_put_ref, map_uint32_t_ptr_t_ref, map_uint32_t_uint32_t_del, map_uint32_t_uint32_t_get, map_uint32_t_uint32_t_has, map_uint32_t_uint32_t_put, map_uint32_t_uint32_t_put_ref, map_uint32_t_uint32_t_ref, map_uint64_t_ptr_t_del, map_uint64_t_ptr_t_get, map_uint64_t_ptr_t_has, map_uint64_t_ptr_t_put, map_uint64_t_ptr_t_put_ref, map_uint64_t_ptr_t_ref, map_uint64_t_ssize_t_del, map_uint64_t_ssize_t_get, map_uint64_t_ssize_t_has, map_uint64_t_ssize_t_put, map_uint64_t_ssize_t_put_ref, map_uint64_t_ssize_t_ref, map_uint64_t_uint64_t_del, map_uint64_t_uint64_t_get, map_uint64_t_uint64_t_has, map_uint64_t_uint64_t_put, map_uint64_t_uint64_t_put_ref, map_uint64_t_uint64_t_ref, pmap_del2, set_del_ColorKey, set_del_HlEntry, set_del_String, set_del_cstr_t, set_del_int, set_del_ptr_t, set_del_uint32_t, set_del_uint64_t, set_has_ColorKey, set_has_HlEntry, set_has_String, set_has_cstr_t, set_has_int, set_has_ptr_t, set_has_uint32_t, set_has_uint64_t, set_put_cstr_t, set_put_int, set_put_ptr_t, set_put_uint32_t, set_put_uint64_t
+  Structs: struct (unnamed at /src/nvim/map.h:73:1), struct (unnamed at /src/nvim/map.h:74:1), struct (unnamed at /src/nvim/map.h:75:1), struct (unnamed at /src/nvim/map.h:76:1), struct (unnamed at /src/nvim/map.h:77:1), struct (unnamed at /src/nvim/map.h:78:1), struct (unnamed at /src/nvim/map.h:79:1), struct (unnamed at /src/nvim/map.h:80:1), struct (unnamed at /src/nvim/map.h:81:1), struct (unnamed at /src/nvim/map.h:82:1), struct (unnamed at /src/nvim/map.h:83:1), struct (unnamed at /src/nvim/map.h:84:1), struct (unnamed at /src/nvim/map.h:85:1), struct (unnamed at /src/nvim/map.h:86:1), struct (unnamed at /src/nvim/map.h:87:1), struct (unnamed at /src/nvim/map.h:88:1)
+
+C: /src/nvim/mapping.h
+  Structs: map_arguments
+
+C: /src/nvim/mark.h
+  Functions: clearpos, equalpos, lt, ltoreq
+
+C: /src/nvim/mark_defs.h
+  Enums: MarkGet, MarkMove, MarkMoveRes
+  Structs: filemark, fmarkv, xfilemark
+
+C: /src/nvim/marktree.h
+  Functions: marktree_decor_level, mt_end, mt_flags, mt_lookup_id, mt_lookup_key, mt_paired, mt_right, mt_start
+  Structs: MarkTreeIter, mtnode_s, mtpos_t, struct (unnamed at /src/nvim/marktree.h:130:9), struct (unnamed at /src/nvim/marktree.h:48:9)
+
+C: /src/nvim/match.h
+
+C: /src/nvim/math.h
+
+C: /src/nvim/mbyte.h
+  Functions: mb_strcmp_ic
+  Variable declarations: utf8len_tab, utf8len_tab_zero
+
+C: /src/nvim/mbyte_defs.h
+  Enums: ConvFlags, enum (unnamed at /src/nvim/mbyte_defs.h:12:1), enum (unnamed at /src/nvim/mbyte_defs.h:9:1)
+  Structs: struct (unnamed at /src/nvim/mbyte_defs.h:46:9)
+
+C: /src/nvim/memfile.h
+
+C: /src/nvim/memfile_defs.h
+  Enums: mfdirty_T
+  Structs: bhdr, memfile, mf_blocknr_trans_item, mf_hashitem, mf_hashtab
+
+C: /src/nvim/memline.h
+
+C: /src/nvim/memline_defs.h
+  Structs: info_pointer, memline, ml_chunksize
+
+C: /src/nvim/memory.h
+  Structs: Arena, consumed_blk
+  Variable declarations: size_t
+
+C: /src/nvim/menu.h
+
+C: /src/nvim/menu_defs.h
+  Enums: enum (unnamed at /src/nvim/menu_defs.h:26:1), enum (unnamed at /src/nvim/menu_defs.h:9:1)
+  Structs: VimMenu
+
+C: /src/nvim/message.h
+  Structs: msg_hist, struct (unnamed at /src/nvim/message.h:29:9)
+  Variable declarations: ScreenGrid, first_msg_hist, last_msg_hist, msg_ext_need_clear, msg_grid_pos, msg_grid_scroll_discount, msg_scrolled_at_flush
+
+C: /src/nvim/mouse.h
+  Enums: enum (unnamed at /src/nvim/mouse.h:13:1), enum (unnamed at /src/nvim/mouse.h:27:1), enum (unnamed at /src/nvim/mouse.h:36:1), enum (unnamed at /src/nvim/mouse.h:49:1)
+
+C: /src/nvim/move.h
+
+C: /src/nvim/normal.h
+  Enums: MotionType
+  Structs: cmdarg_S, oparg_S
+  Variable declarations: showcmd_buf
+
+C: /src/nvim/ops.h
+  Enums: GRegFlags, yreg_mode_t
+  Structs: yankreg
+
+C: /src/nvim/option.h
+
+C: /src/nvim/option_defs.h
+  Enums: OptValType, OptionFlags, enum (unnamed at /src/nvim/option_defs.h:241:1), enum (unnamed at /src/nvim/option_defs.h:311:1), enum (unnamed at /src/nvim/option_defs.h:829:1), enum (unnamed at /src/nvim/option_defs.h:924:1), idopt_T
+  Structs: struct (unnamed at /src/nvim/option_defs.h:1039:9), struct (unnamed at /src/nvim/option_defs.h:1093:9), struct (unnamed at /src/nvim/option_defs.h:985:9), vimoption
+  Variable declarations: bkc_flags, bo_flags, breakat_flags, cb_flags, cmp_flags, dy_flags, fdo_flags, jop_flags, p_acd, p_ai, p_ambw, p_ar, p_ari, p_arshape, p_aw, p_awa, p_bdir, p_bex, p_bg, p_bh, p_bin, p_bk, p_bkc, p_bl, p_bo, p_bomb, p_breakat, p_bs, p_bsk, p_bt, p_cb, p_ccv, p_cdh, p_cdpath, p_cedit, p_cfu, p_ch, p_channel, p_ci, p_cin, p_cink, p_cino, p_cinsd, p_cinw, p_cmp, p_cms, p_columns, p_com, p_confirm, p_cot, p_cpo, p_cpt, p_cwh, p_debug, p_deco, p_def, p_dex, p_dg, p_dict, p_dip, p_dir, p_dy, p_ea, p_ead, p_eb, p_ed, p_ef, p_efm, p_ei, p_emoji, p_enc, p_eof, p_eol, p_ep, p_et, p_exrc, p_fcl, p_fcs, p_fdls, p_fdo, p_fenc, p_fencs, p_fex, p_ff, p_ffs, p_fic, p_fixeol, p_flp, p_fo, p_force_off, p_force_on, p_fp, p_fs, p_ft, p_gd, p_gefm, p_gp, p_guicursor, p_guifont, p_guifontwide, p_hf, p_hh, p_hi, p_hid, p_hl, p_hlg, p_hls, p_ic, p_icm, p_icon, p_iconstring, p_iminsert, p_imsearch, p_inc, p_inde, p_indk, p_inex, p_inf, p_is, p_isf, p_isi, p_isk, p_isp, p_jop, p_js, p_keymap, p_km, p_kp, p_langmap, p_lcs, p_lines, p_linespace, p_lisp, p_lispwords, p_lm, p_lnr, p_lop, p_lpl, p_lrm, p_ls, p_lz, p_ma, p_magic, p_mat, p_mco, p_mef, p_menc, p_mfd, p_mis, p_ml, p_mle, p_mls, p_mmd, p_mmp, p_mod, p_more, p_mouse, p_mousef, p_mousem, p_mousemev, p_mousescroll, p_mousescroll_hor, p_mousescroll_vert, p_mouset, p_mp, p_mps, p_msm, p_nf, p_ofu, p_opfunc, p_para, p_paste, p_path, p_pb, p_pex, p_ph, p_pi, p_pm, p_pp, p_pvh, p_pw, p_pyx, p_qe, p_qftf, p_rdb, p_rdt, p_re, p_report, p_ri, p_ro, p_rtp, p_ru, p_ruf, p_sb, p_sbo, p_sbr, p_sc, p_scbk, p_scs, p_sections, p_secure, p_sel, p_sft, p_sh, p_shada, p_shadafile, p_shcf, p_shm, p_shq, p_si, p_siso, p_sj, p_slm, p_sloc, p_sm, p_smc, p_smd, p_so, p_sol, p_sp, p_spc, p_spf, p_spk, p_spl, p_spo, p_spr, p_sps, p_sr, p_srr, p_ss, p_ssop, p_sta, p_stal, p_stl, p_stmp, p_sts, p_su, p_sua, p_sw, p_swb, p_swf, p_sxe, p_sxq, p_syn, p_tags, p_tal, p_tbidi, p_tbs, p_tc, p_tfu, p_tgc, p_tgst, p_timeout, p_title, p_titlelen, p_titleold, p_titlestring, p_tl, p_tm, p_to, p_tpf, p_tpm, p_tr, p_ts, p_tsr, p_tsrfu, p_ttimeout, p_ttm, p_tw, p_uc, p_udf, p_udir, p_ul, p_ur, p_ut, p_vb, p_vdir, p_ve, p_verbose, p_vfile, p_vop, p_vsts, p_vts, p_wa, p_wak, p_warn, p_wb, p_wbr, p_wc, p_wcm, p_wd, p_wh, p_wic, p_wig, p_wim, p_window, p_wiw, p_wm, p_wmh, p_wmnu, p_wmw, p_wop, p_write, p_ws, p_ww, rdb_flags, spo_flags, ssop_flags, swb_flags, tc_flags, tpf_flags, ve_flags, vop_flags, wop_flags
+
+C: /src/nvim/optionstr.h
+
+C: /src/nvim/path.h
+  Enums: file_comparison
+
+C: /src/nvim/plines.h
+  Structs: struct (unnamed at /src/nvim/plines.h:10:9)
+
+C: /src/nvim/popupmenu.h
+  Structs: pumitem_T
+  Variable declarations: ScreenGrid
+
+C: /src/nvim/pos.h
+  Enums: enum (unnamed at /src/nvim/pos.h:17:1), enum (unnamed at /src/nvim/pos.h:22:1), enum (unnamed at /src/nvim/pos.h:25:1), enum (unnamed at /src/nvim/pos.h:28:1)
+  Structs: lpos_T, pos_T
+
+C: /src/nvim/profile.h
+
+C: /src/nvim/quickfix.h
+
+C: /src/nvim/rbuffer.h
+  Structs: rbuffer
+
+C: /src/nvim/regexp.h
+
+C: /src/nvim/regexp_defs.h
+  Enums: magic_T, optmagic_T
+  Structs: nfa_state, reg_extmatch, regengine, regprog, struct (unnamed at /src/nvim/regexp_defs.h:121:9), struct (unnamed at /src/nvim/regexp_defs.h:147:9), struct (unnamed at /src/nvim/regexp_defs.h:66:9), struct (unnamed at /src/nvim/regexp_defs.h:92:9)
+
+C: /src/nvim/runtime.h
+  Enums: estack_arg_T, etype_T
+  Structs: struct (unnamed at /src/nvim/runtime.h:29:9), struct (unnamed at /src/nvim/runtime.h:59:9), struct (unnamed at /src/nvim/runtime.h:64:9), struct (unnamed at /src/nvim/runtime.h:94:9)
+  Variable declarations: exestack, script_items
+
+C: /src/nvim/search.h
+  Structs: fuzmatch_str_T, searchstat, soffset, spat, struct (unnamed at /src/nvim/search.h:84:9)
+
+C: /src/nvim/sha256.h
+  Structs: context_sha256_T
+
+C: /src/nvim/shada.h
+  Enums: ShaDaReadFileFlags
+
+C: /src/nvim/sign.h
+
+C: /src/nvim/sign_defs.h
+  Enums: SignType
+  Structs: SignTextAttrs, sign_entry, signgroup_S
+
+C: /src/nvim/spell.h
+
+C: /src/nvim/spell_defs.h
+  Enums: SpellAddType
+  Structs: fromto_S, langp_S, salitem_S, slang_S, spelltab_T, wordcount_S
+  Variable declarations: did_set_spelltab, e_format, first_lang, int_wordlist, repl_from, repl_to, spelltab
+
+C: /src/nvim/spellfile.h
+
+C: /src/nvim/spellsuggest.h
+
+C: /src/nvim/state.h
+  Structs: vim_state
+
+C: /src/nvim/statusline.h
+  Variable declarations: StlClickDefinition, size_t
+
+C: /src/nvim/statusline_defs.h
+  Structs: StlClickDefinition, StlClickRecord, statuscol, stl_hlrec, stl_item
+
+C: /src/nvim/strings.h
+
+C: /src/nvim/syntax.h
+  Variable declarations: highlight_init_cmdline
+
+C: /src/nvim/syntax_defs.h
+  Structs: buf_state, keyentry, sp_syn, syn_state
+
+C: /src/nvim/tag.h
+  Structs: tagname_T
+
+C: /src/nvim/terminal.h
+  Structs: TerminalOptions, terminal
+
+C: /src/nvim/testing.h
+
+C: /src/nvim/textformat.h
+
+C: /src/nvim/textobject.h
+
+C: /src/nvim/types.h
+  Enums: TriState
+  Structs: Decoration, MsgpackRpcRequestHandler, expand
+
+C: /src/nvim/ugrid.h
+  Structs: ucell, ugrid
+
+C: /src/nvim/ui.h
+  Enums: UIExtension, enum (unnamed at /src/nvim/ui.h:48:1)
+  Structs: struct (unnamed at /src/nvim/ui.h:55:9), ui_event_callback, ui_t
+  Variable declarations: MultiQueue, ui_ext_names
+
+C: /src/nvim/ui_client.h
+  Structs: UIClientHandler
+  Variable declarations: TriState, sattr_T, schar_T, size_t, ui_client_attached, ui_client_forward_stdin, uint64_t
+
+C: /src/nvim/ui_compositor.h
+
+C: /src/nvim/undo.h
+
+C: /src/nvim/undo_defs.h
+  Structs: struct (unnamed at /src/nvim/undo_defs.h:13:9), u_entry, u_header
+
+C: /src/nvim/usercmd.h
+  Structs: ucmd
+  Variable declarations: ucmds
+
+C: /src/nvim/version.h
+  Variable declarations: Version, longVersion
+
+C: /src/nvim/vim.h
+  Enums: Direction, enum (unnamed at /src/nvim/vim.h:104:1), enum (unnamed at /src/nvim/vim.h:184:1), enum (unnamed at /src/nvim/vim.h:26:1)
+
+C: /src/nvim/window.h
+  Variable declarations: p_ch_was_zero
+
+C: /src/xdiff/xdiff.h
+  Functions: xdl_diff, xdl_merge, xdl_mmfile_first, xdl_mmfile_size
+  Structs: s_bdiffparam, s_mmbuffer, s_mmfile, s_xdemitcb, s_xdemitconf, s_xmparam, s_xpparam
+
+C: /src/xdiff/xdiffi.h
+  Functions: xdl_build_script, xdl_change_compact, xdl_do_diff, xdl_do_histogram_diff, xdl_do_patience_diff, xdl_emit_diff, xdl_free_script, xdl_recs_cmp
+  Structs: s_diffdata, s_xdalgoenv, s_xdchange
+
+C: /src/xdiff/xemit.h
+  Functions: xdl_emit_diff, xdl_get_hunk
+
+C: /src/xdiff/xinclude.h
+
+C: /src/xdiff/xmacros.h
+
+C: /src/xdiff/xprepare.h
+  Functions: xdl_free_env, xdl_prepare_env
+
+C: /src/xdiff/xtypes.h
+  Structs: s_chanode, s_chastore, s_xdfenv, s_xdfile, s_xrecord
+
+C: /src/xdiff/xutils.h
+  Functions: xdl_blankline, xdl_bogosqrt, xdl_cha_alloc, xdl_cha_free, xdl_cha_init, xdl_emit_diffrec, xdl_emit_hunk_hdr, xdl_fall_back_diff, xdl_guess_lines, xdl_hash_record, xdl_hashbits, xdl_num_out, xdl_recmatch
+
+C: /src/nvim/api/autocmd.h
+
+C: /src/nvim/api/buffer.h
+
+C: /src/nvim/api/command.h
+
+C: /src/nvim/api/deprecated.h
+
+C: /src/nvim/api/extmark.h
+  Variable declarations: handle_T
+
+C: /src/nvim/api/keysets.h
+  Structs: struct (unnamed at /src/nvim/api/keysets.h:100:9), struct (unnamed at /src/nvim/api/keysets.h:105:9), struct (unnamed at /src/nvim/api/keysets.h:10:9), struct (unnamed at /src/nvim/api/keysets.h:115:9), struct (unnamed at /src/nvim/api/keysets.h:122:9), struct (unnamed at /src/nvim/api/keysets.h:153:9), struct (unnamed at /src/nvim/api/keysets.h:168:9), struct (unnamed at /src/nvim/api/keysets.h:174:9), struct (unnamed at /src/nvim/api/keysets.h:181:9), struct (unnamed at /src/nvim/api/keysets.h:192:9), struct (unnamed at /src/nvim/api/keysets.h:200:9), struct (unnamed at /src/nvim/api/keysets.h:207:9), struct (unnamed at /src/nvim/api/keysets.h:20:9), struct (unnamed at /src/nvim/api/keysets.h:211:9), struct (unnamed at /src/nvim/api/keysets.h:225:9), struct (unnamed at /src/nvim/api/keysets.h:230:9), struct (unnamed at /src/nvim/api/keysets.h:253:9), struct (unnamed at /src/nvim/api/keysets.h:258:9), struct (unnamed at /src/nvim/api/keysets.h:262:9), struct (unnamed at /src/nvim/api/keysets.h:266:9), struct (unnamed at /src/nvim/api/keysets.h:50:9), struct (unnamed at /src/nvim/api/keysets.h:62:9), struct (unnamed at /src/nvim/api/keysets.h:66:9), struct (unnamed at /src/nvim/api/keysets.h:6:9), struct (unnamed at /src/nvim/api/keysets.h:81:9)
+
+C: /src/nvim/api/options.h
+
+C: /src/nvim/api/tabpage.h
+
+C: /src/nvim/api/ui.h
+
+C: /src/nvim/api/ui_events.in.h
+
+C: /src/nvim/api/vim.h
+
+C: /src/nvim/api/vimscript.h
+
+C: /src/nvim/api/win_config.h
+
+C: /src/nvim/api/window.h
+
+C: /src/nvim/eval/buffer.h
+
+C: /src/nvim/eval/decode.h
+
+C: /src/nvim/eval/encode.h
+  Functions: encode_vim_to_echo, encode_vim_to_msgpack
+  Structs: struct (unnamed at /src/nvim/eval/encode.h:34:9)
+  Variable declarations: encode_special_var_names
+
+C: /src/nvim/eval/executor.h
+  Variable declarations: e_list_index_out_of_range_nr
+
+C: /src/nvim/eval/funcs.h
+  Structs: struct (unnamed at /src/nvim/eval/funcs.h:20:9)
+
+C: /src/nvim/eval/gc.h
+  Variable declarations: gc_first_dict, gc_first_list
+
+C: /src/nvim/eval/typval.h
+  Functions: tv_blob_get, tv_blob_len, tv_blob_set, tv_blob_set_ret, tv_dict_is_watched, tv_dict_len, tv_dict_set_ret, tv_get_float_chk, tv_init, tv_is_func, tv_list_copyid, tv_list_first, tv_list_has_watchers, tv_list_last, tv_list_latest_copy, tv_list_len, tv_list_locked, tv_list_ref, tv_list_set_lock, tv_list_set_ret, tv_list_uidx
+  Variable declarations: tv_empty_string, tv_in_free_unref_items
+
+C: /src/nvim/eval/typval_defs.h
+  Enums: BoolVarValue, CallbackType, DictItemFlags, ListLenSpecials, ScopeType, SpecialVarValue, VarLockStatus, VarType, enum (unnamed at /src/nvim/eval/typval_defs.h:18:1), enum (unnamed at /src/nvim/eval/typval_defs.h:277:1), enum (unnamed at /src/nvim/eval/typval_defs.h:279:1), enum (unnamed at /src/nvim/eval/typval_defs.h:281:1)
+  Structs: ListSortItem, blobvar_S, dict_watcher, dictvar_S, funccall_S, ht_stack_S, list_stack_S, listitem_S, listvar_S, listwatch_S, partial_S, struct (unnamed at /src/nvim/eval/typval_defs.h:119:9), struct (unnamed at /src/nvim/eval/typval_defs.h:186:9), struct (unnamed at /src/nvim/eval/typval_defs.h:218:9), struct (unnamed at /src/nvim/eval/typval_defs.h:225:9), struct (unnamed at /src/nvim/eval/typval_defs.h:270:9), struct (unnamed at /src/nvim/eval/typval_defs.h:63:9), ufunc
+
+C: /src/nvim/eval/typval_encode.c.h
+  Functions: _TYPVAL_ENCODE_CHECK_SELF_REFERENCE, _TYPVAL_ENCODE_CONVERT_ONE_VALUE, _TYPVAL_ENCODE_ENCODE
+  Variable declarations: TYPVAL_ENCODE_NODICT_VAR
+
+C: /src/nvim/eval/typval_encode.h
+  Enums: MPConvPartialStage, MPConvStackValType
+  Functions: tv_strlen
+  Structs: struct (unnamed at /src/nvim/eval/typval_encode.h:34:9)
+
+C: /src/nvim/eval/userfunc.h
+  Enums: FnameTransError
+  Structs: funccal_entry, struct (unnamed at /src/nvim/eval/userfunc.h:37:9), struct (unnamed at /src/nvim/eval/userfunc.h:67:9)
+
+C: /src/nvim/eval/vars.h
+
+C: /src/nvim/eval/window.h
+  Structs: struct (unnamed at /src/nvim/eval/window.h:20:9)
+
+C: /src/nvim/event/defs.h
+  Functions: event_create
+  Structs: message
+
+C: /src/nvim/event/libuv_process.h
+  Functions: libuv_process_init
+  Structs: libuv_process
+
+C: /src/nvim/event/loop.h
+  Functions: KLIST_INIT
+  Structs: loop
+
+C: /src/nvim/event/multiqueue.h
+  Structs: multiqueue
+
+C: /src/nvim/event/process.h
+  Enums: ProcessType
+  Functions: process_init, process_is_stopped
+  Structs: process
+
+C: /src/nvim/event/rstream.h
+
+C: /src/nvim/event/signal.h
+  Structs: signal_watcher
+
+C: /src/nvim/event/socket.h
+  Structs: socket_watcher
+
+C: /src/nvim/event/stream.h
+  Structs: stream
+
+C: /src/nvim/event/time.h
+  Structs: time_watcher
+
+C: /src/nvim/event/wstream.h
+  Structs: wbuffer
+
+C: /src/nvim/lib/queue.h
+  Structs: _queue
+
+C: /src/nvim/lib/ringbuf.h
+
+C: /src/nvim/lua/converter.h
+
+C: /src/nvim/lua/executor.h
+  Structs: struct (unnamed at /src/nvim/lua/executor.h:22:9)
+  Variable declarations: nlua_disable_preload, nlua_ref_state_t
+
+C: /src/nvim/lua/secure.h
+
+C: /src/nvim/lua/spell.h
+
+C: /src/nvim/lua/stdlib.h
+
+C: /src/nvim/lua/treesitter.h
+
+C: /src/nvim/lua/xdiff.h
+
+C: /src/nvim/msgpack_rpc/channel.h
+  Variable declarations: MultiQueue
+
+C: /src/nvim/msgpack_rpc/channel_defs.h
+  Structs: Channel, Unpacker, struct (unnamed at /src/nvim/msgpack_rpc/channel_defs.h:17:9), struct (unnamed at /src/nvim/msgpack_rpc/channel_defs.h:24:9), struct (unnamed at /src/nvim/msgpack_rpc/channel_defs.h:33:9)
+
+C: /src/nvim/msgpack_rpc/helpers.h
+
+C: /src/nvim/msgpack_rpc/server.h
+
+C: /src/nvim/msgpack_rpc/unpacker.h
+  Structs: Unpacker
+
+C: /src/nvim/os/dl.h
+
+C: /src/nvim/os/fileio.h
+  Enums: FileOpenFlags, enum (unnamed at /src/nvim/os/fileio.h:68:1)
+  Functions: file_eof, file_fd
+  Structs: struct (unnamed at /src/nvim/os/fileio.h:11:9)
+
+C: /src/nvim/os/fs.h
+
+C: /src/nvim/os/fs_defs.h
+  Structs: struct (unnamed at /src/nvim/os/fs_defs.h:12:9), struct (unnamed at /src/nvim/os/fs_defs.h:19:9), struct (unnamed at /src/nvim/os/fs_defs.h:7:9)
+
+C: /src/nvim/os/input.h
+  Variable declarations: used_stdin
+
+C: /src/nvim/os/lang.h
+
+C: /src/nvim/os/os.h
+
+C: /src/nvim/os/os_defs.h
+
+C: /src/nvim/os/os_win_console.h
+
+C: /src/nvim/os/process.h
+
+C: /src/nvim/os/pty_conpty_win.h
+  Functions: HRESULT, WINAPI
+  Structs: conpty
+
+C: /src/nvim/os/pty_process.h
+
+C: /src/nvim/os/pty_process_unix.h
+  Functions: pty_process_init
+  Structs: pty_process
+
+C: /src/nvim/os/pty_process_win.h
+  Functions: pty_process_init
+  Structs: arg_node, pty_process
+
+C: /src/nvim/os/shell.h
+  Enums: ShellOpts
+
+C: /src/nvim/os/signal.h
+
+C: /src/nvim/os/stdpaths_defs.h
+  Enums: XDGVarType
+
+C: /src/nvim/os/time.h
+
+C: /src/nvim/os/tty.h
+
+C: /src/nvim/os/unix_defs.h
+
+C: /src/nvim/os/win_defs.h
+
+C: /src/nvim/tui/input.h
+  Enums: ExtkeysType, HandleState
+  Structs: term_input
+
+C: /src/nvim/tui/input_defs.h
+  Enums: KittyKey
+
+C: /src/nvim/tui/terminfo.h
+
+C: /src/nvim/tui/terminfo_defs.h
+  Variable declarations: ansi_terminfo, conemu_terminfo, cygwin_terminfo, interix_8colour_terminfo, iterm_256colour_terminfo, linux_16colour_terminfo, putty_256colour_terminfo, rxvt_256colour_terminfo, screen_256colour_terminfo, st_256colour_terminfo, tmux_256colour_terminfo, vte_256colour_terminfo, vtpcon_terminfo, win32con_terminfo, xterm_256colour_terminfo
+
+C: /src/nvim/tui/tui.h
+  Structs: TUIData
+
+C: /test/includes/pre/fcntl.h
+  Variable declarations: kO_CREAT, kO_EXCL, kO_RDONLY, kO_RDWR, kO_WRONLY
+
+C: /test/unit/fixtures/multiqueue.h
+  Functions: ut_multiqueue_get, ut_multiqueue_put
+
+C: /test/unit/fixtures/posix.h
+  Enums: enum (unnamed at /test/unit/fixtures/posix.h:7:1)
+
+C: /test/unit/fixtures/rbuffer.h
+  Functions: ut_rbuffer_each, ut_rbuffer_each_read_chunk, ut_rbuffer_each_reverse, ut_rbuffer_each_write_chunk
+
+C: /src/nvim/api/private/converter.h
+
+C: /src/nvim/api/private/defs.h
+  Enums: ErrorType, MessageType, ObjectType
+  Functions: is_internal_call
+  Structs: Error, KeySetLink, String, key_value_pair, object
+
+C: /src/nvim/api/private/dispatch.h
+  Structs: MsgpackRpcRequestHandler
+  Variable declarations: method_handlers
+
+C: /src/nvim/api/private/helpers.h
+  Structs: struct (unnamed at /src/nvim/api/private/helpers.h:140:9)
+
+C: /src/nvim/api/private/validate.h
+
+C: /src/nvim/viml/parser/expressions.h
+  Enums: ExprASTNodeType, ExprAssignmentType, ExprCaseCompareStrategy, ExprComparisonType, ExprOptScope, ExprParserFlags, ExprVarScope, LexExprFlags, LexExprTokenType
+  Structs: ExprAST, ExprASTError, expr_ast_node, struct (unnamed at /src/nvim/viml/parser/expressions.h:108:9)
+  Variable declarations: ccs_tab, east_node_type_tab, eltkn_cmp_type_tab, expr_asgn_type_tab, node_maxchildren
+
+C: /src/nvim/viml/parser/parser.h
+  Functions: viml_parser_advance, viml_parser_destroy, viml_parser_get_remaining_line, viml_parser_highlight, viml_parser_init, viml_preader_get_line
+  Structs: ParserHighlightChunk, ParserLine, ParserPosition, ParserStateItem, struct (unnamed at /src/nvim/viml/parser/parser.h:48:9), struct (unnamed at /src/nvim/viml/parser/parser.h:72:9)
+
+C: /test/includes/pre/sys/stat.h
+  Variable declarations: kS_IFBLK, kS_IFCHR, kS_IFDIR, kS_IFIFO, kS_IFLNK, kS_IFMT, kS_IFREG, kS_IFSOCK, kS_IRGRP, kS_IROTH, kS_IRUSR, kS_IRWXG, kS_IRWXO, kS_IRWXU, kS_ISGID, kS_ISUID, kS_ISVTX, kS_IWGRP, kS_IWOTH, kS_IWUSR, kS_IXGRP, kS_IXOTH, kS_IXUSR

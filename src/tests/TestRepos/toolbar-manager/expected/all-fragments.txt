@@ -1,4 +1,4 @@
-Fragment(uuid='348ba426-7e99-4f77-9938-0250d0db2839',
+Fragment(uuid='NORMALIZED-000000',
          path='/.github/FUNDING.yml',
          lineno=1,
          depth=1,
@@ -6,7 +6,7 @@ Fragment(uuid='348ba426-7e99-4f77-9938-0250d0db2839',
          name='',
          text='# These are supported funding model platforms\n')
 
-Fragment(uuid='b49b4dd6-969d-4d24-8bc8-4af7cc6316e0',
+Fragment(uuid='NORMALIZED-000001',
          path='/.github/FUNDING.yml',
          lineno=1,
          depth=0,
@@ -14,7 +14,7 @@ Fragment(uuid='b49b4dd6-969d-4d24-8bc8-4af7cc6316e0',
          name='',
          text='File: /.github/FUNDING.yml\n')
 
-Fragment(uuid='208bdec9-dce6-40bb-a4f6-fc8d9919862f',
+Fragment(uuid='NORMALIZED-000002',
          path='/.github/FUNDING.yml',
          lineno=2,
          depth=2,
@@ -22,7 +22,7 @@ Fragment(uuid='208bdec9-dce6-40bb-a4f6-fc8d9919862f',
          name='',
          text='\ngithub: viktor-ferenczi')
 
-Fragment(uuid='74c43ec0-e4ae-47b0-ac95-1bb818ba7ab8',
+Fragment(uuid='NORMALIZED-000003',
          path='/.github/FUNDING.yml',
          lineno=3,
          depth=2,
@@ -30,7 +30,7 @@ Fragment(uuid='74c43ec0-e4ae-47b0-ac95-1bb818ba7ab8',
          name='',
          text='\npatreon: semods')
 
-Fragment(uuid='0b3efabf-9793-400c-b2b1-3d278ef1a5f0',
+Fragment(uuid='NORMALIZED-000004',
          path='/.github/FUNDING.yml',
          lineno=4,
          depth=2,
@@ -40,7 +40,7 @@ Fragment(uuid='0b3efabf-9793-400c-b2b1-3d278ef1a5f0',
               '#open_collective: # Replace with a single Open Collective '
               'username')
 
-Fragment(uuid='a3d3e31a-61a3-4e1d-b377-cb59f5b2de24',
+Fragment(uuid='NORMALIZED-000005',
          path='/.github/FUNDING.yml',
          lineno=5,
          depth=2,
@@ -48,7 +48,7 @@ Fragment(uuid='a3d3e31a-61a3-4e1d-b377-cb59f5b2de24',
          name='',
          text='\n#ko_fi: # Replace with a single Ko-fi username')
 
-Fragment(uuid='73ffd42f-f570-476c-8007-f7c5f234b03e',
+Fragment(uuid='NORMALIZED-000006',
          path='/.github/FUNDING.yml',
          lineno=6,
          depth=2,
@@ -58,7 +58,7 @@ Fragment(uuid='73ffd42f-f570-476c-8007-f7c5f234b03e',
               '#tidelift: # Replace with a single Tidelift '
               'platform-name/package-name e.g., npm/babel')
 
-Fragment(uuid='3e4c250d-fe59-444d-8cce-c49d042c9c62',
+Fragment(uuid='NORMALIZED-000007',
          path='/.github/FUNDING.yml',
          lineno=7,
          depth=2,
@@ -68,7 +68,7 @@ Fragment(uuid='3e4c250d-fe59-444d-8cce-c49d042c9c62',
               '#community_bridge: # Replace with a single Community Bridge '
               'project-name e.g., cloud-foundry')
 
-Fragment(uuid='13864716-32ed-4973-a3df-376fe0e8a214',
+Fragment(uuid='NORMALIZED-000008',
          path='/.github/FUNDING.yml',
          lineno=8,
          depth=2,
@@ -76,7 +76,7 @@ Fragment(uuid='13864716-32ed-4973-a3df-376fe0e8a214',
          name='',
          text='\n#liberapay: # Replace with a single Liberapay username')
 
-Fragment(uuid='d1bcd15a-6a9e-4145-b67d-d9292a2ef4d6',
+Fragment(uuid='NORMALIZED-000009',
          path='/.github/FUNDING.yml',
          lineno=9,
          depth=2,
@@ -84,7 +84,7 @@ Fragment(uuid='d1bcd15a-6a9e-4145-b67d-d9292a2ef4d6',
          name='',
          text='\n#issuehunt: # Replace with a single IssueHunt username')
 
-Fragment(uuid='125e7a9b-48f0-45ca-958d-ab241f25a194',
+Fragment(uuid='NORMALIZED-000010',
          path='/.github/FUNDING.yml',
          lineno=10,
          depth=2,
@@ -92,7 +92,7 @@ Fragment(uuid='125e7a9b-48f0-45ca-958d-ab241f25a194',
          name='',
          text='\n#otechie: # Replace with a single Otechie username')
 
-Fragment(uuid='35b963fb-6999-40de-bd9b-b31ca6940c94',
+Fragment(uuid='NORMALIZED-000011',
          path='/.github/FUNDING.yml',
          lineno=11,
          depth=2,
@@ -102,7 +102,7 @@ Fragment(uuid='35b963fb-6999-40de-bd9b-b31ca6940c94',
               '#lfx_crowdfunding: # Replace with a single LFX Crowdfunding '
               'project-name e.g., cloud-foundry')
 
-Fragment(uuid='595b852b-0bcb-459c-b591-4ecb0a505442',
+Fragment(uuid='NORMALIZED-000012',
          path='/.github/FUNDING.yml',
          lineno=12,
          depth=2,
@@ -112,7 +112,7 @@ Fragment(uuid='595b852b-0bcb-459c-b591-4ecb0a505442',
               '#custom: # Replace with up to 4 custom sponsorship URLs e.g., '
               "['link1', 'link2']")
 
-Fragment(uuid='051ab2e0-0f59-4270-8b8b-5c11c887e046',
+Fragment(uuid='NORMALIZED-000013',
          path='/.github/FUNDING.yml',
          lineno=13,
          depth=2,
@@ -120,7 +120,7 @@ Fragment(uuid='051ab2e0-0f59-4270-8b8b-5c11c887e046',
          name='',
          text='\n')
 
-Fragment(uuid='4e88fbc7-292d-4eda-84e5-42d5d2e82dbe',
+Fragment(uuid='NORMALIZED-000014',
          path='/.gitignore',
          lineno=1,
          depth=0,
@@ -133,7 +133,7 @@ Fragment(uuid='4e88fbc7-292d-4eda-84e5-42d5d2e82dbe',
               '**/bin\n'
               '**/obj')
 
-Fragment(uuid='4fa1bc3f-5ed8-4b1e-af1a-4fa5e6e6b473',
+Fragment(uuid='NORMALIZED-000015',
          path='/.gitignore',
          lineno=1,
          depth=0,
@@ -141,7 +141,7 @@ Fragment(uuid='4fa1bc3f-5ed8-4b1e-af1a-4fa5e6e6b473',
          name='',
          text='File: /.gitignore\n')
 
-Fragment(uuid='3b959de1-fd7a-4a49-8a24-2479ad062353',
+Fragment(uuid='NORMALIZED-000016',
          path='/.run/Space Engineers.run.xml',
          lineno=1,
          depth=2,
@@ -149,7 +149,7 @@ Fragment(uuid='3b959de1-fd7a-4a49-8a24-2479ad062353',
          name='',
          text='<component name="ProjectRunConfigurationManager">')
 
-Fragment(uuid='aa36a9c6-12c1-4d62-861f-4608d4e4c77c',
+Fragment(uuid='NORMALIZED-000017',
          path='/.run/Space Engineers.run.xml',
          lineno=1,
          depth=2,
@@ -159,7 +159,7 @@ Fragment(uuid='aa36a9c6-12c1-4d62-861f-4608d4e4c77c',
               '  <configuration default="false" name="Space Engineers" '
               'type="RunExe" factoryName=".NET Executable">')
 
-Fragment(uuid='2d492860-18fe-429b-a31e-22c3f0614f3a',
+Fragment(uuid='NORMALIZED-000018',
          path='/.run/Space Engineers.run.xml',
          lineno=1,
          depth=0,
@@ -167,7 +167,7 @@ Fragment(uuid='2d492860-18fe-429b-a31e-22c3f0614f3a',
          name='',
          text='File: /.run/Space Engineers.run.xml\n')
 
-Fragment(uuid='c6faa787-81c5-43be-88ee-cbdf05911eb1',
+Fragment(uuid='NORMALIZED-000019',
          path='/.run/Space Engineers.run.xml',
          lineno=2,
          depth=2,
@@ -179,7 +179,7 @@ Fragment(uuid='c6faa787-81c5-43be-88ee-cbdf05911eb1',
               '(x86)/Steam/steamapps/common/SpaceEngineers/Bin64/SpaceEngineers.exe" '
               '/>')
 
-Fragment(uuid='ff2c0bab-077e-4964-b6b8-ca22856364cc',
+Fragment(uuid='NORMALIZED-000020',
          path='/.run/Space Engineers.run.xml',
          lineno=3,
          depth=2,
@@ -190,7 +190,7 @@ Fragment(uuid='ff2c0bab-077e-4964-b6b8-ca22856364cc',
               '&quot;C:\\Users\\fviktor\\AppData\\Roaming\\SpaceEngineers\\Mods\\Plugin '
               'Loader\\RunPluginLoader&quot;" />')
 
-Fragment(uuid='ad18658a-37f2-4a1f-b99e-9fbd51929ee9',
+Fragment(uuid='NORMALIZED-000021',
          path='/.run/Space Engineers.run.xml',
          lineno=4,
          depth=2,
@@ -201,7 +201,7 @@ Fragment(uuid='ad18658a-37f2-4a1f-b99e-9fbd51929ee9',
               'value="$PROJECT_DIR$/../../Program Files '
               '(x86)/Steam/steamapps/common/SpaceEngineers/Bin64" />')
 
-Fragment(uuid='25ec35cf-bee9-4146-92f3-b2cd8837a878',
+Fragment(uuid='NORMALIZED-000022',
          path='/.run/Space Engineers.run.xml',
          lineno=5,
          depth=2,
@@ -209,7 +209,7 @@ Fragment(uuid='25ec35cf-bee9-4146-92f3-b2cd8837a878',
          name='',
          text='\n    <option name="PASS_PARENT_ENVS" value="1" />')
 
-Fragment(uuid='83ee2248-eb17-497c-894d-3c00d3afeaeb',
+Fragment(uuid='NORMALIZED-000023',
          path='/.run/Space Engineers.run.xml',
          lineno=6,
          depth=2,
@@ -217,7 +217,7 @@ Fragment(uuid='83ee2248-eb17-497c-894d-3c00d3afeaeb',
          name='',
          text='\n    <option name="USE_EXTERNAL_CONSOLE" value="0" />')
 
-Fragment(uuid='c0feb255-bd73-43a0-a4eb-5450b7a446da',
+Fragment(uuid='NORMALIZED-000024',
          path='/.run/Space Engineers.run.xml',
          lineno=7,
          depth=2,
@@ -225,7 +225,7 @@ Fragment(uuid='c0feb255-bd73-43a0-a4eb-5450b7a446da',
          name='',
          text='\n    <option name="USE_MONO" value="0" />')
 
-Fragment(uuid='7a6cbfca-b0c3-40e4-bc8b-314a444e6abc',
+Fragment(uuid='NORMALIZED-000025',
          path='/.run/Space Engineers.run.xml',
          lineno=8,
          depth=2,
@@ -233,7 +233,7 @@ Fragment(uuid='7a6cbfca-b0c3-40e4-bc8b-314a444e6abc',
          name='',
          text='\n    <option name="RUNTIME_ARGUMENTS" value="" />')
 
-Fragment(uuid='8a18cf5e-2bf3-4e79-b43a-759f951eef08',
+Fragment(uuid='NORMALIZED-000026',
          path='/.run/Space Engineers.run.xml',
          lineno=9,
          depth=2,
@@ -241,7 +241,7 @@ Fragment(uuid='8a18cf5e-2bf3-4e79-b43a-759f951eef08',
          name='',
          text='\n    <option name="RUNTIME_TYPE" value="netfw" />')
 
-Fragment(uuid='6c5de032-5278-4ccc-85ed-97fffb394a19',
+Fragment(uuid='NORMALIZED-000027',
          path='/.run/Space Engineers.run.xml',
          lineno=10,
          depth=2,
@@ -249,7 +249,7 @@ Fragment(uuid='6c5de032-5278-4ccc-85ed-97fffb394a19',
          name='',
          text='\n    <method v="2">')
 
-Fragment(uuid='6fe7d064-a527-4e78-ac91-46498390925f',
+Fragment(uuid='NORMALIZED-000028',
          path='/.run/Space Engineers.run.xml',
          lineno=11,
          depth=2,
@@ -261,7 +261,7 @@ Fragment(uuid='6fe7d064-a527-4e78-ac91-46498390925f',
               'projectPath="file://$PROJECT_DIR$/ToolbarManager/ToolbarManager.csproj" '
               '/>')
 
-Fragment(uuid='1ad8e9c2-4bd6-4636-b2d9-ad0dba90fa28',
+Fragment(uuid='NORMALIZED-000029',
          path='/.run/Space Engineers.run.xml',
          lineno=12,
          depth=2,
@@ -269,7 +269,7 @@ Fragment(uuid='1ad8e9c2-4bd6-4636-b2d9-ad0dba90fa28',
          name='',
          text='\n    </method>')
 
-Fragment(uuid='24606823-d264-4207-9d09-c8a1f8ce69bd',
+Fragment(uuid='NORMALIZED-000030',
          path='/.run/Space Engineers.run.xml',
          lineno=13,
          depth=2,
@@ -277,7 +277,7 @@ Fragment(uuid='24606823-d264-4207-9d09-c8a1f8ce69bd',
          name='',
          text='\n  </configuration>')
 
-Fragment(uuid='6b019649-975a-4c7e-ba73-82be571335c8',
+Fragment(uuid='NORMALIZED-000031',
          path='/.run/Space Engineers.run.xml',
          lineno=14,
          depth=2,
@@ -285,7 +285,7 @@ Fragment(uuid='6b019649-975a-4c7e-ba73-82be571335c8',
          name='',
          text='\n</component>')
 
-Fragment(uuid='6e5aeb6a-2416-4065-a25f-c19786c1e6b2',
+Fragment(uuid='NORMALIZED-000032',
          path='/Edit-and-run-before-opening-solution.bat',
          lineno=1,
          depth=0,
@@ -299,7 +299,7 @@ Fragment(uuid='6e5aeb6a-2416-4065-a25f-c19786c1e6b2',
               '\n'
               'pause\n')
 
-Fragment(uuid='93b60289-bb74-48b8-94f6-197cd769b63d',
+Fragment(uuid='NORMALIZED-000033',
          path='/Edit-and-run-before-opening-solution.bat',
          lineno=1,
          depth=0,
@@ -307,7 +307,7 @@ Fragment(uuid='93b60289-bb74-48b8-94f6-197cd769b63d',
          name='',
          text='File: /Edit-and-run-before-opening-solution.bat\n')
 
-Fragment(uuid='6bbb490d-97d0-4cd0-a78a-262f7e813c1d',
+Fragment(uuid='NORMALIZED-000034',
          path='/LICENSE',
          lineno=1,
          depth=1,
@@ -315,7 +315,7 @@ Fragment(uuid='6bbb490d-97d0-4cd0-a78a-262f7e813c1d',
          name='',
          text='MIT License\n')
 
-Fragment(uuid='ebb95a72-4564-4cdb-8de5-0d2933a71fff',
+Fragment(uuid='NORMALIZED-000035',
          path='/LICENSE',
          lineno=1,
          depth=0,
@@ -323,7 +323,7 @@ Fragment(uuid='ebb95a72-4564-4cdb-8de5-0d2933a71fff',
          name='',
          text='File: /LICENSE\n')
 
-Fragment(uuid='f186a47a-537a-4cdc-b3fa-01aebd3d7517',
+Fragment(uuid='NORMALIZED-000036',
          path='/LICENSE',
          lineno=2,
          depth=1,
@@ -331,7 +331,7 @@ Fragment(uuid='f186a47a-537a-4cdc-b3fa-01aebd3d7517',
          name='',
          text='\nCopyright (c) 2021 Viktor Ferenczi\n')
 
-Fragment(uuid='15c646a6-797f-4845-976f-37f171245418',
+Fragment(uuid='NORMALIZED-000037',
          path='/LICENSE',
          lineno=4,
          depth=1,
@@ -350,7 +350,7 @@ Fragment(uuid='15c646a6-797f-4845-976f-37f171245418',
               'Software is\n'
               'furnished to do so, subject to the following conditions:\n')
 
-Fragment(uuid='615569ef-118f-4e96-9a36-25030411388a',
+Fragment(uuid='NORMALIZED-000038',
          path='/LICENSE',
          lineno=11,
          depth=1,
@@ -361,7 +361,7 @@ Fragment(uuid='615569ef-118f-4e96-9a36-25030411388a',
               'included in all\n'
               'copies or substantial portions of the Software.\n')
 
-Fragment(uuid='71e255b2-839d-4438-bc3f-10ca061b2d9c',
+Fragment(uuid='NORMALIZED-000039',
          path='/LICENSE',
          lineno=14,
          depth=1,
@@ -382,7 +382,7 @@ Fragment(uuid='71e255b2-839d-4438-bc3f-10ca061b2d9c',
               'DEALINGS IN THE\n'
               'SOFTWARE.\n')
 
-Fragment(uuid='82c0f986-6733-44f9-b2ea-d36d7dccfb48',
+Fragment(uuid='NORMALIZED-000040',
          path='/README.md',
          lineno=1,
          depth=1,
@@ -399,7 +399,7 @@ Fragment(uuid='82c0f986-6733-44f9-b2ea-d36d7dccfb48',
               'Patreon](https://www.patreon.com/semods).\n'
               '\n')
 
-Fragment(uuid='d89a9e2e-1f1f-4101-8914-1daafbaf1f36',
+Fragment(uuid='NORMALIZED-000041',
          path='/README.md',
          lineno=1,
          depth=0,
@@ -419,7 +419,7 @@ Fragment(uuid='d89a9e2e-1f1f-4101-8914-1daafbaf1f36',
               '#### Testers\n'
               '### Creators\n')
 
-Fragment(uuid='d0ba0f5b-95aa-4dff-979e-6d1860749ac6',
+Fragment(uuid='NORMALIZED-000042',
          path='/README.md',
          lineno=9,
          depth=2,
@@ -441,7 +441,7 @@ Fragment(uuid='d0ba0f5b-95aa-4dff-979e-6d1860749ac6',
               'nothing is stored on a server.\n'
               '\n')
 
-Fragment(uuid='62a43032-88c0-40d8-b0d4-95bdb3a4815f',
+Fragment(uuid='NORMALIZED-000043',
          path='/README.md',
          lineno=19,
          depth=2,
@@ -467,7 +467,7 @@ Fragment(uuid='62a43032-88c0-40d8-b0d4-95bdb3a4815f',
               'a remote control, for example.\n'
               '\n')
 
-Fragment(uuid='8f122b36-1c92-4f79-9b52-ada8a69a8b04',
+Fragment(uuid='NORMALIZED-000044',
          path='/README.md',
          lineno=34,
          depth=10,
@@ -475,7 +475,7 @@ Fragment(uuid='8f122b36-1c92-4f79-9b52-ada8a69a8b04',
          name='',
          text='### Quick block selection\n')
 
-Fragment(uuid='1652a7fd-cb03-4e0d-961d-02c548998b8d',
+Fragment(uuid='NORMALIZED-000045',
          path='/README.md',
          lineno=35,
          depth=10,
@@ -489,7 +489,7 @@ Fragment(uuid='1652a7fd-cb03-4e0d-961d-02c548998b8d',
               'rules are optimized to find blocks primarily by capital letters '
               'and digits:\n')
 
-Fragment(uuid='f56b000d-0b9a-4b49-9e01-bef4635be091',
+Fragment(uuid='NORMALIZED-000046',
          path='/README.md',
          lineno=39,
          depth=10,
@@ -503,7 +503,7 @@ Fragment(uuid='f56b000d-0b9a-4b49-9e01-bef4635be091',
               '- `LHT` **Large Hydrogen Thrusters**\n'
               '- `211` **All 2x1x1 armor blocks**\n')
 
-Fragment(uuid='84c7673c-a82d-42c2-bd0b-012372f7dd4a',
+Fragment(uuid='NORMALIZED-000047',
          path='/README.md',
          lineno=46,
          depth=10,
@@ -514,7 +514,7 @@ Fragment(uuid='84c7673c-a82d-42c2-bd0b-012372f7dd4a',
               'one allows \n'
               'for narrowing down in case of ambiguity:\n')
 
-Fragment(uuid='48e5e4a4-e6b2-4f2f-b1f2-f29dc037511c',
+Fragment(uuid='NORMALIZED-000048',
          path='/README.md',
          lineno=49,
          depth=10,
@@ -524,7 +524,7 @@ Fragment(uuid='48e5e4a4-e6b2-4f2f-b1f2-f29dc037511c',
               '- `PH` **Parachute Hatch** and **Point Hand**\n'
               '- `PHat` **Parachute Hatch** only\n')
 
-Fragment(uuid='6475df65-37fb-4c71-b229-99552ec714b6',
+Fragment(uuid='NORMALIZED-000049',
          path='/README.md',
          lineno=52,
          depth=10,
@@ -536,7 +536,7 @@ Fragment(uuid='6475df65-37fb-4c71-b229-99552ec714b6',
               'space are skipped after a matching upper chase character or '
               'digit. \n')
 
-Fragment(uuid='5ab8540c-7a22-43c8-abdc-6fc5bb81c529',
+Fragment(uuid='NORMALIZED-000050',
          path='/README.md',
          lineno=55,
          depth=10,
@@ -547,7 +547,7 @@ Fragment(uuid='5ab8540c-7a22-43c8-abdc-6fc5bb81c529',
               'currently.\n'
               '\n')
 
-Fragment(uuid='64ef8dff-3377-4151-ae69-c39948bb69e1',
+Fragment(uuid='NORMALIZED-000051',
          path='/README.md',
          lineno=58,
          depth=2,
@@ -567,7 +567,7 @@ Fragment(uuid='64ef8dff-3377-4151-ae69-c39948bb69e1',
               'so they can be fast-tracked.  \n'
               '\n')
 
-Fragment(uuid='30f4ce71-4f60-426e-ae61-cb4f225b029f',
+Fragment(uuid='NORMALIZED-000052',
          path='/README.md',
          lineno=68,
          depth=1,
@@ -588,7 +588,7 @@ Fragment(uuid='30f4ce71-4f60-426e-ae61-cb4f225b029f',
               '*Enjoy!*\n'
               '\n')
 
-Fragment(uuid='c04bdadf-1ce8-451f-9de7-aeeadaf791c5',
+Fragment(uuid='NORMALIZED-000053',
          path='/README.md',
          lineno=80,
          depth=1,
@@ -604,7 +604,7 @@ Fragment(uuid='c04bdadf-1ce8-451f-9de7-aeeadaf791c5',
               '- [Bug reports](https://discord.gg/x3Z8Ug5YkQ)\n'
               '\n')
 
-Fragment(uuid='a1bc8437-22cc-4c74-b567-927fb96e7c84',
+Fragment(uuid='NORMALIZED-000054',
          path='/README.md',
          lineno=87,
          depth=2,
@@ -612,7 +612,7 @@ Fragment(uuid='a1bc8437-22cc-4c74-b567-927fb96e7c84',
          name='',
          text='## Credits\n\n')
 
-Fragment(uuid='627c2751-ffe5-4165-80a4-badb843c1d28',
+Fragment(uuid='NORMALIZED-000055',
          path='/README.md',
          lineno=89,
          depth=2,
@@ -644,7 +644,7 @@ Fragment(uuid='627c2751-ffe5-4165-80a4-badb843c1d28',
               '- ...\n'
               '\n')
 
-Fragment(uuid='0781fc8f-9924-4742-ba3d-3b49c0be0b4d',
+Fragment(uuid='NORMALIZED-000056',
          path='/README.md',
          lineno=114,
          depth=2,
@@ -662,7 +662,7 @@ Fragment(uuid='0781fc8f-9924-4742-ba3d-3b49c0be0b4d',
               '**Thank you very much for all your support and hard work on '
               'testing!**')
 
-Fragment(uuid='89278c0a-dfd9-4ef0-953f-463664ce96fe',
+Fragment(uuid='NORMALIZED-000057',
          path='/ToolbarManager.sln',
          lineno=1,
          depth=2,
@@ -670,7 +670,7 @@ Fragment(uuid='89278c0a-dfd9-4ef0-953f-463664ce96fe',
          name='',
          text='\ufeff')
 
-Fragment(uuid='cd707420-3213-4440-a511-285804963e18',
+Fragment(uuid='NORMALIZED-000058',
          path='/ToolbarManager.sln',
          lineno=1,
          depth=2,
@@ -678,7 +678,7 @@ Fragment(uuid='cd707420-3213-4440-a511-285804963e18',
          name='',
          text='\nMicrosoft Visual Studio Solution File, Format Version 12.00')
 
-Fragment(uuid='5e1157a5-8a39-4639-a63d-9274b933ccee',
+Fragment(uuid='NORMALIZED-000059',
          path='/ToolbarManager.sln',
          lineno=1,
          depth=0,
@@ -686,7 +686,7 @@ Fragment(uuid='5e1157a5-8a39-4639-a63d-9274b933ccee',
          name='',
          text='File: /ToolbarManager.sln\n')
 
-Fragment(uuid='596a87ad-d595-44f2-94c4-a491add6616d',
+Fragment(uuid='NORMALIZED-000060',
          path='/ToolbarManager.sln',
          lineno=2,
          depth=2,
@@ -697,7 +697,7 @@ Fragment(uuid='596a87ad-d595-44f2-94c4-a491add6616d',
               '"ToolbarManager", "ToolbarManager\\ToolbarManager.csproj", '
               '"{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}"')
 
-Fragment(uuid='a5390a82-7a32-42fc-8666-63a1cc985438',
+Fragment(uuid='NORMALIZED-000061',
          path='/ToolbarManager.sln',
          lineno=3,
          depth=2,
@@ -705,7 +705,7 @@ Fragment(uuid='a5390a82-7a32-42fc-8666-63a1cc985438',
          name='',
          text='\nEndProject')
 
-Fragment(uuid='24968fed-de43-4eee-ba9a-aa2a00f4d540',
+Fragment(uuid='NORMALIZED-000062',
          path='/ToolbarManager.sln',
          lineno=4,
          depth=2,
@@ -713,7 +713,7 @@ Fragment(uuid='24968fed-de43-4eee-ba9a-aa2a00f4d540',
          name='',
          text='\nGlobal')
 
-Fragment(uuid='033f343d-ee59-4123-acb9-8b4e855ccb57',
+Fragment(uuid='NORMALIZED-000063',
          path='/ToolbarManager.sln',
          lineno=5,
          depth=2,
@@ -721,7 +721,7 @@ Fragment(uuid='033f343d-ee59-4123-acb9-8b4e855ccb57',
          name='',
          text='\n\tGlobalSection(SolutionConfigurationPlatforms) = preSolution')
 
-Fragment(uuid='3493e4e3-832b-4a1f-b499-096e537f1bc6',
+Fragment(uuid='NORMALIZED-000064',
          path='/ToolbarManager.sln',
          lineno=6,
          depth=2,
@@ -729,7 +729,7 @@ Fragment(uuid='3493e4e3-832b-4a1f-b499-096e537f1bc6',
          name='',
          text='\n\t\tDebug|Any CPU = Debug|Any CPU')
 
-Fragment(uuid='b4bdc123-0b92-4a7d-ac92-e199f314c479',
+Fragment(uuid='NORMALIZED-000065',
          path='/ToolbarManager.sln',
          lineno=7,
          depth=2,
@@ -737,7 +737,7 @@ Fragment(uuid='b4bdc123-0b92-4a7d-ac92-e199f314c479',
          name='',
          text='\n\t\tRelease|Any CPU = Release|Any CPU')
 
-Fragment(uuid='5ca72ad1-b9d0-4654-9690-de5922adbbe6',
+Fragment(uuid='NORMALIZED-000066',
          path='/ToolbarManager.sln',
          lineno=8,
          depth=2,
@@ -745,7 +745,7 @@ Fragment(uuid='5ca72ad1-b9d0-4654-9690-de5922adbbe6',
          name='',
          text='\n\tEndGlobalSection')
 
-Fragment(uuid='973ac5f1-1179-4207-9f9c-e6d5c27d54b6',
+Fragment(uuid='NORMALIZED-000067',
          path='/ToolbarManager.sln',
          lineno=9,
          depth=2,
@@ -753,7 +753,7 @@ Fragment(uuid='973ac5f1-1179-4207-9f9c-e6d5c27d54b6',
          name='',
          text='\n\tGlobalSection(ProjectConfigurationPlatforms) = postSolution')
 
-Fragment(uuid='ca06e70f-9d13-4018-9391-59c646834ce6',
+Fragment(uuid='NORMALIZED-000068',
          path='/ToolbarManager.sln',
          lineno=10,
          depth=2,
@@ -763,7 +763,7 @@ Fragment(uuid='ca06e70f-9d13-4018-9391-59c646834ce6',
               '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Debug|Any '
               'CPU.ActiveCfg = Debug|Any CPU')
 
-Fragment(uuid='7ac44bb9-1f23-451b-a72d-f308ce8f0226',
+Fragment(uuid='NORMALIZED-000069',
          path='/ToolbarManager.sln',
          lineno=11,
          depth=2,
@@ -773,7 +773,7 @@ Fragment(uuid='7ac44bb9-1f23-451b-a72d-f308ce8f0226',
               '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Debug|Any '
               'CPU.Build.0 = Debug|Any CPU')
 
-Fragment(uuid='d6642d04-42ef-4308-958a-c0112a7a85fa',
+Fragment(uuid='NORMALIZED-000070',
          path='/ToolbarManager.sln',
          lineno=12,
          depth=2,
@@ -783,7 +783,7 @@ Fragment(uuid='d6642d04-42ef-4308-958a-c0112a7a85fa',
               '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Release|Any '
               'CPU.ActiveCfg = Release|Any CPU')
 
-Fragment(uuid='77b8518d-6df1-497e-aa20-b2cbe8d2a19d',
+Fragment(uuid='NORMALIZED-000071',
          path='/ToolbarManager.sln',
          lineno=13,
          depth=2,
@@ -793,7 +793,7 @@ Fragment(uuid='77b8518d-6df1-497e-aa20-b2cbe8d2a19d',
               '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Release|Any '
               'CPU.Build.0 = Release|Any CPU')
 
-Fragment(uuid='1c7e2055-7fcd-43b0-9cd4-3f6d76d0b4b4',
+Fragment(uuid='NORMALIZED-000072',
          path='/ToolbarManager.sln',
          lineno=14,
          depth=2,
@@ -801,7 +801,7 @@ Fragment(uuid='1c7e2055-7fcd-43b0-9cd4-3f6d76d0b4b4',
          name='',
          text='\n\tEndGlobalSection')
 
-Fragment(uuid='69607624-7803-4e82-95a9-7f0e281be82e',
+Fragment(uuid='NORMALIZED-000073',
          path='/ToolbarManager.sln',
          lineno=15,
          depth=2,
@@ -809,7 +809,7 @@ Fragment(uuid='69607624-7803-4e82-95a9-7f0e281be82e',
          name='',
          text='\nEndGlobal')
 
-Fragment(uuid='1cf8472a-22cd-48ec-8e0a-133d726b6047',
+Fragment(uuid='NORMALIZED-000074',
          path='/ToolbarManager.sln',
          lineno=16,
          depth=2,
@@ -817,7 +817,7 @@ Fragment(uuid='1cf8472a-22cd-48ec-8e0a-133d726b6047',
          name='',
          text='\n')
 
-Fragment(uuid='3696ab46-5670-4171-bbb1-28b34157f20d',
+Fragment(uuid='NORMALIZED-000075',
          path='/ToolbarManager/Extensions/MyGuiSandboxExt.cs',
          lineno=1,
          depth=0,
@@ -844,7 +844,7 @@ Fragment(uuid='3696ab46-5670-4171-bbb1-28b34157f20d',
               '    }\n'
               '}')
 
-Fragment(uuid='7d634ba2-c2f2-4ccf-9ba0-7a0e7d34c49c',
+Fragment(uuid='NORMALIZED-000076',
          path='/ToolbarManager/Extensions/MyGuiSandboxExt.cs',
          lineno=1,
          depth=0,
@@ -861,7 +861,7 @@ Fragment(uuid='7d634ba2-c2f2-4ccf-9ba0-7a0e7d34c49c',
               'messageCaption messageText text text text text type type type '
               'type\n')
 
-Fragment(uuid='7889619c-4391-4f9f-bbae-abe6d15742aa',
+Fragment(uuid='NORMALIZED-000077',
          path='/ToolbarManager/Extensions/MyGuiSandboxExt.cs',
          lineno=6,
          depth=2,
@@ -882,7 +882,7 @@ Fragment(uuid='7889619c-4391-4f9f-bbae-abe6d15742aa',
               'StringBuilder(caption), type);\n'
               '    }')
 
-Fragment(uuid='cc600167-aff7-44f5-b4f6-5d06f00d5305',
+Fragment(uuid='NORMALIZED-000078',
          path='/ToolbarManager/Extensions/MyGuiSandboxExt.cs',
          lineno=8,
          depth=4,
@@ -895,7 +895,7 @@ Fragment(uuid='cc600167-aff7-44f5-b4f6-5d06f00d5305',
               'MyGuiSandbox.AddScreen(MyGuiSandbox.CreateMessageBox(type, '
               'messageText: text, messageCaption: caption));')
 
-Fragment(uuid='6ebcb6fb-7400-41b7-8a2c-2a4f0349be5b',
+Fragment(uuid='NORMALIZED-000079',
          path='/ToolbarManager/Extensions/MyGuiSandboxExt.cs',
          lineno=11,
          depth=4,
@@ -906,7 +906,7 @@ Fragment(uuid='6ebcb6fb-7400-41b7-8a2c-2a4f0349be5b',
               '            => Show(new StringBuilder(text), new '
               'StringBuilder(caption), type);')
 
-Fragment(uuid='ecc3fbb8-c48f-4344-9b45-dceb8d5c8ca9',
+Fragment(uuid='NORMALIZED-000080',
          path='/ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs',
          lineno=1,
          depth=0,
@@ -933,7 +933,7 @@ Fragment(uuid='ecc3fbb8-c48f-4344-9b45-dceb8d5c8ca9',
               '    }\n'
               '}')
 
-Fragment(uuid='a844d376-b087-4de8-a3c0-e5fd7be39c77',
+Fragment(uuid='NORMALIZED-000081',
          path='/ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs',
          lineno=1,
          depth=0,
@@ -951,7 +951,7 @@ Fragment(uuid='a844d376-b087-4de8-a3c0-e5fd7be39c77',
               'Reflection Sandbox System ToolbarManager VRage obj obj '
               'toolbarItemBuilder toolbarItemBuilder\n')
 
-Fragment(uuid='bdaebaa5-2352-409e-a7ad-b7642c82c88e',
+Fragment(uuid='NORMALIZED-000082',
          path='/ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs',
          lineno=8,
          depth=2,
@@ -970,7 +970,7 @@ Fragment(uuid='bdaebaa5-2352-409e-a7ad-b7642c82c88e',
               'toolbarItemBuilder });\n'
               '    }')
 
-Fragment(uuid='b47764b1-e2a7-4ee7-aa15-a30558afda80',
+Fragment(uuid='NORMALIZED-000083',
          path='/ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs',
          lineno=10,
          depth=5,
@@ -980,7 +980,7 @@ Fragment(uuid='b47764b1-e2a7-4ee7-aa15-a30558afda80',
               'AccessTools.DeclaredMethod(typeof(MyGuiScreenToolbarConfigBase), '
               '"AddGridItemToToolbar")')
 
-Fragment(uuid='446800a8-4eb4-497f-b881-1f6a585f838a',
+Fragment(uuid='NORMALIZED-000084',
          path='/ToolbarManager/Extensions/MyGuiScreenToolbarConfigBaseExt.cs',
          lineno=11,
          depth=4,
@@ -992,7 +992,7 @@ Fragment(uuid='446800a8-4eb4-497f-b881-1f6a585f838a',
               'AddGridItemToToolbarMethodInfo.Invoke(obj, new object[] { '
               'toolbarItemBuilder });')
 
-Fragment(uuid='757de1ff-d1c2-4fc9-b51b-94b605de410d',
+Fragment(uuid='NORMALIZED-000085',
          path='/ToolbarManager/Extensions/PathExt.cs',
          lineno=1,
          depth=0,
@@ -1015,7 +1015,7 @@ Fragment(uuid='757de1ff-d1c2-4fc9-b51b-94b605de410d',
               '    }\n'
               '}')
 
-Fragment(uuid='cb5fd8b5-8e9e-4556-8748-618877156752',
+Fragment(uuid='NORMALIZED-000086',
          path='/ToolbarManager/Extensions/PathExt.cs',
          lineno=1,
          depth=0,
@@ -1027,7 +1027,7 @@ Fragment(uuid='cb5fd8b5-8e9e-4556-8748-618877156752',
               '  Usages: Extensions Replace Replace Replace Replace Replace '
               'ToolbarManager Trim name name\n')
 
-Fragment(uuid='3a9e3b56-57dd-4310-97a1-f7e189eb9db4',
+Fragment(uuid='NORMALIZED-000087',
          path='/ToolbarManager/Extensions/PathExt.cs',
          lineno=3,
          depth=2,
@@ -1047,7 +1047,7 @@ Fragment(uuid='3a9e3b56-57dd-4310-97a1-f7e189eb9db4',
               '        }\n'
               '    }')
 
-Fragment(uuid='ebf5d98c-509e-436f-b9ea-3f5ea4891b91',
+Fragment(uuid='NORMALIZED-000088',
          path='/ToolbarManager/Extensions/PathExt.cs',
          lineno=5,
          depth=4,
@@ -1064,7 +1064,7 @@ Fragment(uuid='ebf5d98c-509e-436f-b9ea-3f5ea4891b91',
               "                .Replace('\\\\', '_');\n"
               '        }')
 
-Fragment(uuid='d59487c6-6bd8-442a-b2b9-4257e585cf9f',
+Fragment(uuid='NORMALIZED-000089',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=1,
          depth=0,
@@ -1077,7 +1077,7 @@ Fragment(uuid='d59487c6-6bd8-442a-b2b9-4257e585cf9f',
               'using Sandbox.Game.Gui;\n'
               'using VRage.Game;\n')
 
-Fragment(uuid='8c87c2e5-c6a1-4f56-ace2-98a1fec2d5e9',
+Fragment(uuid='NORMALIZED-000090',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=1,
          depth=0,
@@ -1105,7 +1105,7 @@ Fragment(uuid='8c87c2e5-c6a1-4f56-ace2-98a1fec2d5e9',
               'searchText searchText searchText sortedBlocks sortedBlocks '
               'sortedBlocks sortedBlocks value\n')
 
-Fragment(uuid='8052c80a-f5b9-4c81-aca5-8d66b3e69e3f',
+Fragment(uuid='NORMALIZED-000091',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=7,
          depth=0,
@@ -1137,7 +1137,7 @@ Fragment(uuid='8052c80a-f5b9-4c81-aca5-8d66b3e69e3f',
               '\n'
               '        [MethodImpl(MethodImplOptions.AggressiveInlining)]')
 
-Fragment(uuid='d610f9c1-3377-4cf2-8b38-2ab74387d85b',
+Fragment(uuid='NORMALIZED-000092',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=10,
          depth=2,
@@ -1234,7 +1234,7 @@ Fragment(uuid='d610f9c1-3377-4cf2-8b38-2ab74387d85b',
               '        }\n'
               '    }')
 
-Fragment(uuid='4cd8901c-1a2b-46d6-a585-f52dc73f46f5',
+Fragment(uuid='NORMALIZED-000093',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=23,
          depth=4,
@@ -1247,7 +1247,7 @@ Fragment(uuid='4cd8901c-1a2b-46d6-a585-f52dc73f46f5',
               '            CleanDefinitionGroups();\n'
               '        }')
 
-Fragment(uuid='e12d0da2-31fb-4980-a31b-73b99517ac30',
+Fragment(uuid='NORMALIZED-000094',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=30,
          depth=0,
@@ -1274,7 +1274,7 @@ Fragment(uuid='e12d0da2-31fb-4980-a31b-73b99517ac30',
               '        public bool MatchesCondition(string name)\n'
               '        {\n')
 
-Fragment(uuid='c88ab6f6-643f-4a8a-922d-9d7588a6c91a',
+Fragment(uuid='NORMALIZED-000095',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=30,
          depth=4,
@@ -1284,7 +1284,7 @@ Fragment(uuid='c88ab6f6-643f-4a8a-922d-9d7588a6c91a',
               '        public void CleanDefinitionGroups() => '
               'sortedBlocks.Clear();')
 
-Fragment(uuid='08e5e7f1-a6e5-4e0e-9628-d6d94f5abf0f',
+Fragment(uuid='NORMALIZED-000096',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=33,
          depth=4,
@@ -1294,7 +1294,7 @@ Fragment(uuid='08e5e7f1-a6e5-4e0e-9628-d6d94f5abf0f',
               '        public HashSet<MyCubeBlockDefinitionGroup> '
               'GetSortedBlocks() => sortedBlocks;')
 
-Fragment(uuid='a84866b7-d8b8-4484-8073-0fdd45fba7b0',
+Fragment(uuid='NORMALIZED-000097',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=36,
          depth=4,
@@ -1304,7 +1304,7 @@ Fragment(uuid='a84866b7-d8b8-4484-8073-0fdd45fba7b0',
               '        public bool MatchesCondition(MyDefinitionBase '
               'definition) => MatchesCondition(definition?.DisplayNameText);')
 
-Fragment(uuid='ef8bc273-0409-4b01-b3c3-52df2abb2b15',
+Fragment(uuid='NORMALIZED-000098',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=39,
          depth=4,
@@ -1315,7 +1315,7 @@ Fragment(uuid='ef8bc273-0409-4b01-b3c3-52df2abb2b15',
               'AddDefinitionGroup(MyCubeBlockDefinitionGroup definitionGroup) '
               '=> sortedBlocks.Add(definitionGroup);')
 
-Fragment(uuid='7c54d730-e971-4b6c-83e4-9396d28f3c2d',
+Fragment(uuid='NORMALIZED-000099',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=42,
          depth=4,
@@ -1373,7 +1373,7 @@ Fragment(uuid='7c54d730-e971-4b6c-83e4-9396d28f3c2d',
               '            return false;\n'
               '        }')
 
-Fragment(uuid='8f24e445-3d7d-4ccd-bb58-9e16a83246bb',
+Fragment(uuid='NORMALIZED-000100',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=45,
          depth=0,
@@ -1385,7 +1385,7 @@ Fragment(uuid='8f24e445-3d7d-4ccd-bb58-9e16a83246bb',
               '            var ss = searchText;\n'
               '            var sl = ss.Length;\n')
 
-Fragment(uuid='6747242c-d44d-4c6f-8b72-6147603d1744',
+Fragment(uuid='NORMALIZED-000101',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=50,
          depth=0,
@@ -1406,7 +1406,7 @@ Fragment(uuid='6747242c-d44d-4c6f-8b72-6147603d1744',
               'allocate)\n'
               '            var nl = name.Length;\n')
 
-Fragment(uuid='aaad107a-f18a-4347-8996-44cbded5e5ea',
+Fragment(uuid='NORMALIZED-000102',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=61,
          depth=0,
@@ -1416,7 +1416,7 @@ Fragment(uuid='aaad107a-f18a-4347-8996-44cbded5e5ea',
               '            {\n'
               '                // Mismatching character?\n')
 
-Fragment(uuid='daf4b1fa-15b5-42c9-866c-30718470c507',
+Fragment(uuid='NORMALIZED-000103',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=64,
          depth=0,
@@ -1427,7 +1427,7 @@ Fragment(uuid='daf4b1fa-15b5-42c9-866c-30718470c507',
               '                    // Digits and upper case characters allow '
               'skipping characters\n')
 
-Fragment(uuid='37e7211f-104b-4e96-ab10-4f9f6f2efe4a',
+Fragment(uuid='NORMALIZED-000104',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=67,
          depth=0,
@@ -1444,7 +1444,7 @@ Fragment(uuid='37e7211f-104b-4e96-ab10-4f9f6f2efe4a',
               'string\n'
               '                si += 1;\n')
 
-Fragment(uuid='357fb261-c5a2-42a9-8ac1-da9530f7428a',
+Fragment(uuid='NORMALIZED-000105',
          path='/ToolbarManager/Gui/CustomSearchCondition.cs',
          lineno=76,
          depth=0,
@@ -1465,7 +1465,7 @@ Fragment(uuid='357fb261-c5a2-42a9-8ac1-da9530f7428a',
               '    }\n'
               '}')
 
-Fragment(uuid='a53b411c-a487-4505-87c0-91e7838a1c25',
+Fragment(uuid='NORMALIZED-000106',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=1,
          depth=0,
@@ -1481,7 +1481,7 @@ Fragment(uuid='a53b411c-a487-4505-87c0-91e7838a1c25',
               'using VRage.Input;\n'
               'using VRageMath;\n')
 
-Fragment(uuid='11e9a9db-03c0-49cd-abba-38c3b989bf91',
+Fragment(uuid='NORMALIZED-000107',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=1,
          depth=0,
@@ -1528,7 +1528,7 @@ Fragment(uuid='11e9a9db-03c0-49cd-abba-38c3b989bf91',
               'toolbarItem toolbarItemBuilder toolbarItemBuilder '
               'toolbarItemBuilder userData userData userData\n')
 
-Fragment(uuid='d9134cfb-b379-4917-a4f5-acb9fc4862b5',
+Fragment(uuid='NORMALIZED-000108',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=10,
          depth=0,
@@ -1553,7 +1553,7 @@ Fragment(uuid='d9134cfb-b379-4917-a4f5-acb9fc4862b5',
               '\n'
               '    ')
 
-Fragment(uuid='9ff65d54-2173-4ebb-a901-0abdb7dc69dd',
+Fragment(uuid='NORMALIZED-000109',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=13,
          depth=2,
@@ -1675,7 +1675,7 @@ Fragment(uuid='9ff65d54-2173-4ebb-a901-0abdb7dc69dd',
               '        }\n'
               '    }')
 
-Fragment(uuid='44519391-fc83-40f3-a183-c97ff1d854b4',
+Fragment(uuid='NORMALIZED-000110',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=16,
          depth=5,
@@ -1684,7 +1684,7 @@ Fragment(uuid='44519391-fc83-40f3-a183-c97ff1d854b4',
          text='CustomSearchCondition customSearchCondition = new '
               'CustomSearchCondition()')
 
-Fragment(uuid='632ceb2d-f53a-4b16-9dbf-7e439383cbd9',
+Fragment(uuid='NORMALIZED-000111',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=17,
          depth=5,
@@ -1692,7 +1692,7 @@ Fragment(uuid='632ceb2d-f53a-4b16-9dbf-7e439383cbd9',
          name='MyGuiControlLabel',
          text='MyGuiControlLabel searchInfoLabel')
 
-Fragment(uuid='5d838baf-2dcd-45e6-b36d-5bd335ed1af4',
+Fragment(uuid='NORMALIZED-000112',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=19,
          depth=4,
@@ -1704,7 +1704,7 @@ Fragment(uuid='5d838baf-2dcd-45e6-b36d-5bd335ed1af4',
               '        {\n'
               '        }')
 
-Fragment(uuid='6137600d-5727-4aac-85cd-7670cf6ed6b2',
+Fragment(uuid='NORMALIZED-000113',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=23,
          depth=0,
@@ -1727,7 +1727,7 @@ Fragment(uuid='6137600d-5727-4aac-85cd-7670cf6ed6b2',
               'AddToolsAndAnimations(IMySearchCondition searchCondition)\n'
               '        {\n')
 
-Fragment(uuid='d9677680-5d73-4b86-832f-9a795fd35ba9',
+Fragment(uuid='NORMALIZED-000114',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=23,
          depth=4,
@@ -1740,7 +1740,7 @@ Fragment(uuid='d9677680-5d73-4b86-832f-9a795fd35ba9',
               '        {\n'
               '        }')
 
-Fragment(uuid='4b4225a9-8dbb-4571-a615-811f81f18b0a',
+Fragment(uuid='NORMALIZED-000115',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=27,
          depth=4,
@@ -1752,7 +1752,7 @@ Fragment(uuid='4b4225a9-8dbb-4571-a615-811f81f18b0a',
               '            m_searchBox.TextBox.MoveCarriageToEnd();\n'
               '        }')
 
-Fragment(uuid='107ff51d-5b84-4a2f-a64f-e5a9ee1ac25a',
+Fragment(uuid='NORMALIZED-000116',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=33,
          depth=4,
@@ -1773,7 +1773,7 @@ Fragment(uuid='107ff51d-5b84-4a2f-a64f-e5a9ee1ac25a',
               '            base.AddToolsAndAnimations(searchCondition);\n'
               '        }')
 
-Fragment(uuid='44542e39-b50d-4cdc-a9ca-53136bd45721',
+Fragment(uuid='NORMALIZED-000117',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=35,
          depth=0,
@@ -1796,7 +1796,7 @@ Fragment(uuid='44542e39-b50d-4cdc-a9ca-53136bd45721',
               'searchCondition)\n'
               '        {\n')
 
-Fragment(uuid='a1b772f9-1b59-401a-801a-0af2059c7574',
+Fragment(uuid='NORMALIZED-000118',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=45,
          depth=4,
@@ -1819,7 +1819,7 @@ Fragment(uuid='a1b772f9-1b59-401a-801a-0af2059c7574',
               'base.UpdateGridBlocksBySearchCondition(searchCondition);\n'
               '        }')
 
-Fragment(uuid='58b4bfc4-d011-4c87-ae18-cde9573872cf',
+Fragment(uuid='NORMALIZED-000119',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=47,
          depth=0,
@@ -1842,7 +1842,7 @@ Fragment(uuid='58b4bfc4-d011-4c87-ae18-cde9573872cf',
               'receivedFocusInThisUpdate)\n'
               '        {\n')
 
-Fragment(uuid='c94d959c-c825-498c-8a7c-cef2a220a04a',
+Fragment(uuid='NORMALIZED-000120',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=57,
          depth=4,
@@ -1860,7 +1860,7 @@ Fragment(uuid='c94d959c-c825-498c-8a7c-cef2a220a04a',
               '            base.HandleInput(receivedFocusInThisUpdate);\n'
               '        }')
 
-Fragment(uuid='bccc6a70-3579-4321-83e1-ab60667f8460',
+Fragment(uuid='NORMALIZED-000121',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=59,
          depth=0,
@@ -1878,7 +1878,7 @@ Fragment(uuid='bccc6a70-3579-4321-83e1-ab60667f8460',
               '        private void LoadSelectedItem()\n'
               '        {\n')
 
-Fragment(uuid='7f8563f1-e8c5-4a33-8e5f-2d34553208ea',
+Fragment(uuid='NORMALIZED-000122',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=68,
          depth=4,
@@ -1911,7 +1911,7 @@ Fragment(uuid='7f8563f1-e8c5-4a33-8e5f-2d34553208ea',
               '            CloseScreen();\n'
               '        }')
 
-Fragment(uuid='b30a9e76-72cf-47bd-9384-951aae91e75a',
+Fragment(uuid='NORMALIZED-000123',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=70,
          depth=0,
@@ -1923,7 +1923,7 @@ Fragment(uuid='b30a9e76-72cf-47bd-9384-951aae91e75a',
               '            var selectedItem = '
               'm_gridBlocks.GetItemAt(m_gridBlocks.SelectedIndex ?? 0);\n')
 
-Fragment(uuid='a822e546-1036-461d-90ab-b810383e556f',
+Fragment(uuid='NORMALIZED-000124',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=74,
          depth=0,
@@ -1935,7 +1935,7 @@ Fragment(uuid='a822e546-1036-461d-90ab-b810383e556f',
               '\n'
               '            var toolbarItemBuilder = userData.ItemData();\n')
 
-Fragment(uuid='ccbf53bb-5b43-4f23-ab6d-41f5ff0c74fa',
+Fragment(uuid='NORMALIZED-000125',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=78,
          depth=0,
@@ -1948,7 +1948,7 @@ Fragment(uuid='ccbf53bb-5b43-4f23-ab6d-41f5ff0c74fa',
               '            var toolbarItem = '
               'MyToolbarItemFactory.CreateToolbarItem(userData.ItemData());\n')
 
-Fragment(uuid='43a80852-ee37-4a03-bc35-5ecaa50e41de',
+Fragment(uuid='NORMALIZED-000126',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=82,
          depth=0,
@@ -1969,7 +1969,7 @@ Fragment(uuid='43a80852-ee37-4a03-bc35-5ecaa50e41de',
               '\n'
               '            searchInfoLabel = new MyGuiC')
 
-Fragment(uuid='7ed3a03d-e208-42b8-a482-4bba3626ed26',
+Fragment(uuid='NORMALIZED-000127',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=90,
          depth=4,
@@ -1992,7 +1992,7 @@ Fragment(uuid='7ed3a03d-e208-42b8-a482-4bba3626ed26',
               '            Controls.Add(searchInfoLabel);\n'
               '        }')
 
-Fragment(uuid='6561fce1-6d72-40dc-999b-953b4f63487a',
+Fragment(uuid='NORMALIZED-000128',
          path='/ToolbarManager/Gui/CustomToolbarConfigScreen.cs',
          lineno=94,
          depth=0,
@@ -2013,7 +2013,7 @@ Fragment(uuid='6561fce1-6d72-40dc-999b-953b4f63487a',
               '    }\n'
               '}')
 
-Fragment(uuid='941871fc-9fb4-4f65-a0d0-68e88d81c7ad',
+Fragment(uuid='NORMALIZED-000129',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=1,
          depth=0,
@@ -2035,7 +2035,7 @@ Fragment(uuid='941871fc-9fb4-4f65-a0d0-68e88d81c7ad',
               '\n'
               '// ReSharper disable VirtualMemberCallInConstructor\n')
 
-Fragment(uuid='15a712b1-9d09-4f93-952b-e92822e51145',
+Fragment(uuid='NORMALIZED-000130',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=1,
          depth=0,
@@ -2156,7 +2156,7 @@ Fragment(uuid='15a712b1-9d09-4f93-952b-e92822e51145',
               'visualStyle visualStyle visualStyle visualStyle visualStyle '
               'xmlPath xmlPath xmlPath xmlPath xmlPath\n')
 
-Fragment(uuid='99c1c52c-708c-4b27-b452-6ee4845d56dc',
+Fragment(uuid='NORMALIZED-000131',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=16,
          depth=0,
@@ -2180,7 +2180,7 @@ Fragment(uuid='99c1c52c-708c-4b27-b452-6ee4845d56dc',
               '        private readonly string dirPath;\n'
               '        private readonly in')
 
-Fragment(uuid='d269f331-f29b-49ea-8baf-36a73452810f',
+Fragment(uuid='NORMALIZED-000132',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=19,
          depth=2,
@@ -2622,7 +2622,7 @@ Fragment(uuid='d269f331-f29b-49ea-8baf-36a73452810f',
               '"ListDialog";\n'
               '    }')
 
-Fragment(uuid='0cc2c2e6-b49b-4260-9b39-ed4d73dfbf8e',
+Fragment(uuid='NORMALIZED-000133',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=21,
          depth=5,
@@ -2630,7 +2630,7 @@ Fragment(uuid='0cc2c2e6-b49b-4260-9b39-ed4d73dfbf8e',
          name='MyGuiControlTable',
          text='MyGuiControlTable toolbarTable')
 
-Fragment(uuid='07f733b5-0789-409a-95b2-39f50528bc56',
+Fragment(uuid='NORMALIZED-000134',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=22,
          depth=5,
@@ -2638,7 +2638,7 @@ Fragment(uuid='07f733b5-0789-409a-95b2-39f50528bc56',
          name='MyGuiControlButton',
          text='MyGuiControlButton loadButton')
 
-Fragment(uuid='fde25dd8-c035-4bdc-a0fd-7844cf5237ba',
+Fragment(uuid='NORMALIZED-000135',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=23,
          depth=5,
@@ -2646,7 +2646,7 @@ Fragment(uuid='fde25dd8-c035-4bdc-a0fd-7844cf5237ba',
          name='MyGuiControlButton',
          text='MyGuiControlButton mergeButton')
 
-Fragment(uuid='4198576f-58f4-4ec3-8ede-f9b8e193c882',
+Fragment(uuid='NORMALIZED-000136',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=24,
          depth=5,
@@ -2654,7 +2654,7 @@ Fragment(uuid='4198576f-58f4-4ec3-8ede-f9b8e193c882',
          name='MyGuiControlButton',
          text='MyGuiControlButton renameButton')
 
-Fragment(uuid='a2572c4a-3533-4163-8d2c-118e57de9b7b',
+Fragment(uuid='NORMALIZED-000137',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=25,
          depth=5,
@@ -2662,7 +2662,7 @@ Fragment(uuid='a2572c4a-3533-4163-8d2c-118e57de9b7b',
          name='MyGuiControlButton',
          text='MyGuiControlButton deleteButton')
 
-Fragment(uuid='4e47a885-11a5-4d4c-b6d9-56c6e17ab9a3',
+Fragment(uuid='NORMALIZED-000138',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=26,
          depth=5,
@@ -2670,7 +2670,7 @@ Fragment(uuid='4e47a885-11a5-4d4c-b6d9-56c6e17ab9a3',
          name='MyGuiControlButton',
          text='MyGuiControlButton cancelButton')
 
-Fragment(uuid='02847982-82b6-4b00-9b19-21809fe17bc2',
+Fragment(uuid='NORMALIZED-000139',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=32,
          depth=0,
@@ -2697,7 +2697,7 @@ Fragment(uuid='02847982-82b6-4b00-9b19-21809fe17bc2',
               '            CanBeHidden = true;\n'
               '            CanH')
 
-Fragment(uuid='0ca95b0b-5928-4f07-8393-d2f4962312a7',
+Fragment(uuid='NORMALIZED-000140',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=34,
          depth=4,
@@ -2726,7 +2726,7 @@ Fragment(uuid='0ca95b0b-5928-4f07-8393-d2f4962312a7',
               '            m_onEnterCallback = ReturnLoad;\n'
               '        }')
 
-Fragment(uuid='a402c280-5287-47ec-a93f-e91fcf016c33',
+Fragment(uuid='NORMALIZED-000141',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=49,
          depth=0,
@@ -2758,7 +2758,7 @@ Fragment(uuid='a402c280-5287-47ec-a93f-e91fcf016c33',
               '            {\n'
               '                Position = ')
 
-Fragment(uuid='f94912d1-9742-4f91-8ccb-dd06dfb57848',
+Fragment(uuid='NORMALIZED-000142',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=55,
          depth=4,
@@ -2775,7 +2775,7 @@ Fragment(uuid='f94912d1-9742-4f91-8ccb-dd06dfb57848',
               '            CreateButtons();\n'
               '        }')
 
-Fragment(uuid='6c634367-e651-49e3-a424-2db56357cc41',
+Fragment(uuid='NORMALIZED-000143',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=67,
          depth=4,
@@ -2813,7 +2813,7 @@ Fragment(uuid='6c634367-e651-49e3-a424-2db56357cc41',
               '            Controls.Add(toolbarTable);\n'
               '        }')
 
-Fragment(uuid='7f21e5c2-6486-45ed-b3a0-b9b198dca2e8',
+Fragment(uuid='NORMALIZED-000144',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=71,
          depth=0,
@@ -2828,7 +2828,7 @@ Fragment(uuid='7f21e5c2-6486-45ed-b3a0-b9b198dca2e8',
               '                VisibleRowsCount = 15,\n'
               '      ')
 
-Fragment(uuid='0d49f9ea-629b-4ccc-9847-53efe891afc0',
+Fragment(uuid='NORMALIZED-000145',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=76,
          depth=0,
@@ -2845,7 +2845,7 @@ Fragment(uuid='0d49f9ea-629b-4ccc-9847-53efe891afc0',
               '            toolbarTable.SetColumnComparison(0, '
               'CellTextComparison);\n')
 
-Fragment(uuid='6811098f-442b-4953-b517-ea2f938dd243',
+Fragment(uuid='NORMALIZED-000146',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=83,
          depth=0,
@@ -2871,7 +2871,7 @@ Fragment(uuid='6811098f-442b-4953-b517-ea2f938dd243',
               'StringBuilder y)\n'
               '        {\n')
 
-Fragment(uuid='f6a2984f-4466-4261-a618-dd82ec3976a2',
+Fragment(uuid='NORMALIZED-000147',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=91,
          depth=4,
@@ -2883,7 +2883,7 @@ Fragment(uuid='f6a2984f-4466-4261-a618-dd82ec3976a2',
               '            return TextComparison(x.Text, y.Text);\n'
               '        }')
 
-Fragment(uuid='50354282-7e83-4a6d-ac85-b0ff885670d1',
+Fragment(uuid='NORMALIZED-000148',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=96,
          depth=4,
@@ -2897,7 +2897,7 @@ Fragment(uuid='50354282-7e83-4a6d-ac85-b0ff885670d1',
               '            return y == null ? -1 : x.CompareTo(y);\n'
               '        }')
 
-Fragment(uuid='063bcdd5-42ee-4df0-808e-4ddccff5d6bd',
+Fragment(uuid='NORMALIZED-000149',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=98,
          depth=0,
@@ -2926,7 +2926,7 @@ Fragment(uuid='063bcdd5-42ee-4df0-808e-4ddccff5d6bd',
               'MyGuiDrawAlignEnum.HORISONTAL_CENTER_AND_VERTICAL_CENTER,\n'
               '                text: new Strin')
 
-Fragment(uuid='d92251b3-5226-4021-a7cf-120f3d11267e',
+Fragment(uuid='NORMALIZED-000150',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=104,
          depth=4,
@@ -3004,7 +3004,7 @@ Fragment(uuid='d92251b3-5226-4021-a7cf-120f3d11267e',
               '            Controls.Add(cancelButton);\n'
               '        }')
 
-Fragment(uuid='0f289462-a79e-4288-b80f-e88efea1879a',
+Fragment(uuid='NORMALIZED-000151',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=114,
          depth=0,
@@ -3031,7 +3031,7 @@ Fragment(uuid='0f289462-a79e-4288-b80f-e88efea1879a',
               '            cancelButton = new MyGuiControlButton(\n'
               '                visualStyle: MyGuiC')
 
-Fragment(uuid='94c26e7f-8c5d-4e06-99ef-63a888b0932a',
+Fragment(uuid='NORMALIZED-000152',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=127,
          depth=0,
@@ -3047,7 +3047,7 @@ Fragment(uuid='94c26e7f-8c5d-4e06-99ef-63a888b0932a',
               '            var y = 0.5f * (DialogSize.Y - 0.15f);\n'
               '            loadButton.Position = new Vector2(-0.39')
 
-Fragment(uuid='02af8659-45e6-4c81-862b-6161a921b8c7',
+Fragment(uuid='NORMALIZED-000153',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=133,
          depth=0,
@@ -3066,7 +3066,7 @@ Fragment(uuid='02af8659-45e6-4c81-862b-6161a921b8c7',
               '            loadButton.SetToolTip("Loads the selected toolbar '
               'replacing the c')
 
-Fragment(uuid='b29b8a67-6ad0-4c70-91bf-d978000f8796',
+Fragment(uuid='NORMALIZED-000154',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=139,
          depth=0,
@@ -3095,7 +3095,7 @@ Fragment(uuid='b29b8a67-6ad0-4c70-91bf-d978000f8796',
               'Directory.EnumerateFiles(dirPath))\n'
               '            {\n')
 
-Fragment(uuid='9f1a1b5a-f5d8-43a8-a0fe-842ed9757c04',
+Fragment(uuid='NORMALIZED-000155',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=152,
          depth=4,
@@ -3116,7 +3116,7 @@ Fragment(uuid='9f1a1b5a-f5d8-43a8-a0fe-842ed9757c04',
               '                toolbarTable.SelectedRowIndex = index;\n'
               '        }')
 
-Fragment(uuid='cba2e162-aa04-4bb6-8c7b-77a1a8b80f3f',
+Fragment(uuid='NORMALIZED-000156',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=156,
          depth=0,
@@ -3128,7 +3128,7 @@ Fragment(uuid='cba2e162-aa04-4bb6-8c7b-77a1a8b80f3f',
               '                AddRowForFile(path);\n'
               '            }\n')
 
-Fragment(uuid='992571ec-e277-4e7c-b9e9-6e51cc634d19',
+Fragment(uuid='NORMALIZED-000157',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=161,
          depth=0,
@@ -3151,7 +3151,7 @@ Fragment(uuid='992571ec-e277-4e7c-b9e9-6e51cc634d19',
               '            var row = new MyGuiControlTable.Row(path);\n'
               '            row.AddCell(new MyGuiControlTable.Cell(name));\n')
 
-Fragment(uuid='ccc25508-3a2e-40d3-8f59-f09d0ae0f253',
+Fragment(uuid='NORMALIZED-000158',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=166,
          depth=4,
@@ -3175,7 +3175,7 @@ Fragment(uuid='ccc25508-3a2e-40d3-8f59-f09d0ae0f253',
               '            toolbarTable.Add(row);\n'
               '        }')
 
-Fragment(uuid='9b4042d1-0033-4c54-95ff-665a73745c4a',
+Fragment(uuid='NORMALIZED-000159',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=176,
          depth=0,
@@ -3192,7 +3192,7 @@ Fragment(uuid='9b4042d1-0033-4c54-95ff-665a73745c4a',
               '        {\n'
               '            var jsonPath = XmlToJsonPath(xmlPath);\n')
 
-Fragment(uuid='dcb1ffbd-88f2-42ca-a65a-0f54ec0e1b5b',
+Fragment(uuid='NORMALIZED-000160',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=181,
          depth=4,
@@ -3218,7 +3218,7 @@ Fragment(uuid='dcb1ffbd-88f2-42ca-a65a-0f54ec0e1b5b',
               '            }\n'
               '        }')
 
-Fragment(uuid='8a19266d-30c1-4544-a710-65f412d7b17b',
+Fragment(uuid='NORMALIZED-000161',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=181,
          depth=4,
@@ -3244,7 +3244,7 @@ Fragment(uuid='8a19266d-30c1-4544-a710-65f412d7b17b',
               '            }\n'
               '        }')
 
-Fragment(uuid='dee8e365-072e-4790-8bd4-edd24b8ad00b',
+Fragment(uuid='NORMALIZED-000162',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=184,
          depth=0,
@@ -3276,7 +3276,7 @@ Fragment(uuid='dee8e365-072e-4790-8bd4-edd24b8ad00b',
               '        private void CountUsedSlots(JsonData json)\n'
               '        {\n')
 
-Fragment(uuid='00c29aa8-e02c-45bd-9e68-b29b14829ffb',
+Fragment(uuid='NORMALIZED-000163',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=200,
          depth=4,
@@ -3288,7 +3288,7 @@ Fragment(uuid='00c29aa8-e02c-45bd-9e68-b29b14829ffb',
               '".json";\n'
               '        }')
 
-Fragment(uuid='c5789330-551e-4c9f-b1bb-dd77d1d409e5',
+Fragment(uuid='NORMALIZED-000164',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=205,
          depth=4,
@@ -3322,7 +3322,7 @@ Fragment(uuid='c5789330-551e-4c9f-b1bb-dd77d1d409e5',
               '            }\n'
               '        }')
 
-Fragment(uuid='95789a56-fdd8-4a55-8aad-b31ac800c271',
+Fragment(uuid='NORMALIZED-000165',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=207,
          depth=0,
@@ -3339,7 +3339,7 @@ Fragment(uuid='95789a56-fdd8-4a55-8aad-b31ac800c271',
               '\n'
               '                var slotCount = slots.Count;\n')
 
-Fragment(uuid='e80d60ab-f9cc-4cfb-a990-f19b899980e6',
+Fragment(uuid='NORMALIZED-000166',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=217,
          depth=0,
@@ -3349,7 +3349,7 @@ Fragment(uuid='e80d60ab-f9cc-4cfb-a990-f19b899980e6',
               '                {\n'
               '                    var page = i / 9;\n')
 
-Fragment(uuid='03873cf3-d739-4726-b35b-c77d17367863',
+Fragment(uuid='NORMALIZED-000167',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=220,
          depth=0,
@@ -3358,7 +3358,7 @@ Fragment(uuid='03873cf3-d739-4726-b35b-c77d17367863',
          text='                    if (page > 8)\n'
               '                        break;\n')
 
-Fragment(uuid='51698863-85f0-4332-a702-afb445dd2d63',
+Fragment(uuid='NORMALIZED-000168',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=222,
          depth=0,
@@ -3385,7 +3385,7 @@ Fragment(uuid='51698863-85f0-4332-a702-afb445dd2d63',
               'merge)\n'
               '        {\n')
 
-Fragment(uuid='f25520ef-99f5-44b0-886c-feecb4283b74',
+Fragment(uuid='NORMALIZED-000169',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=232,
          depth=4,
@@ -3397,7 +3397,7 @@ Fragment(uuid='f25520ef-99f5-44b0-886c-feecb4283b74',
               '            ReturnLoad();\n'
               '        }')
 
-Fragment(uuid='69563f13-756f-4567-a85a-1c47fb6d0629',
+Fragment(uuid='NORMALIZED-000170',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=237,
          depth=4,
@@ -3411,7 +3411,7 @@ Fragment(uuid='69563f13-756f-4567-a85a-1c47fb6d0629',
               '            callBack(text, merge);\n'
               '        }')
 
-Fragment(uuid='c5404836-d7d4-4b63-a510-95bc3b2cdd7e',
+Fragment(uuid='NORMALIZED-000171',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=239,
          depth=0,
@@ -3437,7 +3437,7 @@ Fragment(uuid='c5404836-d7d4-4b63-a510-95bc3b2cdd7e',
               '\n'
               '        private string Sele')
 
-Fragment(uuid='3cdc9760-b6b7-48a0-ac40-0973bc7d1b7b',
+Fragment(uuid='NORMALIZED-000172',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=245,
          depth=4,
@@ -3449,7 +3449,7 @@ Fragment(uuid='3cdc9760-b6b7-48a0-ac40-0973bc7d1b7b',
               '            CloseScreen();\n'
               '        }')
 
-Fragment(uuid='3bddee92-e7be-43a0-aca4-add499e27efb',
+Fragment(uuid='NORMALIZED-000173',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=251,
          depth=4,
@@ -3461,7 +3461,7 @@ Fragment(uuid='3bddee92-e7be-43a0-aca4-add499e27efb',
               '            CloseScreen();\n'
               '        }')
 
-Fragment(uuid='70780a0b-b60d-4856-8d93-1835a504db26',
+Fragment(uuid='NORMALIZED-000174',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=257,
          depth=0,
@@ -3481,7 +3481,7 @@ Fragment(uuid='70780a0b-b60d-4856-8d93-1835a504db26',
               '        {\n'
               '            var oldName = SelectedName;\n')
 
-Fragment(uuid='6d01cb73-ec25-46d7-a022-d2bc3cdc8064',
+Fragment(uuid='NORMALIZED-000175',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=259,
          depth=4,
@@ -3489,7 +3489,7 @@ Fragment(uuid='6d01cb73-ec25-46d7-a022-d2bc3cdc8064',
          name='OnLoad',
          text='private void OnLoad(MyGuiControlButton button) => ReturnLoad();')
 
-Fragment(uuid='39afad69-f99a-416a-8d90-aa3d155c2511',
+Fragment(uuid='NORMALIZED-000176',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=260,
          depth=4,
@@ -3498,7 +3498,7 @@ Fragment(uuid='39afad69-f99a-416a-8d90-aa3d155c2511',
          text='private void OnMerge(MyGuiControlButton button) => '
               'ReturnMerge();')
 
-Fragment(uuid='a2d257ef-15dd-4f30-ad0b-234fe3ab4570',
+Fragment(uuid='NORMALIZED-000177',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=261,
          depth=4,
@@ -3507,7 +3507,7 @@ Fragment(uuid='a2d257ef-15dd-4f30-ad0b-234fe3ab4570',
          text='private void OnCancel(MyGuiControlButton button) => '
               'CloseScreen();')
 
-Fragment(uuid='87b98c14-f3dc-47a3-9d93-34d9465ca1db',
+Fragment(uuid='NORMALIZED-000178',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=263,
          depth=4,
@@ -3524,7 +3524,7 @@ Fragment(uuid='87b98c14-f3dc-47a3-9d93-34d9465ca1db',
               'oldName));\n'
               '        }')
 
-Fragment(uuid='82290434-54b7-415c-8fd9-1ca0c72ee25e',
+Fragment(uuid='NORMALIZED-000179',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=266,
          depth=0,
@@ -3546,7 +3546,7 @@ Fragment(uuid='82290434-54b7-415c-8fd9-1ca0c72ee25e',
               '            var newPath = Path.Combine(dirPath, '
               '$"{newName}.xml");\n')
 
-Fragment(uuid='3dd6de16-a624-466f-9f95-6d3171b42218',
+Fragment(uuid='NORMALIZED-000180',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=272,
          depth=4,
@@ -3580,7 +3580,7 @@ Fragment(uuid='3dd6de16-a624-466f-9f95-6d3171b42218',
               '            }\n'
               '        }')
 
-Fragment(uuid='2b6cca81-6561-45bf-ba8d-96becad338da',
+Fragment(uuid='NORMALIZED-000181',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=277,
          depth=0,
@@ -3612,7 +3612,7 @@ Fragment(uuid='2b6cca81-6561-45bf-ba8d-96becad338da',
               'string oldName, string newName)\n'
               '        {\n')
 
-Fragment(uuid='9504ad44-470b-4500-bb83-a981cec1c7d2',
+Fragment(uuid='NORMALIZED-000182',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=291,
          depth=4,
@@ -3661,7 +3661,7 @@ Fragment(uuid='9504ad44-470b-4500-bb83-a981cec1c7d2',
               '            }\n'
               '        }')
 
-Fragment(uuid='d250a15c-fccd-48aa-ac2c-f8416e6b4532',
+Fragment(uuid='NORMALIZED-000183',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=293,
          depth=0,
@@ -3679,7 +3679,7 @@ Fragment(uuid='d250a15c-fccd-48aa-ac2c-f8416e6b4532',
               '            var oldJsonPath = XmlToJsonPath(oldPath);\n'
               '            var newJsonPath = XmlToJsonPath(newPath);\n')
 
-Fragment(uuid='7b0c0edd-9e7a-4868-863f-c3b6f90072af',
+Fragment(uuid='NORMALIZED-000184',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=301,
          depth=0,
@@ -3689,7 +3689,7 @@ Fragment(uuid='7b0c0edd-9e7a-4868-863f-c3b6f90072af',
               '            if (File.Exists(newPath))\n'
               '                File.Delete(newPath);\n')
 
-Fragment(uuid='a02a08ce-7801-43db-832e-a07464399d94',
+Fragment(uuid='NORMALIZED-000185',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=304,
          depth=0,
@@ -3699,7 +3699,7 @@ Fragment(uuid='a02a08ce-7801-43db-832e-a07464399d94',
               '            if (File.Exists(newJsonPath))\n'
               '                File.Delete(newJsonPath);\n')
 
-Fragment(uuid='c145a393-6e14-421d-b979-16a7e5f005c6',
+Fragment(uuid='NORMALIZED-000186',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=307,
          depth=0,
@@ -3709,7 +3709,7 @@ Fragment(uuid='c145a393-6e14-421d-b979-16a7e5f005c6',
               '            if (File.Exists(oldPath))\n'
               '                File.Move(oldPath, newPath);\n')
 
-Fragment(uuid='64ebea08-4335-4664-9b96-dfb4fc206521',
+Fragment(uuid='NORMALIZED-000187',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=310,
          depth=0,
@@ -3719,7 +3719,7 @@ Fragment(uuid='64ebea08-4335-4664-9b96-dfb4fc206521',
               '            if (File.Exists(oldJsonPath))\n'
               '                File.Move(oldJsonPath, newJsonPath);\n')
 
-Fragment(uuid='fc043236-7b09-4055-8a01-777ab6469b56',
+Fragment(uuid='NORMALIZED-000188',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=313,
          depth=0,
@@ -3731,7 +3731,7 @@ Fragment(uuid='fc043236-7b09-4055-8a01-777ab6469b56',
               '                '
               'toolbarTable.Remove(toolbarTable.GetRow(overwrittenItemIndex));\n')
 
-Fragment(uuid='52ee0305-f2fc-4dac-9414-e6ffc65e7f80',
+Fragment(uuid='NORMALIZED-000189',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=316,
          depth=0,
@@ -3752,7 +3752,7 @@ Fragment(uuid='52ee0305-f2fc-4dac-9414-e6ffc65e7f80',
               '        {\n'
               '            var name = SelectedName;\n')
 
-Fragment(uuid='a9cc0a9d-c65a-4882-a4f6-ea7c9597eccf',
+Fragment(uuid='NORMALIZED-000190',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=325,
          depth=4,
@@ -3775,7 +3775,7 @@ Fragment(uuid='a9cc0a9d-c65a-4882-a4f6-ea7c9597eccf',
               'name)));\n'
               '        }')
 
-Fragment(uuid='95fbbddf-afd2-476f-9473-d52f61eb4544',
+Fragment(uuid='NORMALIZED-000191',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=328,
          depth=0,
@@ -3800,7 +3800,7 @@ Fragment(uuid='95fbbddf-afd2-476f-9473-d52f61eb4544',
               'name)\n'
               '        {\n')
 
-Fragment(uuid='3917ab7c-2a24-4dca-bb14-53ea9a1ba119',
+Fragment(uuid='NORMALIZED-000192',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=338,
          depth=4,
@@ -3827,7 +3827,7 @@ Fragment(uuid='3917ab7c-2a24-4dca-bb14-53ea9a1ba119',
               'toolbarTable.Remove(toolbarTable.GetRow(index));\n'
               '        }')
 
-Fragment(uuid='89d6ae35-6c49-4334-b02a-17f7caa8c126',
+Fragment(uuid='NORMALIZED-000193',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=340,
          depth=0,
@@ -3840,7 +3840,7 @@ Fragment(uuid='89d6ae35-6c49-4334-b02a-17f7caa8c126',
               '            var path = Path.Combine(dirPath, $"{name}.xml");\n'
               '            var jsonPath = XmlToJsonPath(path);\n')
 
-Fragment(uuid='26f1a6a4-39e6-49ac-8184-3cb468f0f7c9',
+Fragment(uuid='NORMALIZED-000194',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=345,
          depth=0,
@@ -3850,7 +3850,7 @@ Fragment(uuid='26f1a6a4-39e6-49ac-8184-3cb468f0f7c9',
               '            if (File.Exists(path))\n'
               '                File.Delete(path);\n')
 
-Fragment(uuid='46c25899-f4cc-4822-9d0b-0cba709e04f8',
+Fragment(uuid='NORMALIZED-000195',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=348,
          depth=0,
@@ -3860,7 +3860,7 @@ Fragment(uuid='46c25899-f4cc-4822-9d0b-0cba709e04f8',
               '            if (File.Exists(jsonPath))\n'
               '                File.Delete(jsonPath);\n')
 
-Fragment(uuid='f400ccb5-aca5-4128-b626-bacc0f198a77',
+Fragment(uuid='NORMALIZED-000196',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=351,
          depth=0,
@@ -3877,7 +3877,7 @@ Fragment(uuid='f400ccb5-aca5-4128-b626-bacc0f198a77',
               '        {\n'
               '            var count = toolbarTable.RowsCount;\n')
 
-Fragment(uuid='69998d8d-08ca-4aa7-b57d-60934feafc25',
+Fragment(uuid='NORMALIZED-000197',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=356,
          depth=4,
@@ -3898,7 +3898,7 @@ Fragment(uuid='69998d8d-08ca-4aa7-b57d-60934feafc25',
               '            return false;\n'
               '        }')
 
-Fragment(uuid='5d57a73e-90eb-4e14-b203-29227760b9e2',
+Fragment(uuid='NORMALIZED-000198',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=359,
          depth=0,
@@ -3921,7 +3921,7 @@ Fragment(uuid='5d57a73e-90eb-4e14-b203-29227760b9e2',
               '    }\n'
               '}')
 
-Fragment(uuid='a2a90864-f356-455d-a901-94d3b1434d5e',
+Fragment(uuid='NORMALIZED-000199',
          path='/ToolbarManager/Gui/ListDialog.cs',
          lineno=369,
          depth=4,
@@ -3929,7 +3929,7 @@ Fragment(uuid='a2a90864-f356-455d-a901-94d3b1434d5e',
          name='GetFriendlyName',
          text='public override string GetFriendlyName() => "ListDialog";')
 
-Fragment(uuid='38cefa4e-572f-49e3-84a3-69eba5660055',
+Fragment(uuid='NORMALIZED-000200',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=1,
          depth=0,
@@ -3947,7 +3947,7 @@ Fragment(uuid='38cefa4e-572f-49e3-84a3-69eba5660055',
               '// ReSharper disable VirtualMemberCallInConstructor\n'
               '#pragma warning disable 618\n')
 
-Fragment(uuid='ce3664b1-be33-42f3-8442-520e6783fe9b',
+Fragment(uuid='NORMALIZED-000201',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=1,
          depth=0,
@@ -3994,7 +3994,7 @@ Fragment(uuid='ce3664b1-be33-42f3-8442-520e6783fe9b',
               'okPosition okPosition okPosition onButtonClick onButtonClick '
               'originAlign originAlign text text text text text\n')
 
-Fragment(uuid='55067506-4154-44b1-8085-bad568c289da',
+Fragment(uuid='NORMALIZED-000202',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=12,
          depth=0,
@@ -4014,7 +4014,7 @@ Fragment(uuid='55067506-4154-44b1-8085-bad568c289da',
               '        private readonly string defaultName;\n'
               '        private readonl')
 
-Fragment(uuid='3d803251-fc40-4630-8682-befb4b9cdf4a',
+Fragment(uuid='NORMALIZED-000203',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=15,
          depth=2,
@@ -4136,7 +4136,7 @@ Fragment(uuid='3d803251-fc40-4630-8682-befb4b9cdf4a',
               '"NameDialog";\n'
               '    }')
 
-Fragment(uuid='a41e1093-3d84-4d64-97df-bd01d6fd5352',
+Fragment(uuid='NORMALIZED-000204',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=17,
          depth=5,
@@ -4144,7 +4144,7 @@ Fragment(uuid='a41e1093-3d84-4d64-97df-bd01d6fd5352',
          name='MyGuiControlTextbox',
          text='MyGuiControlTextbox nameBox')
 
-Fragment(uuid='aee23173-1aad-402d-859d-84871016760f',
+Fragment(uuid='NORMALIZED-000205',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=18,
          depth=5,
@@ -4152,7 +4152,7 @@ Fragment(uuid='aee23173-1aad-402d-859d-84871016760f',
          name='MyGuiControlButton',
          text='MyGuiControlButton okButton')
 
-Fragment(uuid='52e3165e-3c9e-4bea-a13e-d42b6def00b8',
+Fragment(uuid='NORMALIZED-000206',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=19,
          depth=5,
@@ -4160,7 +4160,7 @@ Fragment(uuid='52e3165e-3c9e-4bea-a13e-d42b6def00b8',
          name='MyGuiControlButton',
          text='MyGuiControlButton cancelButton')
 
-Fragment(uuid='861921b0-a5ba-47dd-8ec1-b93b8d5cee4f',
+Fragment(uuid='NORMALIZED-000207',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=24,
          depth=0,
@@ -4180,7 +4180,7 @@ Fragment(uuid='861921b0-a5ba-47dd-8ec1-b93b8d5cee4f',
               '            this.callBack = callBack;\n'
               '            thi')
 
-Fragment(uuid='15ab6e43-d012-435c-891d-4c283320e943',
+Fragment(uuid='NORMALIZED-000208',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=26,
          depth=4,
@@ -4209,7 +4209,7 @@ Fragment(uuid='15ab6e43-d012-435c-891d-4c283320e943',
               '            m_onEnterCallback = ReturnOk;\n'
               '        }')
 
-Fragment(uuid='cb4966ff-fadf-474d-9839-368a49e88f50',
+Fragment(uuid='NORMALIZED-000209',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=34,
          depth=0,
@@ -4232,7 +4232,7 @@ Fragment(uuid='cb4966ff-fadf-474d-9839-368a49e88f50',
               '\n'
               '        public override ')
 
-Fragment(uuid='0d11f4ab-135f-461d-b610-8d6061261b00',
+Fragment(uuid='NORMALIZED-000210',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=49,
          depth=0,
@@ -4251,7 +4251,7 @@ Fragment(uuid='0d11f4ab-135f-461d-b610-8d6061261b00',
               'Vector2(-0.39f * DialogSize.X, -0.5f * DialogSize.Y + 0.075f), '
               'DialogSize.X * 0')
 
-Fragment(uuid='cccbdbf8-eed7-437a-a5ff-eae71f412194',
+Fragment(uuid='NORMALIZED-000211',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=49,
          depth=4,
@@ -4310,7 +4310,7 @@ Fragment(uuid='cccbdbf8-eed7-437a-a5ff-eae71f412194',
               '            Controls.Add(cancelButton);\n'
               '        }')
 
-Fragment(uuid='691c6697-1739-4edb-9823-c4ddcef22d07',
+Fragment(uuid='NORMALIZED-000212',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=56,
          depth=0,
@@ -4329,7 +4329,7 @@ Fragment(uuid='691c6697-1739-4edb-9823-c4ddcef22d07',
               '            nameBox = new MyGuiControlTextbox(new Vector2(0.0f, '
               '-0.027')
 
-Fragment(uuid='27ff0092-108f-45f7-bf48-c9b876d8d3af',
+Fragment(uuid='NORMALIZED-000213',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=63,
          depth=0,
@@ -4348,7 +4348,7 @@ Fragment(uuid='27ff0092-108f-45f7-bf48-c9b876d8d3af',
               'MyTexts.Get(MyCommonTexts.Ok), onButtonClick: OnOk);\n'
               '       ')
 
-Fragment(uuid='944990e4-98b3-4bc0-8a05-13f3c982396b',
+Fragment(uuid='NORMALIZED-000214',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=72,
          depth=0,
@@ -4365,7 +4365,7 @@ Fragment(uuid='944990e4-98b3-4bc0-8a05-13f3c982396b',
               '            okButton.Position = okPosition - halfDistance;\n'
               '          ')
 
-Fragment(uuid='7c47b792-5cc4-42ec-bd5c-065799ee03b1',
+Fragment(uuid='NORMALIZED-000215',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=78,
          depth=0,
@@ -4385,7 +4385,7 @@ Fragment(uuid='7c47b792-5cc4-42ec-bd5c-065799ee03b1',
               '        private void CallResultCallback(string text)\n'
               '        {\n')
 
-Fragment(uuid='4187c04f-ece9-4a74-98eb-900c4ae93ec7',
+Fragment(uuid='NORMALIZED-000216',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=87,
          depth=4,
@@ -4399,7 +4399,7 @@ Fragment(uuid='4187c04f-ece9-4a74-98eb-900c4ae93ec7',
               '            callBack(text);\n'
               '        }')
 
-Fragment(uuid='6fa64915-db74-43a7-9e6c-367336c56cc7',
+Fragment(uuid='NORMALIZED-000217',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=89,
          depth=0,
@@ -4414,7 +4414,7 @@ Fragment(uuid='6fa64915-db74-43a7-9e6c-367336c56cc7',
               '        private void ReturnOk()\n'
               '        {\n')
 
-Fragment(uuid='8b4a6cfd-d1f2-4aac-94a1-9a50a4b411d3',
+Fragment(uuid='NORMALIZED-000218',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=95,
          depth=4,
@@ -4429,7 +4429,7 @@ Fragment(uuid='8b4a6cfd-d1f2-4aac-94a1-9a50a4b411d3',
               '            CloseScreen();\n'
               '        }')
 
-Fragment(uuid='e489da6a-dcc5-46fa-aad8-dfb4a3e9ed92',
+Fragment(uuid='NORMALIZED-000219',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=97,
          depth=0,
@@ -4452,7 +4452,7 @@ Fragment(uuid='e489da6a-dcc5-46fa-aad8-dfb4a3e9ed92',
               '    }\n'
               '}')
 
-Fragment(uuid='0ce95f41-e43c-4f20-8c51-5eb8fe56cf17',
+Fragment(uuid='NORMALIZED-000220',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=104,
          depth=4,
@@ -4460,7 +4460,7 @@ Fragment(uuid='0ce95f41-e43c-4f20-8c51-5eb8fe56cf17',
          name='OnOk',
          text='private void OnOk(MyGuiControlButton button) => ReturnOk();')
 
-Fragment(uuid='c0c85db1-10ca-4597-80ef-303061f46108',
+Fragment(uuid='NORMALIZED-000221',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=105,
          depth=4,
@@ -4469,7 +4469,7 @@ Fragment(uuid='c0c85db1-10ca-4597-80ef-303061f46108',
          text='private void OnCancel(MyGuiControlButton button) => '
               'CloseScreen();')
 
-Fragment(uuid='42dada71-a986-4996-b12f-b28d31a29ccc',
+Fragment(uuid='NORMALIZED-000222',
          path='/ToolbarManager/Gui/NameDialog.cs',
          lineno=107,
          depth=4,
@@ -4477,7 +4477,7 @@ Fragment(uuid='42dada71-a986-4996-b12f-b28d31a29ccc',
          name='GetFriendlyName',
          text='public override string GetFriendlyName() => "NameDialog";')
 
-Fragment(uuid='7c6db10b-07b8-4cc3-b9b4-36ff0f941173',
+Fragment(uuid='NORMALIZED-000223',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=1,
          depth=0,
@@ -4487,7 +4487,7 @@ Fragment(uuid='7c6db10b-07b8-4cc3-b9b4-36ff0f941173',
               'using Sandbox.Game.Screens.Helpers;\n'
               'using VRage.Game;\n')
 
-Fragment(uuid='b9b11f7d-056f-4496-ae9f-08dfc5bd41ef',
+Fragment(uuid='NORMALIZED-000224',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=1,
          depth=0,
@@ -4518,7 +4518,7 @@ Fragment(uuid='b9b11f7d-056f-4496-ae9f-08dfc5bd41ef',
               'toolbar toolbarItem toolbarItem toolbarItem toolbarItem '
               'toolbarItem\n')
 
-Fragment(uuid='5cfca6ac-be88-40e2-8bd6-96d6b77d2444',
+Fragment(uuid='NORMALIZED-000225',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=4,
          depth=0,
@@ -4547,7 +4547,7 @@ Fragment(uuid='5cfca6ac-be88-40e2-8bd6-96d6b77d2444',
               '        {\n'
               '            Index = index;\n')
 
-Fragment(uuid='3b1d3c38-ac31-4bd5-8936-8c66ac6148b4',
+Fragment(uuid='NORMALIZED-000226',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=7,
          depth=2,
@@ -4661,7 +4661,7 @@ Fragment(uuid='3b1d3c38-ac31-4bd5-8936-8c66ac6148b4',
               '        }\n'
               '    }')
 
-Fragment(uuid='42fecf29-7b2e-46b9-adee-7982b324271e',
+Fragment(uuid='NORMALIZED-000227',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=16,
          depth=4,
@@ -4672,7 +4672,7 @@ Fragment(uuid='42fecf29-7b2e-46b9-adee-7982b324271e',
               '            Index = index;\n'
               '        }')
 
-Fragment(uuid='62dec5af-45b3-45d7-826e-52695902576c',
+Fragment(uuid='NORMALIZED-000228',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=21,
          depth=4,
@@ -4691,7 +4691,7 @@ Fragment(uuid='62dec5af-45b3-45d7-826e-52695902576c',
               'MyToolbarItemFactory.ObjectBuilderFromDefinition(definitionBase);\n'
               '        }')
 
-Fragment(uuid='4c7ee822-232d-4caa-89cd-9db35fed54fe',
+Fragment(uuid='NORMALIZED-000229',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=24,
          depth=0,
@@ -4711,7 +4711,7 @@ Fragment(uuid='4c7ee822-232d-4caa-89cd-9db35fed54fe',
               '        {\n'
               '            Index = index;\n')
 
-Fragment(uuid='ad9dc91f-ac93-44a8-a07d-952e1cb4f4ea',
+Fragment(uuid='NORMALIZED-000230',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=31,
          depth=4,
@@ -4727,7 +4727,7 @@ Fragment(uuid='ad9dc91f-ac93-44a8-a07d-952e1cb4f4ea',
               '            Builder = item.GetObjectBuilder();\n'
               '        }')
 
-Fragment(uuid='905e525a-ae72-4f08-a714-5a18fdb0d371',
+Fragment(uuid='NORMALIZED-000231',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=34,
          depth=0,
@@ -4745,7 +4745,7 @@ Fragment(uuid='905e525a-ae72-4f08-a714-5a18fdb0d371',
               '        {\n'
               '            Index = index;\n')
 
-Fragment(uuid='db22145b-db1b-4ed2-ac43-22ccf6eed47e',
+Fragment(uuid='NORMALIZED-000232',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=41,
          depth=4,
@@ -4762,7 +4762,7 @@ Fragment(uuid='db22145b-db1b-4ed2-ac43-22ccf6eed47e',
               '            Builder = itemBuilder;\n'
               '        }')
 
-Fragment(uuid='80fdb4e9-d579-4661-b447-50b7b1c65c1e',
+Fragment(uuid='NORMALIZED-000233',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=44,
          depth=0,
@@ -4780,7 +4780,7 @@ Fragment(uuid='80fdb4e9-d579-4661-b447-50b7b1c65c1e',
               '        {\n'
               '            Index = index;\n')
 
-Fragment(uuid='0cd3cdc7-9c1f-4b89-a7a9-1fc375bf9dcf',
+Fragment(uuid='NORMALIZED-000234',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=51,
          depth=4,
@@ -4796,7 +4796,7 @@ Fragment(uuid='0cd3cdc7-9c1f-4b89-a7a9-1fc375bf9dcf',
               '            Builder = itemDefinition.GetObjectBuilder();\n'
               '        }')
 
-Fragment(uuid='281d2123-2f16-4762-82b9-4cfb0d629c72',
+Fragment(uuid='NORMALIZED-000235',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=54,
          depth=0,
@@ -4818,7 +4818,7 @@ Fragment(uuid='281d2123-2f16-4762-82b9-4cfb0d629c72',
               '        {\n'
               '            var toolbarItem = toolbar.GetItemAtIndex(Index);\n')
 
-Fragment(uuid='54111b60-b855-4e78-9387-ca075947cd67',
+Fragment(uuid='NORMALIZED-000236',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=61,
          depth=4,
@@ -4829,7 +4829,7 @@ Fragment(uuid='54111b60-b855-4e78-9387-ca075947cd67',
               '            Builder = null;\n'
               '        }')
 
-Fragment(uuid='a8863a05-16ef-47bb-9063-5d5704858006',
+Fragment(uuid='NORMALIZED-000237',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=66,
          depth=4,
@@ -4847,7 +4847,7 @@ Fragment(uuid='a8863a05-16ef-47bb-9063-5d5704858006',
               '            Builder = toolbarItem.GetObjectBuilder();\n'
               '        }')
 
-Fragment(uuid='f2c08a61-8f13-485f-9183-9044b10c9f20',
+Fragment(uuid='NORMALIZED-000238',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=69,
          depth=0,
@@ -4865,7 +4865,7 @@ Fragment(uuid='f2c08a61-8f13-485f-9183-9044b10c9f20',
               '        public void Set(MyToolbar toolbar)\n'
               '        {\n')
 
-Fragment(uuid='301402d8-2019-4ffa-a470-76e11779646f',
+Fragment(uuid='NORMALIZED-000239',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=78,
          depth=4,
@@ -4884,7 +4884,7 @@ Fragment(uuid='301402d8-2019-4ffa-a470-76e11779646f',
               '            toolbar.SetItemAtIndex(Index, toolbarItem);\n'
               '        }')
 
-Fragment(uuid='9317106b-9f29-4fb6-a12b-0446bd9c93ed',
+Fragment(uuid='NORMALIZED-000240',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=80,
          depth=0,
@@ -4904,7 +4904,7 @@ Fragment(uuid='9317106b-9f29-4fb6-a12b-0446bd9c93ed',
               '        public void Merge(MyToolbar toolbar)\n'
               '        {\n')
 
-Fragment(uuid='20ab95e0-6aca-46db-8aa2-f8ed6693743c',
+Fragment(uuid='NORMALIZED-000241',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=90,
          depth=4,
@@ -4918,7 +4918,7 @@ Fragment(uuid='20ab95e0-6aca-46db-8aa2-f8ed6693743c',
               '            Set(toolbar);\n'
               '        }')
 
-Fragment(uuid='99b9f05a-8ec6-4a37-99fa-e6470d55e0fb',
+Fragment(uuid='NORMALIZED-000242',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=92,
          depth=0,
@@ -4933,7 +4933,7 @@ Fragment(uuid='99b9f05a-8ec6-4a37-99fa-e6470d55e0fb',
               '        public void Activate(MyToolbar toolbar)\n'
               '        {\n')
 
-Fragment(uuid='76bd2732-7e9b-4214-9174-7f42046b64d4',
+Fragment(uuid='NORMALIZED-000243',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=98,
          depth=4,
@@ -4947,7 +4947,7 @@ Fragment(uuid='76bd2732-7e9b-4214-9174-7f42046b64d4',
               '            toolbar.ActivateItemAtIndex(Index);\n'
               '        }')
 
-Fragment(uuid='214db322-df7f-4a47-a2de-dba7eeff31e2',
+Fragment(uuid='NORMALIZED-000244',
          path='/ToolbarManager/Logic/Slot.cs',
          lineno=100,
          depth=0,
@@ -4961,7 +4961,7 @@ Fragment(uuid='214db322-df7f-4a47-a2de-dba7eeff31e2',
               '    }\n'
               '}')
 
-Fragment(uuid='b3a95bb6-fac8-4714-855e-af1a7ab724f6',
+Fragment(uuid='NORMALIZED-000245',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=1,
          depth=0,
@@ -4979,7 +4979,7 @@ Fragment(uuid='b3a95bb6-fac8-4714-855e-af1a7ab724f6',
               'using VRage.FileSystem;\n'
               'using VRage.Utils;\n')
 
-Fragment(uuid='b9286e33-4277-42a7-b5f5-86b5d7386f8d',
+Fragment(uuid='NORMALIZED-000246',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=1,
          depth=0,
@@ -5028,7 +5028,7 @@ Fragment(uuid='b9286e33-4277-42a7-b5f5-86b5d7386f8d',
               'result sanitizedName sanitizedName toolbar toolbar toolbar '
               'toolbar toolbar toolbar toolbar toolbar\n')
 
-Fragment(uuid='ff61a1fd-6924-4630-aa18-62e5485601f3',
+Fragment(uuid='NORMALIZED-000247',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=12,
          depth=0,
@@ -5058,7 +5058,7 @@ Fragment(uuid='ff61a1fd-6924-4630-aa18-62e5485601f3',
               '\\"{UserDataDir}\\"");\n'
               '   ')
 
-Fragment(uuid='f557a238-63b6-4375-a028-a7985402a548',
+Fragment(uuid='NORMALIZED-000248',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=15,
          depth=2,
@@ -5222,7 +5222,7 @@ Fragment(uuid='f557a238-63b6-4375-a028-a7985402a548',
               '        }\n'
               '    }')
 
-Fragment(uuid='d957c0bc-717e-46bb-ba12-f54408b7c345',
+Fragment(uuid='NORMALIZED-000249',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=22,
          depth=4,
@@ -5239,7 +5239,7 @@ Fragment(uuid='d957c0bc-717e-46bb-ba12-f54408b7c345',
               '\\"{UserDataDir}\\"");\n'
               '        }')
 
-Fragment(uuid='6ff7b749-9a45-4e03-aab1-528b098b7b23',
+Fragment(uuid='NORMALIZED-000250',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=28,
          depth=0,
@@ -5270,7 +5270,7 @@ Fragment(uuid='6ff7b749-9a45-4e03-aab1-528b098b7b23',
               '            var currentToolbar = '
               'MyToolbarComponent.CurrentToolbar;\n')
 
-Fragment(uuid='16d7ea82-4212-477c-9cd3-b515aa005eeb',
+Fragment(uuid='NORMALIZED-000251',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=30,
          depth=4,
@@ -5285,7 +5285,7 @@ Fragment(uuid='16d7ea82-4212-477c-9cd3-b515aa005eeb',
               '            return Path.Combine(dir, $"{sanitizedName}.xml");\n'
               '        }')
 
-Fragment(uuid='e3c99ad0-f77a-42fa-a7a0-827f1e8d2a70',
+Fragment(uuid='NORMALIZED-000252',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=37,
          depth=4,
@@ -5299,7 +5299,7 @@ Fragment(uuid='e3c99ad0-f77a-42fa-a7a0-827f1e8d2a70',
               '            return dir;\n'
               '        }')
 
-Fragment(uuid='661d6213-5fb0-4ee1-a637-a5eff1e7a5d8',
+Fragment(uuid='NORMALIZED-000253',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=44,
          depth=4,
@@ -5321,7 +5321,7 @@ Fragment(uuid='661d6213-5fb0-4ee1-a637-a5eff1e7a5d8',
               'latestName));\n'
               '        }')
 
-Fragment(uuid='d7e5e20c-0f9e-4021-8ac0-abed5e1b3ac7',
+Fragment(uuid='NORMALIZED-000254',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=47,
          depth=0,
@@ -5344,7 +5344,7 @@ Fragment(uuid='d7e5e20c-0f9e-4021-8ac0-abed5e1b3ac7',
               '            var currentToolbar = '
               'MyToolbarComponent.CurrentToolbar;\n')
 
-Fragment(uuid='8d6e8d96-91f6-4ecc-af6b-d6224aeacaa1',
+Fragment(uuid='NORMALIZED-000255',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=55,
          depth=4,
@@ -5379,7 +5379,7 @@ Fragment(uuid='8d6e8d96-91f6-4ecc-af6b-d6224aeacaa1',
               '            }\n'
               '        }')
 
-Fragment(uuid='cc8079a3-4467-4f47-bfbc-ca8e81364d8a',
+Fragment(uuid='NORMALIZED-000256',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=58,
          depth=0,
@@ -5390,7 +5390,7 @@ Fragment(uuid='cc8079a3-4467-4f47-bfbc-ca8e81364d8a',
               '\n'
               '            var path = FormatPath(currentToolbar, name);\n')
 
-Fragment(uuid='c24cd0c9-abc0-4354-a6e8-cc17a0f59322',
+Fragment(uuid='NORMALIZED-000257',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=62,
          depth=0,
@@ -5422,7 +5422,7 @@ Fragment(uuid='c24cd0c9-abc0-4354-a6e8-cc17a0f59322',
               'string path)\n'
               '        {\n')
 
-Fragment(uuid='6b864c5b-f85d-4ec7-a092-79bd164f8aa8',
+Fragment(uuid='NORMALIZED-000258',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=77,
          depth=4,
@@ -5463,7 +5463,7 @@ Fragment(uuid='6b864c5b-f85d-4ec7-a092-79bd164f8aa8',
               '            }\n'
               '        }')
 
-Fragment(uuid='b53f010a-b59b-419a-ad5e-bc8fad7aca6a',
+Fragment(uuid='NORMALIZED-000259',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=79,
          depth=0,
@@ -5476,7 +5476,7 @@ Fragment(uuid='b53f010a-b59b-419a-ad5e-bc8fad7aca6a',
               '            var currentToolbar = '
               'MyToolbarComponent.CurrentToolbar;\n')
 
-Fragment(uuid='28e00a70-6a3c-477d-a219-6b8938fd9eaf',
+Fragment(uuid='NORMALIZED-000260',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=83,
          depth=0,
@@ -5512,7 +5512,7 @@ Fragment(uuid='28e00a70-6a3c-477d-a219-6b8938fd9eaf',
               '            var currentToolbar = '
               'MyToolbarComponent.CurrentToolbar;\n')
 
-Fragment(uuid='1cdc7cf3-0b02-454a-a756-e91f2c47a0f8',
+Fragment(uuid='NORMALIZED-000261',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=103,
          depth=4,
@@ -5534,7 +5534,7 @@ Fragment(uuid='1cdc7cf3-0b02-454a-a756-e91f2c47a0f8',
               'latestName, FormatDir(currentToolbar)));\n'
               '        }')
 
-Fragment(uuid='6b000bf9-f2fc-4a36-8ed9-26d398cff354',
+Fragment(uuid='NORMALIZED-000262',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=106,
          depth=0,
@@ -5557,7 +5557,7 @@ Fragment(uuid='6b000bf9-f2fc-4a36-8ed9-26d398cff354',
               '            var currentToolbar = '
               'MyToolbarComponent.CurrentToolbar;\n')
 
-Fragment(uuid='6f67bef3-db55-463c-9fd7-5bd016728884',
+Fragment(uuid='NORMALIZED-000263',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=114,
          depth=4,
@@ -5585,7 +5585,7 @@ Fragment(uuid='6f67bef3-db55-463c-9fd7-5bd016728884',
               '                toolbar.Set(currentToolbar);\n'
               '        }')
 
-Fragment(uuid='ce7148ff-0083-4956-b6b6-701c16eb08f5',
+Fragment(uuid='NORMALIZED-000264',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=117,
          depth=0,
@@ -5603,7 +5603,7 @@ Fragment(uuid='ce7148ff-0083-4956-b6b6-701c16eb08f5',
               '\n'
               '            toolbar.Associate(currentToolbar);\n')
 
-Fragment(uuid='9a611ea6-cde3-4302-b076-3c4fb60384b2',
+Fragment(uuid='NORMALIZED-000265',
          path='/ToolbarManager/Logic/Storage.cs',
          lineno=127,
          depth=0,
@@ -5618,7 +5618,7 @@ Fragment(uuid='9a611ea6-cde3-4302-b076-3c4fb60384b2',
               '    }\n'
               '}')
 
-Fragment(uuid='72b12041-4496-4361-a823-0ebc7cd89514',
+Fragment(uuid='NORMALIZED-000266',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=1,
          depth=0,
@@ -5639,7 +5639,7 @@ Fragment(uuid='72b12041-4496-4361-a823-0ebc7cd89514',
               'using VRage.Game.Entity;\n'
               'using VRage.ObjectBuilders;\n')
 
-Fragment(uuid='1ab57e46-acb4-4699-9225-6e130139888c',
+Fragment(uuid='NORMALIZED-000267',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=1,
          depth=0,
@@ -5715,7 +5715,7 @@ Fragment(uuid='1ab57e46-acb4-4699-9225-6e130139888c',
               'toolbarBuilder type type type type type utf8 utf8 utf8 utf8 '
               'writer writer writer\n')
 
-Fragment(uuid='589846f8-1b77-401a-8783-01d1817bb445',
+Fragment(uuid='NORMALIZED-000268',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=15,
          depth=0,
@@ -5736,7 +5736,7 @@ Fragment(uuid='589846f8-1b77-401a-8783-01d1817bb445',
               '\n'
               '            type = toolbar.ToolbarType;\n')
 
-Fragment(uuid='e638c9dc-9416-4e27-8e15-10cfad6ced76',
+Fragment(uuid='NORMALIZED-000269',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=18,
          depth=2,
@@ -6017,7 +6017,7 @@ Fragment(uuid='e638c9dc-9416-4e27-8e15-10cfad6ced76',
               '        }\n'
               '    }')
 
-Fragment(uuid='dd9006c8-9cf9-4b12-9861-6dd577b320ea',
+Fragment(uuid='NORMALIZED-000270',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=20,
          depth=5,
@@ -6025,7 +6025,7 @@ Fragment(uuid='dd9006c8-9cf9-4b12-9861-6dd577b320ea',
          name='MyToolbarType',
          text='MyToolbarType type')
 
-Fragment(uuid='49c7b2a7-4017-441a-bbba-a57f83cad63d',
+Fragment(uuid='NORMALIZED-000271',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=23,
          depth=4,
@@ -6044,7 +6044,7 @@ Fragment(uuid='49c7b2a7-4017-441a-bbba-a57f83cad63d',
               'toolbar.GetItemAtIndex(index)));\n'
               '        }')
 
-Fragment(uuid='2e4e9029-ecee-478a-8c5b-8fcae6ebf212',
+Fragment(uuid='NORMALIZED-000272',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=29,
          depth=0,
@@ -6065,7 +6065,7 @@ Fragment(uuid='2e4e9029-ecee-478a-8c5b-8fcae6ebf212',
               '\n'
               '            type = toolbarBuilder.ToolbarType;\n')
 
-Fragment(uuid='ccb5b31c-5b48-4a7a-84b4-750e5ec5044f',
+Fragment(uuid='NORMALIZED-000273',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=34,
          depth=4,
@@ -6086,7 +6086,7 @@ Fragment(uuid='ccb5b31c-5b48-4a7a-84b4-750e5ec5044f',
               '            }\n'
               '        }')
 
-Fragment(uuid='ef1cb7ba-70f9-4475-90c2-f0e1c074dcf3',
+Fragment(uuid='NORMALIZED-000274',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=40,
          depth=0,
@@ -6109,7 +6109,7 @@ Fragment(uuid='ef1cb7ba-70f9-4475-90c2-f0e1c074dcf3',
               '        public static Toolbar Read(string path)\n'
               '        {\n')
 
-Fragment(uuid='740c2899-4851-416d-a422-1e31d566aadc',
+Fragment(uuid='NORMALIZED-000275',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=47,
          depth=4,
@@ -6120,7 +6120,7 @@ Fragment(uuid='740c2899-4851-416d-a422-1e31d566aadc',
               '            slots.Clear();\n'
               '        }')
 
-Fragment(uuid='93620550-d64c-4770-958b-9ac31a40d8b3',
+Fragment(uuid='NORMALIZED-000276',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=52,
          depth=4,
@@ -6132,7 +6132,7 @@ Fragment(uuid='93620550-d64c-4770-958b-9ac31a40d8b3',
               '                return Read(stream);\n'
               '        }')
 
-Fragment(uuid='cff90824-2741-44d3-9dcf-382b77987940',
+Fragment(uuid='NORMALIZED-000277',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=52,
          depth=4,
@@ -6144,7 +6144,7 @@ Fragment(uuid='cff90824-2741-44d3-9dcf-382b77987940',
               '                return Read(stream);\n'
               '        }')
 
-Fragment(uuid='4e1674ce-8344-463a-8a38-ca615344af54',
+Fragment(uuid='NORMALIZED-000278',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=54,
          depth=0,
@@ -6165,7 +6165,7 @@ Fragment(uuid='4e1674ce-8344-463a-8a38-ca615344af54',
               '        public void Write(string path)\n'
               '        {\n')
 
-Fragment(uuid='31b59695-b905-4e4c-94db-2e669fdf6d1f',
+Fragment(uuid='NORMALIZED-000279',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=58,
          depth=4,
@@ -6179,7 +6179,7 @@ Fragment(uuid='31b59695-b905-4e4c-94db-2e669fdf6d1f',
               '            return new Toolbar(toolbarBuilder);\n'
               '        }')
 
-Fragment(uuid='a6bd957e-eddd-4172-a952-6bbba6301da8',
+Fragment(uuid='NORMALIZED-000280',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=58,
          depth=4,
@@ -6193,7 +6193,7 @@ Fragment(uuid='a6bd957e-eddd-4172-a952-6bbba6301da8',
               '            return new Toolbar(toolbarBuilder);\n'
               '        }')
 
-Fragment(uuid='e77a567c-e98d-4d5f-9c5d-841cdfda8df2',
+Fragment(uuid='NORMALIZED-000281',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=64,
          depth=4,
@@ -6205,7 +6205,7 @@ Fragment(uuid='e77a567c-e98d-4d5f-9c5d-841cdfda8df2',
               '                Write(stream);\n'
               '        }')
 
-Fragment(uuid='781b8548-4ef4-4aae-9cfb-666f081b793f',
+Fragment(uuid='NORMALIZED-000282',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=66,
          depth=0,
@@ -6240,7 +6240,7 @@ Fragment(uuid='781b8548-4ef4-4aae-9cfb-666f081b793f',
               '        public void WriteJson(string path)\n'
               '        {\n')
 
-Fragment(uuid='bf6cae19-ce5a-4cab-9b5d-ffe04d170bc5',
+Fragment(uuid='NORMALIZED-000283',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=70,
          depth=4,
@@ -6268,7 +6268,7 @@ Fragment(uuid='bf6cae19-ce5a-4cab-9b5d-ffe04d170bc5',
               'builder);\n'
               '        }')
 
-Fragment(uuid='49ab00c8-1d2d-41c2-ad11-33b60c7db8ea',
+Fragment(uuid='NORMALIZED-000284',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=89,
          depth=4,
@@ -6280,7 +6280,7 @@ Fragment(uuid='49ab00c8-1d2d-41c2-ad11-33b60c7db8ea',
               '                WriteJson(stream);\n'
               '        }')
 
-Fragment(uuid='ae2c754e-f27f-4f8b-a8b5-2a9f54646c5a',
+Fragment(uuid='NORMALIZED-000285',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=91,
          depth=0,
@@ -6307,7 +6307,7 @@ Fragment(uuid='ae2c754e-f27f-4f8b-a8b5-2a9f54646c5a',
               '                s["Number"] = slot.Number;\n'
               '                s["IsEmpty"] = slot.IsEmpty;\n')
 
-Fragment(uuid='ac305c19-7a0e-4977-afe9-848b259eb88f',
+Fragment(uuid='NORMALIZED-000286',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=95,
          depth=4,
@@ -6380,7 +6380,7 @@ Fragment(uuid='ac305c19-7a0e-4977-afe9-848b259eb88f',
               '            stream.Write(writer.ToString());\n'
               '        }')
 
-Fragment(uuid='925cfa5d-7288-451b-9a3c-5a321d16bc85',
+Fragment(uuid='NORMALIZED-000287',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=111,
          depth=0,
@@ -6412,7 +6412,7 @@ Fragment(uuid='925cfa5d-7288-451b-9a3c-5a321d16bc85',
               '                        case '
               'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
 
-Fragment(uuid='ffdca7e2-0933-4e6e-b2e5-a0994a72cbae',
+Fragment(uuid='NORMALIZED-000288',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=131,
          depth=0,
@@ -6449,7 +6449,7 @@ Fragment(uuid='ffdca7e2-0933-4e6e-b2e5-a0994a72cbae',
               '            var count = Math.Min(slots.Count, '
               'toolbar.ItemCount);\n')
 
-Fragment(uuid='4a3882fd-d7d5-4595-b192-9f5daf3d64b4',
+Fragment(uuid='NORMALIZED-000289',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=154,
          depth=4,
@@ -6463,7 +6463,7 @@ Fragment(uuid='4a3882fd-d7d5-4595-b192-9f5daf3d64b4',
               '                slots[index].Set(toolbar);\n'
               '        }')
 
-Fragment(uuid='2d97707c-7434-4bae-b50c-37d03eef600b',
+Fragment(uuid='NORMALIZED-000290',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=157,
          depth=0,
@@ -6478,7 +6478,7 @@ Fragment(uuid='2d97707c-7434-4bae-b50c-37d03eef600b',
               '            var count = Math.Min(slots.Count, '
               'toolbar.ItemCount);\n')
 
-Fragment(uuid='4d5cad04-513a-4c0d-aa76-924163f6746a',
+Fragment(uuid='NORMALIZED-000291',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=161,
          depth=4,
@@ -6492,7 +6492,7 @@ Fragment(uuid='4d5cad04-513a-4c0d-aa76-924163f6746a',
               '                slots[index].Merge(toolbar);\n'
               '        }')
 
-Fragment(uuid='444be8a4-d992-44ba-9c8f-34e38e4e8fcc',
+Fragment(uuid='NORMALIZED-000292',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=164,
          depth=0,
@@ -6505,7 +6505,7 @@ Fragment(uuid='444be8a4-d992-44ba-9c8f-34e38e4e8fcc',
               '        public void Dissociate(MyToolbar currentToolbar)\n'
               '        {\n')
 
-Fragment(uuid='f9dc5985-3799-4d30-8dfd-1ab0329d1a96',
+Fragment(uuid='NORMALIZED-000293',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=168,
          depth=4,
@@ -6539,7 +6539,7 @@ Fragment(uuid='f9dc5985-3799-4d30-8dfd-1ab0329d1a96',
               '            }\n'
               '        }')
 
-Fragment(uuid='accc57a7-0d42-4435-a0ea-e72a2779d431',
+Fragment(uuid='NORMALIZED-000294',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=170,
          depth=0,
@@ -6557,7 +6557,7 @@ Fragment(uuid='accc57a7-0d42-4435-a0ea-e72a2779d431',
               '                    case '
               'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
 
-Fragment(uuid='7e0c9507-4886-414d-9f5e-a54292191396',
+Fragment(uuid='NORMALIZED-000295',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=180,
          depth=0,
@@ -6581,7 +6581,7 @@ Fragment(uuid='7e0c9507-4886-414d-9f5e-a54292191396',
               '        public void Associate(MyToolbar currentToolbar)\n'
               '        {\n')
 
-Fragment(uuid='dedc677f-64f0-4179-8ed3-7318983988d1',
+Fragment(uuid='NORMALIZED-000296',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=191,
          depth=4,
@@ -6651,7 +6651,7 @@ Fragment(uuid='dedc677f-64f0-4179-8ed3-7318983988d1',
               '            }\n'
               '        }')
 
-Fragment(uuid='20e5315a-0977-4174-a8f1-6725730aaa8e',
+Fragment(uuid='NORMALIZED-000297',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=193,
          depth=0,
@@ -6664,7 +6664,7 @@ Fragment(uuid='20e5315a-0977-4174-a8f1-6725730aaa8e',
               '            var physicalGroup = '
               'MyCubeGridGroups.Static.Physical.GetGroup(terminalBlock.CubeGrid);\n')
 
-Fragment(uuid='0292a355-b8eb-4f4f-8240-3852e0e199bc',
+Fragment(uuid='NORMALIZED-000298',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=197,
          depth=0,
@@ -6682,7 +6682,7 @@ Fragment(uuid='0292a355-b8eb-4f4f-8240-3852e0e199bc',
               '                    case '
               'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
 
-Fragment(uuid='42e85018-3bb2-41ce-8af8-26c8cdce66f6',
+Fragment(uuid='NORMALIZED-000299',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=206,
          depth=0,
@@ -6711,7 +6711,7 @@ Fragment(uuid='42e85018-3bb2-41ce-8af8-26c8cdce66f6',
               '                    var checksum = '
               'CalculateDisplayNameTextChecksum(utf8, sha1, block);\n')
 
-Fragment(uuid='d467a8c0-7807-45b3-a9cc-6ec137de334e',
+Fragment(uuid='NORMALIZED-000300',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=222,
          depth=0,
@@ -6723,7 +6723,7 @@ Fragment(uuid='d467a8c0-7807-45b3-a9cc-6ec137de334e',
               '                        foreach (var slot in blockSlotList)\n'
               '                        {\n')
 
-Fragment(uuid='ebfb781a-bec0-4fd6-bc95-04cb12663c06',
+Fragment(uuid='NORMALIZED-000301',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=226,
          depth=0,
@@ -6741,7 +6741,7 @@ Fragment(uuid='ebfb781a-bec0-4fd6-bc95-04cb12663c06',
               '            foreach (var slot in slots)\n'
               '            {\n')
 
-Fragment(uuid='9ed8a99e-3eaf-45bd-b828-7f676e14a008',
+Fragment(uuid='NORMALIZED-000302',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=235,
          depth=0,
@@ -6768,7 +6768,7 @@ Fragment(uuid='9ed8a99e-3eaf-45bd-b828-7f676e14a008',
               '    }\n'
               '}')
 
-Fragment(uuid='01542c81-ce10-4e3f-93c7-a98872be6a37',
+Fragment(uuid='NORMALIZED-000303',
          path='/ToolbarManager/Logic/Toolbar.cs',
          lineno=240,
          depth=4,
@@ -6786,7 +6786,7 @@ Fragment(uuid='01542c81-ce10-4e3f-93c7-a98872be6a37',
               '            return checksum;\n'
               '        }')
 
-Fragment(uuid='02b9493d-1c2f-4d83-9a9e-c936f0f8e921',
+Fragment(uuid='NORMALIZED-000304',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=1,
          depth=0,
@@ -6803,7 +6803,7 @@ Fragment(uuid='02b9493d-1c2f-4d83-9a9e-c936f0f8e921',
               'using ToolbarManager.Gui;\n'
               'using VRage.Input;\n')
 
-Fragment(uuid='a590cf09-06d9-4896-a912-6c452b5a0799',
+Fragment(uuid='NORMALIZED-000305',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=1,
          depth=0,
@@ -6832,7 +6832,7 @@ Fragment(uuid='a590cf09-06d9-4896-a912-6c452b5a0799',
               'myInput myInput myInput myInput myInput name name name nameof '
               'searchText searchText\n')
 
-Fragment(uuid='fd938633-824a-4dca-bb68-1b3e083f7438',
+Fragment(uuid='NORMALIZED-000306',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=11,
          depth=0,
@@ -6860,7 +6860,7 @@ Fragment(uuid='fd938633-824a-4dca-bb68-1b3e083f7438',
               '        public static bool HandleUnhandledInputPrefix()\n'
               '        {\n')
 
-Fragment(uuid='f286f4e5-05d0-4290-94a7-42202aa4e246',
+Fragment(uuid='NORMALIZED-000307',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=14,
          depth=2,
@@ -6944,7 +6944,7 @@ Fragment(uuid='f286f4e5-05d0-4290-94a7-42202aa4e246',
               '        }\n'
               '    }')
 
-Fragment(uuid='998ae34e-ca09-4c80-b93a-20dd1e85a210',
+Fragment(uuid='NORMALIZED-000308',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=21,
          depth=5,
@@ -6952,7 +6952,7 @@ Fragment(uuid='998ae34e-ca09-4c80-b93a-20dd1e85a210',
          name='StringBuilder',
          text='StringBuilder MatchingKeys = new StringBuilder()')
 
-Fragment(uuid='61d24124-3382-46e8-a1b1-28f28c6667c4',
+Fragment(uuid='NORMALIZED-000309',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=24,
          depth=4,
@@ -6991,7 +6991,7 @@ Fragment(uuid='61d24124-3382-46e8-a1b1-28f28c6667c4',
               '            return true;\n'
               '        }')
 
-Fragment(uuid='d566df8c-5db5-4fc5-b0d5-d5c22cfd7f9b',
+Fragment(uuid='NORMALIZED-000310',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=28,
          depth=0,
@@ -7004,7 +7004,7 @@ Fragment(uuid='d566df8c-5db5-4fc5-b0d5-d5c22cfd7f9b',
               '            /* Disabled due to Issue #12: Conflicting keys '
               'Ctrl+Shift+C, Ctrl+Shift+X and Ctrl+Shift+B\n')
 
-Fragment(uuid='8191c33b-9e95-407e-9639-3e52061af898',
+Fragment(uuid='NORMALIZED-000311',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=32,
          depth=0,
@@ -7015,7 +7015,7 @@ Fragment(uuid='8191c33b-9e95-407e-9639-3e52061af898',
               '            {\n'
               '                GetPressedKeys();\n')
 
-Fragment(uuid='b4a25641-5c51-4ef9-a5ad-9e0ff18819a8',
+Fragment(uuid='NORMALIZED-000312',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=35,
          depth=0,
@@ -7031,7 +7031,7 @@ Fragment(uuid='b4a25641-5c51-4ef9-a5ad-9e0ff18819a8',
               '            \n'
               '            var myInput = MyInput.Static;\n')
 
-Fragment(uuid='809ac0a6-9ca4-4914-8ab8-206f9db12e44',
+Fragment(uuid='NORMALIZED-000313',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=44,
          depth=0,
@@ -7049,7 +7049,7 @@ Fragment(uuid='809ac0a6-9ca4-4914-8ab8-206f9db12e44',
               '        private static void OpenCubeBuilder(string searchText)\n'
               '        {\n')
 
-Fragment(uuid='86a4baca-5dca-4c81-9558-e4ca48c238ab',
+Fragment(uuid='NORMALIZED-000314',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=53,
          depth=4,
@@ -7068,7 +7068,7 @@ Fragment(uuid='86a4baca-5dca-4c81-9558-e4ca48c238ab',
               '            dialog.SetSearchText(searchText);\n'
               '        }')
 
-Fragment(uuid='2f7cc93d-f5c7-40d6-bb4c-75cbc1772ad5',
+Fragment(uuid='NORMALIZED-000315',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=55,
          depth=0,
@@ -7095,7 +7095,7 @@ Fragment(uuid='2f7cc93d-f5c7-40d6-bb4c-75cbc1772ad5',
               '            {\n'
               '                var name = myInput.GetKeyName(key);\n')
 
-Fragment(uuid='161d56eb-4b0b-40f8-ad15-076b4558602f',
+Fragment(uuid='NORMALIZED-000316',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=64,
          depth=4,
@@ -7119,7 +7119,7 @@ Fragment(uuid='161d56eb-4b0b-40f8-ad15-076b4558602f',
               '            }\n'
               '        }')
 
-Fragment(uuid='0429530c-17bd-40b5-b09e-c161d2696ce8',
+Fragment(uuid='NORMALIZED-000317',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=73,
          depth=0,
@@ -7130,7 +7130,7 @@ Fragment(uuid='0429530c-17bd-40b5-b09e-c161d2696ce8',
               '\n'
               '                var c = name[0];\n')
 
-Fragment(uuid='97869f9f-2994-43bd-9a39-9515a9e1dc64',
+Fragment(uuid='NORMALIZED-000318',
          path='/ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs',
          lineno=77,
          depth=0,
@@ -7143,7 +7143,7 @@ Fragment(uuid='97869f9f-2994-43bd-9a39-9515a9e1dc64',
               '    }\n'
               '}')
 
-Fragment(uuid='77e9ed73-e3f9-41f8-9106-7ac8fc41d2a3',
+Fragment(uuid='NORMALIZED-000319',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=1,
          depth=0,
@@ -7163,7 +7163,7 @@ Fragment(uuid='77e9ed73-e3f9-41f8-9106-7ac8fc41d2a3',
               '\n'
               '// ReSharper disable InconsistentNaming\n')
 
-Fragment(uuid='cca2f102-3f59-4714-abbe-61b82406fd0f',
+Fragment(uuid='NORMALIZED-000320',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=1,
          depth=0,
@@ -7193,7 +7193,7 @@ Fragment(uuid='cca2f102-3f59-4714-abbe-61b82406fd0f',
               'enabled enabled enabled enabled nameof screen screen screen '
               'screen toolbarType toolbarType\n')
 
-Fragment(uuid='f59e3fb1-3334-42db-8e5c-48c66bf5cfce',
+Fragment(uuid='NORMALIZED-000321',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=14,
          depth=0,
@@ -7216,7 +7216,7 @@ Fragment(uuid='f59e3fb1-3334-42db-8e5c-48c66bf5cfce',
               '__instance)\n'
               ' ')
 
-Fragment(uuid='4a0e22fb-e71c-48c0-90fe-bcec0311d032',
+Fragment(uuid='NORMALIZED-000322',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=17,
          depth=2,
@@ -7281,7 +7281,7 @@ Fragment(uuid='4a0e22fb-e71c-48c0-90fe-bcec0311d032',
               '        }\n'
               '    }')
 
-Fragment(uuid='e2283109-d5e8-4899-8a0a-34c24ec660b0',
+Fragment(uuid='NORMALIZED-000323',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=20,
          depth=5,
@@ -7289,7 +7289,7 @@ Fragment(uuid='e2283109-d5e8-4899-8a0a-34c24ec660b0',
          name='Action',
          text='Action OnSaveToolbar')
 
-Fragment(uuid='9eac7acb-266f-47c7-87ce-bb49a66f7c45',
+Fragment(uuid='NORMALIZED-000324',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=21,
          depth=5,
@@ -7297,7 +7297,7 @@ Fragment(uuid='9eac7acb-266f-47c7-87ce-bb49a66f7c45',
          name='Action',
          text='Action OnLoadToolbar')
 
-Fragment(uuid='a52037d3-cc3f-4be9-a634-a5298107ac5c',
+Fragment(uuid='NORMALIZED-000325',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=23,
          depth=4,
@@ -7319,7 +7319,7 @@ Fragment(uuid='a52037d3-cc3f-4be9-a634-a5298107ac5c',
               '            createLoadButton(__instance, enabled);\n'
               '        }')
 
-Fragment(uuid='c59ab1ec-a70f-40ce-aabb-ba1d8b46e49f',
+Fragment(uuid='NORMALIZED-000326',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=26,
          depth=0,
@@ -7342,7 +7342,7 @@ Fragment(uuid='c59ab1ec-a70f-40ce-aabb-ba1d8b46e49f',
               '            var button = new MyGuiControlButton\n'
               '         ')
 
-Fragment(uuid='2b558ee6-fab8-44cf-8f72-708c2849a64c',
+Fragment(uuid='NORMALIZED-000327',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=34,
          depth=4,
@@ -7366,7 +7366,7 @@ Fragment(uuid='2b558ee6-fab8-44cf-8f72-708c2849a64c',
               '            screen.Elements.Add(button);\n'
               '        }')
 
-Fragment(uuid='62dbbb3b-655f-4fa8-a7ea-cfb8385fc267',
+Fragment(uuid='NORMALIZED-000328',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=37,
          depth=0,
@@ -7388,7 +7388,7 @@ Fragment(uuid='62dbbb3b-655f-4fa8-a7ea-cfb8385fc267',
               '        private static void '
               'createLoadButton(MyGuiScreenToolbarConfigBase screen, bo')
 
-Fragment(uuid='dbdca8a2-39ec-4043-baa8-0d2141d61f9d',
+Fragment(uuid='NORMALIZED-000329',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=48,
          depth=0,
@@ -7412,7 +7412,7 @@ Fragment(uuid='dbdca8a2-39ec-4043-baa8-0d2141d61f9d',
               '    }\n'
               '}')
 
-Fragment(uuid='b932f941-50ad-40cd-aa6b-ca91c34cc44d',
+Fragment(uuid='NORMALIZED-000330',
          path='/ToolbarManager/Patches/MyGuiScreenToolbarConfigBasePatch.cs',
          lineno=48,
          depth=4,
@@ -7436,7 +7436,7 @@ Fragment(uuid='b932f941-50ad-40cd-aa6b-ca91c34cc44d',
               '            screen.Elements.Add(button);\n'
               '        }')
 
-Fragment(uuid='5b6411b1-5831-4f74-ada5-f9b92bd7c92a',
+Fragment(uuid='NORMALIZED-000331',
          path='/ToolbarManager/Plugin.cs',
          lineno=1,
          depth=0,
@@ -7478,7 +7478,7 @@ Fragment(uuid='5b6411b1-5831-4f74-ada5-f9b92bd7c92a',
               '    }\n'
               '}')
 
-Fragment(uuid='9b14691a-c56c-44c9-804e-e810e56d1b48',
+Fragment(uuid='NORMALIZED-000332',
          path='/ToolbarManager/Plugin.cs',
          lineno=1,
          depth=0,
@@ -7494,7 +7494,7 @@ Fragment(uuid='9b14691a-c56c-44c9-804e-e810e56d1b48',
               'ToolbarManager VRage gameInstance harmony harmony initialized '
               'initialized initialized storage storage\n')
 
-Fragment(uuid='11c5cd79-0a7b-439c-81f5-ab5679d0a2f4',
+Fragment(uuid='NORMALIZED-000333',
          path='/ToolbarManager/Plugin.cs',
          lineno=6,
          depth=0,
@@ -7531,7 +7531,7 @@ Fragment(uuid='11c5cd79-0a7b-439c-81f5-ab5679d0a2f4',
               '    }\n'
               '}')
 
-Fragment(uuid='bed091f4-b267-402b-ac43-39678ba11a64',
+Fragment(uuid='NORMALIZED-000334',
          path='/ToolbarManager/Plugin.cs',
          lineno=10,
          depth=2,
@@ -7563,7 +7563,7 @@ Fragment(uuid='bed091f4-b267-402b-ac43-39678ba11a64',
               '        }\n'
               '    }')
 
-Fragment(uuid='5c1163bf-8ef2-4675-a540-2dbfc6ceda73',
+Fragment(uuid='NORMALIZED-000335',
          path='/ToolbarManager/Plugin.cs',
          lineno=13,
          depth=5,
@@ -7571,7 +7571,7 @@ Fragment(uuid='5c1163bf-8ef2-4675-a540-2dbfc6ceda73',
          name='Storage',
          text='Storage storage')
 
-Fragment(uuid='10856fad-72e7-4fa8-af6c-27d001bc8423',
+Fragment(uuid='NORMALIZED-000336',
          path='/ToolbarManager/Plugin.cs',
          lineno=15,
          depth=4,
@@ -7579,7 +7579,7 @@ Fragment(uuid='10856fad-72e7-4fa8-af6c-27d001bc8423',
          name='Dispose',
          text='public void Dispose()\n        {\n        }')
 
-Fragment(uuid='a96e9532-f3a9-4909-a869-1060c25b102f',
+Fragment(uuid='NORMALIZED-000337',
          path='/ToolbarManager/Plugin.cs',
          lineno=19,
          depth=4,
@@ -7591,7 +7591,7 @@ Fragment(uuid='a96e9532-f3a9-4909-a869-1060c25b102f',
               '            harmony.PatchAll(Assembly.GetExecutingAssembly());\n'
               '        }')
 
-Fragment(uuid='5479123e-cd05-4c9c-83ab-d7440ce59f61',
+Fragment(uuid='NORMALIZED-000338',
          path='/ToolbarManager/Plugin.cs',
          lineno=25,
          depth=4,
@@ -7607,7 +7607,7 @@ Fragment(uuid='5479123e-cd05-4c9c-83ab-d7440ce59f61',
               '            initialized = true;\n'
               '        }')
 
-Fragment(uuid='1181bc37-d081-48e6-9940-2cb105a4f91b',
+Fragment(uuid='NORMALIZED-000339',
          path='/ToolbarManager/Properties/AssemblyInfo.cs',
          lineno=1,
          depth=0,
@@ -7634,7 +7634,7 @@ Fragment(uuid='1181bc37-d081-48e6-9940-2cb105a4f91b',
               'not visible \n'
               '// to COM components.  If you need t')
 
-Fragment(uuid='5fe25156-0e4f-458b-9ed7-3e13a8c3863f',
+Fragment(uuid='NORMALIZED-000340',
          path='/ToolbarManager/Properties/AssemblyInfo.cs',
          lineno=1,
          depth=0,
@@ -7647,7 +7647,7 @@ Fragment(uuid='5fe25156-0e4f-458b-9ed7-3e13a8c3863f',
               'AssemblyTrademark AssemblyVersion ComVisible Guid '
               'InteropServices Reflection Runtime System System\n')
 
-Fragment(uuid='4d57d79c-0371-4417-80d3-5270bcc42b9c',
+Fragment(uuid='NORMALIZED-000341',
          path='/ToolbarManager/Properties/AssemblyInfo.cs',
          lineno=17,
          depth=0,
@@ -7664,7 +7664,7 @@ Fragment(uuid='4d57d79c-0371-4417-80d3-5270bcc42b9c',
               '// Version information for an assembly consists of the '
               'following fou')
 
-Fragment(uuid='f93671a8-b90d-4395-98d8-1c90935eb228',
+Fragment(uuid='NORMALIZED-000342',
          path='/ToolbarManager/Properties/AssemblyInfo.cs',
          lineno=24,
          depth=0,
@@ -7684,7 +7684,7 @@ Fragment(uuid='f93671a8-b90d-4395-98d8-1c90935eb228',
               '[assembly: AssemblyVersion("1.3.3.0")]\n'
               '[assembly: AssemblyFileVersion("1.3.3.0")]')
 
-Fragment(uuid='b2401e7f-3b9f-49c2-a984-e073e680390b',
+Fragment(uuid='NORMALIZED-000343',
          path='/ToolbarManager/deploy.bat',
          lineno=1,
          depth=0,
@@ -7715,7 +7715,7 @@ Fragment(uuid='b2401e7f-3b9f-49c2-a984-e073e680390b',
               '\n'
               ':EOF')
 
-Fragment(uuid='6c35f195-d6a9-497a-846e-1372ff043555',
+Fragment(uuid='NORMALIZED-000344',
          path='/ToolbarManager/deploy.bat',
          lineno=1,
          depth=0,

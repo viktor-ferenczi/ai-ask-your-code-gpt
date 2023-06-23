@@ -13,14 +13,10 @@ from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
-from embed.embedder_client import EmbedderClient, STORE_EMBEDDERS, EmbedderError
 from model.document import Document
-from model.fragment import Fragment
 from parsers import TextParser
 from project.inventory import Inventory
 from project.project import Project
-
-EMBEDDER_CLIENT = EmbedderClient(STORE_EMBEDDERS)
 
 
 class Extractor:
@@ -110,73 +106,24 @@ async def extract_worker():
         await asyncio.sleep(0)
 
 
-class Embedder:
+class Indexer:
 
     def __init__(self, inventory: Inventory, project: Project) -> None:
         self.inventory = inventory
         self.project = project
 
-    async def embed(self):
-        embedder_chunk_size = EMBEDDER_CLIENT.chunk_size
-
-        max_tasks = 1 + EMBEDDER_CLIENT.server_count
-        assert max_tasks > 0
-
-        while 1:
-
-            with self.project.cursor() as cursor:
-                fragments: List[Fragment] = self.project.get_fragments_to_embed(cursor, 4096)
-
-            if not fragments:
-                break
-
-            batches = [fragments[i:i + embedder_chunk_size] for i in range(0, len(fragments), embedder_chunk_size)]
-            del fragments
-
-            batches.reverse()
-
-            tasks = set()
-            while batches or tasks:
-
-                # Add new task as needed
-                if batches and len(tasks) < max_tasks:
-                    fragments: List[Fragment] = batches.pop()
-                    task = asyncio.create_task(self.embed_batch(fragments))
-                    tasks.add(task)
-                    continue
-
-                # Wait for a task to complete
-                done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED, timeout=30.0 if C.PRODUCTION else 999999.0)
-
-                # Collect results
-                for task in done:
-
-                    try:
-                        uuids = task.result()
-                    except EmbedderError as e:
-                        print(f'Failed to embed batch, it will be retried: {e}')
-                        continue
-
-                    with self.project.cursor() as cursor:
-                        self.project.mark_fragments_embedded(cursor, uuids)
-
-                await asyncio.sleep(0)
+    async def index(self):
+        with self.project.cursor() as cursor:
+            cursor.execute('DROP TABLE IF EXISTS FragText;')
+            cursor.execute('CREATE VIRTUAL TABLE FragText USING FTS5(uuid, text);')
+            cursor.execute('INSERT INTO FragText (uuid, text) SELECT uuid, text from Fragment;')
+            cursor.execute('UPDATE Fragment SET embedded=1;')
 
         self.inventory.mark_project_embedded(self.project.project_id)
 
-    async def embed_batch(self, fragments: List[Fragment]):
-        try:
-            embeddings_array: np.ndarray = await EMBEDDER_CLIENT.embed_fragments(fragments)
-        except ServerDisconnectedError:
-            return []
-        embeddings = [row.tolist() for row in embeddings_array]
-        uuids: List[str] = [fragment.uuid for fragment in fragments]
-        await self.project.collection.store(uuids, embeddings)
-        return uuids
 
-
-async def embed_worker():
-    print('Loader: Fragment embedder worker started')
+async def indexer_worker():
+    print('Loader: Fragment indexer worker started')
     inventory = Inventory()
     while 1:
         # noinspection PyBroadException
@@ -190,15 +137,14 @@ async def embed_worker():
             try:
                 project = Project(project_id)
                 fragment_count = project.count_fragments()
-                with timer(f'Embedded {min(4096, fragment_count)} fragments for project {project_id!r}', count=fragment_count):
-                    embedder = Embedder(inventory, project)
-                    await embedder.embed()
+                with timer(f'Indexing {fragment_count} fragments for project {project_id!r}', count=fragment_count):
+                    indexer = Indexer(inventory, project)
+                    await indexer.index()
             except KeyboardInterrupt:
                 raise
             except Exception:
-                print(f'Failed to embed project {project_id!r}, will retry')
+                print(f'Failed to index project {project_id!r}, will retry')
                 print_exc()
-                inventory.delete_project(project_id)
                 await asyncio.sleep(5)
                 continue
 
@@ -214,7 +160,7 @@ async def embed_worker():
 
 
 app = Quart(__name__)
-workers = [extract_worker, embed_worker]
+workers = [extract_worker, indexer_worker]
 
 
 @app.get('/')

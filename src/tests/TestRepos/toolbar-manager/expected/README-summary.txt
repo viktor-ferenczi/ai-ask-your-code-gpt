@@ -1,3 +1,5 @@
+File extensions: .md
+
 # Toolbar Manager
 ## Features
 ### Toolbars

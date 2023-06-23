@@ -24,8 +24,6 @@ class CppParser(BaseParser):
     name = 'C++'
     extensions = ('c', 'cc', 'cpp', 'c++', 'h', 'hh', 'hpp', 'h++')
     mime_types = ('text/c', 'text/x-cpp', 'text/x-cplusplus')
-    store_instruction = 'Represent the C++ code for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     is_code = True
 
     categories = [

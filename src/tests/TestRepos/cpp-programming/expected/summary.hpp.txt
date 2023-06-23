@@ -1,3 +1,5 @@
+File extensions: .hpp
+
 C: /Labirint Game/sfml/include/SFML/Audio.hpp
 
 C: /Labirint Game/sfml/include/SFML/Config.hpp

@@ -9,8 +9,6 @@ class BaseParser:
     name: str = ''
     extensions: Tuple[str] = ()
     mime_types: Tuple[str] = ()
-    store_instruction: str = ''
-    query_instruction: str = ''
     tree_sitter_language_name: str = ''
     tree_sitter_language: tree_sitter.Language  # Set automatically
     is_code = False
@@ -19,8 +17,6 @@ class BaseParser:
         assert self.name
         assert self.extensions
         assert self.mime_types
-        assert self.store_instruction
-        assert self.query_instruction
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
         raise NotImplementedError()

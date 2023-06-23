@@ -1,3 +1,5 @@
+File extensions: .js
+
 JavaScript: /gulpfile.js
   Variables: elixir
   Usages: mix require

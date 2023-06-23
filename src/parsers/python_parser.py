@@ -16,8 +16,6 @@ class PythonParser(BaseParser):
     name = 'Python'
     extensions = ('py',)
     mime_types = ('text/python', 'text/x-python')
-    store_instruction = 'Represent the Python code for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'python'
     is_code = True
 

@@ -13,8 +13,6 @@ class JavaParser(TreeSitterParser):
     name = 'Java'
     extensions = ('java',)
     mime_types = ('text/x-java',)
-    store_instruction = 'Represent the Java code for retrieval'
-    query_instruction = 'Represent the text query for retrieving relevant parts of the code'
     tree_sitter_language_name = 'java'
 
     categories = [

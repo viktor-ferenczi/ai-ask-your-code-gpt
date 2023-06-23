@@ -1,3 +1,5 @@
+File extensions: .md
+
 # C++ Programming
 ## Contents
 ## Keep These Tips in Mind While Learning Programming

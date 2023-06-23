@@ -1,3 +1,5 @@
+File extensions: .css .example .html .js .json .map .md .php .scss .svg .txt .xml .yml
+
 File: /.env.example
 
 File: /.gitattributes

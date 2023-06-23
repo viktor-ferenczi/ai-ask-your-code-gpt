@@ -1,0 +1,329 @@
+File extensions: .txt
+
+File: /CMakeLists.txt
+
+File: /LICENSE.txt
+
+File: /cmake.config/CMakeLists.txt
+
+File: /cmake.deps/CMakeLists.txt
+
+File: /cmake.deps/deps.txt
+
+File: /cmake.packaging/CMakeLists.txt
+
+File: /runtime/CMakeLists.txt
+
+File: /test/CMakeLists.txt
+
+File: /cmake.deps/cmake/GettextCMakeLists.txt
+
+File: /cmake.deps/cmake/LibiconvCMakeLists.txt
+
+File: /cmake.deps/cmake/LibtermkeyCMakeLists.txt
+
+File: /cmake.deps/cmake/LibvtermCMakeLists.txt
+
+File: /cmake.deps/cmake/LpegCMakeLists.txt
+
+File: /cmake.deps/cmake/TreesitterCMakeLists.txt
+
+File: /cmake.deps/cmake/TreesitterParserCMakeLists.txt
+
+File: /runtime/autoload/README.txt
+
+File: /runtime/colors/README.txt
+
+File: /runtime/compiler/README.txt
+
+File: /runtime/doc/api.txt
+
+File: /runtime/doc/arabic.txt
+
+File: /runtime/doc/autocmd.txt
+
+File: /runtime/doc/builtin.txt
+
+File: /runtime/doc/change.txt
+
+File: /runtime/doc/channel.txt
+
+File: /runtime/doc/cmdline.txt
+
+File: /runtime/doc/debug.txt
+
+File: /runtime/doc/deprecated.txt
+
+File: /runtime/doc/dev_style.txt
+
+File: /runtime/doc/develop.txt
+
+File: /runtime/doc/diagnostic.txt
+
+File: /runtime/doc/diff.txt
+
+File: /runtime/doc/digraph.txt
+
+File: /runtime/doc/editing.txt
+
+File: /runtime/doc/editorconfig.txt
+
+File: /runtime/doc/eval.txt
+
+File: /runtime/doc/filetype.txt
+
+File: /runtime/doc/fold.txt
+
+File: /runtime/doc/ft_ada.txt
+
+File: /runtime/doc/ft_ps1.txt
+
+File: /runtime/doc/ft_raku.txt
+
+File: /runtime/doc/ft_rust.txt
+
+File: /runtime/doc/ft_sql.txt
+
+File: /runtime/doc/gui.txt
+
+File: /runtime/doc/hebrew.txt
+
+File: /runtime/doc/help.txt
+
+File: /runtime/doc/helphelp.txt
+
+File: /runtime/doc/if_perl.txt
+
+File: /runtime/doc/if_pyth.txt
+
+File: /runtime/doc/if_ruby.txt
+
+File: /runtime/doc/indent.txt
+
+File: /runtime/doc/index.txt
+
+File: /runtime/doc/insert.txt
+
+File: /runtime/doc/intro.txt
+
+File: /runtime/doc/job_control.txt
+
+File: /runtime/doc/lsp.txt
+
+File: /runtime/doc/lua-guide.txt
+
+File: /runtime/doc/lua.txt
+
+File: /runtime/doc/luaref.txt
+
+File: /runtime/doc/luvref.txt
+
+File: /runtime/doc/map.txt
+
+File: /runtime/doc/mbyte.txt
+
+File: /runtime/doc/message.txt
+
+File: /runtime/doc/mlang.txt
+
+File: /runtime/doc/motion.txt
+
+File: /runtime/doc/news-0.9.txt
+
+File: /runtime/doc/news.txt
+
+File: /runtime/doc/nvim.txt
+
+File: /runtime/doc/nvim_terminal_emulator.txt
+
+File: /runtime/doc/options.txt
+
+File: /runtime/doc/pattern.txt
+
+File: /runtime/doc/pi_gzip.txt
+
+File: /runtime/doc/pi_health.txt
+
+File: /runtime/doc/pi_msgpack.txt
+
+File: /runtime/doc/pi_netrw.txt
+
+File: /runtime/doc/pi_paren.txt
+
+File: /runtime/doc/pi_spec.txt
+
+File: /runtime/doc/pi_tar.txt
+
+File: /runtime/doc/pi_tutor.txt
+
+File: /runtime/doc/pi_zip.txt
+
+File: /runtime/doc/provider.txt
+
+File: /runtime/doc/quickfix.txt
+
+File: /runtime/doc/quickref.txt
+
+File: /runtime/doc/recover.txt
+
+File: /runtime/doc/remote.txt
+
+File: /runtime/doc/remote_plugin.txt
+
+File: /runtime/doc/repeat.txt
+
+File: /runtime/doc/rileft.txt
+
+File: /runtime/doc/russian.txt
+
+File: /runtime/doc/scroll.txt
+
+File: /runtime/doc/sign.txt
+
+File: /runtime/doc/spell.txt
+
+File: /runtime/doc/starting.txt
+
+File: /runtime/doc/support.txt
+
+File: /runtime/doc/syntax.txt
+
+File: /runtime/doc/tabpage.txt
+
+File: /runtime/doc/tagsrch.txt
+
+File: /runtime/doc/term.txt
+
+File: /runtime/doc/testing.txt
+
+File: /runtime/doc/tips.txt
+
+File: /runtime/doc/treesitter.txt
+
+File: /runtime/doc/uganda.txt
+
+File: /runtime/doc/ui.txt
+
+File: /runtime/doc/undo.txt
+
+File: /runtime/doc/userfunc.txt
+
+File: /runtime/doc/usr_01.txt
+
+File: /runtime/doc/usr_02.txt
+
+File: /runtime/doc/usr_03.txt
+
+File: /runtime/doc/usr_04.txt
+
+File: /runtime/doc/usr_05.txt
+
+File: /runtime/doc/usr_06.txt
+
+File: /runtime/doc/usr_07.txt
+
+File: /runtime/doc/usr_08.txt
+
+File: /runtime/doc/usr_09.txt
+
+File: /runtime/doc/usr_10.txt
+
+File: /runtime/doc/usr_11.txt
+
+File: /runtime/doc/usr_12.txt
+
+File: /runtime/doc/usr_20.txt
+
+File: /runtime/doc/usr_21.txt
+
+File: /runtime/doc/usr_22.txt
+
+File: /runtime/doc/usr_23.txt
+
+File: /runtime/doc/usr_24.txt
+
+File: /runtime/doc/usr_25.txt
+
+File: /runtime/doc/usr_26.txt
+
+File: /runtime/doc/usr_27.txt
+
+File: /runtime/doc/usr_28.txt
+
+File: /runtime/doc/usr_29.txt
+
+File: /runtime/doc/usr_30.txt
+
+File: /runtime/doc/usr_31.txt
+
+File: /runtime/doc/usr_32.txt
+
+File: /runtime/doc/usr_40.txt
+
+File: /runtime/doc/usr_41.txt
+
+File: /runtime/doc/usr_42.txt
+
+File: /runtime/doc/usr_43.txt
+
+File: /runtime/doc/usr_44.txt
+
+File: /runtime/doc/usr_45.txt
+
+File: /runtime/doc/usr_toc.txt
+
+File: /runtime/doc/various.txt
+
+File: /runtime/doc/vi_diff.txt
+
+File: /runtime/doc/vim_diff.txt
+
+File: /runtime/doc/visual.txt
+
+File: /runtime/doc/windows.txt
+
+File: /runtime/ftplugin/README.txt
+
+File: /runtime/indent/README.txt
+
+File: /runtime/keymap/README.txt
+
+File: /runtime/syntax/README.txt
+
+File: /src/nvim/CMakeLists.txt
+
+File: /src/unicode/CaseFolding.txt
+
+File: /src/unicode/Copyright.txt
+
+File: /src/unicode/EastAsianWidth.txt
+
+File: /src/unicode/UnicodeData.txt
+
+File: /src/unicode/emoji-data.txt
+
+File: /src/xdiff/README.txt
+
+File: /runtime/indent/testdir/README.txt
+
+File: /runtime/syntax/shared/README.txt
+
+File: /src/nvim/po/CMakeLists.txt
+
+File: /test/functional/fixtures/CMakeLists.txt
+
+File: /test/functional/fixtures/bigfile.txt
+
+File: /test/functional/fixtures/bigfile_oneline.txt
+
+File: /test/functional/fixtures/non_executable.txt
+
+File: /test/functional/fixtures/shell_data.txt
+
+File: /test/old/testdir/README.txt
+
+File: /test/old/testdir/samples/quickfix.txt
+
+File: /test/old/testdir/samples/re.freeze.txt
+
+File: /runtime/pack/dist/opt/matchit/doc/matchit.txt

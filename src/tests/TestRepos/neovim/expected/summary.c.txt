@@ -1,0 +1,770 @@
+File extensions: .c
+
+C: /src/bit.c
+  Functions: barg, bit_arshift, bit_band, bit_bnot, bit_bor, bit_bswap, bit_bxor, bit_lshift, bit_rol, bit_ror, bit_rshift, bit_tobit, bit_tohex, luaopen_bit
+  Structs: luaL_Reg
+  Variable declarations: bit_funcs
+
+C: /src/coverity-model.c
+  Functions: malloc, try_malloc, tv_dict_add, uv_pipe_open, xcalloc, xfree, xmalloc, xmallocz, xmemdup, xmemdupz, xrealloc
+  Structs: dict_T, dictitem_T, uv_pipe_s
+
+C: /src/nlua0.c
+  Functions: luaopen_nlua0
+
+C: /src/cjson/fpconv.c
+  Functions: fpconv_g_fmt, fpconv_init, fpconv_strtod, fpconv_update_locale, set_number_format, strtod_buffer_size, valid_number_character
+  Variable declarations: locale_decimal_point
+
+C: /src/cjson/lua_cjson.c
+  Enums: json_token_type_t
+  Functions: codepoint_to_utf8, compat_luaL_setfuncs, decode_hex4, hexdigit2int, json_append_array, json_append_data, json_append_number, json_append_object, json_append_string, json_append_unicode_escape, json_check_encode_depth, json_create_config, json_decode, json_decode_ascend, json_decode_descend, json_destroy_config, json_encode, json_encode_exception, json_fetch_config, json_is_invalid_number, json_next_number_token, json_next_string_token, json_next_token, json_parse_array_context, json_parse_object_context, json_process_value, json_protect_conversion, json_set_token_error, json_throw_parse_error, lua_array_length, lua_cjson_new, lua_cjson_safe_new, luaopen_cjson, luaopen_cjson_safe
+  Structs: json_options_t, json_token_t, struct (unnamed at /src/cjson/lua_cjson.c:152:9), struct (unnamed at /src/cjson/lua_cjson.c:182:9)
+  Variable declarations: char2escape, json_array, json_empty_array, json_token_type_name
+
+C: /src/cjson/strbuf.c
+  Functions: calculate_new_size, debug_stats, die, strbuf_append_fmt, strbuf_append_fmt_retry, strbuf_append_string, strbuf_free, strbuf_free_to_string, strbuf_init, strbuf_new, strbuf_resize, strbuf_set_increment
+
+C: /src/mpack/conv.c
+  Functions: mpack_fits_single, mpack_fmod_pow2_32, mpack_pack_ieee754
+  Variable declarations: mpack_token_t
+
+C: /src/mpack/lmpack.c
+  Functions: lmpack_check_packer, lmpack_check_session, lmpack_check_unpacker, lmpack_geti, lmpack_grow_parser, lmpack_grow_session, lmpack_isnil, lmpack_isunpacker, lmpack_nil_tostring, lmpack_objlen, lmpack_pack, lmpack_packer_delete, lmpack_packer_new, lmpack_packer_pack, lmpack_parse_enter, lmpack_parse_exit, lmpack_pushnil, lmpack_ref, lmpack_session_delete, lmpack_session_new, lmpack_session_notify, lmpack_session_receive, lmpack_session_reply, lmpack_session_request, lmpack_shallow_copy, lmpack_unpack, lmpack_unpacker_delete, lmpack_unpacker_new, lmpack_unpacker_unpack, lmpack_unpacker_unpack_str, lmpack_unparse_enter, lmpack_unparse_exit, lmpack_unref, luaopen_mpack
+  Structs: struct (unnamed at /src/mpack/lmpack.c:61:9), struct (unnamed at /src/mpack/lmpack.c:68:9), struct (unnamed at /src/mpack/lmpack.c:75:9)
+  Variable declarations: mpack_functions, packer_methods, session_methods, unpacker_methods
+
+C: /src/mpack/mpack_core.c
+  Functions: mpack_blob, mpack_byte, mpack_rblob, mpack_read, mpack_rpending, mpack_rtoken, mpack_rvalue, mpack_tokbuf_init, mpack_value, mpack_w1, mpack_w2, mpack_w4, mpack_warray, mpack_wbin, mpack_wext, mpack_wfloat, mpack_wmap, mpack_wnint, mpack_wpending, mpack_wpint, mpack_write, mpack_wstr, mpack_wtoken
+
+C: /src/mpack/object.c
+  Functions: mpack_parse, mpack_parse_tok, mpack_parser_copy, mpack_parser_full, mpack_parser_init, mpack_parser_pop, mpack_parser_push, mpack_unparse, mpack_unparse_tok
+
+C: /src/mpack/rpc.c
+  Enums: enum (unnamed at /src/mpack/rpc.c:8:1)
+  Functions: mpack_rpc_notify, mpack_rpc_notify_hdr, mpack_rpc_notify_tok, mpack_rpc_pop, mpack_rpc_put, mpack_rpc_receive, mpack_rpc_receive_tok, mpack_rpc_reply, mpack_rpc_reply_hdr, mpack_rpc_reply_tok, mpack_rpc_request, mpack_rpc_request_hdr, mpack_rpc_request_tok, mpack_rpc_reset_hdr, mpack_rpc_session_copy, mpack_rpc_session_init
+
+C: /src/nvim/arabic.c
+  Enums: enum (unnamed at /src/nvim/arabic.c:35:1)
+  Functions: can_join, chg_c_laa2f, chg_c_laa2i, find_achar
+  Structs: achar
+  Variable declarations: achars
+
+C: /src/nvim/arglist.c
+  Enums: enum (unnamed at /src/nvim/arglist.c:71:1)
+  Functions: alist_add, alist_check_arg_idx, alist_clear, alist_expand, alist_init, alist_new, alist_set, alist_unlink, check_arglist_locked, do_one_arg, get_arglist, get_arglist_exp
+  Structs: struct (unnamed at /src/nvim/arglist.c:45:9)
+  Variable declarations: arglist_locked, e_cannot_change_arglist_recursively, e_window_layout_changed_unexpectedly
+
+C: /src/nvim/autocmd.c
+  Functions: augroup_map_del
+  Variable declarations: active_apc_list, au_need_clean, autocmd_blocked, autocmd_include_groups, autocmd_nested, current_augroup, deleted_augroup, e_autocommand_nesting_too_deep, next_augroup_id, old_termresponse
+
+C: /src/nvim/buffer.c
+  Enums: BufFreeFlags
+  Functions: ExpandBufnames, buf_time_compare, buffer_ensure_loaded, buflist_findnr, buflist_match, buflist_nr2name, fname_match, get_highest_fnum, maketitle, open_buffer, read_buffer, set_bufref
+  Variable declarations: buf_free_count, e_attempt_to_delete_buffer_that_is_in_use_str, e_auabort, lasticon, top_file_num
+
+C: /src/nvim/buffer_updates.c
+  Functions: buf_updates_register
+
+C: /src/nvim/bufwrite.c
+  Structs: Error_T, bw_info
+  Variable declarations: e_no_matching_autocommands_for_buftype_str_buffer, e_patchmode_cant_touch_empty_original_file, e_write_error_conversion_failed_in_line_nr_make_fenc_empty_to_override, e_write_error_conversion_failed_make_fenc_empty_to_override, e_write_error_file_system_full, err_readonly
+
+C: /src/nvim/change.c
+  Functions: appended_lines, appended_lines_mark, change_warning, changed, changedOneline, changed_bytes, changed_common, changed_internal, changed_lines, changed_lines_buf, deleted_lines, deleted_lines_mark, inserted_bytes, save_file_ff, unchanged
+
+C: /src/nvim/channel.c
+  Functions: channel_close, channel_init, channel_teardown
+  Variable declarations: did_stdio, next_chan_id
+
+C: /src/nvim/charset.c
+  Functions: buf_init_chartab, init_chartab, trans_characters, transchar, transchar_buf
+  Variable declarations: chartab_initialized, g_chartab
+
+C: /src/nvim/cmdexpand.c
+  Functions: ExpandFromContext, ExpandGeneric, ExpandOther, expand_cmdline, expand_files_and_dirs, expand_shellcmd_onedir, get_breakadd_arg, get_healthcheck_names, get_mapclear_arg, get_messages_arg, get_scriptnames_arg, map_wildopts_to_ewflags, set_cmd_context, set_context_by_cmdname, set_context_in_breakadd_cmd, set_context_in_scriptnames_cmd, set_one_cmd_context
+  Variable declarations: cmd_showtail, compl_match_array, compl_match_arraysize, compl_selected, compl_startcol
+
+C: /src/nvim/cmdhist.c
+  Functions: add_to_history, calc_hist_idx, clr_history, del_history_entry, del_history_idx, ex_history, f_histadd, f_histdel, f_histget, f_histnr, get_hisidx, get_hislen, get_hisnum, get_histentry, get_history_arg, get_history_entry, get_history_idx, init_history, set_histentry
+  Variable declarations: hisidx, hislen, hisnum, history
+
+C: /src/nvim/context.c
+  Functions: ctx_free_all
+  Variable declarations: ctx_stack, kCtxAll
+
+C: /src/nvim/cursor.c
+  Functions: adjust_cursor_col, check_cursor, check_cursor_col, check_cursor_col_win, check_cursor_lnum, check_pos, check_visual_pos, coladvance, coladvance2, coladvance_force, dec_cursor, gchar_cursor, get_cursor_line_ptr, get_cursor_pos_ptr, get_cursor_rel_lnum, getviscol, getviscol2, getvpos, inc_cursor, pchar_cursor, set_leftcol
+
+C: /src/nvim/cursor_shape.c
+  Functions: mode_style_array, parse_shape_opt
+  Variable declarations: e_digit_expected, shape_table
+
+C: /src/nvim/debugger.c
+  Functions: dbg_check_breakpoint, dbg_check_skipped, do_checkbacktracelevel, do_debug, do_setdebugtracelevel, do_showbacktrace, ex_debug, get_maxbacktrace_level
+  Structs: debuggy
+  Variable declarations: dbg_breakp, debug_breakpoint_lnum, debug_breakpoint_name, debug_greedy, debug_newval, debug_oldval, debug_skipped, debug_skipped_name, last_breakp, prof_ga
+
+C: /src/nvim/decoration.c
+  Functions: bufhl_add_hl_pos_offset, clear_virttext, decor_add, decor_add_ephemeral, decor_clear, decor_find_virttext, decor_free, decor_redraw, decor_redraw_col, decor_redraw_end, decor_redraw_eol, decor_redraw_line, decor_redraw_reset, decor_redraw_signs, decor_redraw_start, decor_remove, decor_signcols, decor_state_free, decor_virt_lines, decor_virt_pos, get_decor
+
+C: /src/nvim/decoration_provider.c
+  Functions: decor_free_all_mem, decor_provider_clear, decor_provider_invalidate_hl, decor_provider_invoke, decor_providers_invoke_buf, decor_providers_invoke_end, decor_providers_invoke_line, decor_providers_invoke_spell, decor_providers_invoke_win, decor_providers_start, get_decor_provider
+
+C: /src/nvim/diff.c
+  Enums: diffstyle_T
+  Functions: clear_diffin, clear_diffout, diff_alloc_new, diff_buf_add, diff_buf_adjust, diff_buf_clear, diff_buf_delete, diff_buf_idx, diff_buf_idx_tp, diff_check_sanity, diff_check_unchanged, diff_free, diff_invalidate, diff_mark_adjust, diff_mark_adjust_tp, diff_redraw, diff_try_update, diff_write, diff_write_buffer
+  Structs: struct (unnamed at /src/nvim/diff.c:101:9), struct (unnamed at /src/nvim/diff.c:107:9), struct (unnamed at /src/nvim/diff.c:115:9), struct (unnamed at /src/nvim/diff.c:95:9)
+  Variable declarations: diff_a_works, diff_algorithm, diff_busy, diff_flags, diff_need_update, linematch_lines
+
+C: /src/nvim/digraph.c
+  Functions: do_digraph, ex_loadkeymap, get_digraph, get_digraph_for_char, get_keymap_str, keymap_ga_clear, keymap_init, keymap_unload
+  Structs: digraph
+  Variable declarations: digraphdefault, e_digraph_argument_must_be_one_character_str, e_digraph_must_be_just_two_characters_str, e_digraph_setlist_argument_must_be_list_of_lists_with_two_items, user_digraphs
+
+C: /src/nvim/drawline.c
+  Enums: LineDrawState
+  Functions: advance_color_col, apply_cursorline_highlight, check_mb_utf8, draw_virt_text, draw_virt_text_item, fill_foldcolumn, get_leadcol, get_line_number_attr, get_line_number_str, get_sign_display_info, get_statuscol_display_info, get_statuscol_str, get_trailcol, handle_breakindent, handle_foldcolumn, handle_inline_virtual_text, handle_lnum_col, handle_showbreak_and_filler, line_putchar, margin_columns_win, provider_err_virt_text, use_cursor_line_highlight, use_cursor_line_nr, win_line, win_line_continue, win_line_start, win_signcol_width
+  Structs: LineState, struct (unnamed at /src/nvim/drawline.c:72:9)
+
+C: /src/nvim/drawscreen.c
+  Enums: WindowCorner
+  Functions: check_screensize, clearmode, comp_col, compute_foldcolumn, conceal_check_cursor_line, default_grid_alloc, draw_hsep_win, draw_sep_connectors_win, draw_vsep_win, end_search_hl, get_corner_sep_connector, hsep_connected, msg_pos_mode, number_width, recording_mode, redraw_win_signcol, redrawing, screen_resize, screenclear, setcursor, setcursor_mayforce, show_cursor_info_later, showmode, skip_showmode, start_search_hl, unshowmode, update_screen, vsep_connected, win_border_redr_title, win_draw_end, win_fill_end, win_redr_border, win_scroll_lines, win_update
+  Variable declarations: msg_grid_invalid, provider_err, redraw_popupmenu, resizing_autocmd
+
+C: /src/nvim/edit.c
+  Enums: enum (unnamed at /src/nvim/edit.c:95:1)
+  Functions: edit, edit_putchar, ins_ctrl_v, ins_need_undo_get, ins_redraw, insert_check, insert_do_cindent, insert_do_complete, insert_enter, insert_execute, insert_handle_key, mb_replace_pop_ins, replace_do_bs, replace_flush, replace_join, replace_pop, replace_pop_ins, replace_push, replace_push_mb
+  Structs: insert_state
+  Variable declarations: Insstart_blank_vcol, Insstart_textlen, can_cindent, compl_busy, did_restart_edit, dont_sync_undo, ins_need_undo, last_insert, last_insert_skip, new_insert_skip, o_lnum, pc_attr, pc_bytes, pc_col, pc_row, pc_status, replace_stack_len, replace_stack_nr, revins_chars, revins_legal, revins_on, revins_scol, update_Insstart_orig
+
+C: /src/nvim/eval.c
+  Functions: eval_charconvert, eval_diff, eval_patch, eval_to_bool, fill_evalarg_from_eap, get_v_event, restore_v_event, var_redir_start, var_redir_stop, var_redir_str
+  Structs: struct (unnamed at /src/nvim/eval.c:130:9), vimvar
+  Variable declarations: compat_hashtab, e_cannot_index_a_funcref, e_cannot_index_special_variable, e_cannot_slice_dictionary, e_dot_can_only_be_used_on_dictionary_str, e_empty_function_name, e_expression_too_recursive_str, e_list_end, e_missbrac, e_nowhitespace, e_string_list_or_blob_required, e_variable_nested_too_deep_for_making_copy, e_write2, echo_attr, eval_lavars_used, eval_msgpack_type_lists, globvars_var, last_timer_id, msgpack_type_names, namespace_char, redir_endp, redir_ga, redir_varname, varnamebuflen, vimvars, vimvars_var, vvlua_partial
+
+C: /src/nvim/ex_cmds.c
+  Enums: SubIgnoreType
+  Functions: check_secure, do_ascii, ex_align, ex_append, ex_change, ex_z, linelen, prevcmd_is_set
+  Structs: struct (unnamed at /src/nvim/ex_cmds.c:111:9), struct (unnamed at /src/nvim/ex_cmds.c:119:9), struct (unnamed at /src/nvim/ex_cmds.c:374:9), subflags_T
+  Variable declarations: e_non_numeric_argument_to_z, global_need_beginline, old_sub, sort_abort, sort_flt, sort_ic, sort_lc, sort_nr, sort_rx, sortbuf1, sortbuf2
+
+C: /src/nvim/ex_cmds2.c
+  Functions: add_bufnum, autowrite, autowrite_all, buf_write_all, can_abandon, check_changed, check_changed_any, check_fname, dialog_changed, dialog_close_terminal, ex_checktime, ex_compiler, ex_drop, ex_listdo, ex_perl, ex_perldo, ex_perlfile, ex_py3file, ex_pydo3, ex_python3, ex_ruby, ex_rubydo, ex_rubyfile, script_host_do_range, script_host_execute, script_host_execute_file
+  Variable declarations: e_compiler_not_supported_str
+
+C: /src/nvim/ex_docmd.c
+  Functions: addr_error, changedir_func, close_redir, cmd_exists, do_exmode, do_sleep, ex_at, ex_bang, ex_cd, ex_copymove, ex_digraphs, ex_equal, ex_filetype, ex_fold, ex_folddo, ex_foldopen, ex_join, ex_later, ex_may_print, ex_nohlsearch, ex_operators, ex_put, ex_pwd, ex_redir, ex_redo, ex_redraw, ex_redrawstatus, ex_redrawtabline, ex_rundo, ex_setfiletype, ex_sleep, ex_submagic, ex_submagic_preview, ex_undo, ex_wincmd, ex_winsize, ex_wundo, excmd_get_argt, excmd_get_cmdidx, f_fullcommand, filetype_maybe_enable, filetype_plugin_enable, get_prevdir, modifier_len, post_chdir, restore_dbg_stuff, save_dbg_stuff, set_no_hlsearch, skip_range
+  Structs: dbg_stuff, loop_cookie, struct (unnamed at /src/nvim/ex_docmd.c:113:9)
+  Variable declarations: dollar_command, e_ambiguous_use_of_user_defined_command, e_no_autocommand_buffer_number_to_substitute_for_abuf, e_no_autocommand_file_name_to_substitute_for_afile, e_no_autocommand_match_name_to_substitute_for_amatch, e_no_call_stack_to_substitute_for_stack, e_no_line_number_to_use_for_sflnum, e_no_line_number_to_use_for_slnum, e_no_script_file_name_to_substitute_for_script, e_no_source_file_name_to_substitute_for_sfile, e_not_an_editor_command, ex_pressedreturn, filetype_indent, filetype_plugin, quitmore
+
+C: /src/nvim/ex_eval.c
+  Functions: aborting, discard_pending_return, should_abort, update_force_abort
+  Variable declarations: cause_abort, e_multiple_else, e_multiple_finally
+
+C: /src/nvim/ex_getln.c
+  Enums: enum (unnamed at /src/nvim/ex_getln.c:161:1), enum (unnamed at /src/nvim/ex_getln.c:2941:1)
+  Structs: cmdpreview_buf_info, cmdpreview_info, cmdpreview_win_info, command_line_state, struct (unnamed at /src/nvim/ex_getln.c:82:9), struct (unnamed at /src/nvim/ex_getln.c:92:9)
+  Variable declarations: ccline, cedit_key, cmdline_block, cmdpreview_bufnr, cmdpreview_ns, getln_interrupted_highlight, last_prompt_id, new_cmdpos
+
+C: /src/nvim/ex_session.c
+  Functions: put_view_curpos, ses_skipframe, ses_win_rec, ses_winsizes
+  Variable declarations: did_lcd
+
+C: /src/nvim/extmark.c
+  Functions: extmark_adjust, extmark_apply_undo, extmark_clear, extmark_del, extmark_free_all, extmark_from_id, extmark_get, extmark_move_region, extmark_set, extmark_setraw, extmark_splice, extmark_splice_cols, extmark_splice_impl, u_extmark_copy, u_extmark_set
+
+C: /src/nvim/file_search.c
+  Functions: do_autocmd_dirchanged, ff_check_visited, ff_clear, ff_create_stack_element, ff_free_stack_element, ff_free_visited_list, ff_get_visited_list, ff_path_in_stoplist, ff_pop, ff_push, ff_wc_equal, find_directory_in_path, find_file_in_path, find_file_in_path_option, vim_chdir, vim_chdirfile, vim_findfile, vim_findfile_cleanup, vim_findfile_free_visited, vim_findfile_free_visited_list, vim_findfile_init, vim_findfile_stopdir
+  Structs: ff_search_ctx_T, ff_stack, ff_visited, ff_visited_list_hdr
+  Variable declarations: e_path_too_long_for_completion, ff_expand_buffer
+
+C: /src/nvim/fileio.c
+  Functions: check_timestamps, filemess, move_lines, readfile, readfile_linenr, vim_mktempdir
+  Variable declarations: e_auchangedbuf
+
+C: /src/nvim/fold.c
+  Enums: enum (unnamed at /src/nvim/fold.c:69:1)
+  Functions: checkCloseRec, checkSmall, check_closed, checkupdate, clearFolding, cloneFoldGrowArray, closeFold, closeFoldRecurse, copyFoldingState, deleteFold, deleteFoldEntry, deleteFoldMarkers, deleteFoldRecurse, find_wl_entry, foldAddMarker, foldAdjustCursor, foldAdjustVisual, foldCheckClose, foldCreate, foldCreateMarkers, foldDelMarker, foldFind, foldInitWin, foldLevel, foldLevelWin, foldManualAllowed, foldMarkAdjust, foldMarkAdjustRecurse, foldMoveTo, foldOpenCursor, foldOpenNested, foldUpdate, foldUpdateAfterInsert, foldUpdateAll, fold_info, foldmethodIsDiff, foldmethodIsExpr, foldmethodIsIndent, foldmethodIsManual, foldmethodIsMarker, foldmethodIsSyntax, getDeepestNesting, getDeepestNestingRecurse, hasAnyFolding, hasFolding, hasFoldingWin, lineFolded, newFoldLevel, newFoldLevelWin, opFoldRange, openFold, openFoldRecurse, setFoldRepeat, setManualFold, setManualFoldWin, setSmallMaybe
+  Structs: struct (unnamed at /src/nvim/fold.c:58:9), struct (unnamed at /src/nvim/fold.c:78:9)
+  Variable declarations: e_nofold, fold_changed, foldendmarker, foldendmarkerlen, foldstartmarkerlen, invalid_bot, invalid_top, prev_lnum, prev_lnum_lvl
+
+C: /src/nvim/garray.c
+  Functions: ga_clear, ga_clear_strings, ga_grow, ga_init, ga_remove_duplicate_strings, ga_set_growsize
+
+C: /src/nvim/getchar.c
+  Functions: add_buff, add_char_buff, add_num_buff, at_ins_compl_key, can_get_old_char, check_end_reg_executing, check_simplify_modifier, closescript, delete_buff_tail, free_buff, get_buffcont, get_inserted, get_recorded, handle_mapping, inchar, openscript, put_string_in_typebuf, read_readbuf, read_readbuffers, restore_typeahead, save_typeahead, save_typebuf, start_stuff, vgetorpeek, vungetc
+  Variable declarations: KeyNoremap, block_redo, curscript, e_cmd_mapping_must_end_with_cr, e_cmd_mapping_must_end_with_cr_before_second_cmd, e_recursive_mapping, last_recorded_len, noremapbuf_init, old_KeyStuffed, old_char, old_mod_mask, old_mouse_col, old_mouse_grid, old_mouse_row, old_redobuff, readbuf1, readbuf2, recordbuff, redobuff, scriptin, typeahead_char, typebuf_init
+
+C: /src/nvim/grid.c
+  Functions: get_win_by_grid_handle, grid_adjust, grid_alloc, grid_assign_handle, grid_char_needs_redraw, grid_clear_line, grid_del_lines, grid_fill, grid_fix_col, grid_free, grid_free_all_mem, grid_getbytes, grid_ins_lines, grid_invalid_row, grid_invalidate, grid_lefthalve, grid_off2cells, grid_put_linebuf, grid_put_schar, grid_putchar, grid_puts, grid_puts_len, grid_puts_line_flush, grid_puts_line_start, line_off2cells, linecopy, schar_from_cc, win_grid_alloc
+  Variable declarations: linebuf_size, put_dirty_first, put_dirty_grid, put_dirty_last, put_dirty_row
+
+C: /src/nvim/hashtab.c
+  Functions: hash_add, hash_add_item, hash_clear, hash_clear_all, hash_debug_results, hash_find, hash_find_len, hash_hash, hash_init, hash_lock, hash_lookup, hash_may_resize, hash_remove, hash_unlock
+  Variable declarations: hash_removed
+
+C: /src/nvim/help.c
+  Functions: check_help_lang, ex_help, ex_helpclose
+
+C: /src/nvim/highlight.c
+  Functions: clear_hl_tables, cterm_blend, dict2hlattrs, get_attr_entry, get_colors_force, highlight_init, highlight_use_hlstate, hl_blend_attrs, hl_check_ns, hl_combine_ae, hl_combine_attr, hl_cterm2rgb_color, hl_get_attr_by_id, hl_get_syn_attr, hl_get_term_attr, hl_get_ui_attr, hl_get_underline, hl_inspect, hl_inspect_impl, hl_invalidate_blends, hl_rgb2cterm_color, hlattrs2dict, ns_get_hl, ns_hl_def, object_to_color, rgb_blend, syn_attr2entry, ui_send_all_hls, update_ns_hl, update_window_hl, win_bg_attr, win_check_ns_hl
+  Variable declarations: hlstate_active
+
+C: /src/nvim/highlight_group.c
+  Enums: enum (unnamed at /src/nvim/highlight_group.c:111:1), enum (unnamed at /src/nvim/highlight_group.c:49:1)
+  Functions: coloridx_to_name, highlight_group_name, highlight_link_id, highlight_num_groups, init_highlight, load_colors, lookup_color, name_to_color, name_to_ctermcolor, set_hl_group, syn_init_cmdline_highlight
+  Structs: struct (unnamed at /src/nvim/highlight_group.c:82:9)
+  Variable declarations: color_names, color_numbers_16, color_numbers_256, color_numbers_8, color_numbers_88, e_group_has_settings_highlight_link_ignored, e_highlight_group_name_not_found_str, e_missing_argument_str, e_missing_equal_sign_str_2, e_unexpected_equal_sign_str, highlight_arena, highlight_ga, highlight_init_both, highlight_init_cmdline, highlight_init_dark, highlight_init_light, hl_attr_table, hl_name_table
+
+C: /src/nvim/indent.c
+  Functions: get_indent, get_indent_buf, get_indent_lnum, get_sts_value, get_sw_value, get_sw_value_col, get_sw_value_indent, get_sw_value_pos, tabstop_at, tabstop_copy, tabstop_count, tabstop_eq, tabstop_first, tabstop_fromto, tabstop_padding, tabstop_set, tabstop_start
+
+C: /src/nvim/indent_c.c
+  Functions: cin_has_js_key, cin_is_cinword, cin_nocode, cin_skipcomment, find_line_comment, find_start_comment, find_start_rawstring, ind_find_start_CORS, ind_find_start_comment, is_pos_in_string, skip_string
+  Structs: struct (unnamed at /src/nvim/indent_c.c:29:9)
+
+C: /src/nvim/input.c
+  Functions: ask_yesno, get_keystroke, get_number, prompt_for_number
+
+C: /src/nvim/insexpand.c
+  Enums: cp_flags_T, enum (unnamed at /src/nvim/insexpand.c:74:1)
+  Functions: copy_global_to_buflocal_cb, did_set_completefunc, did_set_omnifunc, did_set_thesaurusfunc, expand_by_function, find_next_completion_match, get_complete_funcname, get_insert_callback, get_next_cmdline_completion, get_next_completion_match, get_next_default_completion, get_next_dict_tsr_completion, get_next_filename_completion, get_next_include_file_completion, get_next_spell_completion, get_next_tag_completion, ins_compl_check_keys, ins_compl_del_pum, ins_compl_delete, ins_compl_get_exp, ins_compl_get_next_word_or_line, ins_compl_insert, ins_compl_key2dir, ins_compl_next, ins_compl_show_filename, ins_compl_update_shown_match, ins_ctrl_x, process_next_cpt_value, set_buflocal_cfu_callback, set_buflocal_ofu_callback, set_ref_in_insexpand_funcs
+  Structs: compl_S, struct (unnamed at /src/nvim/insexpand.c:163:9)
+  Variable declarations: compl_col, compl_cont_mode, compl_cont_status, compl_curr_match, compl_direction, compl_enter_selects, compl_first_match, compl_get_longest, compl_interrupted, compl_leader, compl_length, compl_longest, compl_match_arraysize, compl_matches, compl_no_insert, compl_no_select, compl_old_match, compl_opt_refresh_always, compl_orig_text, compl_pattern, compl_pending, compl_restarting, compl_shown_match, compl_shows_dir, compl_started, compl_startpos, compl_used_match, compl_was_interrupted, compl_xp, ctrl_x_mode, ctrl_x_mode_names, ctrl_x_msgs, e_compldel, e_hitend, ofu_cb, pum_selected_item, spell_bad_len, tsrfu_cb
+
+C: /src/nvim/keycodes.c
+  Structs: key_name_entry, modmasktable, mousetable
+  Variable declarations: key_names_table, mod_mask_table, modifier_keys_table, mouse_table
+
+C: /src/nvim/linematch.c
+  Functions: count_n_matched_chars, fastforward_buf_to_lnum, line_len, linematch_nbuffers, matching_chars, matching_chars_iwhite, populate_tensor, test_charmatch_paths, try_possible_paths, unwrap_indexes
+  Structs: diffcmppath_S
+
+C: /src/nvim/log.c
+  Functions: log_init, log_lock, log_path_init, log_try_create, log_unlock
+  Variable declarations: did_log_init, log_file_path, mutex
+
+C: /src/nvim/main.c
+  Enums: enum (unnamed at /src/nvim/main.c:107:1), enum (unnamed at /src/nvim/main.c:114:1)
+  Functions: early_init, event_init, event_teardown, main
+  Variable declarations: argv0, err_arg_missing, err_extra_cmd, err_opt_garbage, err_opt_unknown, err_too_many_args, main_loop
+
+C: /src/nvim/map.c
+  Functions: ColorKey_eq, ColorKey_hash, HlEntry_eq, HlEntry_hash, String_eq, String_hash, map_ColorKey_ColorItem_del, map_ColorKey_ColorItem_get, map_ColorKey_ColorItem_put, map_ColorKey_ColorItem_put_ref, map_ColorKey_ColorItem_ref, map_HlEntry_int_del, map_HlEntry_int_get, map_HlEntry_int_put, map_HlEntry_int_put_ref, map_HlEntry_int_ref, map_String_handle_T_del, map_String_handle_T_get, map_String_handle_T_put, map_String_handle_T_put_ref, map_String_handle_T_ref, map_String_int_del, map_String_int_get, map_String_int_put, map_String_int_put_ref, map_String_int_ref, map_cstr_t_int_del, map_cstr_t_int_get, map_cstr_t_int_put, map_cstr_t_int_put_ref, map_cstr_t_int_ref, map_cstr_t_ptr_t_del, map_cstr_t_ptr_t_get, map_cstr_t_ptr_t_put, map_cstr_t_ptr_t_put_ref, map_cstr_t_ptr_t_ref, map_int_String_del, map_int_String_get, map_int_String_put, map_int_String_put_ref, map_int_String_ref, map_int_cstr_t_del, map_int_cstr_t_get, map_int_cstr_t_put, map_int_cstr_t_put_ref, map_int_cstr_t_ref, map_int_int_del, map_int_int_get, map_int_int_put, map_int_int_put_ref, map_int_int_ref, map_int_ptr_t_del, map_int_ptr_t_get, map_int_ptr_t_put, map_int_ptr_t_put_ref, map_int_ptr_t_ref, map_ptr_t_ptr_t_del, map_ptr_t_ptr_t_get, map_ptr_t_ptr_t_put, map_ptr_t_ptr_t_put_ref, map_ptr_t_ptr_t_ref, map_uint32_t_ptr_t_del, map_uint32_t_ptr_t_get, map_uint32_t_ptr_t_put, map_uint32_t_ptr_t_put_ref, map_uint32_t_ptr_t_ref, map_uint32_t_uint32_t_del, map_uint32_t_uint32_t_get, map_uint32_t_uint32_t_put, map_uint32_t_uint32_t_put_ref, map_uint32_t_uint32_t_ref, map_uint64_t_ptr_t_del, map_uint64_t_ptr_t_get, map_uint64_t_ptr_t_put, map_uint64_t_ptr_t_put_ref, map_uint64_t_ptr_t_ref, map_uint64_t_ssize_t_del, map_uint64_t_ssize_t_get, map_uint64_t_ssize_t_put, map_uint64_t_ssize_t_put_ref, map_uint64_t_ssize_t_ref, map_uint64_t_uint64_t_del, map_uint64_t_uint64_t_get, map_uint64_t_uint64_t_put, map_uint64_t_uint64_t_put_ref, map_uint64_t_uint64_t_ref, pmap_del2
+  Variable declarations: ColorKey_ColorItem_initializer, HlEntry_int_initializer, String_handle_T_initializer, String_int_initializer, cstr_t_int_initializer, cstr_t_ptr_t_initializer, int_String_initializer, int_cstr_t_initializer, int_ptr_t_initializer, ptr_t_ptr_t_initializer, uint32_t_ptr_t_initializer, uint32_t_uint32_t_initializer, uint64_t_ptr_t_initializer, uint64_t_ssize_t_initializer, uint64_t_uint64_t_initializer
+
+C: /src/nvim/mapping.c
+  Functions: ExpandMappings, check_abbr, check_map, did_set_langmap, do_exmap, eval_map_expr, ex_abbreviate, ex_abclear, ex_map, ex_mapclear, ex_unmap, f_hasmapto, get_buf_maphash_list, get_maphash_list, langmap_adjust_mb, langmap_init, langmap_set_entry, makemap, modify_keymap, put_escstr, set_context_in_map_cmd, translate_mapping
+  Variable declarations: e_abbreviation_already_exists_for_str, e_entries_missing_in_mapset_dict_argument, e_global_abbreviation_already_exists_for_str, e_global_mapping_already_exists_for_str, e_mapping_already_exists_for_str, expand_buffer, expand_isabbrev, first_abbr, langmap_mapga, maphash
+
+C: /src/nvim/mark.c
+  Functions: free_fmark, free_xfmark, setmark
+  Variable declarations: namedfm
+
+C: /src/nvim/marktree.c
+  Functions: compose, itr_eq, itr_swap, key_cmp, marktree_check, marktree_check_node, marktree_clear, marktree_del_itr, marktree_free_node, marktree_get_alt, marktree_get_altpos, marktree_getp_aux, marktree_itr_current, marktree_itr_first, marktree_itr_fix_pos, marktree_itr_get, marktree_itr_get_ext, marktree_itr_last, marktree_itr_next, marktree_itr_next_skip, marktree_itr_node_done, marktree_itr_pos, marktree_itr_prev, marktree_itr_rewind, marktree_lookup, marktree_lookup_ns, marktree_move, marktree_move_region, marktree_put, marktree_put_key, marktree_put_test, marktree_putp_aux, marktree_revise, marktree_splice, merge_node, mt_inspect_node, mt_inspect_rec, mt_right_test, pivot_left, pivot_right, pos_leq, refkey, relative, split_node, unrelative
+
+C: /src/nvim/match.c
+  Variable declarations: e_invalwindow
+
+C: /src/nvim/math.c
+  Functions: xfpclassify, xisinf, xisnan
+
+C: /src/nvim/mbyte.c
+  Functions: cw_value, f_charclass, f_getcellwidths, f_setcellwidths, tv_nr_compare
+  Structs: convertStruct, interval, struct (unnamed at /src/nvim/mbyte.c:150:8), struct (unnamed at /src/nvim/mbyte.c:283:8)
+  Variable declarations: cw_table, cw_table_size, e_list_item_nr_cell_width_invalid, e_list_item_nr_does_not_contain_3_numbers, e_list_item_nr_is_not_list, e_list_item_nr_range_invalid, e_only_values_of_0x80_and_higher_supported, e_overlapping_ranges_for_nr, enc_alias_table, enc_canon_table, utf8len_tab, utf8len_tab_zero
+
+C: /src/nvim/memfile.c
+  Enums: enum (unnamed at /src/nvim/memfile.c:834:1)
+  Functions: mf_alloc_bhdr, mf_close, mf_close_file, mf_do_open, mf_find_hash, mf_free, mf_free_bhdr, mf_free_fnames, mf_fullname, mf_get, mf_hash_add_item, mf_hash_find, mf_hash_free, mf_hash_free_all, mf_hash_grow, mf_hash_init, mf_hash_rem_item, mf_ins_free, mf_ins_hash, mf_ins_used, mf_need_trans, mf_new, mf_new_page_size, mf_open, mf_open_file, mf_put, mf_read, mf_release_all, mf_rem_free, mf_rem_hash, mf_rem_used, mf_set_dirty, mf_set_fnames, mf_sync, mf_trans_add, mf_trans_del, mf_write
+  Variable declarations: e_block_was_not_locked
+
+C: /src/nvim/memline.c
+  Enums: enum (unnamed at /src/nvim/memline.c:100:1), enum (unnamed at /src/nvim/memline.c:158:1), enum (unnamed at /src/nvim/memline.c:168:1), enum (unnamed at /src/nvim/memline.c:233:1), upd_block0_T
+  Functions: check_need_swap, dec, decl, get_b0_dict, goto_byte, inc, incl, ml_close, ml_close_all, ml_close_notmod, ml_find_line_or_offset, ml_open, ml_open_file, ml_open_files, ml_setname, ml_timestamp, ml_updatechunk, swapfile_info, swapfile_unchanged
+  Structs: block0, data_block, pointer_block, pointer_entry
+  Variable declarations: e_line_count_wrong_in_block_nr, e_line_number_out_of_range_nr_past_the_end, e_ml_get_cannot_find_line_nr_in_buffer_nr_str, e_ml_get_invalid_lnum_nr, e_pointer_block_id_wrong, e_pointer_block_id_wrong_four, e_pointer_block_id_wrong_three, e_pointer_block_id_wrong_two, e_warning_pointer_block_corrupted, lowest_marked
+
+C: /src/nvim/memory.c
+  Functions: alloc_block, arena_align_offset, arena_alloc, arena_finish, arena_free_reuse_blks, arena_mem_free, arena_memdupz, try_to_free_memory
+  Variable declarations: arena_reuse_blk_count
+
+C: /src/nvim/menu.c
+  Functions: ex_menutranslate, menu_skip_part, menu_translate_tab_and_shift, menu_unescape_name, menutrans_lookup
+  Variable declarations: e_nomenu, e_notsubmenu, expand_emenu, expand_modes, menu_mode_chars, menutrans_ga
+
+C: /src/nvim/message.c
+  Enums: enum (unnamed at /src/nvim/message.c:70:1), sb_clear_T
+  Functions: clear_sb_text, disp_sb_line, do_more_prompt, may_clear_sb_text, msg, msg_check, msg_clr_cmdline, msg_clr_eos, msg_clr_eos_force, msg_end, msg_ext_check_clear, msg_ext_clear, msg_ext_clear_later, msg_ext_flush_showmode, msg_ext_is_visible, msg_ext_ui_flush, msg_grid_set_pos, msg_grid_validate, msg_moremsg, msg_puts_printf, msg_sb_eol, msg_sb_start, msg_screen_putchar, msg_use_grid, msg_use_printf, other_sourcing_name, redir_write, redirecting, repeat_message, reset_last_sourcing, sb_text_end_cmdline, sb_text_restart_cmdline, sb_text_start_cmdline, show_sb_text, store_sb_text, t_puts, ui_ext_msg_set_pos, verb_msg, verbose_enter, verbose_enter_scroll, verbose_leave, verbose_leave_scroll, verbose_open, verbose_stop
+  Structs: msgchunk_S
+  Variable declarations: confirm_msg, confirm_msg_tail, confirm_msg_used, do_clear_sb_text, first_msg_hist, keep_msg_more, last_msg_hist, last_sourcing_name, msg_ext_chunks, msg_ext_cur_len, msg_ext_history_visible, msg_ext_keep_after_cmdline, msg_ext_kind, msg_ext_last_attr, msg_ext_last_chunk, msg_ext_overwrite, msg_ext_visible, msg_grid_pos_at_flush, msg_hist_len, verbose_did_open, verbose_fd
+
+C: /src/nvim/mouse.c
+  Functions: call_click_def_func, do_mouse, find_end_of_word, find_start_of_word, get_fpos_of_mouse, get_mouse_class, is_mouse_key, jump_to_mouse, mouse_comp_pos, mouse_find_grid_win, mouse_find_win, mouse_model_popup, move_tab_to_mouse, reset_dragwin
+  Variable declarations: dragwin, orig_topfill, orig_topline
+
+C: /src/nvim/move.c
+  Functions: adjust_plines_for_skipcol, comp_botline, plines_correct_topline
+  Structs: struct (unnamed at /src/nvim/move.c:50:9)
+
+C: /src/nvim/normal.c
+  Functions: add_to_showcmd, add_to_showcmd_c, adjust_cursor, adjust_for_sel, check_scrollbind, check_text_locked, check_text_or_curbuf_locked, clear_showcmd, del_from_showcmd, display_showcmd, do_check_scrollbind, do_nv_ident, end_visual_mode, find_command, find_decl, find_is_eval_item, get_visual_text, init_normal_cmds, invoke_edit, is_ident, may_start_select, n_opencmd, n_start_visual_mode, n_swapchar, normal_check, normal_check_buffer_modified, normal_check_cursor_moved, normal_check_folds, normal_check_interrupt, normal_check_stuff_buffer, normal_check_text_changed, normal_check_window_scrolled, normal_cmd, normal_enter, normal_execute, normal_finish_command, normal_get_additional_char, normal_get_command_count, normal_handle_special_visual_command, normal_invert_horizontal, normal_need_additional_char, normal_need_redraw_mode_message, normal_prepare, normal_redraw, normal_redraw_mode_message, normal_search, normal_state_init, nv_K_getcmd, nv_Replace, nv_Undo, nv_Zet, nv_abbrev, nv_addsub, nv_at, nv_bck_word, nv_beginline, nv_brace, nv_bracket_block, nv_brackets, nv_clear, nv_colon, nv_compare, nv_csearch, nv_ctrlg, nv_ctrlh, nv_ctrlo, nv_dollar, nv_dot, nv_down, nv_edit, nv_end, nv_error, nv_esc, nv_event, nv_findpar, nv_g_cmd, nv_g_dollar_cmd, nv_g_home_m_cmd, nv_g_underscore_cmd, nv_gd, nv_gi_cmd, nv_gomark, nv_goto, nv_gotofile, nv_gv_cmd, nv_halfpage, nv_hat, nv_help, nv_home, nv_ident, nv_ignore, nv_join, nv_kundo, nv_left, nv_lineop, nv_mark, nv_mark_move_to, nv_mouse, nv_mousescroll, nv_next, nv_nop, nv_normal, nv_object, nv_open, nv_operator, nv_optrans, nv_page, nv_pcmark, nv_percent, nv_pipe, nv_put, nv_put_opt, nv_record, nv_redo_or_register, nv_regname, nv_regreplay, nv_replace, nv_right, nv_screengo, nv_scroll, nv_scroll_line, nv_search, nv_select, nv_subst, nv_suspend, nv_tagpop, nv_tilde, nv_undo, nv_up, nv_visual, nv_vreplace, nv_window, nv_wordcmd, nv_z_get_count, nv_zet, nv_zg_zw, pop_showcmd, push_showcmd, reset_VIsual, reset_VIsual_and_resel, restore_visual_mode, scroll_redraw, set_cursor_for_append_to_line, set_op_var, set_vcount_ca, start_selection, unadjust_for_sel, v_swap_corners, v_visop
+  Structs: normal_state, nv_cmd
+  Variable declarations: VIsual_mode_orig, e_changelist_is_empty, e_cmdline_window_already_open, e_noident, nv_cmd_idx, nv_cmds, nv_max_linear, showcmd_is_clear, showcmd_visual
+
+C: /src/nvim/ops.c
+  Functions: adjust_clipboard_name, block_insert, cmdline_paste_reg, did_set_operatorfunc, do_execreg, do_pending_operator, end_batch_changes, execreg_line_continuation, finish_yankreg_from_object, get_clipboard, get_default_register_name, get_expr_line, get_expr_line_src, get_expr_register, get_extra_op_char, get_op_char, get_op_type, get_spec_reg, get_y_previous, get_yank_register, insert_reg, is_append_register, is_ex_cmdchar, mb_adjust_opend, op_delete, op_is_change, op_on_lines, op_reindent, op_replace, op_shift, op_tilde, pbyte, prepare_yankreg_from_object, put_in_typebuf, put_reedit_in_typebuf, replace_character, restore_batch_count, save_batch_count, set_clipboard, set_expr_line, set_ref_in_opfunc, set_y_previous, shift_block, shift_delete_registers, shift_line, start_batch_changes, valid_yank_reg
+  Structs: block_def
+  Variable declarations: batch_change_count, clipboard_delay_update, clipboard_didwarn, clipboard_needs_update, e_search_pattern_and_expression_register_may_not_contain_two_or_more_lines, expr_line, opchars, y_previous, y_regs
+
+C: /src/nvim/option.c
+  Enums: set_op_T
+  Functions: ExpandOldSetting, ExpandSettings, buf_copy_options, can_bs, did_set_breakat, fill_culopt_flags, get_bkc_value, get_flp_value, get_ve_flags, init_buf_opt_idx, magic_isset, match_str, option_set_callback_func, option_value2string, option_was_set, paste_option_changed, reset_modifiable, reset_option_was_set, set_context_in_set_cmd, set_iminsert_global, set_imsearch_global, set_init_1, set_init_default_backupskip, set_init_default_cdpath, set_init_default_shell, set_init_expand_env, set_init_fenc_default, set_init_tablocal, set_option_default, set_options_default, shortmess, vimrc_found, wc_use_keyname
+  Variable declarations: e_key_code_not_set, e_not_allowed_in_modeline, e_not_allowed_in_modeline_when_modelineexpr_is_off, e_number_required_after_equal, e_preview_window_already_exists, e_unknown_option, expand_option_flags, expand_option_idx, expand_option_name, p_ai_nopaste, p_et_nobin, p_et_nopaste, p_ml_nobin, p_sts_nopaste, p_term, p_ttytype, p_tw_nobin, p_tw_nopaste, p_vsts_nopaste, p_wm_nobin, p_wm_nopaste
+
+C: /src/nvim/optionstr.c
+  Functions: check_buf_options, check_chars_options, check_ff_value, check_opt_strings, check_string_option, clear_string_option, did_set_backspace, did_set_bufhidden, did_set_buftype, did_set_casemap, did_set_commentstring, did_set_complete, did_set_completeopt, did_set_debug, did_set_diffopt, did_set_display, did_set_filetype_or_syntax, did_set_foldclose, did_set_foldcolumn, did_set_foldexpr, did_set_foldignore, did_set_foldmarker, did_set_foldmethod, did_set_guicursor, did_set_iconstring, did_set_jumpoptions, did_set_keymodel, did_set_lispoptions, did_set_mkspellmem, did_set_mousemodel, did_set_nrformats, did_set_optexpr, did_set_option_listflag, did_set_redrawdebug, did_set_rightleftcmd, did_set_rulerformat, did_set_scrollopt, did_set_selection, did_set_shada, did_set_showbreak, did_set_showcmdloc, did_set_signcolumn, did_set_spellcapcheck, did_set_spellfile, did_set_spelllang, did_set_spelloptions, did_set_spellsuggest, did_set_splitkeep, did_set_statuscolumn, did_set_statusline, did_set_statustabline_rulerformat, did_set_string_option, did_set_string_option_for, did_set_switchbuf, did_set_tabline, did_set_tagcase, did_set_titleiconstring, did_set_titlestring, did_set_varsofttabstop, did_set_vartabstop, did_set_virtualedit, did_set_wildoptions, did_set_winbar, did_set_winhl, didset_string_options, do_spelllang_source, do_syntax_autocmd, free_string_option, get_encoded_char_adv, illegal_char, opt_strings_flags, restore_shm_value, save_clear_shm_value, set_chars_option, set_string_option_direct, set_string_option_direct_in_win, set_string_option_global, trigger_optionset_string
+  Variable declarations: SHM_ALL, e_backupext_and_patchmode_are_equal, e_comma_required, e_conflicts_with_value_of_fillchars, e_conflicts_with_value_of_listchars, e_internal_error_shortmess_too_long, e_showbreak_contains_unprintable_or_wide_character, e_unbalanced_groups, e_unclosed_expression_sequence, p_ambw_values, p_bg_values, p_bkc_values, p_bo_values, p_bs_values, p_bufhidden_values, p_buftype_values, p_cb_values, p_cmp_values, p_cot_values, p_debug_values, p_dy_values, p_ead_values, p_fcl_values, p_fdc_values, p_fdm_values, p_fdo_values, p_ff_values, p_icm_values, p_jop_values, p_km_values, p_mousem_values, p_nf_values, p_rdb_values, p_scbopt_values, p_scl_values, p_sel_values, p_slm_values, p_sloc_values, p_spk_values, p_spo_values, p_ssop_values, p_swb_values, p_tc_values, p_tpf_values, p_ve_values, p_wak_values, p_wop_values, set_shm_recursive, shm_buf
+
+C: /src/nvim/path.c
+  Enums: enum (unnamed at /src/nvim/path.c:42:1)
+  Functions: path_full_compare
+
+C: /src/nvim/plines.c
+  Functions: clear_chartabsize_arg, init_chartabsize_arg, lbr_chartabsize, lbr_chartabsize_adv, linetabsize, linetabsize_col, linetabsize_str, plines_m_win, plines_win, plines_win_col, plines_win_full, plines_win_nofill, plines_win_nofold, win_chartabsize, win_get_fill, win_lbr_chartabsize, win_linetabsize, win_linetabsize_cts, win_may_fill, win_nolbr_chartabsize
+
+C: /src/nvim/popupmenu.c
+  Functions: pum_check_clear, pum_clear, pum_compute_size, pum_display, pum_drawn, pum_execute_menu, pum_ext_select_item, pum_get_height, pum_invalidate, pum_make_popup, pum_position_at_mouse, pum_recompose, pum_redraw, pum_select_mouse_pos, pum_set_event_info, pum_set_selected, pum_show_popupmenu, pum_undisplay, pum_visible
+  Variable declarations: pum_above, pum_anchor_grid, pum_array, pum_base_width, pum_col, pum_external, pum_extra_width, pum_first, pum_height, pum_invalid, pum_is_drawn, pum_is_visible, pum_kind_width, pum_rl, pum_row, pum_scrollbar, pum_selected, pum_size, pum_width
+
+C: /src/nvim/profile.c
+  Enums: enum (unnamed at /src/nvim/profile.c:333:8)
+  Functions: ex_profile, prof_inchar_enter, prof_inchar_exit, profile_reset, time_diff, time_msg, time_pop, time_push, time_start
+  Structs: sn_prl_S
+  Variable declarations: g_prev_time, pexpand_cmds, pexpand_what, prof_wait_time
+
+C: /src/nvim/quickfix.c
+  Enums: enum (unnamed at /src/nvim/quickfix.c:188:1), qfltype_T
+  Functions: efm_option_part_len, efm_regpat_bufsz, free_efm_list, locstack_queue_delreq, parse_efm_option, qf_get_list_from_lines, qf_get_next_buf_line, qf_get_next_file_line, qf_get_next_list_line, qf_get_next_str_line, qf_get_nextline, qf_grow_linebuf, qf_init, qf_init_process_nextline, qf_list, qf_list_entry, qf_parse_dir_pfx, qf_parse_file_pfx, qf_parse_get_fields, qf_parse_line_nomatch, qf_parse_match, qf_parse_multiline_pfx, qf_stack_get_bufnr, qf_winid, qfga_clear, qfga_get
+  Structs: dir_stack_T, efm_S, fmtpattern, qf_delq_S, qf_info_S, qf_list_S, qfline_S, struct (unnamed at /src/nvim/quickfix.c:200:9), struct (unnamed at /src/nvim/quickfix.c:216:9), vgr_args_S
+  Variable declarations: LINE_MAXLEN, e_current_location_list_was_changed, e_current_quickfix_list_was_changed, e_no_more_items, fmt_pat, last_qf_id, qfLineAttr, qfSepAttr, qf_delq_head, qf_last_bufname, qf_last_bufref, qfga, qftf_cb, ql_info, quickfix_busy
+
+C: /src/nvim/rbuffer.c
+
+C: /src/nvim/regexp.c
+  Functions: backslash_trans, cstrncmp, get_char_class, get_cpo_flags, getchr, getdecchrs, gethexchrs, getoctchrs, init_class_tab, init_regexec_multi, initchr, mb_decompose, no_Magic, peekchr, re_multi_type, read_limits, reg_breakcheck, reg_getline, reg_getline_submatch, reg_iswordc, reg_submatch, reg_submatch_list, report_re_switch, restore_parse_state, save_parse_state, skip_anyof, skip_regexp, skip_regexp_err, skip_regexp_ex, skipchr, skipchr_keepstart, toggle_Magic, ungetchr, vim_regcomp, vim_regexec, vim_regexec_nl, vim_regexec_prog, vim_regexec_string, vim_regfree, vim_regsub_both
+  Structs: parse_state_T, struct (unnamed at /src/nvim/regexp.c:1597:9), struct (unnamed at /src/nvim/regexp.c:969:9)
+  Variable declarations: META_flags, REGEXP_ABBR, REGEXP_INRANGE, at_start, bt_regengine, class_tab, curchr, decomp_table, e_atom_engine_must_be_at_start_of_pattern, e_empty_sb, e_invalid_character_after_str_at, e_invalid_item_in_str_brackets, e_invalid_use_of_underscore, e_large_class, e_missing_delimiter_after_search_pattern_str, e_missing_sb, e_missingbracket, e_nfa_regexp_missing_value_in_chr, e_pattern_uses_more_memory_than_maxmempattern, e_recursive, e_regexp_number_after_dot_pos_search_chr, e_reverse_range, e_substitute_nesting_too_deep, e_unmatchedp, e_unmatchedpar, e_unmatchedpp, e_z1_not_allowed, e_z_not_allowed, had_eol, nextchr, nfa_regengine, prev_at_start, prevchr, prevchr_len, prevprevchr, re_has_z, reg_endzp, reg_endzpos, reg_magic, reg_prev_sub, reg_startzp, reg_startzpos, reg_strict, reg_string, reg_tofree, reg_tofreelen, regexp_engine, regflags, regnpar, regnzpar, regparse, rex, rex_in_use, rsm, wants_nfa
+
+C: /src/nvim/regexp_bt.c
+  Enums: regstate_E
+  Functions: re_put_uint32, reg, reg_equi_class, regc, regcomp_start, regmbc, regnode, use_multibytecode
+  Structs: backpos_S, regbehind_S, regitem_S, regstar_S, struct (unnamed at /src/nvim/regexp_bt.c:291:9), struct (unnamed at /src/nvim/regexp_bt.c:300:9)
+  Variable declarations: backpos, behind_pos, bl_maxval, brace_count, brace_max, brace_min, classchars, classcodes, had_endbrace, num_complex_braces, one_exactly, prevchr_len, reg_toolong, regcode, regsize, regstack
+
+C: /src/nvim/regexp_nfa.c
+  Enums: enum (unnamed at /src/nvim/regexp_nfa.c:41:1)
+  Functions: alloc_state, append, clear_sub, copy_pim, copy_sub, copy_sub_off, copy_ze_off, frag, list1, nfa_emit_equi_class, nfa_get_match_text, nfa_get_reganch, nfa_get_regstart, nfa_max_width, nfa_postprocess, nfa_recognize_char_class, nfa_reg, nfa_regatom, nfa_regbranch, nfa_regcomp_start, nfa_regconcat, nfa_regpiece, patch, post2nfa, re2post, realloc_post_list, st_error, st_pop, st_push, sub_equal
+  Structs: Frag, nfa_list_T, nfa_pim_S, struct (unnamed at /src/nvim/regexp_nfa.c:267:9), struct (unnamed at /src/nvim/regexp_nfa.c:286:9), struct (unnamed at /src/nvim/regexp_nfa.c:304:9)
+  Variable declarations: e_ill_char_class, e_misplaced, e_nul_found, e_value_too_large, empty, istate, nfa_classcodes, nfa_endp, nfa_ll_index, nfa_match, nfa_re_flags, nfa_time_count, nfa_time_limit, nfa_timed_out, nstate, post_end, post_ptr, post_start, state_ptr, wants_nfa
+
+C: /src/nvim/runtime.c
+  Functions: ExpandPackAddDir, ExpandRTDir, ExpandRTDir_int, add_opt_pack_plugin, add_pack_plugin, add_pack_start_dir, add_pack_start_dirs, add_start_pack_plugin, do_in_path, estack_init, estack_pop, estack_push, estack_push_ufunc, estack_sfile, ex_packadd, ex_packloadall, ex_runtime, expand_runtime_cmd, get_runtime_cmd_flags, get_str_line, load_plugins, load_start_packages, new_script_item, pack_has_entries, runtime_init, set_context_in_runtime_cmd, source_callback, source_using_linegetter
+  Structs: GetStrLineCookie, source_cookie
+  Variable declarations: APP_BOTH, APP_LOAD, exestack, ga_loaded, last_current_SID_seq, runtime_expand_flags, runtime_search_path, runtime_search_path_mutex, runtime_search_path_ref, runtime_search_path_thread, runtime_search_path_valid, script_items
+
+C: /src/nvim/search.c
+  Functions: free_spat, get_search_pat, ignorecase, ignorecase_opt, last_search_pattern, restore_incsearch_state, restore_last_search_pattern, restore_search_patterns, save_incsearch_state, save_last_search_pattern, save_re_pat, save_search_patterns, search_regcomp
+  Structs: SearchedFile, spat
+  Variable declarations: did_save_last_search_spat, e_search_hit_bottom_without_match_for_str, e_search_hit_top_without_match_for_str, last_idx, last_t_cmd, lastc, lastc_bytelen, lastc_bytes, lastcdir, mr_pattern, save_level, saved_last_idx, saved_last_search_spat, saved_mr_pattern, saved_no_hlsearch, saved_search_match_endcol, saved_search_match_lines, saved_spats, saved_spats_last_idx, saved_spats_no_hlsearch, spats
+
+C: /src/nvim/sha256.c
+  Functions: sha256_bytes, sha256_finish, sha256_process, sha256_self_test, sha256_start, sha256_update
+  Variable declarations: sha256_padding, sha_self_test_msg, sha_self_test_vector
+
+C: /src/nvim/shada.c
+  Enums: SRNIFlags, ShaDaReadResult, ShaDaWriteResult, ShadaEntryType
+  Structs: hm_llist_entry, sd_read_def, sd_write_def, struct (unnamed at /src/nvim/shada.c:223:9), struct (unnamed at /src/nvim/shada.c:296:9), struct (unnamed at /src/nvim/shada.c:310:9), struct (unnamed at /src/nvim/shada.c:320:9), struct (unnamed at /src/nvim/shada.c:326:9), struct (unnamed at /src/nvim/shada.c:338:9)
+  Variable declarations: default_pos, sd_default_values
+
+C: /src/nvim/sign.c
+  Functions: find_sign_by_typenr, init_signs, insert_sign, insert_sign_by_lnum_prio, sign_get_info, sign_group_get_next_signid, sign_group_ref, sign_group_unref, sign_in_group, sign_list_defined, sign_typenr2name, sign_undefine
+  Structs: sign
+  Variable declarations: cmds, first_sign, next_sign_id, next_sign_typenr, sg_table
+
+C: /src/nvim/spell.c
+  Enums: enum (unnamed at /src/nvim/spell.c:113:1)
+  Functions: expand_spelling, find_word, match_checkcompoundpattern, spell_check, spell_expand_check_cap
+  Structs: matchinf_S, spelload_S, syl_item_S
+  Variable declarations: did_set_spelltab, e_format, first_lang, int_wordlist, repl_from, repl_to, spelltab
+
+C: /src/nvim/spellfile.c
+  Enums: enum (unnamed at /src/nvim/spellfile.c:275:1), enum (unnamed at /src/nvim/spellfile.c:286:1), enum (unnamed at /src/nvim/spellfile.c:297:1), enum (unnamed at /src/nvim/spellfile.c:320:1)
+  Functions: add_fromto, aff_check_number, aff_check_string, aff_process_flags, affitem2flag, check_renumber, flag_in_afflist, get_affitem, get_affix_flags, get_compflags, get_pfxlist, is_aff_rule, process_compflags, sal_to_bool, spell_check_msm, spell_free_aff, spell_info_item, spell_read_aff, spell_read_dic, spell_read_wordfile, store_aff_word, str_equal
+  Structs: affentry_S, afffile_S, affheader_S, compitem_S, sblock_S, spellinfo_S, wordnode_S
+  Variable declarations: compress_added, compress_inc, e_affname, e_afftrailing, e_duplicate_char_in_map_entry, e_error_while_reading_sug_file_str, e_illegal_character_in_word, e_spell_trunc, msg_compressing
+
+C: /src/nvim/spellsuggest.c
+  Enums: enum (unnamed at /src/nvim/spellsuggest.c:111:1), enum (unnamed at /src/nvim/spellsuggest.c:132:1), enum (unnamed at /src/nvim/spellsuggest.c:138:1), enum (unnamed at /src/nvim/spellsuggest.c:149:1), enum (unnamed at /src/nvim/spellsuggest.c:156:1), enum (unnamed at /src/nvim/spellsuggest.c:216:1), enum (unnamed at /src/nvim/spellsuggest.c:223:1), enum (unnamed at /src/nvim/spellsuggest.c:230:1), state_T
+  Functions: add_banned, add_sound_suggest, add_suggestion, can_be_compound, check_suggestions, find_keepcap_word, go_deeper, rescore_one, rescore_suggestions, score_combine, score_comp_sal, score_wordcount_adj, similar_chars, soundfold_find, spell_check_sps, spell_edit_score_limit, spell_edit_score_limit_w, spell_find_cleanup, spell_find_suggest, spell_suggest, spell_suggest_expr, spell_suggest_file, spell_suggest_intern, spell_suggest_list, stp_sal_score, sug_compare, suggest_trie_walk, suggest_try_change, suggest_try_soundalike, suggest_try_soundalike_finish, suggest_try_soundalike_prep, suggest_try_special
+  Structs: sftword_T, struct (unnamed at /src/nvim/spellsuggest.c:84:9), suginfo_S, trystate_S
+  Variable declarations: dumsft, spell_suggest_timeout, sps_flags, sps_limit
+
+C: /src/nvim/state.c
+  Functions: get_mode, get_real_state, may_trigger_modechanged, state_enter, state_handle_k_event, virtual_active
+
+C: /src/nvim/statusline.c
+  Enums: NumberBase
+  Functions: build_statuscol_str, build_stl_str_hl, draw_tabline, fillchar_status, get_trans_bufname, redraw_custom_statusline, stl_alloc_click_defs, stl_clear_click_defs, stl_connected, stl_fill_click_defs, ui_ext_tabline_update, win_redr_custom, win_redr_ruler, win_redr_status, win_redr_winbar
+
+C: /src/nvim/strings.c
+
+C: /src/nvim/syntax.c
+  Enums: enum (unnamed at /src/nvim/syntax.c:5339:8)
+  Functions: add_keyword, check_keepend, check_keyword_id, check_state_ends, clear_current_state, clear_keywtab, clear_syn_state, copy_id_list, did_match_already, ex_ownsyntax, ex_syntax, ex_syntime, find_endpos, get_group_name, get_id_list, get_syn_options, get_syn_pattern, get_syntax_attr, get_syntax_info, get_syntax_name, get_syntime_arg, in_id_list, init_syn_patterns, invalidate_current_state, limit_pos, limit_pos_zero, load_current_state, match_keyword, pop_current_state, push_current_state, push_next_match, put_id_list, put_pattern, reset_expand_highlight, reset_synblock, restore_chartab, save_chartab, set_context_in_echohl_cmd, set_context_in_syntax_cmd, store_current_state, syn_add_cluster, syn_add_end_off, syn_add_start_off, syn_check_cluster, syn_clear_cluster, syn_clear_keyword, syn_clear_one, syn_clear_pattern, syn_clear_time, syn_cmd_case, syn_cmd_clear, syn_cmd_cluster, syn_cmd_conceal, syn_cmd_foldlevel, syn_cmd_include, syn_cmd_iskeyword, syn_cmd_keyword, syn_cmd_manual, syn_cmd_match, syn_cmd_off, syn_cmd_on, syn_cmd_region, syn_cmd_reset, syn_cmd_spell, syn_cmd_sync, syn_combine_list, syn_compare_stub, syn_compare_syntime, syn_cur_foldlevel, syn_current_attr, syn_finish_line, syn_get_concealed_id, syn_get_foldlevel, syn_get_id, syn_get_stack_item, syn_get_sub_char, syn_getcurline, syn_incl_toplevel, syn_list_cluster, syn_list_flags, syn_list_keywords, syn_list_one, syn_match_linecont, syn_regexec, syn_remove_pattern, syn_scl_name2id, syn_scl_namen2id, syn_set_timeout, syn_stack_alloc, syn_stack_apply_changes, syn_stack_apply_changes_block, syn_stack_cleanup, syn_stack_equal, syn_stack_find_entry, syn_stack_free_all, syn_stack_free_block, syn_stack_free_entry, syn_start_line, syn_sync, syn_update_ends, syntax_check_changed, syntax_clear, syntax_end_parsing, syntax_present, syntax_start, syntax_sync_clear, syntime_clear, syntime_report, update_si_attr, update_si_end, validate_current_state
+  Structs: name_list, state_item, struct (unnamed at /src/nvim/syntax.c:146:9), subcommand, syn_cluster_S, syn_opt_arg_T, syn_pattern
+  Variable declarations: current_attr, current_col, current_finished, current_flags, current_id, current_line_id, current_lnum, current_next_flags, current_next_list, current_seqnr, current_state, current_state_stored, current_sub_char, current_syn_inc_tag, current_trans_id, did_syntax_onoff, dumkey, e_contains_argument_not_accepted_here, e_illegal_arg, e_invalid_cchar_value, e_trailing_char_after_rsb_str_str, expand_what, keepend_level, msg_no_items, next_match_col, next_match_end_idx, next_match_eoe_pos, next_match_eos_pos, next_match_extmatch, next_match_flags, next_match_h_endpos, next_match_h_startpos, next_match_idx, next_match_m_endpos, next_seqnr, running_syn_inc_tag, spo_name_tab, subcommands, syn_block, syn_buf, syn_cmdlinep, syn_time_on, syn_tm, syn_win
+
+C: /src/nvim/tag.c
+  Enums: enum (unnamed at /src/nvim/tag.c:96:1), tagmatch_status_T, tags_read_status_T, tagsearch_state_T
+  Functions: add_llist_tags, did_set_tagfunc, do_tag, do_tags, expand_tag_fname, expand_tags, find_extra, find_tagfunc_tags, find_tags, findtags_add_match, findtags_apply_tfu, findtags_copy_matches, findtags_get_all_tags, findtags_get_next_line, findtags_hdr_parse, findtags_in_file, findtags_in_help_init, findtags_match_tag, findtags_matchargs_init, findtags_parse_line, findtags_start_state_handler, findtags_state_free, findtags_state_init, findtags_string_convert, found_tagfile_cb, get_tagfname, jumpto_tag, matching_line_len, parse_match, parse_tag_line, prepare_pats, print_tag_list, set_buflocal_tfu_callback, set_ref_in_tagfunc, tag_freematch, tag_full_fname, tag_strnicmp, taglen_advance, tagname_free, tagstack_clear_entry, test_for_current, test_for_static
+  Structs: findtags_match_args_T, struct (unnamed at /src/nvim/tag.c:130:9), struct (unnamed at /src/nvim/tag.c:161:9), struct (unnamed at /src/nvim/tag.c:83:9), tag_pointers
+  Variable declarations: e_at_bottom_of_tag_stack, e_at_top_of_tag_stack, e_cannot_modify_tag_stack_within_tagfunc, e_invalid_return_value_from_tagfunc, e_tag_not_found_str, e_tag_stack_empty, e_window_unexpectedly_close_while_searching_for_tags, mt_names, nofile_fname, ptag_entry, tag_fnames, tagmatchname, tfu_cb, tfu_in_use
+
+C: /src/nvim/terminal.c
+  Functions: get_rgb, get_underline_hl_flag, is_filter_char, term_damage, term_movecursor, term_moverect, term_output_callback, terminal_buf, terminal_check, terminal_check_cursor, terminal_check_size, terminal_close, terminal_destroy, terminal_enter, terminal_execute, terminal_get_line_attributes, terminal_init, terminal_open, terminal_paste, terminal_receive, terminal_running, terminal_send, terminal_send_key, terminal_teardown
+  Structs: struct (unnamed at /src/nvim/terminal.c:111:9), terminal, terminal_state
+  Variable declarations: refresh_pending, refresh_timer, vterm_screen_callbacks
+
+C: /src/nvim/testing.c
+  Enums: assert_type_T
+  Functions: prepare_assert_error
+  Variable declarations: e_assert_fails_fifth_argument, e_assert_fails_fourth_argument, e_assert_fails_second_arg, e_calling_test_garbagecollect_now_while_v_testing_is_not_set
+
+C: /src/nvim/textformat.c
+  Variable declarations: did_add_space
+
+C: /src/nvim/textobject.c
+  Functions: back_in_line, bck_word, bckend_word, cls, current_block, current_par, current_sent, current_tagblock, current_word, end_word, find_first_blank, find_next_quote, find_prev_quote, findpar, findsent, findsent_forward, fwd_word, in_html_tag, inmacro, skip_chars, startPS
+  Variable declarations: cls_bigword
+
+C: /src/nvim/ugrid.c
+  Functions: clear_region, destroy_cells, ugrid_clear, ugrid_clear_chunk, ugrid_free, ugrid_goto, ugrid_init, ugrid_resize, ugrid_scroll
+
+C: /src/nvim/ui.c
+  Functions: free_ui_event_callback, ui_active, ui_add_cb, ui_array, ui_attach_impl, ui_busy_start, ui_busy_stop, ui_call_event, ui_cb_update_ext, ui_check_cursor_grid, ui_check_mouse, ui_current_col, ui_current_row, ui_cursor_goto, ui_cursor_shape, ui_default_colors_set, ui_detach_impl, ui_flush, ui_grid_cursor_goto, ui_grid_resize, ui_gui_attached, ui_has, ui_init, ui_line, ui_mode_info_set, ui_override, ui_pum_get_height, ui_pum_get_pos, ui_refresh, ui_refresh_event, ui_remove_cb, ui_rgb_attached, ui_schedule_refresh, ui_set_ext_option, vim_beep
+  Variable declarations: busy, call_buf, cursor_col, cursor_grid_handle, cursor_row, has_mouse, pending_cursor_update, pending_has_mouse, pending_mode_info_update, pending_mode_update, ui_cb_ext, ui_count, ui_ext, ui_mode_idx, uis
+
+C: /src/nvim/ui_client.c
+  Functions: ui_client_attach, ui_client_detach, ui_client_start_server
+  Variable declarations: tui, ui_client_is_remote
+
+C: /src/nvim/ui_compositor.c
+  Functions: compose_area, compose_debug, compose_line, curgrid_covered_above, debug_delay, ui_comp_attach, ui_comp_compose_grid, ui_comp_detach, ui_comp_get_grid_at_coord, ui_comp_grid_cursor_goto, ui_comp_grid_resize, ui_comp_grid_scroll, ui_comp_init, ui_comp_mouse_focus, ui_comp_msg_set_pos, ui_comp_put_grid, ui_comp_raise_grid, ui_comp_raw_line, ui_comp_remove_grid, ui_comp_set_grid, ui_comp_set_screen_valid, ui_comp_should_draw, ui_comp_syn_init
+  Variable declarations: attrbuf, bufsize, chk_height, chk_width, composed_uis, curgrid, dbghl_clear, dbghl_composed, dbghl_normal, dbghl_recompose, linebuf, msg_current_row, msg_sep_char, msg_sep_row, msg_was_scrolled, valid_screen
+
+C: /src/nvim/undo.c
+  Functions: get_undolevel, u_compute_hash, u_inssub, u_save, u_save_cursor, u_savecommon, u_savedel, u_savesub, undo_allowed, zero_fmark_additional_data
+  Structs: struct (unnamed at /src/nvim/undo.c:132:9)
+  Variable declarations: e_not_open, e_undo_line_missing, e_undo_list_corrupt, e_write_error_in_undo_file_str, lastmark, u_newcount, u_oldcount, undo_undoes
+
+C: /src/nvim/usercmd.c
+  Functions: expand_user_command_name, find_ucmd, set_context_in_user_cmd, set_context_in_user_cmdarg
+  Structs: struct (unnamed at /src/nvim/usercmd.c:105:8)
+  Variable declarations: addr_type_complete, command_complete, e_argument_required_for_str, e_complete_used_without_allowing_arguments, e_no_such_user_defined_command_in_current_buffer_str, e_no_such_user_defined_command_str, ucmds
+
+C: /src/nvim/version.c
+  Variable declarations: Version, included_patches, longVersion, version_buildtype, version_cflags
+
+C: /src/nvim/window.c
+  Enums: enum (unnamed at /src/nvim/window.c:5459:1), wee_flags_T
+  Functions: check_window_scroll_resize, make_win_info_dict, may_make_initial_scroll_size_snapshot, may_trigger_win_scrolled_resized, win_size_save
+  Variable declarations: e_cannot_split_window_when_closing_buffer, m_onlyone, split_disallowed
+
+C: /src/xdiff/xdiffi.c
+  Functions: group_init, group_next, group_previous, group_slide_down, group_slide_up, measure_split, recs_match, score_add_split, score_cmp, xdl_add_change, xdl_bug, xdl_build_script, xdl_call_hunk_func, xdl_change_compact, xdl_diff, xdl_do_diff, xdl_free_script, xdl_mark_ignorable_lines, xdl_recs_cmp, xdl_split, xget_indent
+  Structs: s_xdpsplit, split_measurement, split_score, xdlgroup
+
+C: /src/xdiff/xemit.c
+  Functions: xdl_emit_diff, xdl_emit_record, xdl_get_hunk, xdl_get_rec
+  Structs: func_line
+
+C: /src/xdiff/xhistogram.c
+  Functions: cmp_recs, fall_back_to_classic_diff, find_lcs, free_index, histogram_diff, scanA, try_lcs, xdl_do_histogram_diff
+  Structs: histindex, region
+
+C: /src/xdiff/xpatience.c
+  Functions: binary_search, fall_back_to_classic_diff, fill_hashmap, find_longest_common_sequence, insert_record, is_anchor, match, patience_diff, walk_common_sequence, xdl_do_patience_diff
+  Structs: hashmap
+
+C: /src/xdiff/xprepare.c
+  Functions: xdl_classify_record, xdl_clean_mmatch, xdl_cleanup_records, xdl_free_classifier, xdl_free_ctx, xdl_free_env, xdl_init_classifier, xdl_optimize_ctxs, xdl_prepare_ctx, xdl_prepare_env, xdl_trim_ends
+  Structs: s_xdlclass, s_xdlclassifier
+
+C: /src/xdiff/xutils.c
+  Functions: ends_with_optional_cr, xdl_blankline, xdl_bogosqrt, xdl_cha_alloc, xdl_cha_free, xdl_cha_init, xdl_emit_diffrec, xdl_emit_hunk_hdr, xdl_fall_back_diff, xdl_format_hunk_hdr, xdl_guess_lines, xdl_hash_record, xdl_hash_record_with_whitespace, xdl_hashbits, xdl_mmfile_first, xdl_mmfile_size, xdl_num_out, xdl_recmatch
+
+C: /test/old/memfile_test.c
+  Functions: main, test_mf_hash
+
+C: /src/nvim/api/autocmd.c
+  Variable declarations: next_autocmd_id
+
+C: /src/nvim/api/buffer.c
+
+C: /src/nvim/api/command.c
+
+C: /src/nvim/api/deprecated.c
+
+C: /src/nvim/api/extmark.c
+  Functions: api_extmark_free_all_mem
+
+C: /src/nvim/api/options.c
+  Functions: do_ft_buf, object_as_optval, optval_as_object, validate_option_value_args
+
+C: /src/nvim/api/tabpage.c
+
+C: /src/nvim/api/ui.c
+  Functions: mpack_array, mpack_array_dyn16, mpack_str, mpack_uint, mpack_w2, mpack_w4, remote_ui_disconnect, remote_ui_wait_for_attach
+
+C: /src/nvim/api/vim.c
+
+C: /src/nvim/api/vimscript.c
+
+C: /src/nvim/api/win_config.c
+
+C: /src/nvim/api/window.c
+
+C: /src/nvim/eval/buffer.c
+  Functions: change_other_buffer_prepare, change_other_buffer_restore, find_buffer, find_win_for_curbuf
+  Structs: struct (unnamed at /src/nvim/eval/buffer.c:32:9)
+
+C: /src/nvim/eval/decode.c
+  Structs: struct (unnamed at /src/nvim/eval/decode.c:31:9), struct (unnamed at /src/nvim/eval/decode.c:42:9)
+
+C: /src/nvim/eval/encode.c
+  Variable declarations: encode_bool_var_names, encode_special_var_names, xdigits
+
+C: /src/nvim/eval/executor.c
+  Variable declarations: e_list_index_out_of_range_nr
+
+C: /src/nvim/eval/funcs.c
+  Enums: SomeMatchType
+  Functions: create_environment, dummy_timer_close_cb, dummy_timer_due_cb, execute_common, extend, f_execute, f_exepath, f_exists, f_expand, f_expandcmd, f_extend, f_extendnew, f_feedkeys, f_filereadable, f_filewritable, f_filter, f_finddir, f_findfile, f_flatten, f_flattennew, f_float2nr, f_fmod, f_fnameescape, f_fnamemodify, f_foreground, f_funcref, f_function, f_garbagecollect, f_get, f_getchangelist, f_getcharpos, f_getcharsearch, f_getcurpos, f_getcursorcharpos, f_getcwd, f_getfontname, f_getfperm, f_getfsize, f_getftime, f_getftype, f_getjumplist, f_getmarklist, f_getmousepos, f_getpid, f_getpos, f_getreg, f_getregtype, f_gettagstack, f_gettext, f_glob, f_glob2regpat, f_globpath, f_has, f_haslocaldir, f_hlID, f_hlexists, f_hostname, f_indent, f_index, f_indexof, f_input, f_inputdialog, f_inputlist, f_inputrestore, f_inputsave, f_inputsecret, f_insert, f_interrupt, f_invert, f_isdirectory, f_isinf, f_islocked, f_isnan, f_jobstart, f_jobstop, f_jobwait, f_json_decode, f_json_encode, f_keytrans, f_last_buffer_nr, f_len, f_libcall, f_libcallnr, f_line, f_line2byte, f_lispindent, f_localtime, f_menu_get, f_wait, findfilendir, flatten_common, get_expr_name, get_function_name, get_list_line, getpos_both, getreg_get_regname, has_wsl, indexof_blob, indexof_eval_expr, indexof_list, libcall_common
+  Variable declarations: dummy_ap, e_invalid_submatch_number_nr, e_invalwindow, e_listblobarg, e_missing_function_argument, e_reduceempty, ga_userinput, inputsecret_flag, required_env_vars
+
+C: /src/nvim/eval/gc.c
+  Variable declarations: gc_first_dict, gc_first_list
+
+C: /src/nvim/eval/typval.c
+  Functions: do_sort_uniq, f_sort, f_uniq, item_compare, item_compare2, item_compare2_keeping_zero, item_compare2_not_keeping_zero, item_compare_keeping_zero, item_compare_not_keeping_zero
+  Variable declarations: e_blob_required_for_argument_nr, e_bool_required_for_argument_nr, e_dict_required_for_argument_nr, e_float_or_number_required_for_argument_nr, e_invalid_value_for_blob_nr, e_list_or_blob_required_for_argument_nr, e_list_required_for_argument_nr, e_non_empty_string_required_for_argument_nr, e_non_null_dict_required_for_argument_nr, e_number_required_for_argument_nr, e_string_or_function_required_for_argument_nr, e_string_or_list_required_for_argument_nr, e_string_or_number_required_for_argument_nr, e_string_required_for_argument_nr, e_using_invalid_value_as_string, e_variable_nested_too_deep_for_unlock, sortinfo, tv_empty_string, tv_in_free_unref_items
+
+C: /src/nvim/eval/userfunc.c
+  Functions: builtin_function, callback_call_retnr, func_call, func_init, func_tbl_get, get_current_funccal, get_function_args, get_lambda_name, get_lambda_tv, register_closure, restore_funccal, save_funccal, set_current_funccal, set_ufunc_name
+  Structs: struct (unnamed at /src/nvim/eval/userfunc.c:57:9)
+  Variable declarations: current_funccal, e_cannot_use_partial_with_dictionary_for_defer, e_funcdict, e_funcexts, e_funcref, e_function_list_was_modified, e_function_nesting_too_deep, e_missing_heredoc_end_marker_str, e_no_white_space_allowed_before_str_str, e_nofunc, e_unknown_function_str, func_hashtab, funcargs, previous_funccal
+
+C: /src/nvim/eval/vars.c
+  Functions: eval_all_expr_in_str, eval_one_expr_in_str, ex_let, ex_let_vars, heredoc_get, list_arg_vars, list_buf_vars, list_glob_vars, list_hashtable_vars, list_tab_vars, list_win_vars, skip_var_list, skip_var_one
+  Variable declarations: e_cannot_use_heredoc_here, e_letunexp, e_lock_unlock, e_setting_str_to_value_with_wrong_type
+
+C: /src/nvim/eval/window.c
+  Functions: f_getcmdwintype, f_gettabinfo, f_getwininfo, f_getwinpos, f_getwinposx, f_getwinposy, f_tabpagenr, f_tabpagewinnr, f_win_execute, f_win_findbuf, f_win_getid, f_win_gettype, f_win_gotoid, f_win_id2tabwin, f_win_id2win, f_win_move_separator, f_win_move_statusline, f_win_screenpos, f_win_splitmove, f_winbufnr, f_wincol, f_winheight, f_winlayout, f_winline, f_winnr, f_winrestcmd, f_winrestview, f_winsaveview, f_winwidth, find_tabwin, find_win_by_nr, find_win_by_nr_or_id, get_framelayout, get_tabpage_info, get_win_info, get_winnr, restore_win, restore_win_noblock, switch_win, switch_win_noblock, win_findbuf, win_getid, win_id2tabwin, win_id2win, win_id2wp, win_id2wp_tp, win_move_into_split
+  Variable declarations: e_cannot_resize_window_in_another_tab_page, e_invalwindow
+
+C: /src/nvim/event/libuv_process.c
+
+C: /src/nvim/event/loop.c
+  Functions: async_cb, loop_close, loop_deferred_event, loop_init, loop_on_put, loop_poll_events, loop_purge, loop_schedule_deferred, loop_schedule_fast, loop_size, loop_uv_run, loop_walk_cb, timer_cb, timer_close_cb
+
+C: /src/nvim/event/multiqueue.c
+  Functions: multiqueue_new_parent
+  Structs: multiqueue, multiqueue_item, struct (unnamed at /src/nvim/event/multiqueue.c:79:9)
+  Variable declarations: NILEVENT
+
+C: /src/nvim/event/process.c
+  Variable declarations: exit_need_delay, process_is_tearing_down
+
+C: /src/nvim/event/rstream.c
+
+C: /src/nvim/event/signal.c
+
+C: /src/nvim/event/socket.c
+
+C: /src/nvim/event/stream.c
+  Functions: stream_set_blocking
+
+C: /src/nvim/event/time.c
+
+C: /src/nvim/event/wstream.c
+  Structs: struct (unnamed at /src/nvim/event/wstream.c:16:9)
+
+C: /src/nvim/lua/converter.c
+  Functions: nlua_pop_LuaRef, nlua_pop_Object, nlua_pop_typval, nlua_push_typval
+  Structs: struct (unnamed at /src/nvim/lua/converter.c:35:9)
+  Variable declarations: typval_conv_special
+
+C: /src/nvim/lua/executor.c
+  Enums: luv_err_type
+  Functions: get_global_lstate
+  Structs: ModuleDef, struct (unnamed at /src/nvim/lua/executor.c:76:9)
+  Variable declarations: global_lstate, in_fast_callback, in_script, main_thread, require_ref
+
+C: /src/nvim/lua/secure.c
+  Functions: ex_trust, nlua_read_secure, nlua_trust
+
+C: /src/nvim/lua/spell.c
+  Functions: luaopen_spell, nlua_spell_check
+  Variable declarations: spell_functions
+
+C: /src/nvim/lua/stdlib.c
+  Functions: regex_check, regex_gc, regex_match, regex_match_line, regex_match_str, regex_tostring
+  Structs: luaL_Reg
+  Variable declarations: regex_meta
+
+C: /src/nvim/lua/treesitter.c
+  Functions: build_meta, input_cb, logger_cb, node_byte_length, node_check, node_child, node_child_count, node_descendant_for_range, node_end, node_eq, node_equal, node_extra, node_field, node_has_changes, node_has_error, node_id, node_iter_children, node_missing, node_named, node_named_child, node_named_child_count, node_named_children, node_named_descendant_for_range, node_next_child, node_next_named_sibling, node_next_sibling, node_parent, node_prev_named_sibling, node_prev_sibling, node_range, node_rawquery, node_root, node_sexpr, node_start, node_symbol, node_tostring, node_tree, node_type, parser_check, parser_gc, parser_get_logger, parser_get_ranges, parser_get_timeout, parser_parse, parser_reset, parser_set_logger, parser_set_ranges, parser_set_timeout, parser_tostring, push_node, push_ranges, push_tree, query_check, query_err_string, query_gc, query_inspect, query_next_capture, query_next_match, query_tostring, querycursor_gc, range_from_lua, set_match, tree_check, tree_copy, tree_edit, tree_gc, tree_get_ranges, tree_root, tree_tostring, treecursor_gc, tslua_add_language, tslua_has_language, tslua_init, tslua_inspect_lang, tslua_parse_query, tslua_push_parser, tslua_remove_lang
+  Structs: luaL_Reg, struct (unnamed at /src/nvim/lua/treesitter.c:41:9), struct (unnamed at /src/nvim/lua/treesitter.c:47:9)
+  Variable declarations: node_meta, parser_meta, query_meta, querycursor_meta, tree_meta, treecursor_meta
+
+C: /src/nvim/lua/xdiff.c
+  Enums: NluaXdiffMode
+  Functions: call_on_hunk_cb, check_xdiff_opt, get_linematch_results, get_string_arg, hunk_locations_cb, lua_pushhunk, nlua_xdl_diff, process_xdl_diff_opts, write_string
+  Structs: struct (unnamed at /src/nvim/lua/xdiff.c:30:9)
+
+C: /src/nvim/msgpack_rpc/channel.c
+  Functions: find_rpc_channel, parse_msgpack, receive_msgpack, rpc_init, rpc_send_call, rpc_send_event, rpc_start, rpc_subscribe, rpc_unsubscribe
+  Variable declarations: out_buffer
+
+C: /src/nvim/msgpack_rpc/helpers.c
+  Functions: msgpack_rpc_helpers_init
+  Structs: struct (unnamed at /src/nvim/msgpack_rpc/helpers.c:35:9)
+  Variable declarations: sbuffer, zone
+
+C: /src/nvim/msgpack_rpc/server.c
+  Functions: close_socket_watcher, server_address_new, server_init, server_owns_pipe_address, server_start, server_stop, server_teardown, set_vservername
+  Variable declarations: watchers
+
+C: /src/nvim/msgpack_rpc/unpacker.c
+  Functions: api_parse_enter, api_parse_exit, unpack, unpacker_advance, unpacker_init, unpacker_parse_header, unpacker_parse_redraw, unpacker_teardown
+
+C: /src/nvim/os/dl.c
+  Functions: os_libcall
+
+C: /src/nvim/os/env.c
+  Functions: expand_env, expand_env_save, expand_env_save_opt, init_homedir, os_homedir
+  Variable declarations: homedir_buf
+
+C: /src/nvim/os/fileio.c
+
+C: /src/nvim/os/fs.c
+  Structs: iovec
+  Variable declarations: kLibuvSuccess
+
+C: /src/nvim/os/input.c
+  Enums: InbufPollResult
+  Functions: check_multiclick, create_cursorhold_event, cursorhold_event, fast_breakcheck, handle_mouse_event, inbuf_poll, input_available, input_blocking, input_enqueue, input_enqueue_mouse, input_init, input_read_cb, input_start, input_stop, line_breakcheck, os_breakcheck, os_char_avail, os_inchar, os_input_ready, os_isatty, process_ctrl_c, push_event_key, restart_cursorhold_wait, veryfast_breakcheck
+  Variable declarations: blocking, breakcheck_count, cursorhold_tb_change_cnt, cursorhold_time, input_buffer, input_eof, read_stream
+
+C: /src/nvim/os/lang.c
+  Functions: get_locale_val, get_mess_lang, init_locale, is_valid_mess_lang, lang_init, set_lang_var
+
+C: /src/nvim/os/mem.c
+  Functions: os_get_total_mem_kib
+
+C: /src/nvim/os/os_win_console.c
+  Functions: os_icon_init, os_icon_set, os_open_conin_fd, os_replace_stdin_to_conin, os_replace_stdout_and_stderr_to_conout, os_title_reset, os_title_save
+  Variable declarations: hOrigIcon, hOrigIconSmall, hWnd, origTitle
+
+C: /src/nvim/os/process.c
+  Functions: os_proc_children, os_proc_running, os_proc_tree_kill
+
+C: /src/nvim/os/pty_conpty_win.c
+  Functions: HRESULT, WINAPI, os_conpty_free, os_conpty_init, os_conpty_set_size, os_conpty_spawn, os_dyn_conpty_init, os_has_conpty_working
+
+C: /src/nvim/os/pty_process_unix.c
+
+C: /src/nvim/os/pty_process_win.c
+  Functions: build_env_block
+  Variable declarations: CALLBACK
+
+C: /src/nvim/os/shell.c
+  Functions: have_dollars, have_wildcard, save_patterns
+  Structs: DynamicBuffer
+
+C: /src/nvim/os/signal.c
+  Functions: signal_accept_deadly, signal_init, signal_name, signal_reject_deadly, signal_start, signal_stop, signal_teardown
+  Variable declarations: rejecting_deadly, spipe
+
+C: /src/nvim/os/stdpaths.c
+  Functions: appname_is_valid, get_appname
+  Variable declarations: xdg_defaults, xdg_env_vars
+
+C: /src/nvim/os/time.c
+  Structs: tm
+
+C: /src/nvim/os/tty.c
+
+C: /src/nvim/os/users.c
+  Functions: add_user, get_users, init_users, match_user, os_get_uname, os_get_userdir, os_get_username, os_get_usernames
+  Variable declarations: ga_users
+
+C: /src/nvim/tui/input.c
+  Functions: tinput_destroy, tinput_init, tinput_start, tinput_stop
+  Structs: kitty_key_map_entry
+  Variable declarations: kitty_key_map_entry
+
+C: /src/nvim/tui/terminfo.c
+  Functions: terminfo_builtin, terminfo_from_builtin, terminfo_info_msg, terminfo_is_bsd_console, terminfo_is_term_family
+
+C: /src/nvim/tui/tui.c
+  Functions: after_startup_cb, terminfo_start, terminfo_stop, tui_enable_extkeys, tui_start, tui_terminal_start, unibi_pre_fmt_str
+  Structs: Rect, TUIData
+  Variable declarations: cursor_style_enabled, got_winch
+
+C: /test/functional/fixtures/printargs-test.c
+  Functions: main
+
+C: /test/functional/fixtures/printenv-test.c
+  Functions: main
+
+C: /test/functional/fixtures/shell-test.c
+  Functions: flush_wait, help, main
+
+C: /test/functional/fixtures/streams-test.c
+  Functions: main
+
+C: /test/functional/fixtures/tty-test.c
+  Functions: alloc_cb, main, owns_tty, prepare_cb, read_cb, sig_handler, walk_cb
+  Variable declarations: tty, tty_out
+
+C: /test/unit/fixtures/multiqueue.c
+  Functions: ut_multiqueue_get, ut_multiqueue_put
+
+C: /test/unit/fixtures/rbuffer.c
+  Functions: ut_rbuffer_each, ut_rbuffer_each_read_chunk, ut_rbuffer_each_reverse, ut_rbuffer_each_write_chunk
+
+C: /src/nvim/api/private/converter.c
+  Structs: struct (unnamed at /src/nvim/api/private/converter.c:25:9)
+
+C: /src/nvim/api/private/dispatch.c
+  Functions: msgpack_rpc_get_handler_for
+
+C: /src/nvim/api/private/helpers.c
+  Functions: try_enter
+
+C: /src/nvim/api/private/validate.c
+  Functions: api_err_exp, api_err_invalid, check_string_array
+
+C: /src/nvim/viml/parser/expressions.c
+  Enums: ExprASTParseType, ExprASTWantedNode, ExprOpAssociativity, ExprOpLvl
+  Functions: viml_pexpr_free_ast
+  Variable declarations: base_to_prefix_length, ccs_tab, eltkn_cmp_type_tab, eltkn_mul_type_tab, eltkn_opt_scope_tab, expr_asgn_type_tab
+
+C: /src/nvim/viml/parser/parser.c
+  Functions: parser_simple_get_line
