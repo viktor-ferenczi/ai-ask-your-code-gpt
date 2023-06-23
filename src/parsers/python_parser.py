@@ -14,7 +14,7 @@ from splitters.text_splitter import TextSplitter
 
 class PythonParser(BaseParser):
     name = 'Python'
-    extensions = ('py',)
+    extensions = ('py', 'bzl', 'scons')
     mime_types = ('text/python', 'text/x-python')
     tree_sitter_language_name = 'python'
     is_code = True
