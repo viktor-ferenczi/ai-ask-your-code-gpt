@@ -64,7 +64,7 @@ class Extractor:
                 except UnicodeDecodeError:
                     # print(f'Skipping unsupported document {doc.path!r} in project {self.project.project_id!r}')
                     continue
-                except:
+                except:  # pragma: no cover
                     print('Unexpected failure during file type detection:')
                     print_exc()
                     continue
@@ -83,7 +83,7 @@ async def extract_worker():
         try:
             try:
                 project_id: str = inventory.get_next_project_to_extract()
-            except sqlite3.Error:
+            except sqlite3.OperationalError:  # pragma: no cover
                 await asyncio.sleep(1.0)
                 continue
 
@@ -99,17 +99,16 @@ async def extract_worker():
                     await loader.load()
                 fragment_count = project.count_fragments()
                 print(f'Fragment count: {fragment_count}')
-            except KeyboardInterrupt:
+            except KeyboardInterrupt:  # pragma: no cover
                 raise
-            except Exception:
-                print(f'Failed to load project {project_id!r}, removed it from the inventory')
+            except Exception:  # pragma: no cover
+                print(f'Failed to load project {project_id!r}')
                 print_exc()
-                inventory.delete_project(project_id)
                 continue
 
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:  # pragma: no cover
             raise
-        except Exception:
+        except Exception:  # pragma: no cover
             print('Unexpected failure')
             print_exc()
             await asyncio.sleep(9)
@@ -152,17 +151,17 @@ async def indexer_worker():
                 with timer(f'Indexing {fragment_count} fragments for project {project_id!r}', count=fragment_count):
                     indexer = Indexer(inventory, project)
                     await indexer.index()
-            except KeyboardInterrupt:
+            except KeyboardInterrupt:  # pragma: no cover
                 raise
-            except Exception:
+            except Exception:  # pragma: no cover
                 print(f'Failed to index project {project_id!r}, will retry')
                 print_exc()
                 await asyncio.sleep(5)
                 continue
 
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:  # pragma: no cover
             raise
-        except Exception:
+        except Exception:  # pragma: no cover
             print('Unexpected failure')
             print_exc()
             await asyncio.sleep(10)

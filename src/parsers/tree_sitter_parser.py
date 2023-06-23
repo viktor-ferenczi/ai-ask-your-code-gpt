@@ -27,7 +27,6 @@ class TreeSitterParser(BaseParser):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text.replace('\r\n', '\n').replace('\r', ''))
 
         name_map = {}
-        print(f'Parsing: {path}')
         for name in self.collect_names(walk_nodes(cursor)):
 
             if isinstance(name.name, bytes):

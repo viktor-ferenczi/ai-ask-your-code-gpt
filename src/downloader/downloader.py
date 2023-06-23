@@ -93,7 +93,7 @@ class Downloader:
     async def __download(self, cached='') -> Tuple[bytes, str]:
         try:
             archive, checksum = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached=cached)
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:  # pragma: no cover
             raise
         except NotModified:
             print(f'The archive already downloaded from {self.url!r} has not been modified since, skipping the download')

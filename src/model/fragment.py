@@ -10,15 +10,3 @@ class Fragment:
     type: str  # Type of the code construct, for example: function, class, interface, method, field, variable, macro
     name: str  # Name of the code construct
     text: str  # Definition of the code construct in case of definitions, empty string in case of usage
-
-    @staticmethod
-    def clone(fragment: "Fragment") -> "Fragment":
-        return Fragment(
-            fragment.uuid,
-            fragment.path,
-            fragment.lineno,
-            fragment.depth,
-            fragment.type,
-            fragment.name,
-            fragment.text,
-        )

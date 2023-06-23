@@ -145,6 +145,13 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         hits = await project.search(tail='.md', text='standard set of source code files', limit=1)
         self.verify_hits(hits, 1, path='/README.md', contains=['standard set of source code files'])
 
+        hits = await project.search(text='class Duplicates', limit=10)
+        self.verify_hits(hits, 2, path='/find_duplicates.py', contains=['class Duplicates:'])
+        self.assertEqual(len([hit for hit in hits if hit.type == 'module']), 1)
+        self.assertEqual(len([hit for hit in hits if hit.type == 'class']), 1)
+        self.verify_hits(hits[:1], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
+        self.verify_hits(hits[1:], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
+
         summary = await project.summarize(tail='.md')
         self.assertEqual('''\
 File extensions: .md
