@@ -14,7 +14,7 @@ from loader.loader import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
 from project.inventory import Inventory
-from project.project import Project
+from project.project import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -47,10 +47,13 @@ REPOS = [
     # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
     #
     # # Python, Markdown
-    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip')
+    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
 
     # TypeScript
-    ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip')
+    # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
+
+    # Python, C++, CUDA
+    ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
 ]
 
 
@@ -168,6 +171,17 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)
+
+        if name == 'taso':
+            try:
+                await project.search(text='libtaso_runtime.so')
+            except ProjectError as e:
+                self.assertTrue('No hits with this search expression.' in str(e))
+
+            hits = await project.search(text='?FTS5:using+namespace+taso', limit=10)
+            normalize_fragments(hits)
+            actual = '\n\n'.join(pformat(hit) for hit in hits)
+            self.verify('fts5_using+namespace+taso.txt', actual)
 
     async def wait_for_processing(self, project):
         inventory = Inventory()

@@ -1,0 +1,116 @@
+Hit(uuid='NORMALIZED-000000',
+    path='/src/cudnn/cuda_helper.cu',
+    lineno=1,
+    depth=1,
+    type='documentation',
+    name='',
+    text='#include "taso/cuda_helper.h"\nusing namespace taso;\n',
+    score=1.0)
+
+Hit(uuid='NORMALIZED-000001',
+    path='/src/cudnn/activation_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.9666666666666667)
+
+Hit(uuid='NORMALIZED-000002',
+    path='/src/cudnn/batchnorm_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.9333333333333333)
+
+Hit(uuid='NORMALIZED-000003',
+    path='/src/cudnn/broadcast_add_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.9)
+
+Hit(uuid='NORMALIZED-000004',
+    path='/src/cudnn/cast_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.8666666666666667)
+
+Hit(uuid='NORMALIZED-000005',
+    path='/src/cudnn/concat_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.8333333333333334)
+
+Hit(uuid='NORMALIZED-000006',
+    path='/src/cudnn/constant_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.8)
+
+Hit(uuid='NORMALIZED-000007',
+    path='/src/cudnn/conv2d_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.7666666666666666)
+
+Hit(uuid='NORMALIZED-000008',
+    path='/src/cudnn/element_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.7333333333333334)
+
+Hit(uuid='NORMALIZED-000009',
+    path='/src/cudnn/elementwise_unary_kernel.cu',
+    lineno=15,
+    depth=1,
+    type='documentation',
+    name='',
+    text='\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n',
+    score=0.7)

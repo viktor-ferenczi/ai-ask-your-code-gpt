@@ -1,0 +1,23 @@
+File extensions: .h
+
+C: /cpp_examples/bert.h
+
+C: /cpp_examples/example_utils.h
+
+C: /cpp_examples/nasnet_a.h
+
+C: /cpp_examples/nasrnn.h
+
+C: /cpp_examples/resnet50.h
+
+C: /cpp_examples/resnext50.h
+
+C: /include/taso/cuda_helper.h
+
+C: /include/taso/dnnl_helper.h
+
+C: /include/taso/ops.h
+
+C: /include/taso/substitution.h
+
+C: /src/generator/rules.pb.h
