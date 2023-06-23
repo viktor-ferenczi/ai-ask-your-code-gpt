@@ -287,8 +287,11 @@ class Project:
 
         print(f'FTS5 query: {query}')
 
-        with self.cursor() as cursor:
-            return [row[0] for row in cursor.execute('SELECT uuid FROM FragText WHERE text MATCH ? ORDER BY rank LIMIT ?', (query, limit))]
+        try:
+            with self.cursor() as cursor:
+                return [row[0] for row in cursor.execute('SELECT uuid FROM FragText WHERE text MATCH ? ORDER BY rank LIMIT ?', (query, limit))]
+        except sqlite3.OperationalError as e:
+            raise ProjectError(f'Failed to search the project with SQLite FTS5 query {query!r}. Reason: {e}')
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         for _ in range(5):
