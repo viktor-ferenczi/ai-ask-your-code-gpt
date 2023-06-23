@@ -6,14 +6,13 @@ from typing import Iterator
 
 from quart import Quart
 
-import parsers
 from common.constants import C
 from common.doc import find_common_base_dir, remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
 from common.zip_support import extract_verify_documents, iter_files_from_zip
 from model.document import Document
-from parsers import TextParser
+from parsers.registrations import TextParser, detect
 from project.inventory import Inventory
 from project.project import Project
 
@@ -58,7 +57,7 @@ class Extractor:
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
 
-            parser_cls = parsers.detect(doc.path, doc.content)
+            parser_cls = detect(doc.path, doc.content)
             if parser_cls is None:
                 try:
                     doc.content.decode('ascii')

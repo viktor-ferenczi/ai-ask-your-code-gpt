@@ -207,8 +207,9 @@ TypeScript: /lib/hyper.d.ts
   Variables: __non_webpack_require__ snapshotResult
   Usages: Assignable Client ColorMap ConfigActions Exclude FitAddon FontWeight Function HTMLElement HeaderConnectedProps HeaderProps HyperActions HyperConnectedProps HyperDispatch HyperProps HyperState ISessionReducer ITab ITermGroup ITermGroupReducer ITermGroups ITermState IUiReducer IWindowsPty Immutable InitActions Middleware MouseEvent Mutable NodeModule NodeRequire NotificationActions NotificationProps NotificationState NotificationsConnectedProps NotificationsProps Partial Pick React ReactChild Record Reducer ReturnType SearchAddon SearchBoxProps SessionActions SplitPaneProps StyleSheetProps T TabActions TabProps TabsProps Term TermGroupActions TermGroupConnectedProps TermGroupOwnProps TermGroupProps TermProps Terminal Terms TermsConnectedProps TermsProps U UIActions UpdateActions cols configureStore console cursorFrame cursorShapes data document event extensionProps global hyperPlugin immutableRecord module process require rows searchTerm selection session sessionState term terms title uiState uid window
 
-Java: /lib/index.tsx
-  Usages: Object Object Object Object addNotificationMessage addSession addSessionData bellSound bellSound clearActiveSession closeSearch config config config config config configData configInfo configOptions configureStore decreaseFontSize defineProperty defineProperty defineProperty defineProperty dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch dispatch document enterFullScreen exitActiveTermGroup fetchFileData fetchFileData forceUpdate getConfig getConfig getConfig getConfig getElementById getState getState increaseFontSize init leaveFullScreen loadConfig moveLeft moveRight moveTo moveToNextPane moveToPreviousPane openFile openSSH openSearch plugins ptyExitTermGroup reload reloadConfig reloadConfig reloadConfig render requestHorizontalSplit requestTermGroup requestVerticalSplit resetFontSize rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc rpc sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sendSessionData sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions sessionActions setFontSmoothing setZoomFactor slice slice store store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ store_ subscribe termGroupActions termGroupActions termGroupActions termGroupActions termGroupActions then toUpperCase uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uiActions uid updateAvailable updaterActions webFrame windowGeometryUpdated windowMove
+TSX: /lib/index.tsx
+  Variables: app bellSound configInfo data fetchFileData store_ uid
+  Usages: HyperContainer Object Provider React activeUid addNotificationMessage base64FileData canInstall config configData configOptions configureStore dismissable document escaped forceUpdate getBase64FileData index init loadConfig parsedUrl path plugins process releaseName releaseNotes releaseUrl reloadConfig render rpc sessionActions store termGroupActions text uiActions updaterActions url webFrame window
 
 TypeScript: /lib/rpc.ts
   Usages: RPC
@@ -377,26 +378,55 @@ TypeScript: /lib/actions/updater.ts
   Functions: installUpdate updateAvailable
   Usages: HyperActions UPDATE_AVAILABLE UPDATE_INSTALL canInstall notes releaseUrl rpc version
 
-Java: /lib/components/header.tsx
-  Classes: Header
-  Usages: borderColor className className className className className className className close decorate focusActiveTerm getBoundingClientRect getTabsProps getWindowHeaderConfig handleMinimizeClick maxButtonHref maximize minimize onChangeTab onClick onClick onDoubleClick onMouseDown onMouseUp openHamburgerMenu render style title unmaximize window xlinkHref xlinkHref xlinkHref xlinkHref
+TSX: /lib/components/header.tsx
+  Variables: Tabs defaults left maxButtonHref props title
+  Usages: Header HeaderProps MouseEvent React Tabs_ active align app between border bottom center className color content crispEdges decorate display div drag event fixed flex focusActiveTerm font getTabsProps header header_closeWindow header_shape header_windowControls height hover index isMac items justify length none onDoubleClick onMouseDown onMouseUp opacity padding position radius region rendering right select shape showHamburgerMenu showWindowControls size solid space style svg tabs top user webkit width winCtrls window
 
-Java: /lib/components/split-pane.tsx
-  Classes: SplitPane
-  Methods: constructor
-  Usages: Array Math Math abs addEventListener addEventListener asMutable backgroundColor ceil children className componentDidUpdate componentWillUnmount count fill fill from getBoundingClientRect getBoundingClientRect getBoundingClientRect getSizes getSizes getSizes handleAutoResize indexOf key onDoubleClick onDragEnd onMouseDown onResize onResize preventDefault preventDefault removeEventListener removeEventListener render rgba rgba rgba rgba setupPanes setupPanes setupPanes sizes sizes_ sizes_ style style sum window window window window
+TSX: /lib/components/notification.tsx
+  Classes: Notification
+  Variables: opacity
+  Usages: HTMLDivElement NodeJS NotificationProps NotificationState React Timeout backgroundColor className clearTimeout color div handleDismiss jsx onClick prevProps prevState props ref setTimeout style userDismissColor
 
-Java: /lib/components/term-group.tsx
-  Methods: constructor
-  Usages: bind borderColor decorate decorate direction get groups has map onTermRef ref_ renderTerm term toLowerCase
+TSX: /lib/components/notifications.tsx
+  Variables: Notification
+  Usages: Download Notification_ Notifications NotificationsProps React Restart Version backgroundColor className color cols currentTarget decorate dismissAfter div fontSize href jsx key messageDismissable messageShowing messageText more notes onClick onDismiss onDismissFont onDismissMessage onDismissResize onDismissUpdate openExternal preventDefault props require resizeShowing rows shell style text updateVersion userDismissable window
 
-Java: /lib/components/term.tsx
+TSX: /lib/components/searchBox.tsx
+  Variables: SearchButton handleKeyUp
+  Usages: HTMLDivElement HTMLInputElement KeyboardEvent PropsWithChildren React Search SearchBox SearchBoxProps SearchButtonColors SearchButtonProps VscArrowDown VscArrowUp VscCaseSensitive VscClose VscRegex VscWholeWord active backgroundColor borderColor caseSensitive className clsx default div event font foregroundColor input jsx onClick onKeyDown onKeyUp placeholder props ref regex results searchButtonColors selectionColor size span style tabIndex this title type useCallback wholeWord
+
+TSX: /lib/components/split-pane.tsx
+  Variables: availableWidth children count pos sizeProperty sizes sizes_ style total
+  Usages: Array Element Math MouseEvent React ReactNodeArray SplitPane SplitPaneProps backgroundColor borderColor child className componentWillUnmount direction div handleDragStart jsx key onDoubleClick onMouseDown prevProps props window
+
+TSX: /lib/components/style-sheet.tsx
+  Classes: StyleSheet
+  Usages: React StyleSheetProps borderColor jsx style
+
+TSX: /lib/components/tab.tsx
+  Classes: Tab
+  Variables: isLeftClick isMiddleClick
+  Usages: Fragment MouseEvent React TabProps className customChildrenBefore event hasActivity isActive isFirst isLast jsx onClick onClose onMouseUp props span style svg text title use xlinkHref
+
+TSX: /lib/components/tabs.tsx
+  Classes: Tabs
+  Variables: Tab hide isMac props
+  Usages: React Tab_ TabsProps borderColor className decorate div fullScreen getTabProps jsx key nav navigator onChange onClose style tab tabs title uid
+
+TSX: /lib/components/term-group.tsx
+  Classes: TermGroup_
+  Variables: SplitPane Term direction groups map props session termRef
+  Usages: DecoratedTermGroup Element HyperDispatch HyperState I JSX Object React Record ReturnType SplitPane_ T TermGroup TermGroupOwnProps TermGroupProps Term_ WeakMap _args args borderColor child childGroups connect context decorate default dispatch first getTermGroupProps getTermProps key mapDispatchToProps mapStateToProps onResize onTermGroupResize ownProps ref_ render resizeTermGroup rest sizes splitSizes state term termGroup thisObj type uid
+
+TSX: /lib/components/term.tsx
   Classes: Term
-  Usages: Color Color Color Color Color Color Color Term addEventListener addEventListener alpha alpha appendChild attachCustomKeyEventHandler backgroundColor borderColor canvas caseSensitive className clear clear clear clearActiveDecoration clearDecorations clearSelection clearTimeout clipboard clipboard closeSearchBox component componentDidMount componentDidUpdate componentWillUnmount console console console console console constructor createElement cursorBlink cursorFrame decorate disconnect dispose dispose document document emit execCommand findNext findPrevious fit fit fitResize fitResize focus focus focus focus font forEach foregroundColor getContext getSelection getSelection getTermOptions getTermOptions handler hasSelection hasSelection hex hex hex hex hex isEqual isSupported isWebgl2Supported loadAddon loadAddon loadAddon loadAddon loadAddon loadAddon loadAddon loadAddon loadAddon log log needTransparency needTransparency nextTermOptions observe onBell onCloseSearch onContextLoss onCursorMove onData onDidChangeResults onResize onResize onResize onTermWrapperRef onTitleChange open openExternal paste pickBy preventDefault processClipboard props props props push push push push push push ref ref_ ref_ regex removeChild removeEventListener removeEventListener render rendererTypes reportRenderer reset reset resize resize results ringBell ringBell searchNext searchPrevious selectAll selectionColor setBellSound setBellSound setState setState setState setState setState setTimeout shallActivateWebLink shallActivateWebLink shell stopPropagation toUpperCase toggleCaseSensitive toggleRegex toggleWholeWord type useWebGL useWebGL warn warn warn webglAddon webglAddon webglAddon wholeWord window window write write writeText writeText
+  Variables: CURSOR_STYLES SearchBox backgroundColor canvas cursorFrame getTermOptions isSupported isWebgl2Supported isWindows needTransparency nextTermOptions processed rendererTypes shallActivateWebLink useWebGL webglAddon
+  Usages: Audio CanvasAddon Color Event FitAddon HTMLAudioElement HTMLElement IDisposable ISearchDecorationOptions ITerminalOptions ImageAddon LigaturesAddon MouseEvent NodeJS React Record ResizeObserver SearchAddon TermProps Terminal Timeout Uint8Array Unicode11Addon WebLinksAddon WebglAddon _SearchBox bell borderColor caseSensitive className clearTimeout clipboard close cols component console const data decorate div document error event font foregroundColor handler isEqual isTermActive jsx key navigator next pickBy prev prevProps process processClipboard props ref regex results rows searchOptions searchPrevious searchResults searchTerm selectionColor setState setTimeout shell sound state style terms toggleCaseSensitive toggleRegex toggleWholeWord type uid uri value wholeWord window
 
-Java: /lib/components/terms.tsx
+TSX: /lib/components/terms.tsx
   Classes: Terms
-  Usages: ObjectTypedKeys ObjectTypedKeys addEventListener backgroundColor borderColor componentDidUpdate componentWillUnmount const customCSS decorate decorate dispose fontFamily foregroundColor getActiveTerm getSelection getTermByUid getTermGroupProps isActive key key map onContextMenu props props ref_ ref_ ref_ registerCommandHandlers render selection some some term term termGroup test toString translateY translateY translateY uid window window
+  Variables: StyleSheet TermGroup isActive isMac props selection shift
+  Usages: HyperDispatch ObjectTypedKeys React Record StyleSheet_ Term TermGroup_ TermsProps backgroundColor borderColor className cmds context customCSS decorate dispatch div fontFamily foregroundColor getTermGroupProps jsx key navigator nextProps onRef prevProps ref_ registerCommandHandlers style term termGroup uid window
 
 TypeScript: /lib/constants/config.ts
   Interfaces: ConfigLoadAction ConfigReloadAction
@@ -441,6 +471,11 @@ TypeScript: /lib/constants/updater.ts
 TypeScript: /lib/containers/header.ts
   Variables: HeaderContainer activeSessionUid getActiveRootGroup getActiveSessions getActivityMarkers getSessions getTabs isMac mapDispatchToProps mapStateToProps session
   Usages: Header HeaderConnectedProps HyperDispatch HyperState ITab ReturnType activeRootGroup activeSessions activityMarkers changeTab close closeTab connect coordinates createSelector dispatch getRootGroups maximize minimize navigator openHamburgerMenu rootGroups sessions state termGroups unmaximize
+
+TSX: /lib/containers/hyper.tsx
+  Classes: Hyper
+  Variables: HyperContainer borderWidth command isMac keys mapDispatchToProps mapStateToProps term
+  Usages: HeaderContainer HyperConnectedProps HyperDispatch HyperProps HyperState Mousetrap MousetrapInstance NotificationsContainer Object React ReturnType Terms TermsContainer className commandKeys connect customCSS dangerouslySetInnerHTML dispatch div document fullScreen getCommandHandler getRegisteredKeys isMac_ jsx lastConfigUpdate maximized navigator prev props ref_ shouldPreventDefault state style stylis terms this uiActions uiFontFamily uid window
 
 TypeScript: /lib/containers/notifications.ts
   Variables: NotificationsContainer cols fontSize mapDispatchToProps mapStateToProps rows state_

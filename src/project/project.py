@@ -293,7 +293,10 @@ class Project:
 
         extensions = ' '.join(sorted(set('.' + fragment.path.rsplit('.', 1)[-1] for fragment in fragments if fragment.path and '.' in fragment.path.replace('/.', '/'))))
         if extensions:
-            summary.insert(0, f'File extensions: {extensions}\n')
+            if len(extensions) > 1:
+                summary.insert(0, f'File extensions: {extensions}\n')
+            else:
+                summary.insert(0, f'File extension: {extensions}\n')
 
         if not token_limit:
             token_limit = 2000 if not path and not name else 1000

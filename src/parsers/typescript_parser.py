@@ -11,10 +11,10 @@ from parsers.base_parser import BaseParser
 from splitters.text_splitter import TextSplitter
 
 
-class TypescriptParser(BaseParser):
+class TypeScriptParser(BaseParser):
     name = 'TypeScript'
     extensions = ('ts',)
-    mime_types = ('application/typescript',)
+    mime_types = ('application/typescript', 'application/x-typescript')
     tree_sitter_language_name = 'typescript'
     tree_sitter_subdir = ('typescript',)
     is_code = True
@@ -68,17 +68,19 @@ class TypescriptParser(BaseParser):
                 yield Fragment(new_uuid(), path, lineno, depth, 'namespace', name, f'namespace {name} {{...}}')
             elif (node.type == 'interface' and
                   node.next_sibling is not None and
-                  node.next_sibling.type == 'type_identifier'):
+                  node.next_sibling.type == 'type_identifier' and
+                  node.parent is not None):
                 name = decode_replace(node.next_sibling.text)
                 interfaces.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'interface', name, sentence.text)
             elif (node.type == 'class' and
                   node.next_sibling is not None and
-                  node.next_sibling.type == 'type_identifier'):
+                  node.next_sibling.type == 'type_identifier' and
+                  node.parent is not None):
                 name = decode_replace(node.next_sibling.text)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
             elif (node.type == 'function' and
                   node.next_sibling is not None and

@@ -12,7 +12,7 @@ from common.http import download_file
 from downloader.downloader import app as downloader_app
 from loader.loader import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
-from parsers import PARSERS_BY_EXTENSION
+from parsers.registrations import PARSERS_BY_EXTENSION
 from project.inventory import Inventory
 from project.project import Project
 

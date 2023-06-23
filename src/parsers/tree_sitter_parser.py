@@ -6,7 +6,7 @@ from common.text import decode_replace
 from common.tools import new_uuid
 from common.tree import walk_nodes
 from model.fragment import Fragment
-from parsers import BaseParser
+from parsers.registrations import BaseParser
 
 
 class TreeSitterParser(BaseParser):
