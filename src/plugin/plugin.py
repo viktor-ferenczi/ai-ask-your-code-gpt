@@ -132,7 +132,7 @@ async def create():
 async def delete(project_id: str):
     project_id = project_id.lower()
     if not RX.GUID.match(project_id):
-        return Response(response='Invalid project_id, it must be a GUID', status=400)
+        return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
     print(f'Delete project {project_id!r}')
 
@@ -158,7 +158,7 @@ async def summarize(project_id: str):
     # noinspection DuplicatedCode
     project_id = project_id.lower()
     if not RX.GUID.match(project_id):
-        return Response(response='Invalid project_id, it must be a GUID', status=400)
+        return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
     path: str = request.args.get('path', '')
     tail: str = request.args.get('tail', '')
@@ -241,7 +241,7 @@ async def search(project_id: str):
     # noinspection DuplicatedCode
     project_id = project_id.lower()
     if not RX.GUID.match(project_id):
-        return Response(response='Invalid project_id, it must be a GUID', status=400)
+        return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
     path: str = request.args.get('path', '')
     tail: str = request.args.get('tail', '')
