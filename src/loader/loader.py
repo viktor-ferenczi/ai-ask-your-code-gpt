@@ -114,15 +114,11 @@ async def extract_worker():
                     await loader.load()
                 fragment_count = project.count_fragments()
                 print(f'Fragment count: {fragment_count}')
-            except KeyboardInterrupt:  # pragma: no cover
-                raise
             except Exception:  # pragma: no cover
                 print(f'Failed to load project {project_id!r}')
                 print_exc()
                 continue
 
-        except KeyboardInterrupt:  # pragma: no cover
-            raise
         except Exception:  # pragma: no cover
             print('Unexpected failure')
             print_exc()
@@ -166,16 +162,12 @@ async def indexer_worker():
                 with timer(f'Indexing {fragment_count} fragments for project {project_id!r}', count=fragment_count):
                     indexer = Indexer(inventory, project)
                     await indexer.index()
-            except KeyboardInterrupt:  # pragma: no cover
-                raise
             except Exception:  # pragma: no cover
                 print(f'Failed to index project {project_id!r}, will retry')
                 print_exc()
                 await asyncio.sleep(5)
                 continue
 
-        except KeyboardInterrupt:  # pragma: no cover
-            raise
         except Exception:  # pragma: no cover
             print('Unexpected failure')
             print_exc()

@@ -111,8 +111,6 @@ async def create():
     # noinspection PyBroadException
     try:
         project_id = await Project.download(url)
-    except KeyboardInterrupt:
-        raise
     except ProjectError as e:
         return Response(response=f'{e}; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
     except Exception:
@@ -140,8 +138,6 @@ async def delete(project_id: str):
     try:
         project = Project(project_id)
         await project.delete()
-    except KeyboardInterrupt:
-        raise
     except ProjectError as e:
         print(f'Failed to delete project {project_id!r}: {e}')
         return Response(response=str(e), status=400)
@@ -200,8 +196,6 @@ async def summarize(project_id: str):
     # noinspection PyBroadException
     try:
         text = await project.summarize(path=path, tail=tail, name=name)
-    except KeyboardInterrupt:
-        raise
     except ProjectError as e:
         print(f'Failed to summarize project {project_id!r}: {e}')
         print(f'- path={path!r}')
@@ -293,8 +287,6 @@ async def search(project_id: str):
                 hits = await project.search(text=name, limit=10)
         if not hits and path:
             hits = await project.search(tail='/' + path.rsplit('/')[-1], text=text, limit=limit)
-    except KeyboardInterrupt:
-        raise
     except ProjectError as e:
         print(f'Failed to search project {project_id!r}: {e}')
         print(f'- path={path!r}')
