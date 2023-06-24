@@ -93,8 +93,6 @@ class Downloader:
     async def __download(self, cached='') -> Tuple[bytes, str]:
         try:
             archive, checksum = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached=cached)
-        except KeyboardInterrupt:  # pragma: no cover
-            raise
         except NotModified:
             print(f'The archive already downloaded from {self.url!r} has not been modified since, skipping the download')
             return b'', cached
@@ -119,8 +117,6 @@ class Downloader:
                 # supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
                 verify_only=True
             ))
-        except KeyboardInterrupt:
-            raise
         except BadZipFile:
             print(f'Not a ZIP file: {self.url!r}')
             print_exc()
@@ -159,8 +155,6 @@ async def download():
         with timer(f'Downloaded archive {url!r}'):
             downloader = Downloader(url)
             project_id = await downloader.download_verify()
-    except KeyboardInterrupt:
-        raise
     except DownloadError as e:
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
