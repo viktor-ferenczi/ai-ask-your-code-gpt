@@ -1,17 +1,17 @@
-import os
-from typing import Iterable, Tuple
+from typing import Iterable
 
 from kafka import KafkaProducer
 
-KAFKA_SERVER = os.environ.get('KAFKA_SERVER', 'localhost:9092')
+from streaming.config import KAFKA_SERVER
+from streaming.message import Message
 
 
-def send_one(topic: str, payload: bytes):
+def send_one(msg: Message):
     producer = KafkaProducer(bootstrap_servers=[KAFKA_SERVER])
-    producer.send(topic, payload)
+    producer.send(msg.topic, msg.value)
 
 
-def send_many(iter_messages: Iterable[Tuple[str, bytes]]):
+def send_many(iter_messages: Iterable[Message]):
     producer = KafkaProducer(bootstrap_servers=[KAFKA_SERVER])
-    for topic, payload in iter_messages:
-        producer.send(topic, payload)
+    for msg in iter_messages:
+        producer.send(msg.topic, msg.value)
