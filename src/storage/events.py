@@ -2,11 +2,18 @@ import asyncio
 import json
 from contextlib import asynccontextmanager
 from datetime import datetime
+from enum import Enum
 from traceback import print_exc
 from typing import Any, Dict, ContextManager, Callable, Awaitable
 
 import asyncpg
 from asyncpg.utils import _quote_ident
+
+
+class EventName(Enum):
+    Test1 = 'Test1'
+    Test2 = 'Test2'
+
 
 TCallback = Callable[[Any, Any], Awaitable[Any]]
 
@@ -69,14 +76,14 @@ class EventManager:
 
 
 class Producer(EventManager):
-    async def publish_event(self, name: str, params: Dict[str, Any], max_attempts: int = 10, retry_delay: float = 0.001) -> datetime:
+    async def publish_event(self, name: EventName, params: Dict[str, Any], max_attempts: int = 10, retry_delay: float = 0.001) -> datetime:
         params_json: str = json.dumps(params)
         async with self.get_conn() as conn:
             for attempt in range(max_attempts):
                 try:
                     async with conn.transaction():
-                        created: datetime = await conn.fetchval(PUBLISH_EVENT_SQL, name, params_json)
-                        await conn.execute(f'NOTIFY {_quote_ident(name)}')
+                        created: datetime = await conn.fetchval(PUBLISH_EVENT_SQL, name.name, params_json)
+                        await conn.execute(f'NOTIFY {_quote_ident(name.name)}')
                         return created
                 except asyncpg.UniqueViolationError:
                     if attempt + 1 == max_attempts:
@@ -91,11 +98,11 @@ class Consumer(EventManager):
         self.processing_timeout: int = processing_timeout
         self.handlers: Dict[str, TCallback] = {}
 
-    def register_event_handler(self, event_type: str, callback: TCallback):
-        self.handlers[event_type] = callback
+    def register_event_handler(self, event_type: EventName, callback: TCallback):
+        self.handlers[event_type.name] = callback
 
-    def unregister_event_handler(self, event_type: str):
-        self.handlers.pop(event_type, None)
+    def unregister_event_handler(self, event_type: EventName):
+        self.handlers.pop(event_type.name, None)
 
     @asynccontextmanager
     async def listen(self):
@@ -116,7 +123,10 @@ class Consumer(EventManager):
         for name in self.handlers:
             await conn.remove_listener(name, self.handle_notification)
 
-    async def handle_notification(self, _: asyncpg.Connection, pid: int, channel: str, payload: str):
+    async def handle_notification(self, listener_conn: asyncpg.Connection, pid: int, channel: str, payload: str):
+        if pid == listener_conn.get_server_pid():
+            return
+
         event_handler: TCallback = self.handlers.get(channel)
         if event_handler is None:
             return
