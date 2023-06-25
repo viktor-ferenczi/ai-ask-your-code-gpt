@@ -2,12 +2,18 @@ import asyncio
 import json
 from contextlib import asynccontextmanager
 from datetime import datetime
+from enum import Enum
 from traceback import format_exc
 from typing import Any, Dict, ContextManager, Callable, Awaitable, List
 
 import asyncpg
 from asyncpg import Record
 from asyncpg.utils import _quote_ident
+
+
+class TaskName(Enum):
+    Test1 = 'Test1'
+    Test2 = 'Test2'
 
 
 class TaskFailed(Exception):
@@ -118,7 +124,7 @@ class TaskManager:
 
 
 class Scheduler(TaskManager):
-    async def schedule(self, name: str, project: str, **params) -> datetime:
+    async def schedule(self, name: TaskName, project: str, **params) -> datetime:
         max_attempts: int = 10
         retry_delay: float = 0.001
         params_json: str = json.dumps(params)
@@ -126,8 +132,8 @@ class Scheduler(TaskManager):
             for attempt in range(max_attempts):
                 try:
                     async with conn.transaction():
-                        created: datetime = await conn.fetchval(CREATE_TASK_SQL, name, project, params_json)
-                        await conn.execute(f'NOTIFY {_quote_ident(name)}')
+                        created: datetime = await conn.fetchval(CREATE_TASK_SQL, name.name, project, params_json)
+                        await conn.execute(f'NOTIFY {_quote_ident(name.name)}')
                         return created
                 except asyncpg.UniqueViolationError:
                     if attempt + 1 == max_attempts:
@@ -135,10 +141,10 @@ class Scheduler(TaskManager):
                     await asyncio.sleep(retry_delay)
                     retry_delay = min(1.0, retry_delay * 2)
 
-    async def check(self, name: str, project: str) -> List[Record]:
+    async def check(self, name: TaskName, project: str) -> List[Record]:
         async with self.get_conn() as conn:
             async with conn.transaction(readonly=True):
-                return await conn.fetch(CHECK_TASKS_SQL, name, project)
+                return await conn.fetch(CHECK_TASKS_SQL, name.name, project)
 
 
 class Processor(TaskManager):
@@ -147,11 +153,11 @@ class Processor(TaskManager):
         self.processing_timeout: int = processing_timeout
         self.processors: Dict[str, TCallback] = {}
 
-    def register_task(self, name: str, callback: TCallback):
-        self.processors[name] = callback
+    def register_task(self, name: TaskName, callback: TCallback):
+        self.processors[name.name] = callback
 
-    def unregister_task(self, name: str):
-        self.processors.pop(name, None)
+    def unregister_task(self, name: TaskName):
+        self.processors.pop(name.name, None)
 
     @asynccontextmanager
     async def listen(self):
@@ -172,7 +178,10 @@ class Processor(TaskManager):
         for name in self.processors:
             await conn.remove_listener(name, self.handle_notification)
 
-    async def handle_notification(self, _: asyncpg.Connection, pid: int, name: str, payload: str):
+    async def handle_notification(self, listener_conn: asyncpg.Connection, pid: int, name: str, payload: str):
+        if pid == listener_conn.get_server_pid():
+            return
+
         processor: TCallback = self.processors.get(name)
         if processor is None:
             return

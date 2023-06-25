@@ -1,11 +1,12 @@
 import asyncio
 import unittest
 from datetime import datetime
+from typing import List
 
 import asyncpg
 
-from storage.tasks import Scheduler, Processor, Cleanup, TaskFailed
 from common.tools import wait_until_cancelled
+from storage.tasks import Scheduler, Processor, Cleanup, TaskFailed, TaskName
 
 
 class TestProducerConsumer(unittest.IsolatedAsyncioTestCase):
@@ -25,19 +26,19 @@ class TestProducerConsumer(unittest.IsolatedAsyncioTestCase):
             scheduler = Scheduler(pool)
             processor = Processor(pool)
 
-            tasks = []
+            tasks1: List[str] = []
 
             # Register callback
             async def task_processor(param1: str):
-                tasks.append(param1)
+                tasks1.append(param1)
                 self.assertEqual(param1, 'value1')
 
-            processor.register_task('Task1', task_processor)
+            processor.register_task(TaskName.Test1, task_processor)
 
             async with processor.listen():
                 # Produce task
                 started = datetime.utcnow()
-                created = await scheduler.schedule('Task1', 'P1', param1='value1')
+                created = await scheduler.schedule(TaskName.Test1, 'P1', param1='value1')
                 finished = datetime.utcnow()
                 self.assertTrue(started <= created, f'{started!r} <= {created!r}')
                 self.assertTrue(created <= finished, f'{created!r} <= {finished!r}')
@@ -45,69 +46,69 @@ class TestProducerConsumer(unittest.IsolatedAsyncioTestCase):
                 # Run consumer for a short time to process task
                 await asyncio.wait_for(wait_until_cancelled(), timeout=0.5)
 
-            self.assertEqual(len(tasks), 1)
+            self.assertEqual(len(tasks1), 1)
 
-            tasks = await scheduler.check('TaskX', '?')
-            self.assertEqual(len(tasks), 0)
+            tasks2 = await scheduler.check(TaskName.Test1, 'P1')
+            self.assertEqual(len(tasks2), 1)
+            self.assertEqual(tasks2[0]['created'], created)
 
-            tasks = await scheduler.check('Task1', 'P1')
-            self.assertEqual(len(tasks), 1)
-            self.assertEqual(tasks[0]['created'], created)
+            tasks3 = await scheduler.check(TaskName.Test2, '?')
+            self.assertEqual(len(tasks3), 0)
 
     async def test_produce_consume_fail(self):
         async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
             scheduler = Scheduler(pool)
             processor = Processor(pool)
 
-            tasks = []
+            tasks1: List[str] = []
 
             # Register callback that fails
             async def task_processor(param1: str):
-                tasks.append(param1)
+                tasks1.append(param1)
                 raise TaskFailed('Test Failed')
 
-            processor.register_task('Task2', task_processor)
+            processor.register_task(TaskName.Test2, task_processor)
 
             async with processor.listen():
                 # Produce task
-                await scheduler.schedule('Task2', 'P2', param1='value1')
+                await scheduler.schedule(TaskName.Test2, 'P2', param1='value1')
 
                 # Run consumer for a short time to process task
                 await asyncio.wait_for(wait_until_cancelled(), timeout=0.5)
 
-            self.assertEqual(len(tasks), 1)
+            self.assertEqual(len(tasks1), 1)
 
-            tasks = await scheduler.check('Task2', 'P2')
-            self.assertEqual(len(tasks), 1)
-            self.assertEqual(tasks[0]['message'], 'Test Failed')
+            tasks2 = await scheduler.check(TaskName.Test2, 'P2')
+            self.assertEqual(len(tasks2), 1)
+            self.assertEqual(tasks2[0]['message'], 'Test Failed')
 
     async def test_produce_consume_unexpected_error(self):
         async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
             scheduler = Scheduler(pool)
             processor = Processor(pool)
 
-            tasks = []
+            tasks1: List[str] = []
 
             # Register callback that fails
             async def task_processor(param1: str):
-                tasks.append(param1)
+                tasks1.append(param1)
                 raise Exception('Test Exception')
 
-            processor.register_task('Task2', task_processor)
+            processor.register_task(TaskName.Test2, task_processor)
 
             async with processor.listen():
                 # Produce task
-                await scheduler.schedule('Task2', 'P2', param1='value1')
+                await scheduler.schedule(TaskName.Test2, 'P2', param1='value1')
 
                 # Run consumer for a short time to process task
                 await asyncio.wait_for(wait_until_cancelled(), timeout=0.5)
 
-            self.assertEqual(len(tasks), 1)
+            self.assertEqual(len(tasks1), 1)
 
-            tasks = await scheduler.check('Task2', 'P2')
-            self.assertEqual(len(tasks), 1)
-            self.assertEqual(tasks[0]['message'], 'Unexpected error')
-            self.assertTrue("raise Exception('Test Exception')" in tasks[0]['traceback'])
+            tasks2 = await scheduler.check(TaskName.Test2, 'P2')
+            self.assertEqual(len(tasks2), 1)
+            self.assertEqual(tasks2[0]['message'], 'Unexpected error')
+            self.assertTrue("raise Exception('Test Exception')" in tasks2[0]['traceback'])
 
 
 if __name__ == '__main__':
