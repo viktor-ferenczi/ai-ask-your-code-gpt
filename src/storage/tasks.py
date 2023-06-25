@@ -1,235 +1,208 @@
 import asyncio
 import json
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from traceback import format_exc
-from typing import Any, Dict, ContextManager, Callable, Awaitable, List
+from typing import Any, Dict, Callable, List, Optional, Union, Awaitable
 
 import asyncpg
-from asyncpg import Record
+from asyncpg import Record, Connection
 from asyncpg.utils import _quote_ident
+
+from common.tools import async_retry
+from storage import sql
+from storage.database import Database
 
 
 class TaskName(Enum):
     Test1 = 'Test1'
     Test2 = 'Test2'
+    CreateProject = 'CreateProject'
+    DownloadArchive = 'DownloadArchive'
+    IndexArchive = 'IndexArchive'
+    DownloadSource = 'DownloadSource'
+    IndexSource = 'IndexSource'
+    QuerySummary = 'QuerySummary'
+    QuerySearch = 'QuerySearch'
+
+
+class TaskState(Enum):
+    new = 'new'
+    running = 'running'
+    completed = 'completed'
+    failed = 'failed'
+    crashed = 'crashed'
+
+
+ZERO_TIME = datetime(2000, 1, 1)
+
+
+@dataclass
+class Task:
+    name: TaskName
+    project: Optional[str] = None
+    params: Optional[Dict[str, Any]] = None
+    state: TaskState = 'new'
+    created: datetime = ZERO_TIME
+    started: Optional[datetime] = None
+    finished: Optional[datetime] = None
+    message: Optional[str] = None
+    traceback: Optional[str] = None
+
+    @classmethod
+    def from_row(cls, row):
+        params = row['params']
+        return cls(
+            name=TaskName(row['name']),
+            project=row['project'],
+            params=json.loads(params) if params else None,
+            state=TaskState(row['state']),
+            created=row['created'],
+            started=row['started'],
+            finished=row['finished'],
+            message=row['message'],
+            traceback=row['traceback'],
+        )
 
 
 class TaskFailed(Exception):
     pass
 
 
-TCallback = Callable[[Any, Any], Awaitable[Any]]
-
-DROP_TASKS_TABLE_SQL: str = 'drop table if exists "Tasks";'
-
-CREATE_TASKS_TABLE_SQL: str = """
-create table "Tasks"
-(
-    created   timestamp default (current_timestamp at time zone 'utc') not null constraint tasks_pk primary key,
-    started   timestamp,
-    finished  timestamp,
-    failed    timestamp,
-    name      varchar(50)                         not null,
-    project   varchar(36)                         not null,
-    params    text      default '{}'::text        not null,
-    message   text,
-    traceback text
-);
-
-comment on column "Tasks".created is 'When the task was created.';
-
-comment on column "Tasks".started is 'Processing start time.';
-
-comment on column "Tasks".finished is 'Processing finish time.';
-
-comment on column "Tasks".failed is 'Processing failed time.';
-
-comment on column "Tasks".name is 'Name (type) of the task.';
-
-comment on column "Tasks".project is 'Project identifier.';
-
-comment on column "Tasks".params is 'JSON encoded parameters, actual fields depend on the task.';
-
-comment on column "Tasks".message is 'Message to send back to the user.';
-
-comment on column "Tasks".traceback is 'Traceback of an error in case of an unexpected failure.';
-
-create index tasks_project
-    on "Tasks" (project);
-
-alter table "Tasks"
-    owner to askyourcode;
-"""
-
-CREATE_TASK_SQL: str = """
-    INSERT INTO "Tasks" (name, project, params)
-    VALUES ($1, $2, $3)
-    RETURNING created;
-"""
-
-CHECK_TASKS_SQL: str = """
-    SELECT created, started, finished, failed, name, params, message, traceback 
-    FROM "Tasks"
-    WHERE name = $1 AND project = $2
-    ORDER BY created;
-"""
-
-FETCH_NEXT_TASK_SQL: str = """
-    SELECT created, name, params FROM "Tasks"
-    WHERE name = $1 AND started IS NULL
-    ORDER BY created
-    LIMIT 1 FOR UPDATE SKIP LOCKED;
-"""
-
-SET_TASK_STARTED_SQL: str = """
-    UPDATE "Tasks"
-    SET started = current_timestamp
-    WHERE created = $1 AND started IS NULL;
-"""
-
-SET_TASK_FINISHED_SQL: str = """
-    UPDATE "Tasks"
-    SET finished = current_timestamp, message = $2
-    WHERE created = $1 AND started IS NOT NULL AND finished IS NULL AND failed IS NULL;
-"""
-
-SET_TASK_HANDLED_ERROR_SQL: str = """
-    UPDATE "Tasks"
-    SET failed = current_timestamp, message = $2
-    WHERE created = $1 AND started IS NOT NULL AND finished IS NULL AND failed IS NULL;
-"""
-
-SET_TASK_UNEXPECTED_ERROR_SQL: str = """
-    UPDATE "Tasks"
-    SET failed = current_timestamp, message = 'Unexpected error', traceback = $2
-    WHERE created = $1 AND started IS NOT NULL AND finished IS NULL AND failed IS NULL;
-"""
-
-DELETE_TASK_SQL: str = """
-    DELETE FROM "Tasks"
-    WHERE created = $1
-"""
+THandlerResult = Union[None, Task, List[Task]]
+THandler = Callable[[Task], Awaitable[THandlerResult]]
 
 
-class TaskManager:
-    def __init__(self, pool: asyncpg.Pool):
-        self.pool = pool
+class Tasks:
+    max_retries: int = 10
+    retry_delay: float = 0.001
+    handler_timeout: float = 300.0
+    suffix: str = ''
+    handlers: Dict[TaskName, THandler] = {}
 
-    @asynccontextmanager
-    async def get_conn(self) -> ContextManager[asyncpg.Connection]:
-        async with self.pool.acquire() as conn:
-            yield conn
+    def __init__(self, db: Database):
+        self.db: Database = db
 
+    async def schedule(self, task: Task):
+        async with self.db.connection() as conn:
+            await async_retry(lambda: self.__schedule(conn, task))
 
-class Scheduler(TaskManager):
-    async def schedule(self, name: TaskName, project: str, **params) -> datetime:
-        max_attempts: int = 10
-        retry_delay: float = 0.001
-        params_json: str = json.dumps(params)
-        async with self.get_conn() as conn:
-            for attempt in range(max_attempts):
-                try:
-                    async with conn.transaction():
-                        created: datetime = await conn.fetchval(CREATE_TASK_SQL, name.name, project, params_json)
-                        await conn.execute(f'NOTIFY {_quote_ident(name.name)}')
-                        return created
-                except asyncpg.UniqueViolationError:
-                    if attempt + 1 == max_attempts:
-                        raise
-                    await asyncio.sleep(retry_delay)
-                    retry_delay = min(1.0, retry_delay * 2)
+    async def __schedule(self, conn: Connection, task: Task):
+        params_json = json.dumps(task.params)
+        async with conn.transaction():
+            name = task.name.name
+            created: datetime = await conn.fetchval(sql.CREATE_TASK, name, task.project, params_json)
+            notify = f"NOTIFY {_quote_ident(name)}, '{created.isoformat()}'"
+            print(notify)
+            await conn.execute(notify)
+            task.created = created
 
-    async def check(self, name: TaskName, project: str) -> List[Record]:
-        async with self.get_conn() as conn:
+    async def list_tasks_by_project(self, name: TaskName, project: str) -> List[Record]:
+        async with self.db.connection() as conn:
             async with conn.transaction(readonly=True):
-                return await conn.fetch(CHECK_TASKS_SQL, name.name, project)
+                return await conn.fetch(sql.LIST_PROJECT_TASKS, name.name, project)
 
-
-class Processor(TaskManager):
-    def __init__(self, pool: asyncpg.Pool, processing_timeout: int = 600):
-        super().__init__(pool)
-        self.processing_timeout: int = processing_timeout
-        self.processors: Dict[str, TCallback] = {}
-
-    def register_task(self, name: TaskName, callback: TCallback):
-        self.processors[name.name] = callback
-
-    def unregister_task(self, name: TaskName):
-        self.processors.pop(name.name, None)
+    async def list_pending_tasks(self, name: TaskName) -> List[Record]:
+        async with self.db.connection() as conn:
+            async with conn.transaction(readonly=True):
+                return await conn.fetch(sql.LIST_PENDING_TASKS, name.name)
 
     @asynccontextmanager
-    async def listen(self):
-        async with self.get_conn() as conn:
-            async with conn.transaction():
-                await self.add_listeners(conn)
+    async def listener(self, suffix: str = ''):
+        assert self.handlers, 'No tasks registered'
+        async with self.db.connection() as conn:
+            await self.__add_listeners(conn, suffix)
             try:
                 yield
             finally:
-                async with conn.transaction():
-                    await self.remove_listeners(conn)
+                await self.__remove_listeners(conn, suffix)
 
-    async def add_listeners(self, conn):
-        for name in self.processors:
-            await conn.add_listener(name, self.handle_notification)
+    async def __add_listeners(self, conn: Connection, suffix: str):
+        for name in self.handlers:
+            await conn.add_listener(f'{name.name}{suffix}', self.handle_notification)
 
-    async def remove_listeners(self, conn):
-        for name in self.processors:
-            await conn.remove_listener(name, self.handle_notification)
+    async def __remove_listeners(self, conn: Connection, suffix: str):
+        for name in self.handlers:
+            await conn.remove_listener(f'{name.name}{suffix}', self.handle_notification)
 
     async def handle_notification(self, listener_conn: asyncpg.Connection, pid: int, name: str, payload: str):
-        if pid == listener_conn.get_server_pid():
+        print(f'EVENT pid={pid!r}, name={name!r}, payload={payload!r}')
+        # if pid == listener_conn.get_server_pid():
+        #     return
+
+        handler: THandler = self.handlers.get(TaskName(name))
+        if handler is None:
             return
 
-        processor: TCallback = self.processors.get(name)
-        if processor is None:
-            return
+        async with self.db.connection() as conn:
 
-        done = f'{name}$'
+            row = await conn.fetchrow(sql.FETCH_TASK_FOR_UPDATE, datetime.fromisoformat(payload))
+            if row is None:
+                return
 
-        async with self.get_conn() as conn:
-            while 1:
+            task: Task = Task.from_row(row)
+            if task.state != TaskState.new:
+                return
+
+            new_state = await conn.fetchval(sql.SET_TASK_RUNNING, task.created)
+            assert new_state == 'running'
+
+            task = await self.get_task(task.created)
+
+        try:
+            result = await asyncio.wait_for(handler(task), timeout=self.handler_timeout)
+
+            if result is Task:
+                response_tasks = [result]
+            elif result is list:
+                response_tasks = result
+            elif result is None:
+                response_tasks = []
+            else:
+                raise ValueError(f'Invalid result returned by the task handler: {result!r}')
+
+        except asyncio.TimeoutError:
+            async with self.db.connection() as conn:
                 async with conn.transaction():
-                    task: Dict[str, Any] = await conn.fetchrow(FETCH_NEXT_TASK_SQL, name)
-                    if not task:
-                        break
-                    created = task['created']
-                    await conn.execute(SET_TASK_STARTED_SQL, created)
+                    new_state = await conn.fetchval(sql.SET_TASK_FAILED, task.created, 'Timed out')
+                    assert new_state == 'failed'
+        except TaskFailed as e:
+            async with self.db.connection() as conn:
+                async with conn.transaction():
+                    message = str(e)
+                    new_state = await conn.fetchval(sql.SET_TASK_FAILED, task.created, message)
+                    assert new_state == 'failed'
+        except Exception:
+            async with self.db.connection() as conn:
+                async with conn.transaction():
+                    traceback = format_exc()
+                    print('Handler crashed:')
+                    print(f'task = {task!r}')
+                    print(traceback)
+                    new_state = await conn.fetchval(sql.SET_TASK_CRASHED, task.created, traceback)
+                    assert new_state == 'crashed'
+        else:
+            async with self.db.connection() as conn:
+                async with conn.transaction():
+                    new_state = await conn.fetchval(sql.SET_TASK_COMPLETED, task.created)
+                    assert new_state == 'completed'
+                    for response_task in response_tasks:
+                        await self.schedule(response_task)
 
-                kws = json.loads(task['params'])
-                try:
-                    message = await processor(**kws) or None
-                except TaskFailed as e:
-                    async with conn.transaction():
-                        message = str(e)
-                        await conn.execute(SET_TASK_HANDLED_ERROR_SQL, created, message)
-                except Exception:
-                    async with conn.transaction():
-                        traceback = format_exc()
-                        await conn.execute(SET_TASK_UNEXPECTED_ERROR_SQL, created, traceback)
-                else:
-                    async with conn.transaction():
-                        await conn.execute(SET_TASK_FINISHED_SQL, created, message)
-
-                await conn.execute(f'NOTIFY {_quote_ident(done)}')
-
-
-class Cleanup(TaskManager):
-    def __init__(self, pool: asyncpg.Pool):
-        super().__init__(pool)
-
-    async def recreate_table(self):
-        async with self.get_conn() as conn:
-            await conn.execute(DROP_TASKS_TABLE_SQL)
-            await conn.execute(CREATE_TASKS_TABLE_SQL)
+    async def retry_all_tasks(self):
+        async with self.db.connection() as conn:
+            async with conn.transaction():
+                await conn.execute(sql.RETRY_TASKS)
 
     async def delete_all_tasks(self):
-        async with self.get_conn() as conn:
+        async with self.db.connection() as conn:
             async with conn.transaction():
-                await conn.execute('TRUNCATE "Tasks"')
+                await conn.execute(sql.TRUNCATE_TASKS)
 
-    async def restart_all_processing(self):
-        async with self.get_conn() as conn:
+    async def get_task(self, created: datetime) -> Optional[Task]:
+        async with self.db.connection() as conn:
             async with conn.transaction():
-                await conn.execute('UPDATE "Tasks" SET started = NULL WHERE started IS NOT NULL AND finished IS NULL AND failed IS NULL')
+                row = await conn.fetchrow(sql.GET_TASK, created)
+                return Task.from_row(row) if row else None

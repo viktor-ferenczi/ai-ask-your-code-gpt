@@ -18,9 +18,7 @@ def process(handlers: Dict[str, THandler], *, poll_ms: float = float('inf')):
                 continue
             try:
                 responses = list(handler(rec))
-            except KeyboardInterrupt:
-                raise
-            except:
+            except Exception:
                 print(f'Unexpected error while processing message: {rec!r}')
             else:
                 yield from responses
