@@ -13,5 +13,6 @@ azure-core
 python-grpc
 aioquic
 libclang
+asyncpg~=0.27.0
 
 torch~=2.0.1+cu118
