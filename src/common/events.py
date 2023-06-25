@@ -10,10 +10,10 @@ from asyncpg.utils import _quote_ident
 
 TCallback = Callable[[Any, Any], Awaitable[Any]]
 
-CREATE_EVENTS_TABLE_SQL: str = 'drop table public."Events";'
+DROP_EVENTS_TABLE_SQL: str = 'drop table if exists "Events";'
 
 CREATE_EVENTS_TABLE_SQL: str = """
-create table public."Events"
+create table "Events"
 (
     created   timestamp default (current_timestamp at time zone 'utc') not null constraint events_pk primary key,
     name      varchar(100)                        not null,
@@ -21,15 +21,15 @@ create table public."Events"
     handled   timestamp
 );
 
-comment on column public."Events".created is 'When the event was produced';
+comment on column "Events".created is 'When the event was produced';
 
-comment on column public."Events".name is 'Event type';
+comment on column "Events".name is 'Event type';
 
-comment on column public."Events".params is 'JSON encoded parameters, actual fields depend on the event type';
+comment on column "Events".params is 'JSON encoded parameters, actual fields depend on the event type';
 
-comment on column public."Events".handled is 'Timestamp when the event was successfully handled';
+comment on column "Events".handled is 'Timestamp when the event was successfully handled';
 
-alter table public."Events"
+alter table "Events"
     owner to askyourcode;
 """
 
@@ -144,6 +144,11 @@ class Consumer(EventManager):
 class Cleanup(EventManager):
     def __init__(self, pool: asyncpg.Pool):
         super().__init__(pool)
+
+    async def recreate_table(self):
+        async with self.get_conn() as conn:
+            await conn.execute(DROP_EVENTS_TABLE_SQL)
+            await conn.execute(CREATE_EVENTS_TABLE_SQL)
 
     async def delete_all_events(self):
         async with self.get_conn() as conn:

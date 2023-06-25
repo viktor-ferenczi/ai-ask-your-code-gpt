@@ -16,10 +16,10 @@ class TaskFailed(Exception):
 
 TCallback = Callable[[Any, Any], Awaitable[Any]]
 
-DROP_TASKS_TABLE_SQL: str = 'drop table public."Tasks";'
+DROP_TASKS_TABLE_SQL: str = 'drop table if exists "Tasks";'
 
 CREATE_TASKS_TABLE_SQL: str = """
-create table public."Tasks"
+create table "Tasks"
 (
     created   timestamp default (current_timestamp at time zone 'utc') not null constraint tasks_pk primary key,
     started   timestamp,
@@ -32,28 +32,28 @@ create table public."Tasks"
     traceback text
 );
 
-comment on column public."Tasks".created is 'When the task was created.';
+comment on column "Tasks".created is 'When the task was created.';
 
-comment on column public."Tasks".started is 'Processing start time.';
+comment on column "Tasks".started is 'Processing start time.';
 
-comment on column public."Tasks".finished is 'Processing finish time.';
+comment on column "Tasks".finished is 'Processing finish time.';
 
-comment on column public."Tasks".failed is 'Processing failed time.';
+comment on column "Tasks".failed is 'Processing failed time.';
 
-comment on column public."Tasks".name is 'Name (type) of the task.';
+comment on column "Tasks".name is 'Name (type) of the task.';
 
-comment on column public."Tasks".project is 'Project identifier.';
+comment on column "Tasks".project is 'Project identifier.';
 
-comment on column public."Tasks".params is 'JSON encoded parameters, actual fields depend on the task.';
+comment on column "Tasks".params is 'JSON encoded parameters, actual fields depend on the task.';
 
-comment on column public."Tasks".message is 'Message to send back to the user.';
+comment on column "Tasks".message is 'Message to send back to the user.';
 
-comment on column public."Tasks".traceback is 'Traceback of an error in case of an unexpected failure.';
+comment on column "Tasks".traceback is 'Traceback of an error in case of an unexpected failure.';
 
 create index tasks_project
-    on public."Tasks" (project);
+    on "Tasks" (project);
 
-alter table public."Tasks"
+alter table "Tasks"
     owner to askyourcode;
 """
 
@@ -209,6 +209,11 @@ class Processor(TaskManager):
 class Cleanup(TaskManager):
     def __init__(self, pool: asyncpg.Pool):
         super().__init__(pool)
+
+    async def recreate_table(self):
+        async with self.get_conn() as conn:
+            await conn.execute(DROP_TASKS_TABLE_SQL)
+            await conn.execute(CREATE_TASKS_TABLE_SQL)
 
     async def delete_all_tasks(self):
         async with self.get_conn() as conn:
