@@ -1,12 +1,12 @@
-import os
-from typing import Tuple, AsyncIterable
+from typing import AsyncIterable
 
 from aiokafka import AIOKafkaProducer
 
-KAFKA_SERVER = os.environ.get('KAFKA_SERVER', 'localhost:9092')
+from streaming.config import KAFKA_SERVER
+from streaming.message import Message
 
 
-async def send_one(topic: str, payload: bytes):
+async def send_one(msg: Message):
     producer = AIOKafkaProducer(bootstrap_servers=KAFKA_SERVER)
 
     # Get cluster layout and initial topic/partition leadership information
@@ -14,13 +14,13 @@ async def send_one(topic: str, payload: bytes):
 
     try:
         # Produce message
-        await producer.send_and_wait(topic, payload)
+        await producer.send_and_wait(msg.topic, msg.value)
     finally:
         # Wait for all pending messages to be delivered or expire.
         await producer.stop()
 
 
-async def send_many(iter_messages: AsyncIterable[Tuple[str, bytes]]):
+async def send_many(iter_messages: AsyncIterable[Message]):
     producer = AIOKafkaProducer(bootstrap_servers=KAFKA_SERVER)
 
     # Get cluster layout and initial topic/partition leadership information
@@ -28,8 +28,8 @@ async def send_many(iter_messages: AsyncIterable[Tuple[str, bytes]]):
 
     try:
         # Produce messages
-        async for topic, payload in iter_messages:
-            await producer.send_and_wait(topic, payload)
+        async for msg in iter_messages:
+            await producer.send_and_wait(msg.topic, msg.value)
     finally:
         # Wait for all pending messages to be delivered or expire.
         await producer.stop()
