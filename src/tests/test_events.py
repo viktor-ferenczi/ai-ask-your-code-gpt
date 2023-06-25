@@ -4,8 +4,8 @@ from datetime import datetime
 
 import asyncpg
 
-from common.events import Producer, Consumer, Cleanup
 from common.tools import wait_until_cancelled
+from storage.events import Producer, Consumer, Cleanup
 
 
 class TestProducerConsumer(unittest.IsolatedAsyncioTestCase):
