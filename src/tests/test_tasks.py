@@ -4,7 +4,7 @@ from datetime import datetime
 
 import asyncpg
 
-from common.tasks import Scheduler, Processor, Cleanup, TaskFailed
+from storage.tasks import Scheduler, Processor, Cleanup, TaskFailed
 from common.tools import wait_until_cancelled
 
 
