@@ -1,6 +1,7 @@
 import asyncio
 import os
 import sqlite3
+import sys
 from traceback import print_exc
 from typing import Iterator
 
@@ -15,6 +16,8 @@ from model.document import Document
 from parsers.registrations import TextParser, detect
 from project.inventory import Inventory
 from project.project import Project
+
+sys.setrecursionlimit(10000)
 
 
 class Extractor:
