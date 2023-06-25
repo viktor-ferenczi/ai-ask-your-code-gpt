@@ -1,4 +1,6 @@
+import asyncio
 import uuid
+from asyncio import CancelledError
 from typing import List, Callable, Iterator
 
 import tiktoken
@@ -34,3 +36,11 @@ def find_iter(text: str, sub: str) -> Iterator[int]:
 
 def new_uuid() -> str:
     return str(uuid.uuid4())
+
+
+async def wait_until_cancelled():
+    while 1:
+        try:
+            await asyncio.sleep(3600)
+        except CancelledError:
+            break
