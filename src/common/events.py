@@ -117,8 +117,6 @@ class Consumer(EventManager):
             await conn.remove_listener(name, self.handle_notification)
 
     async def handle_notification(self, _: asyncpg.Connection, pid: int, channel: str, payload: str):
-        print(f"Got NOTIFY: {pid}, {channel}, {payload}")
-
         event_handler: TCallback = self.handlers.get(channel)
         if event_handler is None:
             return

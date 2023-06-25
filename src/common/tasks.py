@@ -173,8 +173,6 @@ class Processor(TaskManager):
             await conn.remove_listener(name, self.handle_notification)
 
     async def handle_notification(self, _: asyncpg.Connection, pid: int, name: str, payload: str):
-        print(f"Got NOTIFY: {pid}, {name}, {payload}")
-
         processor: TCallback = self.processors.get(name)
         if processor is None:
             return
