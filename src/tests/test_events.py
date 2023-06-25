@@ -17,6 +17,7 @@ class TestProducerConsumer(unittest.IsolatedAsyncioTestCase):
 
         async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
             cleanup = Cleanup(pool)
+            await cleanup.recreate_table()
             await cleanup.delete_all_events()
 
     async def test_produce_consume(self):
