@@ -29,7 +29,7 @@ class Database:
     async def migrate(self):
         while 1:
             async with self.connection() as conn:
-                version = await conn.fetchone(sql.GET_VERSION) or 0
+                version = await conn.fetchval(sql.GET_VERSION) or 0
 
                 if version == schema.VERSION:
                     break
@@ -38,11 +38,11 @@ class Database:
                     raise ValueError(f'Database version {version} is newer than the schema VERSION {schema.VERSION} in the code, which should not happen')
 
                 migration = schema.MIGRATIONS.get(version)
-                if migration is None:
+                if not migration:
                     raise ValueError(f'Migration is not defined for database version {version}')
 
                 await conn.execute(migration)
 
-                new_version = await conn.fetchone(sql.GET_VERSION) or 0
+                new_version = await conn.fetchval(sql.GET_VERSION) or 0
                 if new_version <= version:
                     raise ValueError(f'New version {new_version} after migration must be higher than the former version {version}')

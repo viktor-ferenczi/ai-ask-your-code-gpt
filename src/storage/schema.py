@@ -1,3 +1,5 @@
+from typing import Dict
+
 VERSION = 1
 
 DROP = '''
@@ -58,8 +60,7 @@ CREATE INDEX tasks_project ON "Tasks" (project);
 ALTER TABLE "Tasks" OWNER TO askyourcode;
 ''' % dict(VERSION=VERSION)
 
-MIGRATIONS = {
+MIGRATIONS: Dict[int, str] = {
     0: CREATE,
     # Insert incremental migrations from each past version here
-    VERSION: '',
 }

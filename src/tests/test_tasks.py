@@ -17,9 +17,12 @@ class TestTasks(unittest.IsolatedAsyncioTestCase):
         await super().asyncSetUp()
 
         async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
+
             db = Database(pool)
-            await db.drop()
-            await db.create()
+            await db.migrate()
+
+            tasks = Tasks(db)
+            await tasks.delete_all_tasks()
 
     async def test_produce_consume(self) -> None:
         async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
