@@ -50,7 +50,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
     def test_download_server_not_running(self):
         def should_fail():
-            asyncio.run(Project.download('http://127.0.0.1:57575/anything', timeout=0.5))
+            asyncio.run(Project.download('http://127.0.0.1:57575/anything', timeout=1.0))
 
         self.assertRaises(ProjectError, should_fail)
 

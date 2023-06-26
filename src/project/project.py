@@ -206,7 +206,7 @@ class Project:
                         params=dict(url=url)
                     )
                     await tasks.schedule(task)
-                    task = await tasks.wait_complete(task, timeout=timeout)
+                    task = await tasks.wait_complete(task, timeout=timeout, poll_period=max(0.01, min(0.5, timeout / 10)))
                     if task is None:
                         raise ProjectError(f'Failed to download archive {url!r}: Timeout')
                     if task.state == TaskState.failed:
