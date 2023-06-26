@@ -3,7 +3,10 @@ from typing import Iterator, Tuple
 from tree_sitter import TreeCursor, Node
 
 
-def walk_children(cursor: TreeCursor, depth=0) -> Iterator[TreeCursor]:
+def walk_children(cursor: TreeCursor, depth=0, max_depth=30) -> Iterator[TreeCursor]:
+    if depth > max_depth:
+        return
+
     node: Node = cursor.node
     child_count = node.child_count
     if not child_count:
