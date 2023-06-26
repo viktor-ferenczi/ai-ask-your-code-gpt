@@ -71,10 +71,11 @@ def build_tree_sitter_library():
     )
     assert len(set(languages)) == len(languages), 'More than one class is using the same tree-sitter language'
 
+    languages_json = json.dumps(languages, indent=2)
     if os.path.isfile(TREE_SITTER_LANGUAGES):
         with open(TREE_SITTER_LANGUAGES, 'rt') as f:
-            built_langs = json.load(f)
-        if built_langs == languages:
+            built_languages_json = f.read()
+        if built_languages_json == languages_json:
             return
 
     shutil.rmtree(TREE_SITTER_BUILD_DIR)
@@ -84,7 +85,7 @@ def build_tree_sitter_library():
     Language.build_library(TREE_SITTER_LIBRARY, repo_dirs)
 
     with open(TREE_SITTER_LANGUAGES, 'wt') as f:
-        json.dump(languages, f, indent=2)
+        f.write(languages_json)
 
 
 build_tree_sitter_library()
