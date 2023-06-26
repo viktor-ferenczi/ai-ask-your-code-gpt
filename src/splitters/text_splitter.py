@@ -12,6 +12,8 @@ class Sentence:
 
 
 class TextSplitter:
+    max_depth = 32
+    max_token_size = 8
     default_separators: Tuple[Tuple[str, str]] = (
         ('>', r"^\s*$"),
         ('>', r"^.*$"),
@@ -37,15 +39,22 @@ class TextSplitter:
         if not text:
             return
 
-        length = self.length_function(text)
-        if length <= self.chunk_size:
+        if len(text) <= self.chunk_size or depth > self.max_depth:
+            length = self.length_function(text)
             yield length, depth, text
             return
 
+        if len(text) < self.max_token_size * self.chunk_size:
+            length = self.length_function(text)
+            if length <= self.chunk_size:
+                yield length, depth, text
+                return
+
         if depth >= len(self.separators):
             half = len(text) // 2
-            yield from self.__split_recursive(text[:half], depth)
-            yield from self.__split_recursive(text[half:], depth)
+            if half:
+                yield from self.__split_recursive(text[:half], depth + 1)
+            yield from self.__split_recursive(text[half:], depth + 1)
             return
 
         affinity, rx = self.separators[depth]

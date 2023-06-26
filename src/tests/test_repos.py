@@ -54,6 +54,11 @@ REPOS = [
 
     # Python, C++, CUDA
     ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
+
+    # TypeScript, JavaScript, HTML
+    # FIXME: Crashes tiktoken_len at a data.ts file:
+    # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
+    # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
 ]
 
 

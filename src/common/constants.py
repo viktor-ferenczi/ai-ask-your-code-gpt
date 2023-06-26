@@ -16,7 +16,7 @@ class C:
     # Archive file
     MAX_ARCHIVE_SIZE = 200 << 20
     MAX_TOTAL_SIZE = 200 << 20
-    MAX_FILE_SIZE = 5 << 20
+    MAX_FILE_SIZE = 1 << 20
     MAX_FILE_COUNT = 100 << 10
 
     # Splitter

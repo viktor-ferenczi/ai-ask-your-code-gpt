@@ -21,6 +21,7 @@ sys.setrecursionlimit(10000)
 
 
 class Extractor:
+    max_fragment_count = 1_000_000
 
     def __init__(self, inventory: Inventory, project: Project) -> None:
         self.inventory = inventory
@@ -38,12 +39,19 @@ class Extractor:
             self.project.index_by_name(cursor)
 
         with self.project.cursor() as cursor:
-            already_inserted_fragment_keys = set(self.project.get_inserted_fragment_keys(cursor))
+            already_inserted_fragment_count = self.project.count_fragments()
+            # already_inserted_fragment_keys = set(self.project.get_inserted_fragment_keys(cursor))
+
+        # Quick and dirty shortcut, so failed load attempts are not retried (reason: some of them can get the queue stuck)
+        if already_inserted_fragment_count:
+            self.inventory.mark_project_extracted(self.project.project_id)
+            return
 
         iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
 
         batch = []
-        batch_size = 4096
+        batch_size = 256
+        fragment_count = 0
 
         def insert_batch():
             with self.project.cursor() as cursor:
@@ -51,21 +59,20 @@ class Extractor:
                     self.project.insert_fragment(cursor, f)
             batch.clear()
 
-        for i, fragment in enumerate(self.iter_fragments_from_documents(iter_docs)):
+        for fragment in self.iter_fragments_from_documents(iter_docs):
 
-            fragment_key = (fragment.path, fragment.type, fragment.lineno)
-            if fragment_key in already_inserted_fragment_keys:
-                continue
+            # fragment_key = (fragment.path, fragment.type, fragment.lineno)
+            # if fragment_key in already_inserted_fragment_keys:
+            #     continue
 
             batch.append(fragment)
 
             if len(batch) >= batch_size:
                 insert_batch()
                 await asyncio.sleep(0)
-                continue
-
-            if i & 255 == 0:
-                await asyncio.sleep(0)
+                fragment_count += batch_size
+                if fragment_count >= self.max_fragment_count:
+                    break
 
         if batch:
             insert_batch()
