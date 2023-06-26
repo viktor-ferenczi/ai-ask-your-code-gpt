@@ -19,6 +19,7 @@ from common.tools import tiktoken_len
 from model.fragment import Fragment
 from model.hit import Hit
 from project.inventory import Inventory
+from storage.tasks import Tasks, Task, TaskName, TaskState
 
 DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
@@ -199,18 +200,26 @@ class Project:
     async def download(cls, url: str, *, timeout: float = 30.0 if C.PRODUCTION else 999999.0) -> str:
         try:
             with timer(f'Downloaded {url!r}'):
-                async with aiohttp.ClientSession() as session:
-                    data = json.dumps(dict(url=url))
-                    async with session.post(f'{DOWNLOADER_URL}/download', data=data, headers={'Accept': 'text/json'}, timeout=timeout) as response:
-                        content: bytes = await response.content.read()
-                        if response.status != 200:
-                            reason = decode_replace(content).strip()
-                            print(f'Failed to download archive {url!r}: {reason}')
-                            raise ProjectError(reason)
-                        project_id = content.decode('utf-8').strip()
-                        assert RX.GUID.match(project_id)
-                        print(f'Project ID is {project_id}')
-                        return project_id
+                async with Tasks.init() as tasks:
+                    task = Task(
+                        name=TaskName.DownloadArchive,
+                        params=dict(url=url)
+                    )
+                    await tasks.schedule(task)
+                    task = await tasks.wait_complete(task, timeout=timeout)
+                    if task is None:
+                        raise ProjectError(f'Failed to download archive {url!r}: Timeout')
+                    if task.state == TaskState.failed:
+                        raise ProjectError(f'Failed to download archive {url!r}: {task.message}')
+                    if task.state == TaskState.crashed:
+                        raise ProjectError(f'Failed to download archive {url!r}: Internal error, please try again later')
+                    if not task.project:
+                        raise ProjectError(f'Failed to download archive {url!r}: No project ID returned, please try again later')
+                    if not RX.GUID.match(task.project):
+                        print(f'Invalid project ID {task.project!r} returned from downloading {url!r}')
+                        raise ProjectError(f'Failed to download archive {url!r}: Invalid project ID returned')
+                    print(f'Project {task.project} downloaded {url!r}')
+                    return task.project
         except ClientError as e:
             raise ProjectError(f'Failed to download archive {url!r}: [{e.__class__.__name__}] {e}')
 

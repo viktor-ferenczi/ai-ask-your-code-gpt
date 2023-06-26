@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from typing import ContextManager
 
 import asyncpg
+from asyncpg import UndefinedTableError
 
 from storage import schema
 from storage import sql
@@ -29,7 +30,10 @@ class Database:
     async def migrate(self):
         while 1:
             async with self.connection() as conn:
-                version = await conn.fetchval(sql.GET_VERSION) or 0
+                try:
+                    version = await conn.fetchval(sql.GET_VERSION) or 0
+                except UndefinedTableError:
+                    version = 0
 
                 if version == schema.VERSION:
                     break

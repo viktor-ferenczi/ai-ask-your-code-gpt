@@ -74,14 +74,18 @@ DELETE_TASK: str = """
     WHERE created = $1
 """
 
-RETRY_TASKS = """
+RETRY_TASKS: str = """
     UPDATE "Tasks" SET started = NULL WHERE state = 'running'
 """
 
-TRUNCATE_TASKS = """
+TRUNCATE_TASKS: str = """
     TRUNCATE "Tasks"
 """
 
-GET_TASK = """
+GET_TASK: str = """
     SELECT * FROM "Tasks" WHERE created = $1
+"""
+
+UPDATE_TASK: str = """
+    UPDATE "Tasks" SET project=$2 WHERE created = $1
 """

@@ -5,18 +5,20 @@ import re
 import uuid
 import zipfile
 from traceback import print_exc
-from typing import Dict, Tuple
+from typing import Tuple
 from zipfile import BadZipFile, LargeZipFile
 
-from quart import Quart, request, Response
+from quart import Quart
 
 from common.constants import C
 from common.http import download_file, DownloadError, NotModified
 from common.server import run_app
 from common.timer import timer
+from common.tools import wait_until_cancelled
 from common.zip_support import extract_verify_documents
 from project.inventory import Inventory
 from project.project import Project
+from storage.tasks import Tasks, TaskName, THandlerResult, Task, TaskFailed
 
 RX_GITHUB_USER_CONTENT = re.compile(r'https://raw.githubusercontent.com/(.+?)(/.+?)/(.*)')
 
@@ -136,20 +138,8 @@ class Downloader:
         print(f'Extracted {document_count} files')
 
 
-app = Quart(__name__)
-
-
-@app.get('/')
-async def canary():
-    return 'OK', 200
-
-
-@app.post("/download")
-async def download():
-    body: Dict[str, any] = await request.get_json(force=True)
-    url = body.get('url')
-    if not url:
-        return Response(response='Missing url', status=400)
+async def download(task: Task) -> THandlerResult:
+    url = task.params['url']
 
     try:
         with timer(f'Downloaded archive {url!r}'):
@@ -159,13 +149,42 @@ async def download():
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
             message += '; Test your URL in a private browser tab without authentication. Private repositories do not work. Authentication is currently not supported by AskYourCode.'
-        return Response(response=message, status=400)
-    except Exception:
-        print(f'Unexpected error while trying to download the archive {url!r}:')
-        print_exc()
-        return Response(response='Unexpected error while trying to download the archive. Please try again later.', status=500)
+        raise TaskFailed(message)
 
-    return Response(response=project_id, status=200)
+    project = Project(project_id)
+    path = project.archive_path
+
+    task.project = project_id
+    async with Tasks.init() as tasks:
+        await tasks.update_task(task)
+
+    return Task(
+        name=TaskName.IndexArchive,
+        project=project_id,
+        params=dict(path=path)
+    )
+
+
+async def download_worker():
+    while 1:
+        try:
+            async with Tasks.init() as tasks:
+                tasks.handlers[TaskName.DownloadArchive] = download
+                async with tasks.listener():
+                    await wait_until_cancelled()
+        except Exception:
+            print('Unexpected failure:')
+            print_exc()
+
+
+app = Quart(__name__)
+workers = [download_worker]
+
+
+@app.get('/')
+async def canary():
+    await asyncio.sleep(0.5)
+    return 'OK', 200
 
 
 def main():
@@ -173,7 +192,7 @@ def main():
     inventory.create_database()
 
     port = int(os.environ.get('HTTP_PORT', '40001'))
-    asyncio.run(run_app(app, debug=C.DEVELOPMENT, host='localhost', port=port))
+    asyncio.run(run_app(app, *[worker() for worker in workers], debug=C.DEVELOPMENT, host='localhost', port=port))
 
 
 if __name__ == "__main__":

@@ -2,10 +2,10 @@ import asyncio
 import json
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from traceback import format_exc
-from typing import Any, Dict, Callable, List, Optional, Union, Awaitable
+from typing import Any, Dict, Callable, List, Optional, Union, Awaitable, AsyncIterator
 
 import asyncpg
 from asyncpg import Record, Connection
@@ -76,14 +76,41 @@ THandler = Callable[[Task], Awaitable[THandlerResult]]
 
 
 class Tasks:
+    dsn = 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode'
+
     max_retries: int = 10
     retry_delay: float = 0.001
     handler_timeout: float = 300.0
     suffix: str = ''
-    handlers: Dict[TaskName, THandler] = {}
 
     def __init__(self, db: Database):
         self.db: Database = db
+        self.handlers: Dict[TaskName, THandler] = {}
+
+    @classmethod
+    @asynccontextmanager
+    async def init(cls) -> AsyncIterator["Tasks"]:
+        async with asyncpg.create_pool(cls.dsn, command_timeout=60) as pool:
+            db = Database(pool)
+            await db.migrate()
+            yield cls(db)
+
+    async def wait_complete(self, task: Task, *, timeout: float = 30.0, poll_period: float = 0.5) -> Optional[Task]:
+        assert timeout >= 2.0 * poll_period
+        created = task.created
+
+        deadline = datetime.utcnow() + timedelta(seconds=timeout - poll_period)
+        while datetime.utcnow() < deadline:
+            await asyncio.sleep(poll_period)
+
+            task = await self.get_task(created)
+            if not task:
+                continue
+
+            if task.state in (TaskState.completed, TaskState.failed, TaskState.crashed):
+                return task
+
+        return None
 
     async def schedule(self, task: Task):
         async with self.db.connection() as conn:
@@ -154,12 +181,12 @@ class Tasks:
         try:
             result = await asyncio.wait_for(handler(task), timeout=self.handler_timeout)
 
-            if result is Task:
-                response_tasks = [result]
-            elif result is list:
-                response_tasks = result
-            elif result is None:
+            if result is None:
                 response_tasks = []
+            elif isinstance(result, Task):
+                response_tasks = [result]
+            elif isinstance(result, list) and all(isinstance(t, Task) for t in result):
+                response_tasks = result
             else:
                 raise ValueError(f'Invalid result returned by the task handler: {result!r}')
 
@@ -205,4 +232,10 @@ class Tasks:
         async with self.db.connection() as conn:
             async with conn.transaction():
                 row = await conn.fetchrow(sql.GET_TASK, created)
+                return Task.from_row(row) if row else None
+
+    async def update_task(self, task: Task) -> Optional[Task]:
+        async with self.db.connection() as conn:
+            async with conn.transaction():
+                row = await conn.fetchrow(sql.UPDATE_TASK, task.created, task.project)
                 return Task.from_row(row) if row else None

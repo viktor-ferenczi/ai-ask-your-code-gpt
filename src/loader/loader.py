@@ -193,6 +193,7 @@ workers = [extract_worker, indexer_worker]
 
 @app.get('/')
 async def canary():
+    await asyncio.sleep(0.5)
     return 'OK', 200
 
 
