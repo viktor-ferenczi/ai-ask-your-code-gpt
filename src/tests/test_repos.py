@@ -9,7 +9,7 @@ from quart import Quart, send_file
 
 from common.constants import C
 from common.http import download_file
-from downloader.downloader import app as downloader_app
+from downloader.downloader import app as downloader_app, workers as downloader_workers
 from loader.loader import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
@@ -104,8 +104,9 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
         loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
         loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
+        downloader_worker_tasks = [asyncio.create_task(worker()) for worker in downloader_workers]
 
-        tasks = [actual_test, zip_server_task, downloader_task, loader_task] + loader_worker_tasks
+        tasks = [actual_test, zip_server_task, downloader_task, loader_task] + loader_worker_tasks + downloader_worker_tasks
 
         await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
 
