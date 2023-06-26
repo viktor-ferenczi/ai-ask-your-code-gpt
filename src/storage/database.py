@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import ContextManager
+from typing import AsyncContextManager
 
 import asyncpg
 from asyncpg import UndefinedTableError
@@ -13,7 +13,7 @@ class Database:
         self.pool = pool
 
     @asynccontextmanager
-    async def connection(self) -> ContextManager[asyncpg.Connection]:
+    async def connection(self) -> AsyncContextManager[asyncpg.Connection]:
         async with self.pool.acquire() as conn:
             yield conn
 
@@ -50,3 +50,5 @@ class Database:
                 new_version = await conn.fetchval(sql.GET_VERSION) or 0
                 if new_version <= version:
                     raise ValueError(f'New version {new_version} after migration must be higher than the former version {version}')
+
+                print(f'Migrated database from version {version} to {new_version}')

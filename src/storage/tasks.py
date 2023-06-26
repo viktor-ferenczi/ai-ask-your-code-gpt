@@ -5,10 +5,10 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from traceback import format_exc
-from typing import Any, Dict, Callable, List, Optional, Union, Awaitable, AsyncIterator
+from typing import Any, Dict, Callable, List, Optional, Union, Awaitable, AsyncContextManager
 
 import asyncpg
-from asyncpg import Record, Connection
+from asyncpg import Record, Connection, Pool
 from asyncpg.utils import _quote_ident
 
 from common.tools import async_retry
@@ -89,11 +89,22 @@ class Tasks:
 
     @classmethod
     @asynccontextmanager
-    async def init(cls) -> AsyncIterator["Tasks"]:
-        async with asyncpg.create_pool(cls.dsn, command_timeout=60) as pool:
-            db = Database(pool)
+    async def init(cls) -> AsyncContextManager["Tasks"]:
+        # FIXME: This should work, but instead freezes at the end of block:
+        # async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
+
+        # Workaround
+        pool: Pool = asyncpg.create_pool(cls.dsn, command_timeout=60)
+        await pool._async__init__()
+        db = Database(pool)
+        try:
             await db.migrate()
             yield cls(db)
+        finally:
+            del db
+            #await asyncio.wait_for(pool.close(), timeout=3)
+            # Workaround
+            pool.terminate()
 
     async def wait_complete(self, task: Task, *, timeout: float = 30.0, poll_period: float = 0.5) -> Optional[Task]:
         assert timeout >= 2.0 * poll_period
@@ -137,7 +148,7 @@ class Tasks:
                 return await conn.fetch(sql.LIST_PENDING_TASKS, name.name)
 
     @asynccontextmanager
-    async def listener(self, suffix: str = ''):
+    async def listener(self, suffix: str = '') -> AsyncContextManager:
         assert self.handlers, 'No tasks registered'
         async with self.db.connection() as conn:
             await self.__add_listeners(conn, suffix)
