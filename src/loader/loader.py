@@ -169,7 +169,7 @@ async def indexer_worker():
             try:
                 project = Project(project_id)
                 fragment_count = project.count_fragments()
-                with timer(f'Indexing {fragment_count} fragments for project {project_id!r}', count=fragment_count):
+                with timer(f'Indexed {fragment_count} fragments for project {project_id!r}', count=fragment_count):
                     indexer = Indexer(inventory, project)
                     await indexer.index()
             except Exception:  # pragma: no cover
