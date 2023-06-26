@@ -155,7 +155,7 @@ class Tasks:
             await conn.remove_listener(f'{name.name}{suffix}', self.handle_notification)
 
     async def handle_notification(self, listener_conn: asyncpg.Connection, pid: int, name: str, payload: str):
-        print(f'EVENT pid={pid!r}, name={name!r}, payload={payload!r}')
+        print(f'TASK pid={pid!r}, name={name!r}, payload={payload!r}')
         # if pid == listener_conn.get_server_pid():
         #     return
 
