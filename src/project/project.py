@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 import random
 import shutil
@@ -8,20 +7,16 @@ from contextlib import contextmanager
 from sqlite3 import Cursor
 from typing import List, ContextManager, Tuple, Iterator
 
-import aiohttp
 import numpy as np
 from aiohttp import ClientError
 
 from common.constants import C, RX
-from common.text import decode_replace
 from common.timer import timer
 from common.tools import tiktoken_len
 from model.fragment import Fragment
 from model.hit import Hit
 from project.inventory import Inventory
 from storage.tasks import Tasks, Task, TaskName, TaskState
-
-DOWNLOADER_URL = os.environ.get('DOWNLOADER_URL', 'http://127.0.0.1:40001')
 
 
 class ProjectError(Exception):
