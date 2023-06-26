@@ -12,19 +12,27 @@ set -euo pipefail
 CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
-if ! check_process "$COMMAND_LINE"; then
-  echo "$TITLE: Not running"
-  exit 0
-fi
+INSTANCE_MAX=$((INSTANCE_COUNT - 1))
 
-if pkill -9 -u $UID -f "$COMMAND_LINE"; then
-  echo "$TITLE: Stopped"
-else
-  echo "$TITLE: Failed to stop"
-fi
+for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
 
-if [ -n "$EXTRA_KILL" ]; then
-    pkill -9 -u $UID -f "$EXTRA_KILL"
-fi
+  . $CONFIG_DIR/config.sh
+
+  if ! check_process "$COMMAND_LINE"; then
+    echo "$TITLE: Not running"
+    continue
+  fi
+
+  if pkill -9 -u $UID -f "$COMMAND_LINE"; then
+    echo "$TITLE: Stopped"
+  else
+    echo "$TITLE: Failed to stop"
+  fi
+
+  if [ -n "$EXTRA_KILL" ]; then
+      pkill -9 -u $UID -f "$EXTRA_KILL"
+  fi
+
+done
 
 exit 0

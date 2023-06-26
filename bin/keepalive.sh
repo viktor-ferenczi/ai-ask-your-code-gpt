@@ -27,28 +27,37 @@ function check_canary {
 }
 
 
-if check_process "$COMMAND_LINE"; then
-  # Process is running, but verify whether it is functional
+INSTANCE_MAX=$((INSTANCE_COUNT - 1))
 
-  # Canary check
-  for RETRY in {1..10}; do
+for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
+
+  . $CONFIG_DIR/config.sh
+
+  if check_process "$COMMAND_LINE"; then
+    # Process is running, but verify whether it is functional
+
+    # Canary check
+    for RETRY in {1..10}; do
+      if check_canary; then
+        continue 2
+      fi
+      echo "$(date -Is): $TITLE canary check failed, retry #$RETRY"
+      sleep 2
+    done
+
     if check_canary; then
-      exit 0
+      continue
     fi
-    echo "$(date -Is): $TITLE canary check failed, retry #$RETRY"
-    sleep 2
-  done
 
-  if check_canary; then
-    exit 0
+    echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
+    bash ~/bin/restart.sh "$NAME"
+    continue
   fi
 
-  echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
-  bash ~/bin/restart.sh "$NAME"
-  exit 0
-fi
+  # Process is missing
+  echo "$(date -Is): $TITLE is not running. Starting it now."
+  bash ~/bin/start.sh "$NAME"
 
-# Process is missing
-echo "$(date -Is): $TITLE is not running. Starting it now."
-bash ~/bin/start.sh "$NAME"
+done
+
 exit 0

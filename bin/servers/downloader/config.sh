@@ -1,15 +1,17 @@
 #!/bin/sh
 
-NAME="downloader"
-TITLE="Downloader"
+NAME="downloader-$INSTANCE_INDEX"
+TITLE="Downloader-$INSTANCE_INDEX"
+
+INSTANCE_COUNT=$CPU_COUNT
 
 WORKING_DIR="$HOME/src/downloader"
-COMMAND_LINE="python -O -u downloader.py"
+COMMAND_LINE="python -O -u downloader.py -i $INSTANCE_INDEX'"
 
-LOG_PATH_BASENAME="$HOME/log/$NAME"
+LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 
-export HTTP_PORT=40001
+export HTTP_PORT=$((40000 + INSTANCE_INDEX))
 
 CANARY="http"
 CANARY_URL="http://127.0.0.1:$HTTP_PORT"
-CANARY_TIMEOUT=30
+CANARY_TIMEOUT=10

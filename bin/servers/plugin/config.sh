@@ -13,5 +13,3 @@ LOG_PATH_BASENAME="$HOME/log/$NAME"
 CANARY="http"
 CANARY_URL="https://plugin.askyourcode.ai/"
 CANARY_TIMEOUT=10
-
-export DOWNLOADER_URL="http://127.0.0.1:40001"

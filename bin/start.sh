@@ -12,16 +12,24 @@ set -euo pipefail
 CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
-if check_process "$COMMAND_LINE"; then
-  echo "$TITLE: Already running"
-  exit 0
-fi
+INSTANCE_MAX=$((INSTANCE_COUNT - 1))
 
-TODAY=$(date -I)
-LOG_PATH="${LOG_PATH_BASENAME}.${TODAY}.log"
+for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
 
-cd "$WORKING_DIR"
-nohup $WRAPPER $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &
-echo "$TITLE: Started"
+  . $CONFIG_DIR/config.sh
+
+  if check_process "$COMMAND_LINE"; then
+    echo "$TITLE: Already running"
+    continue
+  fi
+
+  TODAY=$(date -I)
+  LOG_PATH="${LOG_PATH_BASENAME}.${TODAY}.log"
+
+  cd "$WORKING_DIR"
+  nohup $WRAPPER $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &
+  echo "$TITLE: Started"
+
+done
 
 exit 0

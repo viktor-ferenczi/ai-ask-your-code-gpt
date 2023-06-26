@@ -10,6 +10,15 @@ export STORE_EMBEDDERS="http://127.0.0.1:40200 http://127.0.0.1:40201 http://127
 
 export SERVERS_DIR="$HOME/bin/servers"
 
+CPU_COUNT=$(nproc --all)
+
+CANARY="none"
+CANARY_URL="http://127.0.0.1"
+CANARY_TIMEOUT=10
+
+INSTANCE_INDEX=0
+INSTANCE_COUNT=1
+
 WRAPPER=""
 EXTRA_KILL=""
 
