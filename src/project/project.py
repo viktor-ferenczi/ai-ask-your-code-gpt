@@ -329,9 +329,9 @@ class Project:
         if not token_limit:
             token_limit = 2000
 
-        summary = np.array(summary, np.str)
-        line_lengths = np.array([tiktoken_len(line) for line in summary], np.int32)
-        keep_lines = np.array([bool(line) and not line.startswith(' ') for line in summary], np.bool)
+        summary = np.array(summary, dtype=object)
+        line_lengths = np.array([tiktoken_len(line) for line in summary], dtype=np.int32)
+        keep_lines = np.array([bool(line) and not line.startswith(' ') for line in summary], dtype=np.bool_)
 
         while summary.size and np.sum(line_lengths) > token_limit:
 

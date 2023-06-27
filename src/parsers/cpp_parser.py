@@ -82,11 +82,11 @@ class CppParser(TreeSitterParser):
                 yield from simple('usage', 'identifier', '')
             elif node.type == 'declaration':
                 yield from simple('variable', 'identifier', node.text)
-                yield from simple('method', 'qualified_identifier', node.text)
             elif node.type == 'function_declarator':
                 yield from simple('function', 'identifier', node.text)
             elif node.type == 'function_definition':
                 yield from two_level('function', 'function_declarator', 'identifier', node.text)
+                yield from two_level('method', 'function_declarator', 'qualified_identifier', node.text)
             elif node.type == 'field_declaration':
                 yield from simple('field', 'field_identifier', node.text)
             elif node.type == 'type_definition':

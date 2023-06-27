@@ -67,7 +67,7 @@ REPOS = [
 
 def normalize_fragments(fragments: List[Fragment]):
     for i, fragment in enumerate(fragments):
-        fragment.uuid = f'NORMALIZED-{i:06d}'
+        fragment.uuid = f'NORMALIZED'
 
 
 class TestProject(unittest.IsolatedAsyncioTestCase):
