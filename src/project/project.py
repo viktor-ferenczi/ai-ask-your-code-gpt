@@ -9,6 +9,7 @@ from sqlite3 import Cursor
 from typing import List, ContextManager, Tuple, Iterator
 
 import aiohttp
+import numpy as np
 from aiohttp import ClientError
 
 from common.constants import C, RX
@@ -314,7 +315,7 @@ class Project:
                 fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, '/', '', '')
             if not fragments:
                 return ''
-            return 'No file matched the summary query. Try to summarize the whole project (path=/) to learn its directory structure.\n'
+            return 'No file matched the summary query. Discover the directory structure of the project by summarizing path=/\n'
 
         summary = summary.split('\n')
 
@@ -326,20 +327,29 @@ class Project:
                 summary.insert(0, f'File extension: {extensions}\n')
 
         if not token_limit:
-            token_limit = 3000
+            token_limit = 2000
 
-        if sum(tiktoken_len(line) for line in summary) > token_limit:
-            summary = [line for line in summary if not line.lstrip().startswith('Usage')]
+        summary = np.array(summary, np.str)
+        line_lengths = np.array([tiktoken_len(line) for line in summary], np.int32)
+        keep_lines = np.array([bool(line) and not line.startswith(' ') for line in summary], np.bool)
 
-        if sum(tiktoken_len(line) for line in summary) > token_limit:
-            summary = [line for line in summary if not line.lstrip().startswith('Variable')]
+        while summary.size and np.sum(line_lengths) > token_limit:
 
-        if sum(tiktoken_len(line) for line in summary) > token_limit:
-            summary = [line for line in summary if not line.lstrip().startswith('Method')]
+            max_length = np.max(line_lengths)
+            if max_length < 1:
+                break
 
-        total = sum(tiktoken_len(line) for line in summary)
+            keep = np.logical_or(keep_lines, line_lengths < max_length)
+            if np.all(keep == 1):
+                break
+
+            summary = summary[keep]
+            line_lengths = line_lengths[keep]
+            keep_lines = keep_lines[keep]
+
+        total = np.sum(line_lengths)
         if total > token_limit:
-            summary = summary[:len(summary) * token_limit // total]
+            summary = summary[:summary.size * token_limit // total]
 
         return '\n'.join(summary)
 
