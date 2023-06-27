@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "AskYourCode",
+  "name_for_model": "askyourcode",
+  "description_for_human": "Ask your source code directly. The intelligent rubber ducky! - This plugin enables ChatGPT to work with software projects that are larger than its context window. Forget about copy-pasting code.",
+  "description_for_model": "This tool organizes a software project and its associated documentation, providing search and summary functions. It facilitates a progressive understanding of the project by retrieving fragments of code and documentation, thereby creating a context for reasoning about specific tasks.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://plugin.askyourcode.ai/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://askyourcode.ai/logo.png",
+  "contact_email": "info@askyourcode.ai",
+  "legal_info_url": "https://askyourcode.ai/legal/"
+}
