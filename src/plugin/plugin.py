@@ -160,19 +160,11 @@ async def summarize(project_id: str):
     tail: str = request.args.get('tail', '')
     name: str = request.args.get('name', '')
 
-    if path in ('/', '.'):
-        path = ''
+    if path == '.':
+        path = '/'
 
-    if path and not path.startswith('/'):
+    if not path.startswith('/'):
         path = f'/{path}'
-
-    if path and tail and not name:
-        path = f'{path.rstrip("/")}/{tail.lstrip("/")}'
-        tail = ''
-
-    if path and name and not tail:
-        path = f'{path.rstrip("/")}/{name.lstrip("/")}'
-        name = ''
 
     print(f'Summarize project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}')
 
@@ -261,20 +253,13 @@ async def search(project_id: str):
 
     inventory.touch_project(project_id)
 
-    if path and not path.startswith('/'):
+    if path == '.':
+        path = '/'
+
+    if not path.startswith('/'):
         path = f'/{path}'
 
-    if path and tail and not name:
-        path = f'{path.rstrip("/")}/{tail.lstrip("/")}'
-        tail = ''
-
-    if path and name and not tail:
-        path = f'{path.rstrip("/")}/{name.lstrip("/")}'
-        name = ''
-
-    limit = 10
-    if path or tail or name:
-        limit = 50
+    limit = 50 if tail or name else 10
 
     # noinspection PyBroadException
     try:
