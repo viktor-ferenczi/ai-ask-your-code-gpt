@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from typing import AsyncContextManager
 
 import asyncpg
-from asyncpg import UndefinedTableError
+from asyncpg import UndefinedTableError, Connection
 
 from storage import schema
 from storage import sql
@@ -13,9 +13,15 @@ class Database:
         self.pool = pool
 
     @asynccontextmanager
-    async def connection(self) -> AsyncContextManager[asyncpg.Connection]:
+    async def connection(self) -> AsyncContextManager[Connection]:
         async with self.pool.acquire() as conn:
             yield conn
+
+    @asynccontextmanager
+    async def transaction(self, *, readonly=False) -> AsyncContextManager[Connection]:
+        async with self.pool.acquire() as conn:
+            async with conn.transaction(readonly=readonly):
+                yield conn
 
     async def drop(self):
         async with self.connection() as conn:

@@ -102,7 +102,7 @@ class Tasks:
             yield cls(db)
         finally:
             del db
-            #await asyncio.wait_for(pool.close(), timeout=3)
+            # await asyncio.wait_for(pool.close(), timeout=3)
             # Workaround
             pool.terminate()
 
@@ -138,14 +138,12 @@ class Tasks:
             task.created = created
 
     async def list_tasks_by_project(self, name: TaskName, project: str) -> List[Record]:
-        async with self.db.connection() as conn:
-            async with conn.transaction(readonly=True):
-                return await conn.fetch(sql.LIST_PROJECT_TASKS, name.name, project)
+        async with self.db.transaction(readonly=True) as conn:
+            return await conn.fetch(sql.LIST_PROJECT_TASKS, name.name, project)
 
     async def list_pending_tasks(self, name: TaskName) -> List[Record]:
-        async with self.db.connection() as conn:
-            async with conn.transaction(readonly=True):
-                return await conn.fetch(sql.LIST_PENDING_TASKS, name.name)
+        async with self.db.transaction(readonly=True) as conn:
+            return await conn.fetch(sql.LIST_PENDING_TASKS, name.name)
 
     @asynccontextmanager
     async def listener(self, suffix: str = '') -> AsyncContextManager:
@@ -202,51 +200,43 @@ class Tasks:
                 raise ValueError(f'Invalid result returned by the task handler: {result!r}')
 
         except asyncio.TimeoutError:
-            async with self.db.connection() as conn:
-                async with conn.transaction():
-                    new_state = await conn.fetchval(sql.SET_TASK_FAILED, task.created, 'Timed out')
-                    assert new_state == 'failed'
+            async with self.db.transaction() as conn:
+                new_state = await conn.fetchval(sql.SET_TASK_FAILED, task.created, 'Timed out')
+                assert new_state == 'failed'
         except TaskFailed as e:
-            async with self.db.connection() as conn:
-                async with conn.transaction():
-                    message = str(e)
-                    new_state = await conn.fetchval(sql.SET_TASK_FAILED, task.created, message)
-                    assert new_state == 'failed'
+            async with self.db.transaction() as conn:
+                message = str(e)
+                new_state = await conn.fetchval(sql.SET_TASK_FAILED, task.created, message)
+                assert new_state == 'failed'
         except Exception:
-            async with self.db.connection() as conn:
-                async with conn.transaction():
-                    traceback = format_exc()
-                    print('Handler crashed:')
-                    print(f'task = {task!r}')
-                    print(traceback)
-                    new_state = await conn.fetchval(sql.SET_TASK_CRASHED, task.created, traceback)
-                    assert new_state == 'crashed'
+            async with self.db.transaction() as conn:
+                traceback = format_exc()
+                print('Handler crashed:')
+                print(f'task = {task!r}')
+                print(traceback)
+                new_state = await conn.fetchval(sql.SET_TASK_CRASHED, task.created, traceback)
+                assert new_state == 'crashed'
         else:
-            async with self.db.connection() as conn:
-                async with conn.transaction():
-                    new_state = await conn.fetchval(sql.SET_TASK_COMPLETED, task.created)
-                    assert new_state == 'completed'
-                    for response_task in response_tasks:
-                        await self.schedule(response_task)
+            async with self.db.transaction() as conn:
+                new_state = await conn.fetchval(sql.SET_TASK_COMPLETED, task.created)
+                assert new_state == 'completed'
+                for response_task in response_tasks:
+                    await self.schedule(response_task)
 
     async def retry_all_tasks(self):
-        async with self.db.connection() as conn:
-            async with conn.transaction():
-                await conn.execute(sql.RETRY_TASKS)
+        async with self.db.transaction() as conn:
+            await conn.execute(sql.RETRY_TASKS)
 
     async def delete_all_tasks(self):
-        async with self.db.connection() as conn:
-            async with conn.transaction():
-                await conn.execute(sql.TRUNCATE_TASKS)
+        async with self.db.transaction() as conn:
+            await conn.execute(sql.TRUNCATE_TASKS)
 
     async def get_task(self, created: datetime) -> Optional[Task]:
-        async with self.db.connection() as conn:
-            async with conn.transaction():
-                row = await conn.fetchrow(sql.GET_TASK, created)
-                return Task.from_row(row) if row else None
+        async with self.db.transaction() as conn:
+            row = await conn.fetchrow(sql.GET_TASK, created)
+            return Task.from_row(row) if row else None
 
     async def update_task(self, task: Task) -> Optional[Task]:
-        async with self.db.connection() as conn:
-            async with conn.transaction():
-                row = await conn.fetchrow(sql.UPDATE_TASK, task.created, task.project)
-                return Task.from_row(row) if row else None
+        async with self.db.transaction() as conn:
+            row = await conn.fetchrow(sql.UPDATE_TASK, task.created, task.project)
+            return Task.from_row(row) if row else None
