@@ -29,7 +29,7 @@ class TaskName(Enum):
 
 
 class TaskState(Enum):
-    new = 'new'
+    new = 'pending'
     running = 'running'
     completed = 'completed'
     failed = 'failed'
@@ -44,7 +44,7 @@ class Task:
     name: TaskName
     project: Optional[str] = None
     params: Optional[Dict[str, Any]] = None
-    state: TaskState = 'new'
+    state: TaskState = 'pending'
     created: datetime = ZERO_TIME
     started: Optional[datetime] = None
     finished: Optional[datetime] = None

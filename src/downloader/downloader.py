@@ -16,7 +16,7 @@ from common.server import run_app
 from common.timer import timer
 from common.tools import wait_until_cancelled
 from common.zip_support import extract_verify_documents
-from project.inventory import Inventory
+from storage.inventory import Inventory
 from project.project import Project
 from storage.tasks import Tasks, TaskName, THandlerResult, Task, TaskFailed
 

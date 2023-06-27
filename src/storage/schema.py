@@ -3,125 +3,189 @@ from typing import Dict
 VERSION = 1
 
 DROP = '''
-DROP TABLE IF EXISTS public."Fragment" CASCADE;
-DROP TYPE IF EXISTS public."FragmentType" CASCADE;
-DROP TABLE IF EXISTS public."File" CASCADE;
-DROP TABLE IF EXISTS public."Archive" CASCADE;
-DROP TABLE IF EXISTS public."Projects" CASCADE;
-DROP TYPE IF EXISTS public."ProjectState" CASCADE;
-DROP TABLE IF EXISTS public."Inventory" CASCADE;
-DROP TABLE IF EXISTS public."Task" CASCADE;
-DROP TYPE IF EXISTS public."TaskState" CASCADE;
-DROP TABLE IF EXISTS public."Properties" CASCADE;
+
+drop table public.property;
+drop table public.task;
+drop table public.archive;
+drop table public.project;
+drop table public.document;
+drop table public.fragment;
+drop table public.file;
+drop table public.usage;
+
+drop type public.task_state;
+
 '''
 
 CREATE = '''
-CREATE TABLE "Properties"
+
+create type public.task_state as enum ('pending', 'completed', 'failed', 'crashed');
+
+alter type public.task_state owner to askyourcode;
+
+create table public.property
 (
-    name      varchar(50) not null constraint properties_pk primary key,
-    text      varchar(50),
-    number    bigint
+    name   varchar(50) not null
+        constraint property_pk
+            primary key,
+    text   varchar(50),
+    number bigint
 );
 
-COMMENT ON COLUMN "Properties".name IS 'Unique name';
-COMMENT ON COLUMN "Properties".text IS 'Text value';
-COMMENT ON COLUMN "Properties".number IS 'Numeric value';
+comment on column public.property.name is 'Unique name';
 
-INSERT INTO "Properties" (name, number) VALUES ('Version', %(VERSION)d);
+comment on column public.property.text is 'Text value';
 
-ALTER TABLE "Properties" OWNER TO askyourcode;
+comment on column public.property.number is 'Numeric value';
 
+alter table public.property
+    owner to askyourcode;
 
-CREATE TYPE TaskState AS ENUM ('new', 'running', 'completed', 'failed', 'crashed');
-
-CREATE TABLE "Task"
+create table public.task
 (
-    name      varchar(50)  not null,
-    project   varchar(36)  null,
-    params    text  null,
-    state     TaskState  default 'new',
-    created   timestamp  default (current_timestamp at time zone 'utc')  not null  constraint tasks_pk  primary key,
-    started   timestamp  null,
-    finished  timestamp  null,ss
-    message   text  null,
-    traceback text  null
+    created   timestamp  default (CURRENT_TIMESTAMP AT TIME ZONE 'utc'::text) not null
+        constraint task_pk
+            primary key,
+    started   timestamp,
+    finished  timestamp,
+    state     task_state default 'pending'::task_state                        not null,
+    operation varchar(30)                                                     not null,
+    params    text,
+    message   text
 );
 
-COMMENT ON COLUMN "Task".name IS 'Name (type) of the task.';
-COMMENT ON COLUMN "Task".project IS 'Project identifier.';
-COMMENT ON COLUMN "Task".params IS 'JSON encoded parameters, actual fields depend on the task.';
-COMMENT ON COLUMN "Task".state IS 'Current state of the task.';
-COMMENT ON COLUMN "Task".created IS 'When the task was created.';
-COMMENT ON COLUMN "Task".started IS 'Processing start time.';
-COMMENT ON COLUMN "Task".finished IS 'Processing finish time.';
-COMMENT ON COLUMN "Task".message IS 'Message to send back to the user.';
-COMMENT ON COLUMN "Task".traceback IS 'Traceback of an error in case of an unexpected failure.';
+comment on column public.task.created is 'When the task was created.';
 
-CREATE INDEX tasks_project ON "Task" (project);
+comment on column public.task.started is 'Processing start time.';
 
-ALTER TABLE "Task" OWNER TO askyourcode;
+comment on column public.task.finished is 'Processing finish time.';
 
+comment on column public.task.state is 'Current state of the task.';
 
-CREATE TYPE ProjectState AS ENUM ('new', 'downloading', 'extracting', 'indexing', 'ready');
+comment on column public.task.operation is 'Operation to execute, "type" of the task.';
 
-CREATE TABLE Project 
+comment on column public.task.params is 'JSON encoded parameters to pass to the operation, the actual fields depend on the operation.';
+
+comment on column public.task.message is 'Message explaining the error if failed or a full traceback if crashed.';
+
+alter table public.task
+    owner to askyourcode;
+
+create table public.archive
 (
-    id varchar(36) not null constraint project_pk primary key,
-    name varchar(80) not null default '',
-    state ProjectState not null default 'new',
-    created timestamp not null default (current_timestamp at time zone 'utc'),
-    last_used timestamp not null default (current_timestamp at time zone 'utc')
-);
-
-
-CREATE TABLE Archive
-(
-    id varchar(36) not null constraint archive_pk primary key,
-    url varchar(400) not null constraint archive_pk primary key,
-    name varchar(400) not null,
+    hash varchar(64)  not null
+        constraint archive_pk
+            primary key,
     path varchar(400) not null,
-    checksum varchar(64) not null,
-    etag varchar(160),
-    created timestamp not null default (current_timestamp at time zone 'utc'),
-    last_used timestamp not null default (current_timestamp at time zone 'utc')
+    url  varchar(400) not null,
+    etag varchar(80)
 );
 
+alter table public.archive
+    owner to askyourcode;
 
-CREATE TABLE File
+create index archive_url_index
+    on public.archive (url);
+
+create index archive_path_index
+    on public.archive (path);
+
+create table public.project
 (
-    id bigserial not null constraint file_pk primary key,
-    archive_id varchar(36) null constraint file_archive_fk foreign key, 
-    path varchar(400) not null,
-    size bigint not null,
-    checksum varchar(64) not null,
-    mime_type varchar(80) not null,
-    encoding varchar(80) not null,
-    indexed boolean not null,
-    created timestamp not null default (current_timestamp at time zone 'utc'),
-    last_used timestamp not null default (current_timestamp at time zone 'utc')
+    id       bigserial
+        constraint project_pk
+            primary key,
+    uid      varchar(80),
+    name     varchar(80)                                                    not null,
+    created  timestamp default (CURRENT_TIMESTAMP AT TIME ZONE 'utc'::text) not null,
+    accessed timestamp default (CURRENT_TIMESTAMP AT TIME ZONE 'utc'::text) not null,
+    constraint project_uid_name_unique
+        unique (uid, name)
 );
 
+alter table public.project
+    owner to askyourcode;
 
-CREATE TYPE FragmentType AS ENUM ('doc', 'namespace', 'interface', 'class', 'function', 'method', 'variable');
-
-CREATE TABLE Fragment 
+create table public.document
 (
-    id bigserial not null constraint fragment_pk primary key,
-    file_id bigint null constraint fragment_file_fk foreign key,
-    parent_id bigint null foreign key,
-    offset_in_bytes bigint not null default 0,
-    size_in_bytes integer not null,
-    lineno integer not null default 1,
-    length integer not null,
-    tokens integer not null,
-    depth integer not null default 0,
-    type FragmentType not null,
-    name varchar(80) not null,
-    definition boolean not null,
-    text text not null
+    partition_key char(2)                                       not null,
+    hash          varchar(64)                                   not null,
+    doctype       varchar(40) default 'text'::character varying not null,
+    length        integer                                       not null,
+    body          text                                          not null,
+    constraint document_pk
+        primary key (partition_key, hash)
 );
 
-''' % dict(VERSION=VERSION)
+alter table public.document
+    owner to askyourcode;
+
+create table public.fragment
+(
+    partition_key char(2)               not null,
+    document_hash varchar(64)           not null,
+    start         integer default 0     not null,
+    length        integer               not null,
+    lineno        integer default 1     not null,
+    tokens        integer               not null,
+    depth         integer default 0     not null,
+    parent_id     integer,
+    category      varchar(24)           not null,
+    definition    boolean               not null,
+    summary       boolean default false not null,
+    name          varchar(80)           not null,
+    body          text                  not null,
+    constraint fragment_pk
+        primary key (partition_key, document_hash, start)
+);
+
+alter table public.fragment
+    owner to askyourcode;
+
+create index fragment_parent_id_index
+    on public.fragment (parent_id);
+
+create index fragment_body_index
+    on public.fragment using gin (to_tsvector('english'::regconfig, body));
+
+create table public.file
+(
+    partition_key   char(2)      not null,
+    project_id      bigint       not null,
+    id              bigserial,
+    path_in_project varchar(400) not null,
+    mime_type       varchar(40)  not null,
+    size            bigint       not null,
+    document_hash   varchar(64),
+    archive_hash    varchar(64),
+    constraint file_pk
+        primary key (partition_key, project_id, id)
+);
+
+alter table public.file
+    owner to askyourcode;
+
+create index file_path_in_project_index
+    on public.file (path_in_project);
+
+create table public.usage
+(
+    partition_key      char(2) not null,
+    project_id         bigint  not null,
+    definition_file_id bigint  not null,
+    definition_start   integer not null,
+    usage_file_id      bigint  not null,
+    usage_start        integer not null,
+    constraint usage_pk
+        primary key (partition_key, project_id, definition_file_id, definition_start, usage_file_id, usage_start)
+);
+
+alter table public.usage
+    owner to askyourcode;
+
+''' + f'''
+insert into public.property (name, number) values ('Version', {VERSION});
+'''
 
 MIGRATIONS: Dict[int, str] = {
     0: CREATE,

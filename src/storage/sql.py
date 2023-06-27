@@ -18,13 +18,13 @@ LIST_PROJECT_TASKS: str = """
 LIST_PENDING_TASKS: str = """
     SELECT created, started, finished, name, project, params, message, traceback 
     FROM "Tasks"
-    WHERE name = $1 AND state = 'new'
+    WHERE name = $1 AND state = 'pending'
     ORDER BY created;
 """
 
 FETCH_NEXT_TASK_FOR_UPDATE: str = """
     SELECT * FROM "Tasks"
-    WHERE name = $1 AND state = 'new'
+    WHERE name = $1 AND state = 'pending'
     ORDER BY created
     LIMIT 1 FOR UPDATE SKIP LOCKED;
 """
@@ -39,7 +39,7 @@ SET_TASK_RUNNING: str = """
     UPDATE "Tasks"
     SET state = 'running',
         started = current_timestamp at time zone 'utc'
-    WHERE created = $1 AND state = 'new'
+    WHERE created = $1 AND state = 'pending'
     RETURNING state;
 """
 
