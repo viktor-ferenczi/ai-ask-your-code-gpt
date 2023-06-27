@@ -1,49 +1,7 @@
 File extensions: .h
 
-C: /Bank management system/Header.h
-  Functions: Borrow, CheckBalance, Deposit, MainMenu, Menu, Return, inputNewData, inputUpgradeData, outData
-  Structs: accounts
-  Variable declarations: accountNum, available, balance, borrow, increaments, namespace
-
-C: /E-Commerce App V1.0/BreadBakery.h
-  Variable declarations: Product_BreadBakery
-
-C: /E-Commerce App V1.0/Header.h
-  Variable declarations: Login_Sign, Name_Memory, Num_Lower, Num_Number, Num_Upper, Security, Validation, namespace
-
-C: /E-Commerce App V1.0/Loading.h
-  Functions: F_Loading, gotoXY
-
-C: /E-Commerce App V1.0/Vegetables.h
-  Variable declarations: Product_VegetablesFruits
-
-C: /E-Commerce App V1.0/Water.h
-  Variable declarations: Product_WaterBeverages
-
-C: /E-Commerce App V2.0/Loading_Page.h
-  Functions: F_Loading, gotoXY
-
-C: /E-Commerce App V2.0/Person.h
-  Variable declarations: Owner, Person, Security, User
-
-C: /E-Commerce App V2.0/Products.h
-  Variable declarations: Drinks, Foods, Products, Vegetables
-
-C: /E-Commerce App V2.0/Validation.h
-  Variable declarations: Login_Sign, Name_Memory, Num_Lower, Num_Number, Num_Upper, Validation, Validation_C, namespace
-
-C: /E-Commerce App V3.0/Loading_Page.h
-  Functions: F_Loading, gotoXY
-
-C: /E-Commerce App V3.0/Password_Vali_Asterisk.h
-  Functions: F_Password_Val
-  Variable declarations: Length_Val, Letter_Val, Password_Val, namespace
-
-C: /E-Commerce App V3.0/Person.h
-  Variable declarations: Owner, Person, Security, User
-
-C: /E-Commerce App V3.0/Products.h
-  Variable declarations: Class_Of_Products1, Class_Of_Products2, Class_Of_Products3, Products, position1
-
-C: /E-Commerce App V3.0/Validation.h
-  Variable declarations: Login_Sign, Name_Memory, Num_Lower, Num_Number, Num_Upper, Validation, Validation_C, namespace
+Matches under subdirectories:
+  Bank management system: 72
+  E-Commerce App V1.0: 130
+  E-Commerce App V2.0: 105
+  E-Commerce App V3.0: 145

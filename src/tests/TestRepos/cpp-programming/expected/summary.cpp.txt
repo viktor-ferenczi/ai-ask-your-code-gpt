@@ -1,224 +1,32 @@
 File extensions: .cpp
 
-C: /Bank management system/main.cpp
-  Functions: MainMenu, main
-
-C: /E-Commerce App V1.0/main.cpp
-  Functions: F_Bread_Bakery_Menu, F_Cart_Check, F_Developers, F_General_Menu, F_Logo, F_Logo_Owner, F_Owner_Customers_List, F_Owner_Main_Menu, F_Owner_Products_Stotage, F_Sign_in, F_Table_For_Increasing_And_Decreasing, F_User_Main_Menu, F_Vegetables_Fruits_Menu, F_Water_Beverages_Menu, main
-  Variable declarations: Overall_Sum, Owner_Login_Sign, Owner_Parol_Sign, Test, Test1, Test2, User_1, price, quantity
-
-C: /E-Commerce App V2.0/main.cpp
-  Functions: F_Bread_Bakery_Menu, F_Cart_Check, F_Developers, F_General_Menu, F_Logo, F_Logo_Owner, F_Owner_Customers_List, F_Owner_Main_Menu, F_Owner_Products_Stotage, F_Sign_in, F_Table_For_Increasing_And_Decreasing, F_User_Main_Menu, F_Vegetables_Fruits_Menu, F_Water_Beverages_Menu, User_1, main
-  Variable declarations: Ch_Price, Ch_Quantity, Onion, Overall_Sum, Owner_Login_Sign, Owner_Parol_Sign, Pizza, User_Validtaion, Water
-
-C: /E-Commerce App V3.0/main.cpp
-  Functions: F_Cart_Check, F_Class_Of_Products1_Menu, F_Class_Of_Products2_Menu, F_Class_Of_Products3_Menu, F_Developers, F_General_Menu, F_Logo, F_Logo_Owner, F_Modify_Info_Products, F_Owner_Customers_List, F_Owner_Main_Menu, F_Owner_Products_Stotage, F_Sign_in, F_Table_For_Increasing_And_Decreasing, F_User_Main_Menu, User_1, main
-  Variable declarations: Ch_Price, Ch_Quantity, Overall_Sum, Owner_Login_Sign, Owner_Parol_Sign, Product1_1, Product2_1, Product3_1, Product_Class, Product_Name, User_Validtaion
-
-C: /Labirint Game/olaf-game.cpp
-  Functions: F_Developers, F_Help, F_Loading, F_Logic, F_MainMenu, F_Map, F_Quit, F_Start, main
-  Variable declarations: Case_1, Case_2, Developers, Help, Loading_1, Loading_2, Loading_3, MainMenu, Map, Player, Quit, Rand, TURN_1, TURN_2, Turn_1, Turn_2, k, window, x
-
-C: /New Year Congratulation/new_year.cpp
-  Functions: SetColor, background, congrats, main, numbers, pushX, text_2020, work_pushX
-  Using declarations: setw
-
-C: /New Year Congratulation/only_numbers.cpp
-  Functions: main1, numbers_view
-  Using declarations: setw
-
-C: /OOP1-Lab1/Circle.cpp
-  Functions: main
-
-C: /OOP1-Lab1/EquilateralTriangle.cpp
-  Functions: main
-
-C: /OOP1-Lab1/Rectangle.cpp
-  Functions: main
-
-C: /OOP1-Lab1/RightTriangle.cpp
-  Functions: main
-
-C: /OOP1-Lab1/ScaleneTriangle.cpp
-  Functions: main
-
-C: /OOP1-Lab1/Square.cpp
-  Functions: main
-
-C: /OOP1-Lab2/Greatestnumber.cpp
-  Functions: main2
-
-C: /OOP1-Lab2/LeapYear.cpp
-  Functions: main4
-
-C: /OOP1-Lab2/OddEven.cpp
-  Functions: main1
-
-C: /OOP1-Lab2/Swapping.cpp
-  Functions: main
-
-C: /OOP1-Lab2/Temperature.cpp
-  Functions: main3
-
-C: /OOP1-Lab3/Digits.cpp
-  Functions: main3
-
-C: /OOP1-Lab3/Fibonacci.cpp
-  Functions: main
-
-C: /OOP1-Lab3/Operators.cpp
-  Functions: main8
-
-C: /OOP1-Lab3/Prime.cpp
-  Functions: main4
-
-C: /OOP1-Lab3/Sum1.cpp
-  Functions: main5
-
-C: /OOP1-Lab3/Sum2.cpp
-  Functions: main6
-
-C: /OOP1-Lab3/Weekdays.cpp
-  Functions: main7
-
-C: /OOP1-Lab3/mn.cpp
-  Functions: main1
-
-C: /OOP1-Lab4/Source.cpp
-  Functions: main
-
-C: /OOP1-Lab4/Source1.cpp
-  Functions: main2
-
-C: /OOP1-Lab4/Source2.cpp
-  Functions: main3
-
-C: /OOP1-Lab4/Source3.cpp
-  Functions: main4
-
-C: /OOP1-Lab4/Source4.cpp
-  Functions: main5
-
-C: /OOP1-Lab5/Source.cpp
-  Functions: area, main1
-
-C: /OOP1-Lab5/Source1.cpp
-  Functions: main2
-
-C: /OOP1-Lab5/Source2.cpp
-  Functions: converting1, main3
-
-C: /OOP1-Lab5/Source3.cpp
-  Functions: main, qwerty
-
-C: /OOP1-Lab6/Source.cpp
-  Functions: area, circumference, findlargest, first, main, second, third
-  Templates: Large
-
-C: /OOP1-Lab7/fibonacci.cpp
-  Functions: fibonacci, main
-
-C: /OOP1-Lab7/gcd.cpp
-  Functions: gcd, main4
-
-C: /OOP1-Lab7/power.cpp
-  Functions: main1, power
-
-C: /OOP1-Lab7/sum.cpp
-  Functions: main2, sum
-
-C: /OOP1-Lab8/Sort.cpp
-  Functions: main, merging
-
-C: /OOP1-Lab8/average.cpp
-  Functions: main
-
-C: /OOP1-Lab8/deleting.cpp
-  Functions: main
-
-C: /OOP1-Lab8/display.cpp
-  Functions: main
-
-C: /OOP1-Lab8/inserting.cpp
-  Functions: main
-
-C: /OOP1-Lab9/Pascal.cpp
-  Functions: main
-
-C: /OOP1-Lab9/Pascal2.cpp
-  Functions: main1
-
-C: /OOP1-Lab9/Source1.cpp
-  Functions: main, main22, main_menu_view, product, read_display, sum_matrices, transpose
-
-C: /OOP1-Lab9/Source2.cpp
-  Functions: main, main_menu_view1, sales_sum, salesman_sum
-
-C: /OOP2-FA/city_temperature_control.cpp
-  Classes: City, CityHumidity, CityRainFall, CityTemperature
-  Functions: CityHumidityInfo, CityRainFallInfo, CityTemperatureInfo, main
-
-C: /OOP2-FA/e-commerce.cpp
-  Classes: FreshGroceries, Item, PackedGroceries
-  Functions: Purchase, main
-
-C: /OOP2_Lab1/studentCourseEvaluation.cpp
-  Classes: Employee, Student
-  Functions: main
-
-C: /OOP2_Lab10/Person.cpp
-  Classes: Person
-  Functions: F_First_Program, F_Second_Program, main
-  Variable declarations: position
-
-C: /OOP2_Lab2/Source.cpp
-  Classes: Account, Person, Records, Rectangle
-  Functions: main, main_menu_view
-
-C: /OOP2_Lab3/main.cpp
-  Classes: FullName, Player
-  Functions: Increse_GoalScored, main
-  Variable declarations: Goals_Scored
-
-C: /OOP2_Lab4/main1.cpp
-  Classes: DayTime, Dollar
-  Functions: main, operator++, operator--, operator<<, operator>>, showChoicesforMainMenu, showChoicesforMainMenu2
-
-C: /OOP2_Lab5/Source.cpp
-  Classes: Distance, Rectangle
-  Functions: DistanceSecond, RectangleFirst, main
-
-C: /OOP2_Lab6/Source.cpp
-  Classes: ACCOUNT, Book, CURR_ACCT, Publication, SAV_ACCT, Tape
-  Functions: F_First_Program, F_Second_Program, main
-
-C: /OOP2_Lab7/Source.cpp
-  Classes: Account, Admin, Casual_Typist, Master, Officer, Person, Regular_Typist, Staff, Teacher, Typist
-  Functions: F_First_Program_Menu, F_Second_Program_Menu, main
-
-C: /OOP2_Lab7_Extra/Education.cpp
-  Classes: Casual_Typist, Education, Officer, Regular_Typist, Staff, Teacher, Typist
-  Functions: F_First_Program_Menu, main
-
-C: /OOP2_Lab8/main.cpp
-  Classes: Circle, Rectanglee, Shape, Triangle
-  Functions: F_First, F_Second, main
-  Variable declarations: b, h
-
-C: /OOP2_Lab9/main.cpp
-  Functions: F_First_Program, F_Second_Program, F_Third_Program, main
-
-C: /Quiz Game/quiz-game-with-oop.cpp
-  Classes: Question
-  Methods: askQuestion, setValues
-  Functions: main, main_menu_view
-  Variable declarations: Guess, Total
-
-C: /Quiz Game/quiz-game.cpp
-  Functions: after_game, hints, main, main_menu_view, question1, question10, question2, question3, question4, question5, question6, question7, question8, question9, scores_table
-  Variable declarations: Name, correct_answer, hints_used, level, total_score
-
-C: /Snake Game/snake-game.cpp
-  Enums: Direction
-  Functions: Init, Input, Logic, Map, incorrectChoice, instructions, lostgame, main, record, startGame, welcome, win
-  Variable declarations: dir, fx, fy, game, hConsole, height, nt, score, tx, ty, width, x, y
+Matches under subdirectories:
+  Bank management system: 18
+  E-Commerce App V1.0: 210
+  E-Commerce App V2.0: 202
+  E-Commerce App V3.0: 218
+  Labirint Game: 80
+  New Year Congratulation: 126
+  OOP1-Lab1: 48
+  OOP1-Lab2: 34
+  OOP1-Lab3: 48
+  OOP1-Lab4: 29
+  OOP1-Lab5: 37
+  OOP1-Lab6: 97
+  OOP1-Lab7: 39
+  OOP1-Lab8: 48
+  OOP1-Lab9: 125
+  OOP2-FA: 155
+  OOP2_Lab1: 30
+  OOP2_Lab10: 55
+  OOP2_Lab2: 63
+  OOP2_Lab3: 44
+  OOP2_Lab4: 46
+  OOP2_Lab5: 26
+  OOP2_Lab6: 57
+  OOP2_Lab7: 87
+  OOP2_Lab7_Extra: 61
+  OOP2_Lab8: 35
+  OOP2_Lab9: 37
+  Quiz Game: 211
+  Snake Game: 68

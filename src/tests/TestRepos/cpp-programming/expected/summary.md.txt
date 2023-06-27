@@ -8,51 +8,23 @@ File extensions: .md
 ## Problem Solving
 ## Projects Ideas
 
-# Practical Lab Assignment - Operators
 
-# Practical Lab Assignment - Control Structures - if/else
-
-# Practical Lab Assignment - Control Structures - Loop/Switch
-
-# Practical Lab Assignment - Control Structure - Nested Loop
-
-# Practical Lab Assignment
-
-# Practical Lab Assignment
-
-# Practical Lab Assignment
-
-# Practical Lab Assignment - Arrays
-
-# Practical Lab Assignment - Arrays
-
-# Practical Lab Assignment - Introduction to class and object with `set()` and `get()` methods
-
-# Practical Lab Assignment - File Handling Operations
-
-# Practical Lab Assignment - Separation of the interface from implementation constructors and destructors
-### Program 1
-### Program 2
-### Program 3
-### Program 4
-
-# Practical Lab Assignment - Const member function, friend function, composition, friend functions and `this` pointer
-### Program 1
-
-# Practical Lab Assignment - Operator Overloading
-### Program 1
-### PRogram 2
-
-# Practical Lab Assignment - Binary Operator Overloading
-### Program 1
-### Program 2
-
-# Practical Lab Assignment - Inheritance
-### Program 1
-### Program 2
-
-# Practical Lab Assignment - Virtual function
-### Program 1
-### Program 1a
-
-# Practical Lab Assignment - File Handling
+Matches under subdirectories:
+  OOP1-Lab1: 2
+  OOP1-Lab2: 2
+  OOP1-Lab3: 13
+  OOP1-Lab4: 16
+  OOP1-Lab5: 2
+  OOP1-Lab6: 2
+  OOP1-Lab7: 2
+  OOP1-Lab8: 12
+  OOP1-Lab9: 14
+  OOP2_Lab1: 6
+  OOP2_Lab10: 2
+  OOP2_Lab2: 8
+  OOP2_Lab3: 7
+  OOP2_Lab4: 6
+  OOP2_Lab5: 4
+  OOP2_Lab6: 17
+  OOP2_Lab8: 6
+  OOP2_Lab9: 5

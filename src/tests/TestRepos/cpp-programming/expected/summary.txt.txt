@@ -1,15 +1,6 @@
 File extensions: .txt
 
-File: /E-Commerce App V2.0/User_Info.txt
-
-File: /E-Commerce App V3.0/User_Info.txt
-
-File: /OOP2_Lab9/contacts.txt
-
-File: /OOP2_Lab9/numbers.txt
-
-File: /OOP2_Lab9/one.txt
-
-File: /OOP2_Lab9/total.txt
-
-File: /OOP2_Lab9/two.txt
+Matches under subdirectories:
+  E-Commerce App V2.0: 2
+  E-Commerce App V3.0: 2
+  OOP2_Lab9: 10
