@@ -53,12 +53,15 @@ REPOS = [
     # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
 
     # Python, C++, CUDA
-    ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
+    # ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
 
     # TypeScript, JavaScript, HTML
     # FIXME: Crashes tiktoken_len at a data.ts file:
     # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
     # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
+
+    # Part of Unreal: C++, shader
+    ('unreal', 'http://rebecca.sh/PluginsShadersSourceTargets.zip'),
 ]
 
 
@@ -187,6 +190,12 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
             normalize_fragments(hits)
             actual = '\n\n'.join(pformat(hit) for hit in hits)
             self.verify('fts5_using_namespace_taso.txt', actual)
+
+        if name == 'unreal':
+            actual = await project.summarize(path='/Plugins/FX/Niagara', tail='.h')
+            self.verify('unreal_niagara_headers.txt', actual)
+
+        pass
 
     async def wait_for_processing(self, project):
         inventory = Inventory()

@@ -274,9 +274,11 @@ class Project:
     Phrases are escaped by double quotes.
     See: https://www.sqlite.org/fts5.html
     """
+
     async def free_text_search(self, query: str, limit: int) -> List[str]:
         def edq(s):
             return s.replace('"', '""')
+
         query = ' '.join(f'"{edq(s)}"' for s in query.split() if s.strip())
 
         if not query:
@@ -304,17 +306,15 @@ class Project:
             fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, path, tail, name)
 
         if fragments:
-            summary = '\n'.join(self.summarize_fragments(fragments))
+            summary = '\n'.join(self.summarize_fragments(path, fragments))
         else:
             if tail or name:
                 return ''
-            summary = [
-                'No directory or file matched the summary query.\n',
-                'Path of all files in the project:\n'
-            ]
             with self.cursor() as cursor:
-                summary.extend(f'{p}\n' for p in self.get_distinct_paths_ordered(cursor))
-            summary = ''.join(summary)
+                fragments: List[Fragment] = self.search_by_path_tail_name_unlimited(cursor, '/', '', '')
+            if not fragments:
+                return ''
+            return 'No file matched the summary query. Try to summarize the whole project (path=/) to learn its directory structure.\n'
 
         summary = summary.split('\n')
 
@@ -326,7 +326,7 @@ class Project:
                 summary.insert(0, f'File extension: {extensions}\n')
 
         if not token_limit:
-            token_limit = 2000 if not path and not name else 1000
+            token_limit = 3000
 
         if sum(tiktoken_len(line) for line in summary) > token_limit:
             summary = [line for line in summary if not line.lstrip().startswith('Usage')]
@@ -343,8 +343,31 @@ class Project:
 
         return '\n'.join(summary)
 
-    def summarize_fragments(self, fragments: List[Fragment]) -> Iterator[str]:
+    def summarize_fragments(self, path_query: str, fragments: List[Fragment]) -> Iterator[str]:
+        if not fragments:
+            return
+
         fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
+
+        min_slash_count = path_query.rstrip('/').count('/')
+
+        subdir_hit_counts = {}
+        file_summaries = []
         for fragment in fragments:
+            extra_slashes = fragment.path.count('/') - min_slash_count
+            if extra_slashes > 1:
+                subdir_name = fragment.path.split('/')[min_slash_count + 1]
+                subdir_hit_counts[subdir_name] = subdir_hit_counts.get(subdir_name, 0) + 1
+                continue
             if fragment.type == 'summary':
-                yield fragment.text
+                strip_text = fragment.text.strip('\n')
+                file_summaries.append(f'{strip_text}\n\n')
+
+        if file_summaries:
+            yield ''.join(file_summaries)
+
+        if subdir_hit_counts:
+            subdir_info = [f'Matches under subdirectories:\n']
+            for subdir, count in sorted(subdir_hit_counts.items()):
+                subdir_info.append(f'  {subdir}: {count}\n')
+            yield ''.join(subdir_info)
