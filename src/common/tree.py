@@ -1,6 +1,8 @@
-from typing import Iterator, Tuple
+from typing import Iterator, Tuple, Optional, IO
 
 from tree_sitter import TreeCursor, Node
+
+from common.text import decode_replace
 
 
 def walk_children(cursor: TreeCursor, depth=0, max_depth=30) -> Iterator[TreeCursor]:
@@ -22,8 +24,10 @@ def walk_children(cursor: TreeCursor, depth=0, max_depth=30) -> Iterator[TreeCur
     cursor.goto_parent()
 
 
-def walk_nodes(cursor: TreeCursor) -> Iterator[Tuple[Node, int, int]]:
+def walk_nodes(cursor: TreeCursor, *, debug: bool = False, debug_file: Optional[IO]) -> Iterator[Tuple[Node, int, int]]:
     for cur, depth in walk_children(cursor):
         node = cur.node
         lineno = 1 + node.start_point[0]
+        if debug and node.type.strip():
+            print(f"|#{lineno:05d} {'  ' * depth}[{node.type}] {decode_replace(node.text).rstrip()}", file=debug_file)
         yield node, lineno, depth

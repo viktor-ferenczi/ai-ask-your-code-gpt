@@ -15,14 +15,14 @@ class CSharpParser(TreeSitterParser):
     mime_types = ('text/x-csharp',)
     tree_sitter_language_name = 'c_sharp'
 
-    categories = [
-        ('namespace', 'Namespaces'),
-        ('interface', 'Interfaces'),
-        ('class', 'Classes'),
-        ('method', 'Methods'),
-        ('variable', 'Variables'),
-        ('usage', 'Usages'),
-    ]
+    categories = {
+        'namespace': 'Namespaces',
+        'interface': 'Interfaces',
+        'class': 'Classes',
+        'method': 'Methods',
+        'variable': 'Variables',
+        'usage': 'Usages'
+    }
 
     def __init__(self) -> None:
         super().__init__()

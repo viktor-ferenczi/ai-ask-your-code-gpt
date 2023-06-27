@@ -15,13 +15,13 @@ class JavaParser(TreeSitterParser):
     mime_types = ('text/x-java',)
     tree_sitter_language_name = 'java'
 
-    categories = [
-        ('interface', 'Interfaces'),
-        ('class', 'Classes'),
-        ('method', 'Methods'),
-        ('variable', 'Variables'),
-        ('usage', 'Usages'),
-    ]
+    categories = {
+        'interface': 'Interfaces',
+        'class': 'Classes',
+        'method': 'Methods',
+        'variable': 'Variables',
+        'usage': 'Usages'
+    }
 
     def __init__(self) -> None:
         super().__init__()

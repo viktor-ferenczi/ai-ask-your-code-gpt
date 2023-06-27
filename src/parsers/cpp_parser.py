@@ -1,55 +1,36 @@
-import io
-from typing import Iterator, Set, Dict
+from typing import Iterator, Tuple
 
-import clang
-import clang.cindex
+from tree_sitter import Node
 
 from common.constants import C
-from common.text import decode_replace
-from common.tools import tiktoken_len, new_uuid
-from model.fragment import Fragment
-from parsers.registrations import BaseParser
+from common.tools import tiktoken_len
+from parsers.model import Name
+from parsers.tree_sitter_parser import TreeSitterParser
 from splitters.text_splitter import TextSplitter
 
 
-def depth(node):
-    d = 0
-    while node:
-        d += 1
-        node = node.semantic_parent
-    return d
-
-
-class CppParser(BaseParser):
+class CppParser(TreeSitterParser):
     name = 'C++'
     extensions = ('c', 'cc', 'cpp', 'c++', 'h', 'hh', 'hpp', 'h++')
-    mime_types = ('text/c', 'text/x-cpp', 'text/x-cplusplus')
-    is_code = True
+    mime_types = ('text/x-c',)
+    tree_sitter_language_name = 'cpp'
+    debug = True
 
-    categories = [
-        ('namespace', 'Namespaces'),
-        ('namespace_alias', 'Namespace aliases'),
-        ('enum_decl', 'Enums'),
-        ('union_decl', 'Unions'),
-        ('typedef_decl', 'Typedefs'),
-        ('type_alias_decl', 'Type aliases'),
-        ('struct_decl', 'Structs'),
-        ('class_decl', 'Classes'),
-        ('class_template', 'Template classes'),
-        ('constructor', 'Constructors'),
-        ('destructor', 'Destructors'),
-        ('cxx_method', 'Methods'),
-        ('function_decl', 'Functions'),
-        ('function_template', 'Template functions'),
-        ('var_decl', 'Variables'),
-        ('using_declaration', 'Using declarations'),
-        ('using_directive', 'Using directives'),
-        ('static_assert', 'Static asserts'),
-    ]
-
-    ignore_types = (
-        'unexposed_decl',
-    )
+    categories = {
+        'class': 'Classes',
+        'struct': 'Structs',
+        'enum': 'Enums',
+        'union': 'Unions',
+        'typedef': 'Typedefs',
+        'macro': 'Macros',
+        'function': 'Functions',
+        'method': 'Methods',
+        'field': 'Fields',
+        'variable': 'Variables',
+        'using': 'Using',
+        'namespace': 'Namespaces',
+        'usage': 'Usages',
+    }
 
     def __init__(self) -> None:
         super().__init__()
@@ -57,98 +38,74 @@ class CppParser(BaseParser):
             chunk_size=C.MAX_TOKENS_PER_FRAGMENT,
             length_function=tiktoken_len,
             separators=(
-                ('<', r"^\s+class\s+"),
+                ('<', r"^\s+namespace\s+"),
+                ('<', r"^\s+using\s+"),
+                ('<', r"^\s+interface\s+"),
+                ('<', r"^\s+enum class\s+"),
+                ('<', r"^\s+enum\s+"),
+                ('<', r"^\s+union\s+"),
+                ('<', r"^\s+typedef\s+"),
                 ('<', r"^\s+struct\s+"),
+                ('<', r"^\s+class\s+"),
+                ('<', r"^\s+using\s+"),
                 ('<', r"^\s+while\s+"),
                 ('<', r"^\s+for\s+"),
                 ('<', r"^\s+if\s+"),
                 ('<', r"^\s+elif\s+"),
                 ('<', r"^\s+else\s+"),
                 ('<', r"^\s+try\s+"),
-                ('<', r"^\s+#if\s+"),
-                ('<', r"^\s+#ifdef\s+"),
-                ('<', r"^\s+#ifndef\s+"),
-                ('<', r"^\s+#else\s+"),
             )
         )
 
-    def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
+    def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]) -> Iterator[Name]:
+        def simple(category: str, identifier_type: str, definition: str):
+            for child in node.children:
+                if child.type == identifier_type:
+                    yield Name(category=category, name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                    return
 
-        lines = decode_replace(content).replace('\r\n', '\n').replace('\r', '').split('\n')
+        def two_level(category: str, declarator_type: str, identifier_type: str, definition: str):
+            for child in node.children:
+                if child.type == declarator_type:
+                    for grandchild in child.children:
+                        if grandchild.type == identifier_type:
+                            yield Name(category=category, name=grandchild.text, definition=node.text, lineno=lineno, depth=depth)
+                            return
 
-        name_map: Dict[str, Set] = {name: set() for name, label in self.categories}
-        unhandled_types: Dict[str, Fragment] = {}
-
-        def get_extent_as_string(node) -> str:
-            start = node.extent.start
-            end = node.extent.end
-            return ''.join(f'{line}\n' for line in lines[start.line - 1:end.line])
-
-        def traverse(node, filename):
-            for child in node.get_children():
-                if child.location.file.name != filename:
-                    continue
-
-                lineno = child.location.line
-                type_name = str(child.kind).split(".")[1].lower()
-
-                if type_name in self.ignore_types:
-                    continue
-
-                name = child.spelling
-                if name and type_name == 'function_decl' and name == name.upper():
-                    # Macro usage, ignore for now
-                    continue
-
-                uuid = new_uuid()
-                depth_in_code = depth(child)
-                text = get_extent_as_string(child)  # if child.is_definition() else ''
-
-                if name == 'var_decl' and (text.startswith('class') or text.startswith('struct')):
-                    # Class or struct pre-declaration, ignore
-                    continue
-
-                if type_name == 'namespace':
-                    text = f'namespace {name} {...}'
-
-                if type_name == 'enum_decl' and name == 'class':
-                    # Fix the name of enum classes
-                    words = [x for x in text.replace('\t', ' ').split() if x]
-                    if len(words) >= 3:
-                        name = words[2]
-
-                if text:
-                    fragment = Fragment(uuid, filename, lineno, depth_in_code, type_name, name, text)
-                    if type_name in name_map:
-                        yield fragment
-                    else:
-                        unhandled_types[type_name] = fragment
-
-                traverse(child, filename)
-
-        def parse_cpp_file(filename, content):
-            index = clang.cindex.Index.create()
-            bio = io.BytesIO(content)
-            tu = index.parse(path, unsaved_files=[(path, bio)])
-            yield from traverse(tu.cursor, filename)
-
-        for fragment in parse_cpp_file(path, content):
-            yield fragment
-            if fragment.name:
-                names = name_map[fragment.type]
-                names.add(fragment.name)
-
-        if unhandled_types:
-            print(f'Unhandled fragment types in {path!r}:')
-            for type_name in sorted(unhandled_types):
-                print(f'- {type_name}: {unhandled_types[type_name]}')
-            print()
-
-        summary = [f'C: {path}\n']
-        for key, label in sorted(self.categories):
-            names = name_map[key]
-            if names:
-                summary.append(f'  {label}: {", ".join(sorted(names))}\n')
-
-        summary = ''.join(summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        for node, lineno, depth in nodes:
+            if node.type in (
+                    'identifier',
+                    'type_identifier',
+                    'field_identifier',
+                    'qualified_identifier',
+                    'namespace_identifier'):
+                yield from simple('usage', 'identifier', '')
+            elif node.type == 'declaration':
+                yield from simple('variable', 'identifier', node.text)
+                yield from simple('method', 'qualified_identifier', node.text)
+            elif node.type == 'function_declarator':
+                yield from simple('function', 'identifier', node.text)
+            elif node.type == 'function_definition':
+                yield from two_level('function', 'function_declarator', 'identifier', node.text)
+            elif node.type == 'field_declaration':
+                yield from simple('field', 'field_identifier', node.text)
+            elif node.type == 'type_definition':
+                yield from simple('typedef', 'type_identifier', node.text)
+            elif node.type == 'struct_specifier':
+                yield from simple('struct', 'type_identifier', node.text)
+            elif node.type == 'class_specifier':
+                yield from simple('class', 'type_identifier', node.text)
+            elif node.type == 'union_specifier':
+                yield from simple('union', 'type_identifier', node.text)
+            elif node.type == 'enum_specifier':
+                yield from simple('enum', 'type_identifier', node.text)
+            elif node.type in ('preproc_def', 'preproc_function_def'):
+                yield from simple('macro', 'identifier', node.text)
+            elif node.type == 'using_declaration':
+                yield from simple('using', 'identifier', node.text)
+            elif node.type == 'namespace_definition':
+                for child in node.children:
+                    if child.type == 'namespace_identifier':
+                        yield Name(category='namespace', name=child.text, definition=f'namespace {child.text} {{...}}', lineno=lineno, depth=depth)
+            elif node.type not in self.unhandled:
+                self.unhandled[node.type] = (lineno, node.text)

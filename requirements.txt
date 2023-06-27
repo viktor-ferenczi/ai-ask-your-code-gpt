@@ -10,4 +10,3 @@ aiohttp~=3.8.4
 scikit-learn~=1.2.2
 azure-core
 aioquic
-libclang

@@ -35,7 +35,7 @@ REPOS = [
     # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
     #
     # # C++, CMake
-    # ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
+    ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
     #
     # # C#, Batch
     # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
@@ -61,7 +61,7 @@ REPOS = [
     # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
 
     # Part of Unreal: C++, shader
-    ('unreal', 'http://rebecca.sh/PluginsShadersSourceTargets.zip'),
+    # ('unreal', 'http://rebecca.sh/PluginsShadersSourceTargets.zip'),
 ]
 
 
