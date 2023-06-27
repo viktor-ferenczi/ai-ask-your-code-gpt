@@ -1,0 +1,2 @@
+export PYTHONPYCACHEPREFIX=$HOME/.local/pycache
+mkdir -p $PYTHONPYCACHEPREFIX
