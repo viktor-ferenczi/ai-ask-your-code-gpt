@@ -1,0 +1,15 @@
+SHELL="/bin/bash"
+HOME="/root"
+PATH="/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# Certificate renewal once a day
+# mm hh         dom mon dow command
+30 08            *   *   *  letsencrypt renew --agree-tos >>$HOME/log/letsencrypt-renew.log 2>&1
+
+# Backup
+# mm hh         dom mon dow command
+#15 00            *   *   *  /bin/bash $HOME/bin/backup-all.sh >>$HOME/log/backup.log 2>&1
+
+# Cleanup
+# mm hh         dom mon dow command
+#30 00            *   *   *  /bin/bash $HOME/bin/backup-all.sh >>$HOME/log/cleanup.log 2>&1
