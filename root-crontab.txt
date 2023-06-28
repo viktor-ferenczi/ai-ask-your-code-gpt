@@ -4,7 +4,7 @@ PATH="/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Certificate renewal once a day
 # mm hh         dom mon dow command
-30 08            *   *   *  letsencrypt renew --agree-tos >>$HOME/log/letsencrypt-renew.log 2>&1
+30 08            *   *   *  /root/bin/renew-cert.sh >>$HOME/log/renew-cert.log 2>&1
 
 # Backup
 # mm hh         dom mon dow command
