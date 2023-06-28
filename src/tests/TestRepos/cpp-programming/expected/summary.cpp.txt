@@ -1,32 +1,32 @@
 File extensions: .cpp
 
 Matches under subdirectories:
-  Bank management system: 18
+  Bank management system: 17
   E-Commerce App V1.0: 210
-  E-Commerce App V2.0: 202
-  E-Commerce App V3.0: 218
-  Labirint Game: 80
+  E-Commerce App V2.0: 201
+  E-Commerce App V3.0: 217
+  Labirint Game: 56
   New Year Congratulation: 126
-  OOP1-Lab1: 48
-  OOP1-Lab2: 34
-  OOP1-Lab3: 48
+  OOP1-Lab1: 40
+  OOP1-Lab2: 33
+  OOP1-Lab3: 47
   OOP1-Lab4: 29
-  OOP1-Lab5: 37
-  OOP1-Lab6: 97
+  OOP1-Lab5: 35
+  OOP1-Lab6: 93
   OOP1-Lab7: 39
-  OOP1-Lab8: 48
-  OOP1-Lab9: 125
+  OOP1-Lab8: 47
+  OOP1-Lab9: 119
   OOP2-FA: 155
   OOP2_Lab1: 30
-  OOP2_Lab10: 55
-  OOP2_Lab2: 63
-  OOP2_Lab3: 44
-  OOP2_Lab4: 46
-  OOP2_Lab5: 26
+  OOP2_Lab10: 53
+  OOP2_Lab2: 62
+  OOP2_Lab3: 40
+  OOP2_Lab4: 40
+  OOP2_Lab5: 24
   OOP2_Lab6: 57
   OOP2_Lab7: 87
   OOP2_Lab7_Extra: 61
   OOP2_Lab8: 35
-  OOP2_Lab9: 37
-  Quiz Game: 211
-  Snake Game: 68
+  OOP2_Lab9: 36
+  Quiz Game: 210
+  Snake Game: 66
