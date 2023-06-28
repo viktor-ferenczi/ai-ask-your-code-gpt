@@ -14,7 +14,7 @@ class CppParser(TreeSitterParser):
     extensions = ('c', 'cc', 'cpp', 'c++', 'h', 'hh', 'hpp', 'h++')
     mime_types = ('text/x-c',)
     tree_sitter_language_name = 'cpp'
-    debug = True
+    debug = False
 
     categories = {
         'class': 'Classes',
