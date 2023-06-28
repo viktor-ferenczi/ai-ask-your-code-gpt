@@ -62,7 +62,7 @@ class TreeSitterParser(BaseParser):
 
                 name_map[name.category].add(name)
 
-            if self.unhandled:
+            if self.debug and self.unhandled:
                 print('', file=debug_file)
                 for name in sorted(self.unhandled):
                     lineno, text = self.unhandled[name]

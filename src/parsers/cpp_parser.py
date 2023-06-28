@@ -107,5 +107,5 @@ class CppParser(TreeSitterParser):
                 for child in node.children:
                     if child.type == 'namespace_identifier':
                         yield Name(category='namespace', name=child.text, definition=f'namespace {child.text} {{...}}', lineno=lineno, depth=depth)
-            elif node.type not in self.unhandled:
+            elif self.debug and node.type not in self.unhandled:
                 self.unhandled[node.type] = (lineno, node.text)
