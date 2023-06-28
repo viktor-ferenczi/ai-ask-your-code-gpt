@@ -6,7 +6,7 @@
 apt-get update -y
 apt-get upgrade -y
 
-apt-get install mc etckeeper python-is-python3 authbind
+apt-get install mc etckeeper python-is-python3 authbind certbot
 
 pip install -r requirements.txt
 
@@ -31,3 +31,6 @@ done
 # Create SSH cert, authorized_keys
 # Copy files to server
 # Append profile.sh to ~/.profile of user plugin
+# Copy or create certs (./etc/letsencrypt)
+# Run renew-cert.sh once to copy certs into /home/plugin/cert
+# Load plugin user's crontab
