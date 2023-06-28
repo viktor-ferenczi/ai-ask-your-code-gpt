@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.archive</OriginalElement>
+  <nodes>
+    <node x="378.69647355163727" y="284.0377833753149">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.document</node>
+    <node x="693.8929471032745" y="-98.24307304785901">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.task</node>
+    <node x="-281.0" y="57.5">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.usage</node>
+    <node x="350.69647355163727" y="-303.8463476070529">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.fragment</node>
+    <node x="-266.5" y="-303.8463476070529">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.project</node>
+    <node x="1.5" y="57.5">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.file</node>
+    <node x="796.7556675062974" y="-303.8463476070529">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.property</node>
+    <node x="46.5" y="-303.8463476070529">8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.archive</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.usage" target="8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.project" relationship="REFERENCES">
+      <point x="0.0" y="-136.5" />
+      <point x="0.0" y="118.5" />
+    </edge>
+    <edge source="8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.file" target="8dee3f25-9b98-421a-aa88-828b9f5ee220.TABLE:askyourcode_test.public.project" relationship="REFERENCES">
+      <point x="0.0" y="-174.0" />
+      <point x="143.5" y="-5.0" />
+      <point x="-159.5" y="-5.0" />
+      <point x="0.0" y="118.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6513535684987695" showDependencies="false" x="483.5573047858942" y="238.84886649874068" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
