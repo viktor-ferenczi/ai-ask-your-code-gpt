@@ -1,77 +1,77 @@
 openapi: 3.0.1
 info:
   title: AskYourCode
-  description: Provides summarization and search capability over the documentation and source code of a software project to assist in reasoning.
-  version: 'v1'
+  description: Provides summarization and search capability over the source code and documentation of a software project. Facilitates discovering the project gradually, retrieving only the parts relevant for reasoning about the task at hand.
+  contact:
+    name: 'AskYourCode Support'
+    url: 'https://askyourcode.ai'
+    email: 'info@askyourcode.ai'
+  version: 'v2'
 servers:
   - url: https://plugin.askyourcode.ai
 paths:
   /project:
     post:
-      operationId: download
-      summary: Download and index a software project for content retrieval.
+      operationId: create
+      summary: Start working on a new project
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/downloadRequest'
+              $ref: '#/components/schemas/createRequest'
       responses:
         "200":
-          description: Archive downloaded, indexing of its contents is in progress.
+          description: Project created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/downloadResponse'
-  /project/{project_id}:
+                $ref: '#/components/schemas/createResponse'
+  /project/{project}:
     delete:
       operationId: delete
-      summary: Delete all information about a project.
+      summary: Forget about a project
       parameters:
         - in: path
-          name: project_id
+          name: project
           schema:
             type: string
           required: true
-          description: Project ID
+          description: Project identifier
       responses:
         "200":
           description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
-  /project/{project_id}/summarize:
+  /project/{project}/summarize:
     get:
       operationId: summarize
-      summary: Summarize the project, a directory, a file or code construct (class, method, function, variable).
+      summary: Summarize the project, a directory, a file or a code construct (class, method, function, variable)
       parameters:
         - in: path
-          name: project_id
+          name: project
           schema:
             type: string
           required: true
-          description: Project ID
+          description: Project identifier
         - in: query
           name: path
           schema:
             type: string
           required: false
-          description: Matches the head of the file or folder path. Whole project if missing.
-          example: README.md
+          description: Path to a specific folder or file
+          example: /README.md
         - in: query
           name: tail
           schema:
             type: string
           required: false
-          description: Matches the tail of the file path. For example ".extension" or "filename.extension".
+          description: Tail of the file path
           example: .md
         - in: query
           name: name
           schema:
             type: string
           required: false
-          description: Fully qualified or simple name of the code construct.
+          description: Simple or fully qualified name of a code construct
       responses:
         "200":
           description: Summary
@@ -85,43 +85,43 @@ paths:
             text/plain:
               schema:
                 type: string
-  /project/{project_id}/search:
+  /project/{project}/search:
     get:
       operationId: search
-      summary: Searches for documentation or a code construct (class, method, function, variable).
+      summary: Searches for documentation or a code construct (class, method, function, variable)
       parameters:
         - in: path
-          name: project_id
+          name: project
           schema:
             type: string
           required: true
-          description: Project ID
+          description: Project identifier
         - in: query
           name: path
           schema:
             type: string
           required: false
-          description: Matches the head of the file or folder path. Whole project if missing.
+          description: Matches the head of the file or folder path (whole project if missing)
           example: README.md
         - in: query
           name: tail
           schema:
             type: string
           required: false
-          description: Matches the tail of the file path. For example ".extension" or "filename.extension".
+          description: Matches the tail of the file path, for example ".extension" or "filename.extension"
           example: .md
         - in: query
           name: name
           schema:
             type: string
           required: false
-          description: Fully qualified or simple name of the code construct.
+          description: Fully qualified or simple name of the code construct
         - in: query
           name: text
           schema:
             type: string
           required: false
-          description: Free text search on the file contents.
+          description: Free text search expression
       responses:
         "200":
           description: Found
@@ -134,55 +134,44 @@ paths:
 
 components:
   schemas:
-    downloadRequest:
+    createRequest:
       type: object
-      required:
-        - url
       properties:
         url:
           type: string
-          description: URL of the ZIP archive to download directly without authentication.
-          required: true
-    downloadResponse:
+          description: Project contents to download, link to a GitHub repository or a zip/tar.gz archive
+    createResponse:
       type: object
       required:
-        - project_id
+        - project
       properties:
-        project_id:
+        project:
           type: string
-          description: Project ID (GUID)
+          description: Project identifier
           required: true
-        progress:
-          type: integer
-          description: Percentage progress of content indexing. Missing if the indexing has completed. Text based search results may be incomplete until indexing finishes.
+        info:
+          type: object
+          description: Additional information
     summarizeResponse:
       type: object
       required:
         - summary
       properties:
-        results:
+        summary:
           type: string
           description: Summary
           required: true
+        info:
+          type: object
+          description: Additional information
     searchResponse:
       type: object
       required:
-        - path
-        - lineno
-        - text
+        - result
       properties:
-        path:
+        result:
           type: string
-          description: Path of the file, where / is the root of the project.
-        lineno:
-          type: integer
-          description: Line number to reconstruct the order of text fragments inside the same file.
-        text:
-          type: string
-          description: Code or text fragment.
-        name:
-          type: string
-          description: Name of the class, method, function or variable. (program code only)
-        progress:
-          type: integer
-          description: Percentage progress of content indexing. Missing if the indexing has completed. Signifies an incomplete search if present.
+          description: Code or documentation fragment from the project
+        info:
+          type: object
+          description: Additional information

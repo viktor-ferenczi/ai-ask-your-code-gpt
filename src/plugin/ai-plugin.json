@@ -2,8 +2,8 @@
   "schema_version": "v1",
   "name_for_human": "AskYourCode",
   "name_for_model": "askyourcode",
-  "description_for_human": "Ask your source code directly. The intelligent rubber ducky!",
-  "description_for_model": "Provides summarization and search capability over the documentation and source code of a software project to assist in reasoning.",
+  "description_for_human": "Ask your source code directly! Work on software projects without having to copy-paste code.",
+  "description_for_model": "Provides summarization and search capability over the source code and documentation of a software project. Facilitates discovering the project gradually, retrieving only the parts relevant for reasoning about the task at hand.",
   "auth": {
     "type": "none"
   },
