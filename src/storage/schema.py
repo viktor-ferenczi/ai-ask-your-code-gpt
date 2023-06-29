@@ -79,7 +79,7 @@ create table public.archive
     path varchar(400) not null,
     size bigint not null,
     url  varchar(400) not null,
-    etag varchar(80)
+    etag varchar(80) not null
 );
 
 alter table public.archive
@@ -96,7 +96,7 @@ create table public.project
     id       bigserial
         constraint project_pk
             primary key,
-    uid      varchar(80),
+    uid      varchar(80)                                                    not null,
     name     varchar(80)                                                    not null,
     created  timestamp default (CURRENT_TIMESTAMP AT TIME ZONE 'utc'::text) not null,
     accessed timestamp default (CURRENT_TIMESTAMP AT TIME ZONE 'utc'::text) not null,

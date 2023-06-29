@@ -3,17 +3,16 @@ import unittest
 import asyncpg
 from asyncpg import Pool
 
+from common.constants import C
 from storage.database import Database
 
 
 class BaseStorageTest(unittest.IsolatedAsyncioTestCase):
-    # postgres://user:password@host:port/database
-    dsn = 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test'
 
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 
-        self.pool: Pool = asyncpg.create_pool(self.dsn, command_timeout=60)
+        self.pool: Pool = asyncpg.create_pool(C.TEST_DSN, command_timeout=60)
         await self.pool._async__init__()
         self.db = Database(self.pool)
 

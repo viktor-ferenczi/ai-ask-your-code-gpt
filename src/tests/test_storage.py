@@ -12,7 +12,7 @@ class TestStorage(BaseStorageTest):
     async def test_archives(self) -> None:
         async with self.db.transaction() as conn:
             await archives.truncate(conn)
-            o: Archive = await archives.create(conn, 'deadbeef', '/archives/abc.zip', 42, 'https://example.com/abc.zip')
+            o: Archive = await archives.create(conn, 'deadbeef', '/archives/abc.zip', 42, 'https://example.com/abc.zip', 'W/ETag-345344g542g435tg')
 
             r1 = await archives.find_by_url(conn, o.url)
             self.assertEqual(repr(o), repr(r1))
@@ -71,6 +71,9 @@ class TestStorage(BaseStorageTest):
             o = await projects.create(conn, 'user', 'name')
 
             r = await projects.find(conn, o.id)
+            self.assertEqual(repr(o), repr(r))
+
+            r = await projects.find_by_name(conn, o.uid, o.name)
             self.assertEqual(repr(o), repr(r))
 
     async def test_properties(self) -> None:

@@ -13,7 +13,7 @@ from downloader.downloader import app as downloader_app, workers as downloader_w
 from loader.loader import app as loader_app, workers as loader_workers
 from model.hit import Hit
 from project.inventory import Inventory
-from project.project import Project, ProjectError
+from project.backend import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -50,7 +50,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
     def test_download_server_not_running(self):
         def should_fail():
-            asyncio.run(Project.download('http://127.0.0.1:57575/anything', timeout=1.0))
+            asyncio.run(Project.create('http://127.0.0.1:57575/anything', timeout=1.0))
 
         self.assertRaises(ProjectError, should_fail)
 
@@ -119,14 +119,14 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
     async def download_error(self):
         try:
-            await Project.download('http://127.0.0.1:49001/this-wont-exist')
+            await Project.create('http://127.0.0.1:49001/this-wont-exist')
         except ProjectError as e:
             self.assertTrue('Failed to download' in str(e))
         else:
             self.fail("ProjectError not raised")
 
     async def small_project(self) -> str:
-        project_id = await Project.download('http://127.0.0.1:49001/test.zip')
+        project_id = await Project.create('http://127.0.0.1:49001/test.zip')
         project = Project(project_id)
 
         await self.wait_for_processing(project)
@@ -194,7 +194,7 @@ Python: /find_duplicates.py
         return project_id
 
     async def medium_project(self, expect_project_id: str = '', expect_already_embedded: bool = True) -> str:
-        project_id = await Project.download('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
+        project_id = await Project.create('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
         project = Project(project_id)
 
         if expect_project_id:
@@ -250,7 +250,7 @@ Matches under subdirectories:
   test: 388
 ''', summary)
 
-        return project.project_id
+        return project.project_name
 
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
         print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
@@ -283,14 +283,14 @@ Matches under subdirectories:
 
         print('Waiting for extracting fragments...')
         while 1:
-            if inventory.has_project_extracted(project.project_id):
+            if inventory.has_project_extracted(project.project_name):
                 break
             await asyncio.sleep(0.2)
         print('Downloaded')
 
         print('Waiting for embedding fragments...')
         while 1:
-            if inventory.has_project_embedded(project.project_id):
+            if inventory.has_project_embedded(project.project_name):
                 break
             await asyncio.sleep(0.2)
         print('Embedded')

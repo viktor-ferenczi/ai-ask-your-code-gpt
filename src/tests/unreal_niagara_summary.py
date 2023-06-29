@@ -2,7 +2,7 @@ import asyncio
 import os.path
 
 from common.tools import tiktoken_len
-from project.project import Project
+from project.backend import Project
 
 Project.dirname = 'test-projects'
 

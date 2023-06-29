@@ -1,27 +1,21 @@
 import asyncio
 import functools
-import io
 import os
-import re
-import uuid
-import zipfile
 from traceback import print_exc
-from typing import Tuple
 from zipfile import BadZipFile, LargeZipFile
 
 from quart import Quart
 
 from common.constants import C
-from common.http import download_file, DownloadError, NotModified
+from common.http import download_into_memory, DownloadError, NotModified
 from common.server import run_app
 from common.timer import timer
 from common.tools import wait_until_cancelled
 from common.zip_support import extract_verify_documents
+from storage import archives
+from storage.archives import Archive
 from storage.database import Database
-from project.project import Project
 from storage.scheduler import Scheduler, Operation, THandlerResult, Task, TaskFailed
-
-RX_GITHUB_USER_CONTENT = re.compile(r'https://raw.githubusercontent.com/(.+?)(/.+?)/(.*)')
 
 
 class Downloader:
@@ -30,90 +24,34 @@ class Downloader:
         self.db: Database = db
         self.url: str = url
 
-    async def download_verify(self) -> str:
-        # Find existing project with an archive file (not cleaned yet)
-        cached = ''
-        project = None
-        new_project = True
-        project_id = self.db.find_project(self.url)
-        if project_id:
-            project = Project(project_id)
-            if os.path.exists(project.archive_path):
-                cached = self.db.get_archive_checksum(project_id)
+    async def download_verify(self) -> Archive:
+        async with self.db.transaction() as conn:
+            archive = await archives.find_by_url(conn, self.url)
+            cached_etag = archive.etag if archive is not None else None
+            try:
+                d = await download_into_memory(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached_etag=cached_etag)
+            except NotModified:
+                print(f'Not modified, skipping download: {self.url!r}')
+                return archive
+            except Exception as e:
+                print(f'Failed to download archive: {archive!r}')
+                print_exc()
+                raise DownloadError(f'Failed to download archive: {e}')
 
-        # Download, if an archive found then send Etag (cached)
-        with timer(f'Downloaded archive from {self.url!r}'):
-            archive, checksum = await self.__download(cached)
+            self.__verify(d.contents)
 
-        # Workaround: Process raw GitHub user content as well
-        # Example: https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py
-        m = RX_GITHUB_USER_CONTENT.match(self.url)
-        if m is not None:
-            mem_file = io.BytesIO()
-            with zipfile.ZipFile(mem_file, 'a', zipfile.ZIP_DEFLATED, False) as zf:
-                zf.writestr(m.group(3), archive)
-            zf.close()
-            archive = mem_file.getvalue()
+            path = os.path.join(C.ARCHIVE_DIR, hash[:3], f'{hash}')
+            dirname = os.path.dirname(path)
+            os.makedirs(dirname, exist_ok=True)
 
-        # Read the old cached archive if exists
-        if not archive and project and cached and checksum == cached:
-            with open(project.archive_path, 'rb') as f:
-                archive = f.read()
-            new_project = False
-        else:
-            project_id = self.db.find_project(self.url, checksum)
-            if project_id is None:
-                assert new_project
-                project_id = str(uuid.uuid4())
-            else:
-                new_project = False
-                project = Project(project_id)
-                if not project.exists:
-                    self.db.reprocess_project(project_id)
+            archive = await archives.create(conn, d.checksum, path, d.size, self.url, d.etag)
 
-        if not new_project:
-            print(f'Archive matches an existing project: {project.project_id!r}')
-            self.db.touch_project(project_id)
+        return archive
 
-        await asyncio.sleep(0)
-
-        with timer(f'Verified archive {self.url!r}'):
-            self.__verify(archive)
-
-        await asyncio.sleep(0)
-
-        project = Project(project_id)
-        with open(project.archive_path, 'wb') as f:
-            f.write(archive)
-
-        await project.create_database()
-
-        if new_project:
-            self.db.register_project(project_id, self.url, checksum)
-
-        return project_id
-
-    async def __download(self, cached='') -> Tuple[bytes, str]:
-        try:
-            archive, checksum = await download_file(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached=cached)
-        except NotModified:
-            print(f'The archive already downloaded from {self.url!r} has not been modified since, skipping the download')
-            return b'', cached
-        except DownloadError as e:
-            print(str(e))
-            raise
-        except Exception as e:
-            print(f'Failed to download archive {self.url!r}: {e}')
-            print_exc()
-            raise IOError(f'Failed to download archive {self.url!r}')
-
-        print(f'Downloaded archive of {len(archive)} bytes in size from {self.url!r}')
-        return archive, checksum
-
-    def __verify(self, archive: bytes):
+    def __verify(self, contents: bytes):
         try:
             document_count: int = sum(1 for _ in extract_verify_documents(
-                archive,
+                contents,
                 max_file_count=C.MAX_FILE_COUNT,
                 max_file_size=C.MAX_FILE_SIZE,
                 max_total_size=C.MAX_TOTAL_SIZE,
@@ -139,35 +77,32 @@ class Downloader:
         print(f'Extracted {document_count} files')
 
 
-async def download(db: Database, task: Task) -> THandlerResult:
-    url = task.params['url']
-
+async def download(db: Database, url: str, project_id: int) -> THandlerResult:
     try:
-        with timer(f'Downloaded archive {url!r}'):
+        with timer(f'Downloaded archive {url!r} for project {project_id!r}'):
             downloader = Downloader(db, url)
-            project_id = await downloader.download_verify()
+            archive: Archive = await downloader.download_verify()
+            if archive and project_id:
+                return Task.create_pending(Operation.IndexArchive, archive_hash=archive.hash, project_id=project_id)
     except DownloadError as e:
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
-            message += '; Test your URL in a private browser tab without authentication. Private repositories do not work. Authentication is currently not supported by AskYourCode.'
+            message += '; Test your URL in a private browser tab without authentication. Private repositories will work at a later time. Authentication is currently not supported by AskYourCode.'
         raise TaskFailed(message)
-
-    project = Project(project_id)
-    path = project.archive_path
-
-    return Task.create_pending(Operation.IndexArchive, project_id=project_id, path=path)
 
 
 async def download_worker():
-    while 1:
-        try:
-            async with Scheduler.init() as tasks:
-                tasks.handlers[Operation.DownloadArchive] = functools.partial(download, tasks.db)
-                async with tasks.listener():
+    async with Database.from_dsn(C.DSN) as db:
+        scheduler = Scheduler(db)
+        scheduler.register_handler(Operation.DownloadArchive, functools.partial(download, db))
+        while 1:
+            # noinspection PyBroadException
+            try:
+                async with scheduler.listen():
                     await wait_until_cancelled()
-        except Exception:
-            print('Unexpected failure:')
-            print_exc()
+            except Exception:
+                print('Unexpected failure:')
+                print_exc()
 
 
 app = Quart(__name__)
@@ -181,7 +116,7 @@ async def canary():
 
 
 def main():
-    port = int(os.environ.get('HTTP_PORT', '40001'))
+    port = int(os.environ.get('HTTP_PORT', '40000'))
     asyncio.run(run_app(app, *[worker() for worker in workers], debug=C.DEVELOPMENT, host='localhost', port=port))
 
 

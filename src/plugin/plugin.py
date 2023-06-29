@@ -70,8 +70,8 @@ RX_GITHUB_CODELOAD = re.compile(r'https://codeload\.github\.com/(.+?)/(.+?)/zip/
 @app.post("/project")
 async def create():
     body: Dict[str, str] = await quart.request.get_json(force=True)
-    uid: Optional[str] = None
-    url: Optional[str] = body.get('url')
+    uid: str = ''  # FIXME: Get it from PluginLab
+    url: str = body.get('url', '')
 
     # Validate the URL and apply workarounds as needed
     if url:
@@ -89,8 +89,8 @@ async def create():
         if len(project_name) > 60:
             project_name = new_uuid()
 
-        backend = Backend(DATABASE, project_name)
-        info = await backend.create(uid, url)
+        backend = await Backend.ensure_project(DATABASE, uid, project_name)
+        info = backend.download(url) if url else dict(status='Created an empty project')
     except BackendError as e:
         return Response(response=f'{e}; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
     except Exception:
@@ -98,10 +98,10 @@ async def create():
         print_exc()
         return Response(response='Failed to create project; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
 
-    response = dict(
-        project=project_name,
-        info=info
-    )
+    response = dict(project=project_name)
+    if info:
+        response['info'] = info
+
     return Response(response=json.dumps(response, indent=2), status=200)
 
 
@@ -340,12 +340,12 @@ async def search(project_name: str):
 
         hits = hits[:i]
 
-    result = '\n'.join(hit.text for hit in hits)
+    results = '\n'.join(hit.text for hit in hits)
 
     # FIXME: Return information on indexing progress or hints if the search did not give any result
     info = None
 
-    response = dict(summary=text)
+    response = dict(results=results)
     if info:
         response['info'] = info
 

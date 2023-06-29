@@ -8,13 +8,13 @@ from typing import List
 from quart import Quart, send_file
 
 from common.constants import C
-from common.http import download_file
+from common.http import download_into_memory
 from downloader.downloader import app as downloader_app, workers as downloader_workers
 from loader.loader import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
 from project.inventory import Inventory
-from project.project import Project, ProjectError
+from project.backend import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -134,7 +134,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
     async def verify_repo(self, name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{name}.zip')
         if not os.path.isfile(zip_path):
-            zip_content, _ = await download_file(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
+            zip_content, _ = await download_into_memory(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
             with open(zip_path, 'wb') as zip_file:
                 zip_file.write(zip_content)
 
@@ -144,7 +144,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         os.makedirs(f'{self.project_path}/expected', exist_ok=True)
 
         local_zip_url = f'http://127.0.0.1:49001/{name}.zip'
-        project_id = await Project.download(local_zip_url)
+        project_id = await Project.create(local_zip_url)
         project = Project(project_id)
 
         await self.wait_for_processing(project)
@@ -203,14 +203,14 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         print('Waiting for extracting fragments...')
         while 1:
-            if inventory.has_project_extracted(project.project_id):
+            if inventory.has_project_extracted(project.project_name):
                 break
             await asyncio.sleep(0.2)
         print('Downloaded')
 
         print('Waiting for embedding fragments...')
         while 1:
-            if inventory.has_project_embedded(project.project_id):
+            if inventory.has_project_embedded(project.project_name):
                 break
             await asyncio.sleep(0.2)
         print('Embedded')

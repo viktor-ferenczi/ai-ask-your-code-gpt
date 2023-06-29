@@ -12,7 +12,7 @@ class Archive:
     path: str
     size: int
     url: str
-    etag: Optional[str]
+    etag: str
 
     @classmethod
     def from_row(cls, row: Record) -> "Archive":
@@ -31,7 +31,7 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE archive')
 
 
-async def create(conn: Connection, hash: str, path: str, size: int, url: str, etag: Optional[str] = None) -> Archive:
+async def create(conn: Connection, hash: str, path: str, size: int, url: str, etag: str) -> Archive:
     await conn.execute(
         '''INSERT INTO archive (hash, path, size, url, etag) VALUES ($1, $2, $3, $4, $5)''',
         hash, path, size, url, etag

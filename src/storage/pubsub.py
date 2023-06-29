@@ -4,7 +4,8 @@ from asyncio import Queue
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, Tuple, AsyncIterator, AsyncContextManager
+from time import time
+from typing import Any, Dict, Tuple, AsyncIterator, AsyncContextManager, Optional, Callable
 
 import asyncpg
 from asyncpg import Connection
@@ -58,8 +59,12 @@ class PubSub:
         print(event)
         return event
 
-    async def receive_with_timeout(self, timeout: float) -> Event:
-        return await asyncio.wait_for(self.receive(), timeout)
+    async def receive_with_timeout(self, timeout: float, *, predicate: Optional[Callable[[Event], bool]] = None) -> Event:
+        deadline: float = time() + timeout
+        while 1:
+            event = await asyncio.wait_for(self.receive(), max(1e-3, deadline - time()))
+            if predicate is None or predicate(event):
+                return event
 
     async def __add_listeners(self, conn: Connection, channels: Tuple[str]):
         for channel in channels:

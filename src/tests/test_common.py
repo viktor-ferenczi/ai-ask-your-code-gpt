@@ -1,7 +1,7 @@
 import unittest
 
 from common.doc import find_common_base_dir
-from common.http import download_file, NotModified, DownloadError
+from common.http import download_into_memory, NotModified, DownloadError
 
 
 class TestCommonDoc(unittest.TestCase):
@@ -36,18 +36,18 @@ class TestCommonHttp(unittest.IsolatedAsyncioTestCase):
     async def test_download_file(self):
         url = 'https://github.com/viktor-ferenczi/dblayer/archive/refs/heads/master.zip'
 
-        data1, checksum1 = await download_file(url)
+        data1, checksum1 = await download_into_memory(url)
         self.assertTrue(bool(data1))
 
         try:
-            await download_file(url, cached=checksum1)
+            await download_into_memory(url, cached_etag=checksum1)
         except NotModified:
             pass
         else:
             self.fail('NotModified was not raised')
 
         try:
-            await download_file(url, max_size=len(data1) - 1)
+            await download_into_memory(url, max_size=len(data1) - 1)
         except DownloadError:
             pass
         else:

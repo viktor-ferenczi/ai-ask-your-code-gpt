@@ -5,7 +5,7 @@ import sys
 import time
 
 from project.inventory import Inventory
-from project.project import Project
+from project.backend import Project
 
 
 async def main():

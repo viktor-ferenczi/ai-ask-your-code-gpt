@@ -3,7 +3,7 @@
 import asyncio
 import sys
 
-from project.project import Project
+from project.backend import Project
 
 
 async def main():

@@ -29,7 +29,7 @@ class TestScheduler(BaseStorageTest):
         self.tasks.register_handler(Operation.Test1, handler)
 
         # Listen for tasks and handle them
-        async with self.tasks.listener():
+        async with self.tasks.listen():
             # Schedule a task
             task = Task.create_pending(Operation.Test1, x=42)
             before = datetime.utcnow()
@@ -72,7 +72,7 @@ class TestScheduler(BaseStorageTest):
 
         self.tasks.register_handler(Operation.Test1, handler)
 
-        async with self.tasks.listener():
+        async with self.tasks.listen():
             task = Task.create_pending(Operation.Test1)
             await self.tasks.schedule(task)
 
@@ -94,7 +94,7 @@ class TestScheduler(BaseStorageTest):
 
         self.tasks.register_handler(Operation.Test1, handler)
 
-        async with self.tasks.listener():
+        async with self.tasks.listen():
             task = Task.create_pending(Operation.Test1)
             await self.tasks.schedule(task)
 

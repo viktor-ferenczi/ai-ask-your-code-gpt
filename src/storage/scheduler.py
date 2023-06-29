@@ -110,12 +110,12 @@ class Scheduler:
         return [Task.from_row(row) for row in rows]
 
     @asynccontextmanager
-    async def listener(self) -> AsyncContextManager[Connection]:
+    async def listen(self) -> AsyncContextManager:
         assert self.handlers, 'No tasks registered'
         async with self.db.connection() as conn:
             await self.__add_listeners(conn)
             try:
-                yield conn
+                yield
             finally:
                 await self.__remove_listeners(conn)
 
@@ -153,6 +153,7 @@ class Scheduler:
             # Start the task, while still in the transaction, so other workers must skip it
             task: Task = Task.from_row(row)
             task.started = datetime.utcnow()
+            # noinspection PyBroadException
             try:
                 try:
                     result = await asyncio.wait_for(handler(**task.params), timeout=C.TASK_TIMEOUT)
@@ -185,6 +186,7 @@ class Scheduler:
 
         # Schedule any follow-up tasks
         follow_up_tasks = ()
+        # noinspection PyBroadException
         try:
             if isinstance(result, Task):
                 follow_up_tasks = [result]

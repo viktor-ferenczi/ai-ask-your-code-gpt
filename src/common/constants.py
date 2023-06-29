@@ -15,6 +15,7 @@ class C:
 
     # postgres://user:password@host:port/database
     DSN = os.environ.get('DSN', 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode')
+    TEST_DSN = os.environ.get('DSN', 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test')
 
     # Limits
 
@@ -41,6 +42,7 @@ class C:
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     DATA_DIR = os.path.normpath(os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode')))
+    ARCHIVE_DIR = os.path.join(DATA_DIR, 'archive')
 
     # HTTP
     FAKE_BROWSER_HEADERS = {

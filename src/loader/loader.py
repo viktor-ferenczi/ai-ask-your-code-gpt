@@ -15,7 +15,7 @@ from common.zip_support import extract_verify_documents, iter_files_from_zip
 from model.document import Document
 from parsers.registrations import TextParser, detect
 from project.inventory import Inventory
-from project.project import Project
+from project.backend import Project
 
 sys.setrecursionlimit(10000)
 
@@ -44,7 +44,7 @@ class Extractor:
 
         # Quick and dirty shortcut, so failed load attempts are not retried (reason: some of them can get the queue stuck)
         if already_inserted_fragment_count:
-            self.inventory.mark_project_extracted(self.project.project_id)
+            self.inventory.mark_project_extracted(self.project.project_name)
             return
 
         iter_docs = remove_common_base_dir(common_base_dir, extract_verify_documents(self.project.archive_path))
@@ -77,7 +77,7 @@ class Extractor:
         if batch:
             insert_batch()
 
-        self.inventory.mark_project_extracted(self.project.project_id)
+        self.inventory.mark_project_extracted(self.project.project_name)
 
     def iter_fragments_from_documents(self, iter_docs: Iterator[Document]):
         for doc in iter_docs:
@@ -151,7 +151,7 @@ class Indexer:
             cursor.execute('INSERT INTO FragText (uuid, text) SELECT uuid, text from Fragment;')
             cursor.execute('UPDATE Fragment SET embedded=1;')
 
-        self.inventory.mark_project_embedded(self.project.project_id)
+        self.inventory.mark_project_embedded(self.project.project_name)
 
 
 async def indexer_worker():
