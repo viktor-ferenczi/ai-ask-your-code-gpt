@@ -15,6 +15,7 @@ from common.zip_support import extract_verify_documents
 from storage import archives
 from storage.archives import Archive
 from storage.database import Database
+from storage.pubsub import ChannelName, PubSub
 from storage.scheduler import Scheduler, Operation, THandlerResult, Task, TaskFailed
 
 
@@ -79,16 +80,19 @@ class Downloader:
 
 async def download(db: Database, url: str, project_id: int) -> THandlerResult:
     try:
+        downloader = Downloader(db, url)
         with timer(f'Downloaded archive {url!r} for project {project_id!r}'):
-            downloader = Downloader(db, url)
             archive: Archive = await downloader.download_verify()
-            if archive and project_id:
-                return Task.create_pending(Operation.IndexArchive, archive_hash=archive.hash, project_id=project_id)
     except DownloadError as e:
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
             message += '; Test your URL in a private browser tab without authentication. Private repositories will work at a later time. Authentication is currently not supported by AskYourCode.'
         raise TaskFailed(message)
+
+    pubsub = PubSub(db)
+    await pubsub.send(ChannelName.DownloadCompleted.name, url=url)
+
+    return Task.create_pending(Operation.IndexArchive, archive_hash=archive.hash, project_id=project_id)
 
 
 async def download_worker():
