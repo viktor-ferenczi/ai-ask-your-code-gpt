@@ -18,16 +18,14 @@ class TestPubSub(BaseStorageTest):
         numbers: List[int] = []
 
         async def receive():
-            async for event in self.pubsub.listen('Test'):
+            async for event in self.pubsub.iter_events():
                 if event.channel == 'Test':
                     numbers.append(event.params['x'])
                     break
 
-        async def send():
-            await asyncio.sleep(0.2)
+        async with self.pubsub.listen('Test'):
             await self.pubsub.send('Test', x=42)
-
-        await asyncio.wait([receive(), send()])
+            await asyncio.wait_for(receive(), timeout=0.1)
 
         self.assertEqual(len(numbers), 1)
         self.assertEqual(numbers[0], 42)

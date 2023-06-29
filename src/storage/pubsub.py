@@ -1,7 +1,8 @@
 import json
 from asyncio import Queue
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from typing import Any, Dict, Tuple, AsyncIterator
+from typing import Any, Dict, Tuple, AsyncIterator, AsyncContextManager
 
 import asyncpg
 from asyncpg import Connection
@@ -21,6 +22,7 @@ class PubSub:
     def __init__(self, db: Database):
         self.db: Database = db
         self.queue: Queue[Event] = Queue()
+        self.listening = False
 
     async def send(self, channel: str, **params: Any):
         payload = json.dumps(params).replace("'", "''")
@@ -29,17 +31,23 @@ class PubSub:
         async with self.db.connection() as conn:
             await conn.execute(sql)
 
-    async def listen(self, *channels: str) -> AsyncIterator[Event]:
+    @asynccontextmanager
+    async def listen(self, *channels: str) -> AsyncContextManager:
         assert channels, 'No channels specified'
         async with self.db.connection() as conn:
+            self.listening = True
             await self.__add_listeners(conn, channels)
             try:
-                while 1:
-                    event = await self.queue.get()
-                    print(event)
-                    yield event
+                yield
             finally:
                 await self.__remove_listeners(conn, channels)
+                self.listening = False
+
+    async def iter_events(self) -> AsyncIterator[Event]:
+        while self.listening:
+            event = await self.queue.get()
+            print(event)
+            yield event
 
     async def __add_listeners(self, conn: Connection, channels: Tuple[str]):
         for channel in channels:
