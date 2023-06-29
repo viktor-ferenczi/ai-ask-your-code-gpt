@@ -8,20 +8,22 @@ from common.constants import C
 
 @dataclass
 class Archive:
-    hash: str
+    checksum: str
     path: str
     size: int
     url: str
     etag: str
+    common_base_dir: str
 
     @classmethod
     def from_row(cls, row: Record) -> "Archive":
         return cls(
-            hash=row['hash'],
+            checksum=row['checksum'],
             path=row['path'],
             size=row['size'],
             url=row['url'],
             etag=row['etag'],
+            common_base_dir=row['common_base_dir'],
         )
 
 
@@ -31,16 +33,16 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE archive')
 
 
-async def create(conn: Connection, hash: str, path: str, size: int, url: str, etag: str) -> Archive:
+async def create(conn: Connection, checksum: str, path: str, size: int, url: str, etag: str, common_base_dir: str) -> Archive:
     await conn.execute(
-        '''INSERT INTO archive (hash, path, size, url, etag) VALUES ($1, $2, $3, $4, $5)''',
-        hash, path, size, url, etag
+        '''INSERT INTO archive (checksum, path, size, url, etag, common_base_dir) VALUES ($1, $2, $3, $4, $5, $6)''',
+        checksum, path, size, url, etag, common_base_dir
     )
-    return Archive(hash, path, size, url, etag)
+    return Archive(checksum, path, size, url, etag, common_base_dir)
 
 
-async def find_by_hash(conn: Connection, hash: str) -> Optional[Archive]:
-    for row in await conn.fetch('''SELECT * FROM archive WHERE hash = $1 LIMIT 1''', hash):
+async def find_by_checksum(conn: Connection, checksum: str) -> Optional[Archive]:
+    for row in await conn.fetch('''SELECT * FROM archive WHERE checksum = $1 LIMIT 1''', checksum):
         return Archive.from_row(row)
 
 

@@ -12,35 +12,35 @@ class TestStorage(BaseStorageTest):
     async def test_archives(self) -> None:
         async with self.db.transaction() as conn:
             await archives.truncate(conn)
-            o: Archive = await archives.create(conn, 'deadbeef', '/archives/abc.zip', 42, 'https://example.com/abc.zip', 'W/ETag-345344g542g435tg')
+            o: Archive = await archives.create(conn, 'deadbeef', '/archives/abc.zip', 42, 'https://example.com/abc.zip', 'W/ETag-345344g542g435tg', '/')
 
             r1 = await archives.find_by_url(conn, o.url)
             self.assertEqual(repr(o), repr(r1))
 
-            r2 = await archives.find_by_hash(conn, o.hash)
+            r2 = await archives.find_by_checksum(conn, o.checksum)
             self.assertEqual(repr(o), repr(r2))
 
     async def test_documents(self) -> None:
         async with self.db.transaction() as conn:
             await documents.truncate(conn)
 
-            body = 'Hello World!'
+            body = b'Hello World!'
             sha = hashlib.sha256()
-            sha.update(body.encode())
+            sha.update(body)
 
             o = await documents.create(conn, body, 'text')
-            self.assertEqual(o.hash, sha.hexdigest())
+            self.assertEqual(o.checksum, sha.hexdigest())
 
-            r = await documents.find(conn, o.hash)
+            r = await documents.find_by_checksum(conn, o.checksum)
             self.assertEqual(repr(o), repr(r))
 
     async def test_files(self) -> None:
         async with self.db.transaction() as conn:
             await files.truncate(conn)
 
-            body = 'Hello World!'
+            body = b'Hello World!'
             sha = hashlib.sha256()
-            sha.update(body.encode())
+            sha.update(body)
 
             o = await files.create(conn, 42, '/a/b.txt', 'text/plain', len(body), sha.hexdigest(), None)
 
@@ -51,11 +51,11 @@ class TestStorage(BaseStorageTest):
         async with self.db.transaction() as conn:
             await fragments.truncate(conn)
 
-            body = 'Hello World!'
+            body = b'Hello World!'
             sha = hashlib.sha256()
-            sha.update(body.encode())
+            sha.update(body)
 
-            o = await fragments.create(conn, sha.hexdigest(), 0, 1, 0, None, 'doc', False, False, '', body)
+            o = await fragments.create(conn, sha.hexdigest(), 0, 1, 0, None, 'doc', False, False, '', body.decode())
 
             r = await fragments.query(conn, sha.hexdigest(), 0)
             self.assertEqual(len(r), 1)

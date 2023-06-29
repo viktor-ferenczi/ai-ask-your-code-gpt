@@ -10,7 +10,7 @@ from quart import Quart, send_file
 from common.constants import C
 from common.http import download_into_memory
 from downloader.downloader import app as downloader_app, workers as downloader_workers
-from loader.loader import app as loader_app, workers as loader_workers
+from loader.extractor import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
 from project.inventory import Inventory

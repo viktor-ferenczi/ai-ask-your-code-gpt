@@ -10,7 +10,7 @@ from quart import Quart, send_file
 
 from common.constants import C
 from downloader.downloader import app as downloader_app, workers as downloader_workers
-from loader.loader import app as loader_app, workers as loader_workers
+from loader.extractor import app as loader_app, workers as loader_workers
 from model.hit import Hit
 from project.inventory import Inventory
 from project.backend import Project, ProjectError

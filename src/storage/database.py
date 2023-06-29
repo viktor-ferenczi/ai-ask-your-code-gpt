@@ -81,7 +81,7 @@ class Database:
                 if version > schema.VERSION:
                     raise ValueError(f'Database version {version} is newer than the schema VERSION {schema.VERSION} in the code, which should not happen')
 
-                migration = schema.MIGRATIONS.get(conn, version)
+                migration = schema.MIGRATIONS.get(version)
                 if not migration:
                     raise ValueError(f'Migration is not defined for database version {version}')
 

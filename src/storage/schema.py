@@ -73,13 +73,14 @@ alter table public.task
 
 create table public.archive
 (
-    hash varchar(64)  not null
+    checksum varchar(64)  not null
         constraint archive_pk
             primary key,
     path varchar(400) not null,
     size bigint not null,
     url  varchar(400) not null,
-    etag varchar(80) not null
+    etag varchar(80) not null,
+    common_base_dir varchar(400) not null
 );
 
 alter table public.archive
@@ -110,12 +111,12 @@ alter table public.project
 create table public.document
 (
     partition_key char(2)                                       not null,
-    hash          varchar(64)                                   not null,
-    body          text                                          not null,
+    checksum      varchar(64)                                   not null,
+    body          bytea                                         not null,
     length        integer                                       not null,
     doctype       varchar(40) default 'text'::character varying not null,
     constraint document_pk
-        primary key (partition_key, hash)
+        primary key (partition_key, checksum)
 );
 
 alter table public.document
@@ -124,20 +125,20 @@ alter table public.document
 create table public.fragment
 (
     partition_key char(2)               not null,
-    document_hash varchar(64)           not null,
-    start         integer default 0     not null,
+    document_cs   varchar(64)           not null,
+    start         integer      not null,
     length        integer               not null,
-    lineno        integer default 1     not null,
+    lineno        integer      not null,
     tokens        integer               not null,
-    depth         integer default 0     not null,
+    depth         integer      not null,
     parent_id     integer,
     category      varchar(24)           not null,
     definition    boolean               not null,
-    summary       boolean default false not null,
+    summary       boolean  not null,
     name          varchar(80)           not null,
     body          text                  not null,
     constraint fragment_pk
-        primary key (partition_key, document_hash, start)
+        primary key (partition_key, document_cs, start)
 );
 
 alter table public.fragment
@@ -156,8 +157,8 @@ create table public.file
     path_in_project varchar(400) not null,
     mime_type       varchar(40)  not null,
     size            bigint       not null,
-    document_hash   varchar(64),
-    archive_hash    varchar(64),
+    document_cs     varchar(64),
+    archive_cs      varchar(64),
     constraint file_pk
         primary key (id)
 );

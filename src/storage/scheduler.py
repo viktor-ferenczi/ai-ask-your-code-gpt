@@ -33,7 +33,7 @@ class Operation(Enum):
     Test2 = 'Test2'
     CreateProject = 'CreateProject'
     DownloadArchive = 'DownloadArchive'
-    IndexArchive = 'IndexArchive'
+    ExtractArchive = 'IndexArchive'
     DownloadSource = 'DownloadSource'
     IndexSource = 'IndexSource'
     QuerySummary = 'QuerySummary'

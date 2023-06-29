@@ -13,8 +13,8 @@ class File:
     path_in_project: str
     mime_type: str
     size: int
-    document_hash: str
-    archive_hash: str
+    document_cs: str
+    archive_cs: str
 
     @classmethod
     def from_row(cls, row: Record) -> "File":
@@ -24,8 +24,8 @@ class File:
             path_in_project=row['path_in_project'],
             mime_type=row['mime_type'],
             size=row['size'],
-            document_hash=row['document_hash'],
-            archive_hash=row['archive_hash'],
+            document_cs=row['document_cs'],
+            archive_cs=row['archive_cs'],
         )
 
 
@@ -35,12 +35,12 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE file')
 
 
-async def create(conn: Connection, project_id: int, path_in_project: str, mime_type: str, size: int, document_hash: Optional[str], archive_hash: Optional[str]) -> File:
+async def create(conn: Connection, project_id: int, path_in_project: str, mime_type: str, size: int, document_cs: Optional[str], archive_cs: Optional[str]) -> File:
     id = await conn.fetchval(
-        '''INSERT INTO file (project_id, path_in_project, mime_type, size, document_hash, archive_hash) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id''',
-        project_id, path_in_project, mime_type, size, document_hash, archive_hash
+        '''INSERT INTO file (project_id, path_in_project, mime_type, size, document_cs, archive_cs) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id''',
+        project_id, path_in_project, mime_type, size, document_cs, archive_cs
     )
-    return File(id, project_id, path_in_project, mime_type, size, document_hash, archive_hash)
+    return File(id, project_id, path_in_project, mime_type, size, document_cs, archive_cs)
 
 
 async def find(conn: Connection, id: int) -> Optional[File]:

@@ -9,7 +9,7 @@ from common.tools import tiktoken_len
 
 @dataclass
 class Fragment:
-    document_hash: str = ''
+    document_cs: str = ''
     start: int = 0
     length: int = 0
     lineno: int = 1
@@ -25,7 +25,7 @@ class Fragment:
     @classmethod
     def from_row(cls, row: Record) -> "Fragment":
         return cls(
-            document_hash=row['document_hash'],
+            document_cs=row['document_cs'],
             start=row['start'],
             length=row['length'],
             lineno=row['lineno'],
@@ -46,24 +46,24 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE fragment')
 
 
-async def create(conn: Connection, document_hash: str, start: int, lineno: int, depth: int, parent_id: Optional[int], category: str, definition: bool, summary: bool, name: str, body: str) -> Fragment:
-    partition_key = document_hash[:2]
+async def create(conn: Connection, document_cs: str, start: int, lineno: int, depth: int, parent_id: Optional[int], category: str, definition: bool, summary: bool, name: str, body: str) -> Fragment:
+    partition_key = document_cs[:2]
     length = len(body)
     tokens = tiktoken_len(body)
 
     await conn.execute(
-        '''INSERT INTO fragment (partition_key, document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)''',
-        partition_key, document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body
+        '''INSERT INTO fragment (partition_key, document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)''',
+        partition_key, document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body
     )
 
-    return Fragment(document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
+    return Fragment(document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
 
 
-async def query(conn: Connection, document_hash: str, start: int) -> List[Fragment]:
+async def query(conn: Connection, document_cs: str, start: int) -> List[Fragment]:
     return [
         Fragment.from_row(row)
         for row in await conn.fetch(
-            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_hash = $2 AND start = $3''',
-            document_hash[:2], document_hash, start
+            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_cs = $2 AND start = $3''',
+            document_cs[:2], document_cs, start
         )
     ]
