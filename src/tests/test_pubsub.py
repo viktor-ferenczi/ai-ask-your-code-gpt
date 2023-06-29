@@ -14,6 +14,14 @@ class TestPubSub(BaseStorageTest):
         del self.pubsub
         await super().asyncTearDown()
 
+    async def test_timeout(self) -> None:
+        try:
+            await self.pubsub.receive_with_timeout(0.1)
+        except asyncio.TimeoutError:
+            self.assertTrue(True)
+        else:
+            self.fail()
+
     async def test_event(self) -> None:
         numbers: List[int] = []
 

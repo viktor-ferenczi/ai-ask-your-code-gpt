@@ -1,7 +1,9 @@
+import asyncio
 import json
 from asyncio import Queue
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Dict, Tuple, AsyncIterator, AsyncContextManager
 
 import asyncpg
@@ -9,6 +11,10 @@ from asyncpg import Connection
 from asyncpg.utils import _quote_ident
 
 from storage.database import Database
+
+
+class ChannelName(Enum):
+    DownloadCompleted = 'DownloadCompleted'
 
 
 @dataclass
@@ -45,9 +51,15 @@ class PubSub:
 
     async def iter_events(self) -> AsyncIterator[Event]:
         while self.listening:
-            event = await self.queue.get()
-            print(event)
-            yield event
+            yield await self.receive()
+
+    async def receive(self) -> Event:
+        event = await self.queue.get()
+        print(event)
+        return event
+
+    async def receive_with_timeout(self, timeout: float) -> Event:
+        return await asyncio.wait_for(self.receive(), timeout)
 
     async def __add_listeners(self, conn: Connection, channels: Tuple[str]):
         for channel in channels:
