@@ -12,7 +12,7 @@ class TestStorage(BaseStorageTest):
     async def test_archives(self) -> None:
         async with self.db.transaction() as conn:
             await archives.truncate(conn)
-            o: Archive = await archives.create(conn, 'deadbeef', '/archives/abc.zip', 42, 'https://example.com/abc.zip', 'W/ETag-345344g542g435tg', '/')
+            o: Archive = await archives.create(conn, 'deadbeef' * 8, 42, 'https://example.com/abc.zip', 'W/ETag-345344g542g435tg', '/')
 
             r1 = await archives.find_by_url(conn, o.url)
             self.assertEqual(repr(o), repr(r1))

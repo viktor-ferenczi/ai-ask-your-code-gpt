@@ -1,12 +1,12 @@
 #!/bin/sh
 
-NAME="loader-$INSTANCE_INDEX"
+NAME="extractor-$INSTANCE_INDEX"
 TITLE="Loader-$INSTANCE_INDEX"
 
 INSTANCE_COUNT=$CPU_COUNT
 
-WORKING_DIR="$HOME/src/loader"
-COMMAND_LINE="python -O -u loader.py -i $INSTANCE_INDEX"
+WORKING_DIR="$HOME/src/extractor"
+COMMAND_LINE="python -O -u extractor.py -$INSTANCE_INDEX-"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 

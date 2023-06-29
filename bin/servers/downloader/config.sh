@@ -6,7 +6,7 @@ TITLE="Downloader-$INSTANCE_INDEX"
 INSTANCE_COUNT=$CPU_COUNT
 
 WORKING_DIR="$HOME/src/downloader"
-COMMAND_LINE="python -O -u downloader.py -i $INSTANCE_INDEX'"
+COMMAND_LINE="python -O -u downloader.py -$INSTANCE_INDEX-"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 

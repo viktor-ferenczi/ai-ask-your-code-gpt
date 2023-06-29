@@ -40,12 +40,9 @@ def new_uuid() -> str:
     return str(uuid.uuid4())
 
 
-async def wait_until_cancelled():
+async def sleep_forever():
     while 1:
-        try:
-            await asyncio.sleep(3600)
-        except CancelledError:
-            break
+        await asyncio.sleep(3600)
 
 
 def retry(fn: Callable[[], Any], handle_exceptions=(), max_retries: int = 9, delay: float = 0.01, delay_multiplier: float = 1.4142135, max_delay: float = 1.0) -> Any:

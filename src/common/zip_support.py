@@ -1,8 +1,7 @@
 import io
+from dataclasses import dataclass
 from typing import Optional, Set, Iterator, Union
 from zipfile import ZipInfo, ZipFile
-
-from model.document import Document
 
 
 def iter_files_from_zip(path: str) -> Iterator[str]:
@@ -10,7 +9,13 @@ def iter_files_from_zip(path: str) -> Iterator[str]:
         yield from zf.namelist()
 
 
-def extract_verify_documents(archive: Union[str, bytes], *, max_file_count: int = None, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[Document]:
+@dataclass
+class ZipDoc:
+    path: str
+    body: bytes
+
+
+def extract_verify_documents(archive: Union[str, bytes], *, max_file_count: int = None, max_file_size: Optional[int] = None, max_total_size: Optional[int] = None, supported_extensions: Optional[Set] = None, verify_only: bool = False) -> Iterator[ZipDoc]:
     total_size = 0
 
     if isinstance(archive, bytes):
@@ -50,5 +55,5 @@ def extract_verify_documents(archive: Union[str, bytes], *, max_file_count: int 
             else:
                 data: bytes = zf.read(path)
 
-            document = Document(path, data)
+            document = ZipDoc(path, data)
             yield document

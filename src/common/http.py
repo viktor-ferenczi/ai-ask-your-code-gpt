@@ -22,7 +22,7 @@ class DownloadResult:
     url: str
     etag: str
     size: int
-    contents: bytes
+    body: bytes
     checksum: str
     duration: float
 
@@ -67,8 +67,8 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
                         response_etag = response.headers[key]
 
                 if response.status < 200 or response.status >= 400:
-                    contents = await response.content.read(500)
-                    reason = decode_replace(contents)
+                    body = await response.content.read(500)
+                    reason = decode_replace(body)
                     raise DownloadError(f'Failed to download {url!r} with HTTP {response.status}: {reason}')
 
                 while 1:
@@ -88,12 +88,12 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
     except aiohttp.ClientError as e:
         raise DownloadError(f'Failed to download archive from {url!r}: [{e.__class__.__name__}] {e}')
 
-    contents = b''.join(chunks)
-    assert len(contents) == size
+    body = b''.join(chunks)
+    assert len(body) == size
     checksum = checksum.hexdigest()
 
     duration = time() - started
     speed = size / max(1e-3, duration)
     print(f'Downloaded {url!r}, {size / 1048576:.3f}MB in {duration:.3f}s ({speed / 1048576:.3})MB/s')
 
-    return DownloadResult(url, response_etag, size, contents, checksum, duration)
+    return DownloadResult(url, response_etag, size, body, checksum, duration)

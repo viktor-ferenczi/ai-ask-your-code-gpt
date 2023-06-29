@@ -67,7 +67,7 @@ class Task:
         )
 
 
-THandlerResult = Optional[Union[Task, List[Task]]]
+THandlerResult = Union[None, Task, List[Task]]
 THandler = Callable[..., Awaitable[THandlerResult]]
 
 

@@ -2,15 +2,17 @@ import asyncio
 import functools
 import os
 from traceback import print_exc
+from typing import Iterator
 from zipfile import BadZipFile, LargeZipFile
 
 from quart import Quart
 
 from common.constants import C
+from common.doc import find_common_base_dir
 from common.http import download_into_memory, DownloadError, NotModified
 from common.server import run_app
 from common.timer import timer
-from common.tools import wait_until_cancelled
+from common.tools import sleep_forever
 from common.zip_support import extract_verify_documents
 from storage import archives
 from storage.archives import Archive
@@ -39,26 +41,32 @@ class Downloader:
                 print_exc()
                 raise DownloadError(f'Failed to download archive: {e}')
 
-            self.__verify(d.contents)
+            common_base_dir: str = find_common_base_dir(self.__verify(d.body))
+            print(f'Common base dir: {common_base_dir!r}')
 
-            path = os.path.join(C.ARCHIVE_DIR, hash[:3], f'{hash}')
+            archive = await archives.create(conn, d.checksum, d.size, self.url, d.etag, common_base_dir)
+
+            path = archive.path
             dirname = os.path.dirname(path)
             os.makedirs(dirname, exist_ok=True)
 
-            archive = await archives.create(conn, d.checksum, path, d.size, self.url, d.etag)
+            with open(path, 'wb') as f:
+                f.write(d.body)
 
         return archive
 
-    def __verify(self, contents: bytes):
+    def __verify(self, body: bytes) -> Iterator[str]:
         try:
-            document_count: int = sum(1 for _ in extract_verify_documents(
-                contents,
-                max_file_count=C.MAX_FILE_COUNT,
-                max_file_size=C.MAX_FILE_SIZE,
-                max_total_size=C.MAX_TOTAL_SIZE,
-                # supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
-                verify_only=True
-            ))
+            doc_count = 0
+            for zip_doc in extract_verify_documents(
+                    body,
+                    max_file_count=C.MAX_FILE_COUNT,
+                    max_file_size=C.MAX_FILE_SIZE,
+                    max_total_size=C.MAX_TOTAL_SIZE,
+                    # supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
+                    verify_only=True):
+                doc_count += 1
+                yield zip_doc.path
         except BadZipFile:
             print(f'Not a ZIP file: {self.url!r}')
             print_exc()
@@ -72,13 +80,14 @@ class Downloader:
             print_exc()
             raise Exception(f'Failed to verify source archive: {self.url!r}')
 
-        if not document_count:
+        if not doc_count:
             raise DownloadError('The archive does not contain any supported documents')
 
-        print(f'Extracted {document_count} files')
+        print(f'Found {doc_count} files in the archive')
 
 
 async def download(db: Database, url: str, project_id: int) -> THandlerResult:
+    print(f'Downloading {url!r} for project {project_id!r}')
     try:
         downloader = Downloader(db, url)
         with timer(f'Downloaded archive {url!r} for project {project_id!r}'):
@@ -92,10 +101,10 @@ async def download(db: Database, url: str, project_id: int) -> THandlerResult:
     pubsub = PubSub(db)
     await pubsub.send(ChannelName.DownloadCompleted.name, url=url)
 
-    return Task.create_pending(Operation.IndexArchive, archive_hash=archive.hash, project_id=project_id)
+    return Task.create_pending(Operation.ExtractArchive, archive_cs=archive.hash, project_id=project_id)
 
 
-async def download_worker():
+async def worker():
     async with Database.from_dsn(C.DSN) as db:
         scheduler = Scheduler(db)
         scheduler.register_handler(Operation.DownloadArchive, functools.partial(download, db))
@@ -103,14 +112,14 @@ async def download_worker():
             # noinspection PyBroadException
             try:
                 async with scheduler.listen():
-                    await wait_until_cancelled()
+                    await sleep_forever()
             except Exception:
                 print('Unexpected failure:')
                 print_exc()
 
 
 app = Quart(__name__)
-workers = [download_worker]
+workers = [worker]
 
 
 @app.get('/')

@@ -1,5 +1,8 @@
 import os.path
 import re
+import sys
+
+sys.setrecursionlimit(10000)
 
 
 class RX:
@@ -29,12 +32,10 @@ class C:
     TASK_TIMEOUT = 300  # s
 
     # Splitter
-    MAX_TOKENS_PER_FRAGMENT = 150  # Tokens
+    MAX_TOKENS_PER_FRAGMENT = 150
 
-    # Embedder
-    MAX_BATCH_SIZE = 1024
-    MAX_INSTRUCTION_SIZE = 512
-    MAX_TEXT_SIZE = 8192
+    # Parser
+    MAX_FRAGMENTS_PER_DOCUMENT = 1_000_000
 
     # Summary generation
     MAX_SUMMARY_WIDTH = 80

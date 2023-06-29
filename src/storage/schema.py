@@ -76,7 +76,6 @@ create table public.archive
     checksum varchar(64)  not null
         constraint archive_pk
             primary key,
-    path varchar(400) not null,
     size bigint not null,
     url  varchar(400) not null,
     etag varchar(80) not null,

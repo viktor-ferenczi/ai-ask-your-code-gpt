@@ -67,3 +67,25 @@ async def query(conn: Connection, document_cs: str, start: int) -> List[Fragment
             document_cs[:2], document_cs, start
         )
     ]
+
+
+async def insert(conn: Connection, fragment: Fragment):
+    await conn.execute(
+        '''
+        INSERT INTO fragment (partition_key, document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+        ''',
+        fragment.document_cs[:2],
+        fragment.document_cs,
+        fragment.start,
+        fragment.length,
+        fragment.lineno,
+        fragment.tokens,
+        fragment.depth,
+        fragment.parent_id,
+        fragment.category,
+        fragment.definition,
+        fragment.summary,
+        fragment.name,
+        fragment.body
+    )

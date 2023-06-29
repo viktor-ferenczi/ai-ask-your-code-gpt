@@ -1,6 +1,6 @@
 from typing import Iterator, Iterable
 
-from model.document import Document
+from common.zip_support import ZipDoc
 
 
 def find_common_base_dir(paths: Iterable[str]) -> str:
@@ -22,7 +22,7 @@ def find_common_base_dir(paths: Iterable[str]) -> str:
     return '/'.join(next(iter(dir_set)) for dir_set in common) + '/'
 
 
-def remove_common_base_dir(common_base_dir: str, documents: Iterable[Document]) -> Iterator[Document]:
+def remove_common_base_dir(common_base_dir: str, documents: Iterable[ZipDoc]) -> Iterator[ZipDoc]:
     strip_len = len(common_base_dir)
     for doc in documents:
         doc.path = f'/{doc.path[strip_len:]}'

@@ -37,6 +37,7 @@ PARSERS = (
     JavaParser,
 )
 
+PARSERS_BY_NAME = {}
 PARSERS_BY_EXTENSION = {}
 PARSERS_BY_MIME_TYPE = {}
 
@@ -44,9 +45,16 @@ PARSERS_BY_MIME_TYPE = {}
 def register_parsers():
     for parser_cls in PARSERS:
         assert issubclass(parser_cls, BaseParser)
+
+        assert parser_cls.name not in PARSERS_BY_NAME, parser_cls.name
+        PARSERS_BY_NAME[parser_cls.name] = parser_cls
+
         for extension in parser_cls.extensions:
+            assert extension not in PARSERS_BY_EXTENSION, extension
             PARSERS_BY_EXTENSION[extension] = parser_cls
+
         for mime_type in parser_cls.mime_types:
+            assert mime_type not in PARSERS_BY_MIME_TYPE
             PARSERS_BY_MIME_TYPE[mime_type] = parser_cls
 
 
@@ -103,19 +111,21 @@ del set_tree_sitter_languages
 MAGIC = Magic(mime=True)
 
 
-def detect(path: str, content: Optional[bytes] = None) -> Optional[Type[BaseParser]]:
+def detect_mime(content: bytes) -> str:
+    try:
+        return MAGIC.from_buffer(content)
+    except MagicException:
+        return ''
+
+
+def detect(path: str, mime_type: Optional[str] = None) -> Optional[Type[BaseParser]]:
     parser_cls = None
 
     if '.' in path:
         extension = path.rsplit('.', 1)[-1].lower()
         parser_cls = PARSERS_BY_EXTENSION.get(extension)
 
-    if parser_cls is None and content is not None:
-        try:
-            mime_type = MAGIC.from_buffer(content)
-        except MagicException:
-            pass
-        else:
-            parser_cls = PARSERS_BY_MIME_TYPE.get(mime_type)
+    if parser_cls is None and mime_type is not None:
+        parser_cls = PARSERS_BY_MIME_TYPE.get(mime_type)
 
     return parser_cls
