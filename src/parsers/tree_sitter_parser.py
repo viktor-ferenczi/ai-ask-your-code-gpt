@@ -8,7 +8,7 @@ from common.text import decode_replace
 from common.tools import new_uuid
 from common.tree import walk_nodes
 from model.fragment import Fragment
-from parsers.model import Name
+from parsers.model import Code
 from parsers.registrations import BaseParser
 from splitters.text_splitter import TextSplitter
 
@@ -49,29 +49,29 @@ class TreeSitterParser(BaseParser):
 
             iter_nodes = walk_nodes(cursor, debug=self.debug, debug_file=debug_file)
 
-            for name in self.collect_names(iter_nodes):
-                assert isinstance(name, Name), repr(name)
+            for code in self.collect_names(iter_nodes):
+                assert isinstance(code, Code), repr(code)
 
-                if isinstance(name.name, bytes):
-                    name.name = decode_replace(name.name)
-                name.name = name.name.replace('\r\n', '\n').replace('\r', '').strip()
+                if isinstance(code.name, bytes):
+                    code.name = decode_replace(code.name)
+                code.name = code.name.replace('\r\n', '\n').replace('\r', '').strip()
 
-                if isinstance(name.definition, bytes):
-                    name.definition = decode_replace(name.definition)
-                name.definition = name.definition.replace('\r\n', '\n').replace('\r', '').strip()
+                if isinstance(code.definition, bytes):
+                    code.definition = decode_replace(code.definition)
+                code.definition = code.definition.replace('\r\n', '\n').replace('\r', '').strip()
 
-                name_map[name.category].add(name)
+                name_map[code.category].add(code)
 
             if self.debug and self.unhandled:
                 print('', file=debug_file)
-                for name in sorted(self.unhandled):
-                    lineno, text = self.unhandled[name]
-                    print(f'UNHANDLED #{lineno:05d} [{name}] {text}', file=debug_file)
+                for code in sorted(self.unhandled):
+                    lineno, text = self.unhandled[code]
+                    print(f'UNHANDLED #{lineno:05d} [{code}] {text}', file=debug_file)
         finally:
             if debug_file:
                 debug_file.close()
 
-        usages: Set[Name] = name_map.pop('usage', set())
+        usages: Set[Code] = name_map.pop('usage', set())
         for key in name_map:
             names = name_map[key]
             non_definitions = {name for name in names if not name.definition}
@@ -91,16 +91,16 @@ class TreeSitterParser(BaseParser):
             if not names:
                 continue
 
-            for name in names:
-                if name.definition:
+            for code in names:
+                if code.definition:
                     yield Fragment(
                         uuid=new_uuid(),
                         path=path,
-                        lineno=name.lineno,
-                        depth=name.depth,
-                        type=name.category,
-                        name=name.operation,
-                        text=name.definition,
+                        lineno=code.lineno,
+                        depth=code.depth,
+                        type=code.category,
+                        name=code.operation,
+                        text=code.definition,
                     )
 
             label = self.categories[key]
@@ -112,5 +112,5 @@ class TreeSitterParser(BaseParser):
         summary = ''.join(summary)
         yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
 
-    def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]) -> Iterator[Name]:
+    def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]) -> Iterator[Code]:
         raise NotImplementedError()

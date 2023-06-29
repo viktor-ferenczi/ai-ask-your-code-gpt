@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Name:
+class Code:
     category: str  # Category of the code object variable
     name: str  # Name of the code object (case-sensitive)
     definition: str  # The whole definition or declaration, empty if this is only a usage
