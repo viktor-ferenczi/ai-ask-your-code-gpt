@@ -112,7 +112,6 @@ create table public.document
     partition_key char(2)                                       not null,
     checksum      varchar(64)                                   not null,
     body          bytea                                         not null,
-    length        integer                                       not null,
     doctype       varchar(40) default 'text'::character varying not null,
     constraint document_pk
         primary key (partition_key, checksum)
@@ -125,11 +124,10 @@ create table public.fragment
 (
     partition_key char(2)               not null,
     document_cs   varchar(64)           not null,
-    start         integer      not null,
-    length        integer               not null,
-    lineno        integer      not null,
+    start         integer               not null,
+    lineno        integer               not null,
     tokens        integer               not null,
-    depth         integer      not null,
+    depth         integer               not null,
     parent_id     integer,
     category      varchar(24)           not null,
     definition    boolean               not null,

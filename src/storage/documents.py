@@ -11,7 +11,6 @@ from common.constants import C
 class Document:
     checksum: str
     body: bytes
-    length: int
     doctype: str
 
     @classmethod
@@ -19,7 +18,6 @@ class Document:
         return cls(
             checksum=row['checksum'],
             body=row['body'],
-            length=row['length'],
             doctype=row['doctype'],
         )
 
@@ -36,14 +34,13 @@ async def create(conn: Connection, body: bytes, doctype: str) -> Document:
     checksum = sha.hexdigest()
 
     partition_key = checksum[:2]
-    length = len(body)
 
     await conn.execute(
-        '''INSERT INTO document (partition_key, checksum, body, length, doctype) VALUES ($1, $2, $3, $4, $5)''',
-        partition_key, checksum, body, length, doctype
+        '''INSERT INTO document (partition_key, checksum, body, doctype) VALUES ($1, $2, $3, $4)''',
+        partition_key, checksum, body, doctype
     )
 
-    return Document(checksum, body, length, doctype)
+    return Document(checksum, body, doctype)
 
 
 async def find_by_checksum(conn: Connection, checksum: str) -> Optional[Document]:

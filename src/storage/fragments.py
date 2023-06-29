@@ -11,7 +11,6 @@ from common.tools import tiktoken_len
 class Fragment:
     document_cs: str = ''
     start: int = 0
-    length: int = 0
     lineno: int = 1
     tokens: int = 0
     depth: int = 0
@@ -27,7 +26,6 @@ class Fragment:
         return cls(
             document_cs=row['document_cs'],
             start=row['start'],
-            length=row['length'],
             lineno=row['lineno'],
             tokens=row['tokens'],
             depth=row['depth'],
@@ -48,15 +46,14 @@ async def truncate(conn: Connection):
 
 async def create(conn: Connection, document_cs: str, start: int, lineno: int, depth: int, parent_id: Optional[int], category: str, definition: bool, summary: bool, name: str, body: str) -> Fragment:
     partition_key = document_cs[:2]
-    length = len(body)
     tokens = tiktoken_len(body)
 
     await conn.execute(
-        '''INSERT INTO fragment (partition_key, document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)''',
-        partition_key, document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body
+        '''INSERT INTO fragment (partition_key, document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)''',
+        partition_key, document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body
     )
 
-    return Fragment(document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
+    return Fragment(document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
 
 
 async def query(conn: Connection, document_cs: str, start: int) -> List[Fragment]:
@@ -72,13 +69,12 @@ async def query(conn: Connection, document_cs: str, start: int) -> List[Fragment
 async def insert(conn: Connection, fragment: Fragment):
     await conn.execute(
         '''
-        INSERT INTO fragment (partition_key, document_cs, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+        INSERT INTO fragment (partition_key, document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         ''',
         fragment.document_cs[:2],
         fragment.document_cs,
         fragment.start,
-        fragment.length,
         fragment.lineno,
         fragment.tokens,
         fragment.depth,
