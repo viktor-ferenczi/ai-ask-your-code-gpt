@@ -1,4 +1,5 @@
 import asyncio
+import hashlib
 import time
 import uuid
 from asyncio import CancelledError
@@ -68,3 +69,14 @@ async def async_retry(fn: Callable[[], Awaitable[Any]], handle_exceptions=(), ma
             delay = min(max_delay, delay * delay_multiplier)
 
     return await fn()
+
+
+def hash_file(path: str) -> str:
+    sha = hashlib.sha256()
+    with open(path, 'rb') as f:
+        while 1:
+            chunk = f.read(0x8000)
+            if not chunk:
+                break
+            sha.update(chunk)
+    return sha.hexdigest()

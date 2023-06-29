@@ -4,7 +4,11 @@ from typing import AsyncContextManager
 import asyncpg
 from asyncpg import UndefinedTableError, Connection
 
-from storage import schema
+from storage import schema, properties
+
+
+class Tasks:
+    pass
 
 
 class Database:
@@ -45,7 +49,7 @@ class Database:
             async with conn.transaction(readonly=readonly):
                 yield conn
 
-    # Admin
+    # Schema creation and migration
 
     async def drop(self):
         async with self.connection() as conn:
@@ -61,12 +65,7 @@ class Database:
         while 1:
             async with self.connection() as conn:
                 try:
-                    version = await conn.fetchval('''
-                        SELECT number 
-                        FROM property 
-                        WHERE name = 'Version' 
-                        FOR UPDATE                    
-                    ''') or 0
+                    version = await properties.read(conn, 'Version')
                 except UndefinedTableError:
                     version = 0
 
@@ -76,17 +75,13 @@ class Database:
                 if version > schema.VERSION:
                     raise ValueError(f'Database version {version} is newer than the schema VERSION {schema.VERSION} in the code, which should not happen')
 
-                migration = schema.MIGRATIONS.get(version)
+                migration = schema.MIGRATIONS.get(conn, version)
                 if not migration:
                     raise ValueError(f'Migration is not defined for database version {version}')
 
                 await conn.execute(migration)
 
-                new_version = await conn.fetchval('''
-                    SELECT number 
-                    FROM property 
-                    WHERE name = 'Version'                
-                ''') or 0
+                new_version = await properties.read(conn, 'Version') or 0
                 if new_version <= version:
                     raise ValueError(f'New version {new_version} after migration must be higher than the former version {version}')
 

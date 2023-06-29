@@ -77,6 +77,7 @@ create table public.archive
         constraint archive_pk
             primary key,
     path varchar(400) not null,
+    size bigint not null,
     url  varchar(400) not null,
     etag varchar(80)
 );
@@ -84,11 +85,11 @@ create table public.archive
 alter table public.archive
     owner to askyourcode;
 
-create index archive_url_index
-    on public.archive (url);
-
 create index archive_path_index
     on public.archive (path);
+
+create index archive_url_index
+    on public.archive (url);
 
 create table public.project
 (
@@ -110,9 +111,9 @@ create table public.document
 (
     partition_key char(2)                                       not null,
     hash          varchar(64)                                   not null,
-    doctype       varchar(40) default 'text'::character varying not null,
-    length        integer                                       not null,
     body          text                                          not null,
+    length        integer                                       not null,
+    doctype       varchar(40) default 'text'::character varying not null,
     constraint document_pk
         primary key (partition_key, hash)
 );
@@ -150,24 +151,23 @@ create index fragment_body_index
 
 create table public.file
 (
-    partition_key   char(2)      not null,
-    project_id      bigint       not null,
     id              bigserial,
+    project_id      bigint       not null,
     path_in_project varchar(400) not null,
     mime_type       varchar(40)  not null,
     size            bigint       not null,
     document_hash   varchar(64),
     archive_hash    varchar(64),
     constraint file_pk
-        primary key (partition_key, project_id, id)
+        primary key (id)
 );
 
 alter table public.file
     owner to askyourcode;
 
 create index file_path_in_project_index
-    on public.file (path_in_project);
-
+    on public.file (project_id, path_in_project);
+    
 create table public.usage
 (
     partition_key      char(2) not null,
@@ -182,6 +182,9 @@ create table public.usage
 
 alter table public.usage
     owner to askyourcode;
+    
+create index usage_index
+    on public.usage (usage_file_id, usage_start);
 
 ''' + f'''
 insert into public.property (name, number) values ('Version', {VERSION});
