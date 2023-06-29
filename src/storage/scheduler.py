@@ -33,7 +33,7 @@ class Operation(Enum):
     Test2 = 'Test2'
     CreateProject = 'CreateProject'
     DownloadArchive = 'DownloadArchive'
-    ExtractArchive = 'IndexArchive'
+    ExtractArchive = 'ExtractArchive'
     DownloadSource = 'DownloadSource'
     IndexSource = 'IndexSource'
     QuerySummary = 'QuerySummary'
@@ -214,6 +214,14 @@ class Scheduler:
                 WHERE created = $1
             ''', created)
             return Task.from_row(row) if row else None
+
+    async def count_tasks(self, state: TaskState) -> int:
+        async with self.db.transaction() as conn:
+            return await conn.fetchval('''
+                SELECT COUNT(1) 
+                FROM task 
+                WHERE state = $1
+            ''', state.name)
 
     async def delete_all_tasks(self):
         async with self.db.transaction() as conn:

@@ -92,6 +92,8 @@ async def download(db: Database, url: str, project_id: int) -> THandlerResult:
         downloader = Downloader(db, url)
         with timer(f'Downloaded archive {url!r} for project {project_id!r}'):
             archive: Archive = await downloader.download_verify()
+    except asyncio.CancelledError:
+        raise TaskFailed('The download was cancelled, please try again in a few seconds')
     except DownloadError as e:
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
@@ -101,7 +103,7 @@ async def download(db: Database, url: str, project_id: int) -> THandlerResult:
     pubsub = PubSub(db)
     await pubsub.send(ChannelName.DownloadCompleted.name, url=url)
 
-    return Task.create_pending(Operation.ExtractArchive, archive_cs=archive.hash, project_id=project_id)
+    return Task.create_pending(Operation.ExtractArchive, archive_cs=archive.checksum, project_id=project_id)
 
 
 async def worker():

@@ -1,7 +1,6 @@
 import asyncio
 import os
 import shutil
-import unittest
 from pprint import pformat
 from typing import List
 
@@ -10,10 +9,10 @@ from quart import Quart, send_file
 from base_test_case import BaseTestCase
 from common.constants import C
 from common.http import download_into_memory
-from services.downloader import app as downloader_app, workers as downloader_workers
-from services.extractor import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
+from services.downloader import app as downloader_app, workers as downloader_workers
+from services.extractor import app as loader_app, workers as loader_workers
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -69,10 +68,12 @@ def normalize_fragments(fragments: List[Fragment]):
         fragment.uuid = f'NORMALIZED'
 
 
-class TestProject(BaseTestCase):
+class TestRepos(BaseTestCase):
     test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
 
-    def setUp(self) -> None:
+    async def asyncSetUp(self) -> None:
+        await super().asyncSetUp()
+
         self.maxDiff = 32768
 
         test_projects_dir = os.path.join(C.DATA_DIR, Project.dirname)
@@ -90,7 +91,7 @@ class TestProject(BaseTestCase):
             assert filename.endswith('.zip')
             return await send_file(os.path.join(self.test_repos_dir, filename), as_attachment=True)
 
-        await self.app.run_task(debug=True, host='localhost', port=49001)
+        await self.app.run_task(debug=True, host='localhost', port=49000)
 
     async def test_repos(self):
         actual_test = asyncio.create_task(self.actual_test())
@@ -137,7 +138,7 @@ class TestProject(BaseTestCase):
         os.makedirs(f'{self.project_path}/actual', exist_ok=True)
         os.makedirs(f'{self.project_path}/expected', exist_ok=True)
 
-        local_zip_url = f'http://127.0.0.1:49001/{name}.zip'
+        local_zip_url = f'http://127.0.0.1:49000/{name}.zip'
         project_id = await Project.create(local_zip_url)
         project = Project(project_id)
 
@@ -169,8 +170,8 @@ class TestProject(BaseTestCase):
             if actual:
                 self.verify(f'summary.{extension}', actual)
 
-        with project.cursor() as cursor:
-            fragments = project.get_all_fragments(cursor)
+        with project.cursor() as conn:
+            fragments = await project.get_all_fragments(conn, self.project.id)
             normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)

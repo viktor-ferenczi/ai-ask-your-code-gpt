@@ -10,7 +10,7 @@ from common.constants import C
 class File:
     id: int
     project_id: int
-    path_in_project: str
+    path: str
     mime_type: str
     size: int
     document_cs: str
@@ -21,7 +21,7 @@ class File:
         return cls(
             id=row['id'],
             project_id=row['project_id'],
-            path_in_project=row['path_in_project'],
+            path=row['path'],
             mime_type=row['mime_type'],
             size=row['size'],
             document_cs=row['document_cs'],
@@ -35,12 +35,12 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE file')
 
 
-async def create(conn: Connection, project_id: int, path_in_project: str, mime_type: str, size: int, document_cs: Optional[str], archive_cs: Optional[str]) -> File:
+async def create(conn: Connection, project_id: int, path: str, mime_type: str, size: int, document_cs: Optional[str], archive_cs: Optional[str]) -> File:
     id = await conn.fetchval(
-        '''INSERT INTO file (project_id, path_in_project, mime_type, size, document_cs, archive_cs) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id''',
-        project_id, path_in_project, mime_type, size, document_cs, archive_cs
+        '''INSERT INTO file (project_id, path, mime_type, size, document_cs, archive_cs) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id''',
+        project_id, path, mime_type, size, document_cs, archive_cs
     )
-    return File(id, project_id, path_in_project, mime_type, size, document_cs, archive_cs)
+    return File(id, project_id, path, mime_type, size, document_cs, archive_cs)
 
 
 async def find(conn: Connection, id: int) -> Optional[File]:

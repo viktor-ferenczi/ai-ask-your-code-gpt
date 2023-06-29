@@ -42,7 +42,7 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
             if doc_type is not None:
                 document = await documents.create(conn, zip_doc.body, doc_type.name)
                 document_cs = document.checksum
-                task = Task.create_pending(Operation.IndexSource, document_cs=document_cs)
+                task = Task.create_pending(Operation.IndexSource, document_cs=document_cs, path=zip_doc.path)
                 indexing_tasks.append(task)
 
             if project_id:

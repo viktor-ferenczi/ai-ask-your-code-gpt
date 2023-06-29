@@ -5,9 +5,13 @@ from asyncpg import Pool
 
 from common.constants import C
 from storage.database import Database
+from storage.pubsub import PubSub
+from storage.scheduler import Scheduler
 
 
 class BaseTestCase(unittest.IsolatedAsyncioTestCase):
+
+    first = True
 
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
@@ -19,7 +23,17 @@ class BaseTestCase(unittest.IsolatedAsyncioTestCase):
         await self.pool._async__init__()
         self.db = Database(self.pool)
 
+        cls = self.__class__
+        if cls.first:
+            await self.db.drop()
+            cls.first = False
+
         await self.db.migrate()
+
+        self.scheduler = Scheduler(self.db)
+        self.pubsub = PubSub(self.db)
+
+        await self.scheduler.delete_all_tasks()
 
     async def asyncTearDown(self) -> None:
         del self.db

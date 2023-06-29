@@ -35,13 +35,13 @@ class TypeScriptParser(BaseParser):
             )
         )
 
-    def parse(self, path: str, body: bytes) -> Iterator[Fragment]:
+    def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
         parser = Parser()
         parser.set_language(self.tree_sitter_language)
-        tree: Tree = parser.parse(body)
+        tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        for sentence in self.splitter.split_text(decode_replace(body)):
+        for sentence in self.splitter.split_text(decode_replace(content)):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         namespaces: Set[str] = set()
@@ -63,32 +63,32 @@ class TypeScriptParser(BaseParser):
             elif (node.type == 'namespace' and
                   node.next_sibling is not None and
                   node.next_sibling.category == 'identifier'):
-                name = decode_replace(node.next_sibling.body)
+                name = decode_replace(node.next_sibling.text)
                 namespaces.add(name)
                 yield Fragment(new_uuid(), path, lineno, depth, 'namespace', name, f'namespace {name} {{...}}')
             elif (node.type == 'interface' and
                   node.next_sibling is not None and
                   node.next_sibling.category == 'type_identifier' and
                   node.parent is not None):
-                name = decode_replace(node.next_sibling.body)
+                name = decode_replace(node.next_sibling.text)
                 interfaces.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.body)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'interface', name, sentence.text)
             elif (node.type == 'class' and
                   node.next_sibling is not None and
                   node.next_sibling.category == 'type_identifier' and
                   node.parent is not None):
-                name = decode_replace(node.next_sibling.body)
+                name = decode_replace(node.next_sibling.text)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.body)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
             elif (node.type == 'function' and
                   node.next_sibling is not None and
                   node.next_sibling.category == 'identifier' and
                   node.parent is not None):
-                name = decode_replace(node.next_sibling.body)
+                name = decode_replace(node.next_sibling.text)
                 functions.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.body)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif (node.type == 'identifier' and
                   node.next_sibling is not None and
@@ -103,7 +103,7 @@ class TypeScriptParser(BaseParser):
                   node.child_count and
                   node.children[0].category == 'identifier'):
                 text = decode_replace(node.text)
-                name = decode_replace(node.children[0].body)
+                name = decode_replace(node.children[0].text)
                 variables.add(name)
                 for sentence in self.splitter.split_text(text):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)

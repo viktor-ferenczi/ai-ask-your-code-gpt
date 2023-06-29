@@ -85,3 +85,59 @@ async def insert(conn: Connection, fragment: Fragment):
         fragment.name,
         fragment.body
     )
+
+
+async def get_all_fragments(conn: Connection, project_id: int) -> List[Fragment]:
+    return [
+        Fragment.from_row(row) for row in await conn.fetch('''
+            SELECT f.* 
+            FROM fragment AS f
+            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
+            ORDER BY e.path, lineno
+        ''', project_id)
+    ]
+
+
+async def search_by_path_tail_name(conn: Connection, project_id: int, path: str, tail: str, name: str, limit: int = 1) -> List[Fragment]:
+    return [
+        Fragment.from_row(row) for row in await conn.fetch('''
+            SELECT f.* 
+            FROM fragment AS f
+            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
+            WHERE e.path LIKE $2 
+              AND e.path LIKE $3
+              AND f.name LIKE $4
+            ORDER BY LENGTH(name), e.path, lineno 
+            LIMIT $5
+        ''', project_id, f'{path}%', f'%{tail}', f'%{name}', limit)
+    ]
+
+
+async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Fragment]:
+    return [
+        Fragment.from_row(row) for row in await conn.fetch('''
+            SELECT f.* 
+            FROM fragment AS f
+            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
+            WHERE e.path LIKE $2
+              AND e.path LIKE $3
+              AND f.name LIKE $4
+            ORDER BY LENGTH(name), e.path, lineno
+        ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
+    ]
+
+
+async def list_fragments_by_id(conn: Connection, ids: List[int]) -> List[Fragment]:
+    if not ids:
+        return []
+
+    placeholders = ','.join(f'${1 + i}' for i in range(len(ids)))
+    fragments = [
+        Fragment.from_row(*row)
+        for row in await conn.fetch(f'''
+            SELECT * 
+            FROM fragment 
+            WHERE id IN ({placeholders})
+        ''', *ids)
+    ]
+    return fragments

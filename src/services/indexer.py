@@ -17,7 +17,7 @@ from storage.documents import Document
 from storage.scheduler import Scheduler, Operation, THandlerResult
 
 
-async def index(db: Database, document_cs: str) -> THandlerResult:
+async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
     async with db.transaction() as conn:
         document: Document = await documents.find_by_checksum(conn, document_cs)
         if document is None:
@@ -30,8 +30,7 @@ async def index(db: Database, document_cs: str) -> THandlerResult:
             return
 
         parser = parser_cls()
-        text = decode_replace(document.body)
-        for fragment in parser.parse(text):
+        for fragment in parser.parse(path, document.body):
             assert isinstance(fragment, Fragment)
             await fragments.create(
                 conn,

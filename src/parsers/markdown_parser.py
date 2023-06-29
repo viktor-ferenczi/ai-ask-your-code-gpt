@@ -34,8 +34,7 @@ class MarkdownParser(BaseParser):
                 depth=sentence.depth,
                 category='documentation',
                 name='',
-                body=sentence.text,
-                start=sentence.start
+                body=sentence.text
             )
 
             for line in sentence.text.split('\n'):
@@ -53,6 +52,5 @@ class MarkdownParser(BaseParser):
             depth=0,
             category='summary',
             name='',
-            body=''.join(summary),
-            start=0
+            body=''.join(summary)
         )

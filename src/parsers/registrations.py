@@ -111,9 +111,9 @@ del set_tree_sitter_languages
 MAGIC = Magic(mime=True)
 
 
-def detect_mime(content: bytes) -> str:
+def detect_mime(body: bytes) -> str:
     try:
-        return MAGIC.from_buffer(content)
+        return MAGIC.from_buffer(body)
     except MagicException:
         return ''
 

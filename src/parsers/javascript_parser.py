@@ -59,7 +59,7 @@ class JavaScriptParser(BaseParser):
             elif (node.type == 'function' and
                   node.next_sibling is not None and
                   node.next_sibling.category == 'identifier'):
-                name = decode_replace(node.next_sibling.body)
+                name = decode_replace(node.next_sibling.text)
                 functions.add(name)
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
@@ -76,7 +76,7 @@ class JavaScriptParser(BaseParser):
                   node.child_count and
                   node.children[0].category == 'identifier'):
                 text = decode_replace(node.text)
-                name = decode_replace(node.children[0].body)
+                name = decode_replace(node.children[0].text)
                 variables.add(name)
                 for sentence in self.splitter.split_text(text):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)

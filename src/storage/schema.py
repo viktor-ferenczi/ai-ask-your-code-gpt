@@ -4,16 +4,16 @@ VERSION = 1
 
 DROP = '''
 
-drop table public.property;
-drop table public.task;
-drop table public.archive;
-drop table public.project;
-drop table public.document;
-drop table public.fragment;
-drop table public.file;
-drop table public.usage;
+drop table if exists public.property;
+drop table if exists public.task;
+drop table if exists public.archive;
+drop table if exists public.project;
+drop table if exists public.document;
+drop table if exists public.fragment;
+drop table if exists public.file;
+drop table if exists public.usage;
 
-drop type public.task_state;
+drop type if exists public.task_state;
 
 '''
 
@@ -148,7 +148,7 @@ create table public.file
 (
     id              bigserial,
     project_id      bigint       not null,
-    path_in_project varchar(400) not null,
+    path            varchar(400) not null,
     mime_type       varchar(40)  not null,
     size            bigint       not null,
     document_cs     varchar(64),
@@ -160,8 +160,8 @@ create table public.file
 alter table public.file
     owner to askyourcode;
 
-create index file_path_in_project_index
-    on public.file (project_id, path_in_project);
+create index file_path_index
+    on public.file (project_id, path);
     
 create table public.usage
 (

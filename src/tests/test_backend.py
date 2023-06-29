@@ -1,26 +1,30 @@
 import asyncio
 import os
 import pprint
-import unittest
 import zipfile
+from time import time
 from typing import List
 
 from quart import Quart, send_file
 
 from base_test_case import BaseTestCase
 from model.hit import Hit
-from plugin.backend import Backend, BackendError
+from plugin.backend import Backend, TInfo
 from services.downloader import app as downloader_app, workers as downloader_workers
-from services.extractor import app as loader_app, workers as loader_workers
+from services.extractor import app as extractor_app, workers as extractor_workers
+from services.indexer import app as indexer_app, workers as indexer_workers
+from storage.scheduler import TaskState
 
 MODULE_DIR = os.path.dirname(__file__)
 
 
-class TestProject(BaseTestCase):
+class TestBackend(BaseTestCase):
     test_project_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestProject')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
     async def asyncSetUp(self) -> None:
+        await super().asyncSetUp()
+
         self.maxDiff = 32768
 
         dir_len = len(self.test_project_dir) + 1
@@ -37,14 +41,14 @@ class TestProject(BaseTestCase):
         except (IOError, OSError):
             pass
 
+        await super().asyncTearDown()
+
     async def test_download_server_not_running(self):
-        try:
-            backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
-            await backend.download('http://127.0.0.1:57575/anything', timeout=1.0)
-        except BackendError:
-            self.assertTrue(True)
-        else:
-            self.fail()
+        backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
+        info: TInfo = await backend.download('http://127.0.0.1:57575', timeout=1.0)
+        print(info)
+        self.assertTrue('The download is still in progress' in info['status'])
+        self.assertTrue('hint' in info)
 
     async def serve_zip(self):
         self.app = Quart('test_zip_server')
@@ -53,24 +57,25 @@ class TestProject(BaseTestCase):
         async def serve_zip():
             return await send_file(self.zip_path, as_attachment=True)
 
-        await self.app.run_task(debug=True, host='localhost', port=49001)
+        await self.app.run_task(debug=True, host='localhost', port=49000)
 
     async def test_project(self):
-        actual_test = asyncio.create_task(self.actual_test())
-        zip_server_task = asyncio.create_task(self.serve_zip())
-        downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
-        loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
-        loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
-        downloader_worker_tasks = [asyncio.create_task(worker()) for worker in downloader_workers]
-
-        tasks = [actual_test, zip_server_task, downloader_task, loader_task] + loader_worker_tasks + downloader_worker_tasks
+        coroutines = [
+            self.actual_test(),
+            self.serve_zip(),
+            downloader_app.run_task(debug=True, host='localhost', port=40001),
+            extractor_app.run_task(debug=True, host='localhost', port=40002),
+            indexer_app.run_task(debug=True, host='localhost', port=40003),
+        ] + [
+            worker() for worker in downloader_workers + extractor_workers + indexer_workers
+        ]
+        tasks = [asyncio.create_task(coro) for coro in coroutines]
 
         await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
 
-        actual_test.result()
-        for task in tasks:
-            if task is not actual_test:
-                task.cancel()
+        tasks[0].result()
+        for task in tasks[1:]:
+            task.cancel()
 
     async def actual_test(self):
         await self.download_error()
@@ -78,14 +83,14 @@ class TestProject(BaseTestCase):
         # project_id = await self.github_user_content()
         # project = Project(project_id)
         # self.assertTrue(project.exists)
-        # await project.delete()
+        # await backend.delete()
         # self.assertFalse(project.exists)
 
         small_project_id = await self.small_project()
 
         project = Project(small_project_id)
         self.assertTrue(project.exists)
-        await project.cleanup()
+        await backend.cleanup()
         self.assertFalse(project.exists)
 
         medium_project_id_1 = await self.medium_project()
@@ -94,59 +99,59 @@ class TestProject(BaseTestCase):
 
         await self.medium_project(medium_project_id_1)
 
-        await project.cleanup()
+        await backend.cleanup()
         self.assertFalse(project.exists)
 
         await self.medium_project(medium_project_id_1, False)
 
-        await project.delete()
+        await backend.delete()
         self.assertFalse(project.exists)
 
         medium_project_id_2 = await self.medium_project()
         self.assertNotEquals(medium_project_id_1, medium_project_id_2)
 
         project = Project(medium_project_id_2)
-        await project.delete()
+        await backend.delete()
         self.assertFalse(project.exists)
 
     async def download_error(self):
-        try:
-            backend = Backend.ensure_project(self.db, 'tester', 'download_error')
-            await backend.download('http://127.0.0.1:49001/this-wont-exist')
-        except BackendError as e:
-            self.assertTrue('Failed to download' in str(e))
-        else:
-            self.fail("BackendError not raised")
+        backend = await Backend.ensure_project(self.db, 'tester', 'download_error')
+        info: TInfo = await backend.download('http://127.0.0.1:49000/this-will-fail', timeout=1.0)
+        print(info)
+        self.assertTrue('Failed to download' in info['status'])
+        self.assertTrue('hint' in info)
 
     async def small_project(self) -> str:
-        project_id = await Project.create('http://127.0.0.1:49001/test.zip')
-        project = Project(project_id)
+        backend = await Backend.ensure_project(self.db, 'tester', 'small_project')
+        info: TInfo = await backend.download('http://127.0.0.1:49000/test.zip', timeout=1.0)
+        print(info)
+        self.assertTrue('Archive downloaded' in info['status'])
 
-        await self.wait_for_processing(project)
+        await self.wait_for_processing()
 
-        hits = await project.search(tail='.py', name='Duplicates')
+        hits = await backend.search(tail='.py', name='Duplicates')
         self.verify_hits(hits, 1, contains=['class Duplicates'])
 
-        hits = await project.search(path='/find_duplicates.py', limit=100)
+        hits = await backend.search(path='/find_duplicates.py', limit=100)
         self.verify_hits(hits, 34, path='/find_duplicates.py')
 
-        hits = await project.search(tail='.py', path='/find_duplicates.py', limit=100)
+        hits = await backend.search(tail='.py', path='/find_duplicates.py', limit=100)
         self.verify_hits(hits, 34, path='/find_duplicates.py')
 
-        hits = await project.search(path='/README.md', limit=100)
+        hits = await backend.search(path='/README.md', limit=100)
         self.verify_hits(hits, 5, path='/README.md')
 
-        hits = await project.search(tail='.md', text='standard set of source code files', limit=1)
+        hits = await backend.search(tail='.md', text='standard set of source code files', limit=1)
         self.verify_hits(hits, 1, path='/README.md', contains=['standard set of source code files'])
 
-        hits = await project.search(text='class Duplicates', limit=10)
+        hits = await backend.search(text='class Duplicates', limit=10)
         self.verify_hits(hits, 2, path='/find_duplicates.py', contains=['class Duplicates:'])
         self.assertEqual(len([hit for hit in hits if hit.category == 'module']), 1)
         self.assertEqual(len([hit for hit in hits if hit.category == 'class']), 1)
         self.verify_hits(hits[:1], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
         self.verify_hits(hits[1:], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
 
-        summary = await project.summarize(tail='.md')
+        summary = await backend.summarize(tail='.md')
         self.assertEqual('''\
 File extensions: .md
 
@@ -172,7 +177,7 @@ File extensions: .md
 
 ''', summary)
 
-        summary = await project.summarize(tail='.py')
+        summary = await backend.summarize(tail='.py')
         self.assertEqual('''\
 File extensions: .py
 
@@ -196,16 +201,16 @@ Python: /find_duplicates.py
         if not expect_project_id or not expect_already_embedded:
             await self.wait_for_processing(project)
 
-        progress = await project.get_progress()
+        progress = await backend.get_progress()
         self.assertEqual(progress, 100)
 
-        hits = await project.search(path='/README.md', limit=100)
+        hits = await backend.search(path='/README.md', limit=100)
         self.verify_hits(hits, 9, path='/README.md')
 
-        hits = await project.search(tail='.py', name='Query', limit=100)
+        hits = await backend.search(tail='.py', name='Query', limit=100)
         self.verify_hits(hits, 34, contains=['class Query'])
 
-        summary = await project.summarize(tail='.md')
+        summary = await backend.summarize(tail='.md')
         self.assertEqual('''\
 File extensions: .md
 
@@ -221,7 +226,7 @@ File extensions: .md
 
 ''', summary)
 
-        summary = await project.summarize(path='/lib/dblayer', tail='.py')
+        summary = await backend.summarize(path='/lib/dblayer', tail='.py')
         self.assertEqual('''\
 File extensions: .py
 
@@ -271,22 +276,21 @@ Matches under subdirectories:
             print()
             raise
 
-    async def wait_for_processing(self, project):
-        inventory = Inventory()
-
-        print('Waiting for extracting fragments...')
+    async def wait_for_processing(self, timeout=5.0):
+        print('Waiting for all tasks to be processed...')
+        deadline = time() + timeout
         while 1:
-            if inventory.has_project_extracted(project.project_name):
+            count = await self.scheduler.count_tasks(TaskState.pending)
+            if not count:
                 break
-            await asyncio.sleep(0.2)
-        print('Downloaded')
 
-        print('Waiting for embedding fragments...')
-        while 1:
-            if inventory.has_project_embedded(project.project_name):
-                break
-            await asyncio.sleep(0.2)
-        print('Embedded')
+            if time() > deadline:
+                raise TimeoutError('Processing has not finished on time')
+
+            print(f'Pending tasks: {count}')
+            await asyncio.sleep(1.0)
+
+        print('Processing finished, no pending tasks left.')
 
     # async def github_user_content(self) -> str:
     #     url = 'https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py'
@@ -295,7 +299,7 @@ Matches under subdirectories:
     #
     #     await self.wait_for_processing(project)
     #
-    #     hits = await project.search(tail='.py')
+    #     hits = await backend.search(tail='.py')
     #     self.assertTrue(len(hits) > 0)
     #
     #     return project_id
