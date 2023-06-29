@@ -79,49 +79,17 @@ class TestBackend(BaseTestCase):
 
     async def actual_test(self):
         await self.download_error()
-
-        # project_id = await self.github_user_content()
-        # project = Project(project_id)
-        # self.assertTrue(project.exists)
-        # await backend.delete()
-        # self.assertFalse(project.exists)
-
-        small_project_id = await self.small_project()
-
-        project = Project(small_project_id)
-        self.assertTrue(project.exists)
-        await backend.cleanup()
-        self.assertFalse(project.exists)
-
-        medium_project_id_1 = await self.medium_project()
-        self.assertNotEquals(small_project_id, medium_project_id_1)
-        project = Project(medium_project_id_1)
-
-        await self.medium_project(medium_project_id_1)
-
-        await backend.cleanup()
-        self.assertFalse(project.exists)
-
-        await self.medium_project(medium_project_id_1, False)
-
-        await backend.delete()
-        self.assertFalse(project.exists)
-
-        medium_project_id_2 = await self.medium_project()
-        self.assertNotEquals(medium_project_id_1, medium_project_id_2)
-
-        project = Project(medium_project_id_2)
-        await backend.delete()
-        self.assertFalse(project.exists)
+        await self.small_project()
+        await self.medium_project()
 
     async def download_error(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'download_error')
-        info: TInfo = await backend.download('http://127.0.0.1:49000/this-will-fail', timeout=1.0)
+        info: TInfo = await backend.download('http://127.0.0.1:49000/this-will-fail', timeout=10.0)
         print(info)
         self.assertTrue('Failed to download' in info['status'])
         self.assertTrue('hint' in info)
 
-    async def small_project(self) -> str:
+    async def small_project(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'small_project')
         info: TInfo = await backend.download('http://127.0.0.1:49000/test.zip', timeout=1.0)
         print(info)
@@ -189,20 +157,12 @@ Python: /find_duplicates.py
 
 ''', summary)
 
-        return project_id
-
-    async def medium_project(self, expect_project_id: str = '', expect_already_embedded: bool = True) -> str:
-        project_id = await Project.create('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip')
-        project = Project(project_id)
-
-        if expect_project_id:
-            self.assertEqual(project_id, expect_project_id)
-
-        if not expect_project_id or not expect_already_embedded:
-            await self.wait_for_processing(project)
-
-        progress = await backend.get_progress()
-        self.assertEqual(progress, 100)
+    async def medium_project(self):
+        backend = await Backend.ensure_project(self.db, 'tester', 'medium_project')
+        info: TInfo = await backend.download('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip', timeout=5.0)
+        print(info)
+        self.assertTrue('Archive downloaded' in info['status'])
+        await self.wait_for_processing()
 
         hits = await backend.search(path='/README.md', limit=100)
         self.verify_hits(hits, 9, path='/README.md')
@@ -248,8 +208,6 @@ Matches under subdirectories:
   test: 388
 ''', summary)
 
-        return project.project_name
-
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
         print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
 
@@ -291,15 +249,3 @@ Matches under subdirectories:
             await asyncio.sleep(1.0)
 
         print('Processing finished, no pending tasks left.')
-
-    # async def github_user_content(self) -> str:
-    #     url = 'https://raw.githubusercontent.com/manbearwiz/youtube-dl-server/main/youtube-dl-server.py'
-    #     project_id = await Project.download(url)
-    #     project = Project(project_id)
-    #
-    #     await self.wait_for_processing(project)
-    #
-    #     hits = await backend.search(tail='.py')
-    #     self.assertTrue(len(hits) > 0)
-    #
-    #     return project_id

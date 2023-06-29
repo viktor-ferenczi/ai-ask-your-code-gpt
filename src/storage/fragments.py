@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from asyncpg import Record, Connection
 
@@ -98,10 +98,11 @@ async def get_all_fragments(conn: Connection, project_id: int) -> List[Fragment]
     ]
 
 
-async def search_by_path_tail_name(conn: Connection, project_id: int, path: str, tail: str, name: str, limit: int = 1) -> List[Fragment]:
+async def search_by_path_tail_name(conn: Connection, project_id: int, path: str, tail: str, name: str, limit: int = 1) -> List[Tuple[str, Fragment]]:
     return [
-        Fragment.from_row(row) for row in await conn.fetch('''
-            SELECT f.* 
+        (row['path'], Fragment.from_row(row))
+        for row in await conn.fetch('''
+            SELECT e.path, f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
             WHERE e.path LIKE $2 
@@ -113,10 +114,11 @@ async def search_by_path_tail_name(conn: Connection, project_id: int, path: str,
     ]
 
 
-async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Fragment]:
+async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Tuple[str, Fragment]]:
     return [
-        Fragment.from_row(row) for row in await conn.fetch('''
-            SELECT f.* 
+        (row['path'], Fragment.from_row(row))
+        for row in await conn.fetch('''
+            SELECT e.path, f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
             WHERE e.path LIKE $2
@@ -127,16 +129,17 @@ async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, 
     ]
 
 
-async def list_fragments_by_id(conn: Connection, ids: List[int]) -> List[Fragment]:
+async def list_fragments_by_id(conn: Connection, project_id: int, ids: List[int]) -> List[Tuple[str, Fragment]]:
     if not ids:
         return []
 
     placeholders = ','.join(f'${1 + i}' for i in range(len(ids)))
     fragments = [
-        Fragment.from_row(*row)
+        (row['path'], Fragment.from_row(row))
         for row in await conn.fetch(f'''
-            SELECT * 
-            FROM fragment 
+            SELECT e.path, f.* 
+            FROM fragment AS f
+            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
             WHERE id IN ({placeholders})
         ''', *ids)
     ]

@@ -1,6 +1,4 @@
 import asyncio
-import random
-import sqlite3
 from typing import List, Iterator, Dict, Any, Optional
 
 import numpy as np
@@ -11,7 +9,7 @@ from model.fragment import Fragment
 from model.hit import Hit
 from storage import projects
 from storage.database import Database
-from storage.fragments import search_by_path_tail_name_unlimited, search_by_path_tail_name, list_fragments_by_id
+from storage.fragments import search_by_path_tail_name_unlimited, search_by_path_tail_name, list_fragments_by_id, Fragment as DbFragment
 from storage.projects import Project
 from storage.pubsub import PubSub, ChannelName
 from storage.scheduler import Scheduler, Task, Operation, TaskState
@@ -22,6 +20,18 @@ class BackendError(Exception):
 
 
 TInfo = Dict[str, Any]
+
+
+def fragment_from_db_fragment(path: str, dbf: DbFragment) -> Fragment:
+    return Fragment(
+        uuid=str(dbf.id),
+        path=path,
+        lineno=dbf.lineno,
+        depth=dbf.depth,
+        category=dbf.category,
+        name=dbf.name,
+        body=dbf.body,
+    )
 
 
 class Backend:
@@ -77,20 +87,13 @@ class Backend:
         pass
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
-        for _ in range(5):
-            try:
-                return await self.search_inner(path=path, tail=tail, name=name, text=text, limit=limit)
-            except sqlite3.OperationalError:
-                await asyncio.sleep(0.1 + 0.4 * random.random())
-
-        return await self.search_inner(path=path, tail=tail, name=name, text=text, limit=limit)
-
-    async def search_inner(self, *, path: str, tail: str, name: str, text: str, limit: int) -> List[Hit]:
         async with self.db.transaction() as conn:
             if text:
-                fragments: List[Fragment] = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+                pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
             else:
-                fragments: List[Fragment] = await search_by_path_tail_name(conn, self.project.id, path, tail, name, limit)
+                pairs = await search_by_path_tail_name(conn, self.project.id, path, tail, name, limit)
+
+        fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
         # FIXME: Integrate this into the query
         fragments = [fragment for fragment in fragments if fragment.category != 'summary']
@@ -113,7 +116,9 @@ class Backend:
         else:
             # Pull the fragments referenced from the full text search uuids
             async with self.db.transaction() as conn:
-                fragments = await list_fragments_by_id(conn, fts_ids)
+                pairs = await list_fragments_by_id(conn, self.project.id, fts_ids)
+
+            fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             fragment_map = {fragment.uuid: fragment for fragment in fragments}
 
         # Combine into hits, preserve full text search fts_uuids sort order
@@ -121,63 +126,29 @@ class Backend:
         hits = [Hit.from_fragment(1.0 - i / count, fragment_map[uuid]) for i, uuid in enumerate(fts_ids[:limit])]
         return hits
 
-    """ FTS query expression syntax:
-    <phrase>    := string [*]
-    <phrase>    := <phrase> + <phrase>
-    <neargroup> := NEAR ( <phrase> <phrase> ... [, N] )
-    <query>     := [ [-] <colspec> :] [^] <phrase>
-    <query>     := [ [-] <colspec> :] <neargroup>
-    <query>     := [ [-] <colspec> :] ( <query> )
-    <query>     := <query> AND <query>
-    <query>     := <query> OR <query>
-    <query>     := <query> NOT <query>
-    <colspec>   := colname
-    <colspec>   := { colname1 colname2 ... }
-
-    Phrases are escaped by double quotes.
-    See: https://www.sqlite.org/fts5.html
-    """
-
     async def free_text_search(self, query: str, limit: int) -> List[str]:
-        def edq(s):
-            return s.replace('"', '""')
-
-        query = ' '.join(f'"{edq(s)}"' for s in query.split() if s.strip())
-
-        if not query:
-            return []
-
-        print(f'FTS Query: {query}')
-
-        try:
-            async with self.db.transaction() as conn:
-                return [
-                    row[0]
-                    for row in await conn.fetch(
-                        '''
-                            SELECT f.id, ts_rank_cd(f.body, query) AS rank
-                            FROM fragment AS f, to_tsquery($2) query
+        async with self.db.transaction() as conn:
+            return [
+                row[0]
+                for row in await conn.fetch(
+                    '''
+                        SELECT id, ts_rank_cd(to_tsvector('english', body), query) AS rank
+                        FROM (
+                            SELECT f.*, e.path 
+                            FROM fragment AS f
                             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-                            WHERE query @@ f.body
-                            ORDER BY rank DESC
-                            LIMIT $3
-                        ''', (self.project.id, query, limit))
-                ]
-        except sqlite3.OperationalError as e:
-            raise BackendError(f'Failed to search the project with SQLite FTS5 query {query!r}. Reason: {e}')
+                        ) AS s, plainto_tsquery($2) AS query
+                        WHERE to_tsvector('english', body) @@ query 
+                        ORDER BY rank DESC
+                        LIMIT $3
+                    ''', self.project.id, query, limit)
+            ]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
-        for _ in range(5):
-            try:
-                return await self.summarize_inner(path=path, tail=tail, name=name, token_limit=token_limit)
-            except sqlite3.OperationalError:
-                await asyncio.sleep(0.1 + 0.4 * random.random())
-
-        return await self.summarize_inner(path=path, tail=tail, name=name, token_limit=token_limit)
-
-    async def summarize_inner(self, *, path: str, tail: str, name: str, token_limit: int) -> str:
         async with self.db.transaction() as conn:
-            fragments: List[Fragment] = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+            pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+
+        fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
         if fragments:
             summary = '\n'.join(self.summarize_fragments(path, fragments))
@@ -185,7 +156,8 @@ class Backend:
             if tail or name:
                 return ''
             async with self.db.transaction() as conn:
-                fragments: List[Fragment] = await search_by_path_tail_name_unlimited(conn, self.project.id, '/', '', '')
+                pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, '/', '', '')
+                fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             if not fragments:
                 return ''
             return 'No file matched the summary query. Discover the directory structure of the project by summarizing path=/\n'
