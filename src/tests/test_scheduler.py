@@ -4,34 +4,20 @@ import unittest
 from datetime import datetime
 from typing import List, NoReturn, Any
 
-import asyncpg
-from asyncpg import Pool
-
-from storage.database import Database
+from base_storage_test import BaseStorageTest
 from storage.scheduler import Scheduler, Operation, Task, THandlerResult, TaskState, TaskFailed
 
 
-class TestScheduler(unittest.IsolatedAsyncioTestCase):
-    # postgres://user:password@host:port/database
-    dsn = 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test'
-
+class TestScheduler(BaseStorageTest):
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
-
-        self.pool: Pool = asyncpg.create_pool(self.dsn, command_timeout=60)
-        await self.pool._async__init__()
-        self.db = Database(self.pool)
-
-        await self.db.migrate()
 
         self.tasks = Scheduler(self.db)
         await self.tasks.delete_all_tasks()
 
     async def asyncTearDown(self) -> None:
         del self.tasks
-        del self.db
-        self.pool.terminate()
-        del self.pool
+        await super().asyncTearDown()
 
     async def test_produce_consume(self) -> None:
         numbers: List[int] = []

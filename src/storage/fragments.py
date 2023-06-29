@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional, AsyncIterator
+from typing import Optional, List
 
 from asyncpg import Record, Connection
 
+from common.constants import C
 from common.tools import tiktoken_len
 
 
@@ -39,19 +40,30 @@ class Fragment:
         )
 
 
+async def truncate(conn: Connection):
+    if not C.DEVELOPMENT:
+        raise RuntimeError('Refusing to truncate table if not in development')
+    await conn.execute('TRUNCATE fragment')
+
+
 async def create(conn: Connection, document_hash: str, start: int, lineno: int, depth: int, parent_id: Optional[int], category: str, definition: bool, summary: bool, name: str, body: str) -> Fragment:
     partition_key = document_hash[:2]
     length = len(body)
     tokens = tiktoken_len(body)
 
     await conn.execute(
-        '''INSERT INTO fragment (partition_key, document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        (partition_key, document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
+        '''INSERT INTO fragment (partition_key, document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)''',
+        partition_key, document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body
     )
 
     return Fragment(document_hash, start, length, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
 
 
-async def query(conn: Connection, document_hash: str, start: int) -> AsyncIterator[Fragment]:
-    for row in await conn.fetch('''SELECT * FROM fragment WHERE partition_key = ? AND document_hash = ? AND start = ?''', document_hash[:2], hash, start):
-        yield Fragment.from_row(row)
+async def query(conn: Connection, document_hash: str, start: int) -> List[Fragment]:
+    return [
+        Fragment.from_row(row)
+        for row in await conn.fetch(
+            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_hash = $2 AND start = $3''',
+            document_hash[:2], document_hash, start
+        )
+    ]

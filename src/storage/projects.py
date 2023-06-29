@@ -4,6 +4,8 @@ from typing import Optional
 
 from asyncpg import Record, Connection
 
+from common.constants import C
+
 
 @dataclass
 class Project:
@@ -24,13 +26,16 @@ class Project:
         )
 
 
+async def truncate(conn: Connection):
+    if not C.DEVELOPMENT:
+        raise RuntimeError('Refusing to truncate table if not in development')
+    await conn.execute('TRUNCATE project')
+
+
 async def create(conn: Connection, uid: str, name: str) -> Project:
     row = await conn.fetchrow(
-        '''
-        INSERT INTO project (uid, name) VALUES (?, ?) 
-        RETURNING id, created
-        ''',
-        (uid, name)
+        '''INSERT INTO project (uid, name) VALUES ($1, $2) RETURNING id, created''',
+        uid, name
     )
     id = row['id']
     created = row['created']
@@ -38,7 +43,7 @@ async def create(conn: Connection, uid: str, name: str) -> Project:
 
 
 async def find(conn: Connection, id: int) -> Optional[Project]:
-    row = await conn.fetchrow('''SELECT * FROM project WHERE id = ?''', id)
+    row = await conn.fetchrow('''SELECT * FROM project WHERE id = $1''', id)
     if row is None:
         return None
     return Project.from_row(row)

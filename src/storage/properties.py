@@ -10,10 +10,14 @@ async def read(conn: Connection, name: str, *, for_update: bool = False) -> Opti
         WHERE name = $1
         {'FOR UPDATE' if for_update else ''}                    
     ''', name)
+
     if row is None:
         return None
-    if row['number'] is not None:
-        return row['number']
+
+    number = row['number']
+    if number is not None:
+        return number
+
     return row['text']
 
 
@@ -21,14 +25,16 @@ async def write(conn: Connection, name: str, value: Any):
     if isinstance(value, str):
         await conn.execute('''
             UPDATE property 
-            SET text = $2
+            SET text = $2, number = NULL
             WHERE name = $1                  
         ''', name, value)
+
     elif isinstance(value, int):
         await conn.execute('''
             UPDATE property 
-            SET number = $2
+            SET text = NULL, number = $2
             WHERE name = $1                  
         ''', name, value)
+
     else:
         raise ValueError(f'Invalid value {value!r} for property {name!r}')
