@@ -44,7 +44,16 @@ class Downloader:
             common_base_dir: str = find_common_base_dir(self.__verify(d.body))
             print(f'Common base dir: {common_base_dir!r}')
 
-            archive = await archives.create(conn, d.checksum, d.size, self.url, d.etag, common_base_dir)
+            if archive is None:
+                archive = await archives.find_by_checksum(conn, d.checksum)
+
+            if archive is not None and archive.checksum == d.checksum:
+                print(archive)
+                print(d)
+                assert d.size == archive.size, (d.size, archive.size)
+                assert common_base_dir == archive.common_base_dir, (common_base_dir, archive.common_base_dir)
+            else:
+                archive = await archives.create(conn, d.checksum, d.size, self.url, d.etag, common_base_dir)
 
             path = archive.path
             dirname = os.path.dirname(path)

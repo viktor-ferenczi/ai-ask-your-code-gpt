@@ -140,7 +140,7 @@ class Backend:
             LIMIT $3
         '''
         async with self.db.transaction() as conn:
-            return [row[0] for row in await conn.fetch(sql, self.project.id, query, limit)]
+            return [str(row[0]) for row in await conn.fetch(sql, self.project.id, query, limit)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         async with self.db.transaction() as conn:

@@ -76,8 +76,7 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
                     if not chunk:
                         break
 
-                    if not response_etag:
-                        checksum.update(chunk)
+                    checksum.update(chunk)
 
                     chunks.append(chunk)
                     size += len(chunk)

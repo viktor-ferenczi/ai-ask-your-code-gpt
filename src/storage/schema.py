@@ -78,7 +78,7 @@ create table public.archive
             primary key,
     size bigint not null,
     url  varchar(400) not null,
-    etag varchar(80) not null,
+    etag varchar(160) not null,
     common_base_dir varchar(400) not null
 );
 
