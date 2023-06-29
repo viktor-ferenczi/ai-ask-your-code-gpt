@@ -3,7 +3,7 @@ import json
 import os
 import re
 from traceback import print_exc
-from typing import Dict
+from typing import Dict, Optional, Union
 
 import quart
 import quart_cors
@@ -11,9 +11,9 @@ from quart import request, Response
 
 from common.constants import C, RX
 from common.server import run_app
-from common.tools import tiktoken_len
-from project.inventory import Inventory
-from project.project import Project, ProjectError
+from common.tools import tiktoken_len, new_uuid
+from plugin.backend import Backend, BackendError
+from storage.database import Database
 
 MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
@@ -31,6 +31,8 @@ def html_prod_to_dev(text):
 
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
+
+DATABASE: Optional[Database] = None
 
 
 @app.get("/")
@@ -61,29 +63,68 @@ async def openapi_spec():
     return Response(text, mimetype="text/yaml", status=200)
 
 
+RX_GITHUB_REPO = re.compile(r'https://github\.com/(.+?)/(.+?)/?', re.I)
 RX_GITHUB_CODELOAD = re.compile(r'https://codeload\.github\.com/(.+?)/(.+?)/zip/refs/heads/(.+)', re.I)
 
 
-# noinspection HttpUrlsUsage
 @app.post("/project")
 async def create():
     body: Dict[str, str] = await quart.request.get_json(force=True)
+    uid: Optional[str] = None
+    url: Optional[str] = body.get('url')
 
-    # Validate URL
-    url: str = body.get('url')
-    if not url:
-        return Response(response='Missing url', status=400)
+    # Validate the URL and apply workarounds as needed
+    if url:
+        response = validate_url(url)
+        if isinstance(response, Response):
+            return response
+        url = response
+
+    # Create project, download and verify archive, initiate indexing
+    print(f'Create project from {url!r}')
+
+    # noinspection PyBroadException
+    try:
+        project_name = url.split('?')[0]
+        if len(project_name) > 60:
+            project_name = new_uuid()
+
+        backend = Backend(DATABASE, project_name)
+        info = await backend.create(uid, url)
+    except BackendError as e:
+        return Response(response=f'{e}; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
+    except Exception:
+        print(f'ERROR: Failed to create project from archive URL {url!r}')
+        print_exc()
+        return Response(response='Failed to create project; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
+
+    response = dict(
+        project=project_name,
+        info=info
+    )
+    return Response(response=json.dumps(response, indent=2), status=200)
+
+
+# noinspection HttpUrlsUsage
+def validate_url(url: str) -> Union[str, Response]:
+    url = url.strip()
     if not (url.startswith('http://') or url.startswith('https://')):
         return Response(response='The URL must start with http:// or https://', status=400)
 
-    # Workarounds
+    # Common mistakes GPT-4 makes
+    # https://github.com/yourusername/yourproject/
+    # https://github.com/username/project/
+    if '/yourusername/yourproject' in url or '/username/project' in url:
+        return Response(response='Do not use an example URL directly', status=404)
 
-    # A common mistake GPT-4 makes
-    # Example: https://github.com/yourusername/yourproject/
-    if 'yourusername/yourproject' in url:
-        return Response(response='Do not use an example "yourusername/yourproject" download URL', status=404)
-    if 'username/project' in url:
-        return Response(response='Do not use an example "yourusername/yourproject" download URL', status=404)
+    # Translate GitHub repo to ZIP download of main branch
+    # FIXME: Auto-detect the default branch if possible
+    # FIXME: Detect private repos at the same time and direct the user to
+    #        connect account to grant access or use another way to deliver
+    #        the project files to the plugin (local agent)
+    m = RX_GITHUB_REPO.match(url)
+    if m is not None:
+        url = f"{url.rstrip('/')}/archive/refs/heads/main.zip"
 
     # Translate GitHub codeload URLs to normal ZIP download URLs. For example:
     # https://codeload.github.com/ShiZiqiang/dual-path-RNNs-DPRNNs-based-speech-separation/zip/refs/heads/master
@@ -93,72 +134,59 @@ async def create():
     if m is not None:
         url = f'https://github.com/{m.group(1)}/{m.group(2)}/archive/refs/heads/{m.group(3)}.zip'
 
-    # Convert Dropbox links for direct download
+    # Enable direct download from Dropbox
     if url.startswith('https://www.dropbox.com/') and url.endswith('?dl=0'):
         url = url[:-5] + '?dl=1'
     if url.startswith('https://www.dropbox.com/') and '?dl=0&' in url:
         url = url.replace('?dl=0&', '?dl=1&')
 
+    # Cloud file sharing known not to work
     lc_url = url.lower()
-    if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
-        return Response(response='Invalid URL', status=400)
     if 'https://drive.google.com/' in lc_url or 'https://1drv.ms/' in lc_url:
         return Response(response='Google Drive and OneDrive are not supported, Dropbox works. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord. Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
 
-    # Create project, download and verify archive, initiate indexing
-    print(f'Create project from {url!r}')
+    # Protect against attacks
+    if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
+        return Response(response='Invalid URL', status=400)
 
-    # noinspection PyBroadException
-    try:
-        project_id = await Project.download(url)
-    except ProjectError as e:
-        return Response(response=f'{e}; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
-    except Exception:
-        print(f'ERROR: Failed to create project from archive URL {url!r}')
-        print_exc()
-        return Response(response='Failed to create project; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
-
-    project = Project(project_id)
-    response = dict(
-        project_id=project_id,
-        progress=await project.get_progress()
-    )
-    return Response(response=json.dumps(response, indent=2), status=200)
+    return url
 
 
-@app.delete("/project/<string:project_id>")
-async def delete(project_id: str):
-    project_id = project_id.lower()
-    if not RX.GUID.match(project_id):
+@app.delete("/project/<string:project_name>")
+async def delete(project_name: str):
+    project_name = project_name.lower()
+    if not RX.GUID.match(project_name):
         return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
-    print(f'Delete project {project_id!r}')
+    print(f'Delete project {project_name!r}')
 
     # noinspection PyBroadException
     try:
-        project = Project(project_id)
-        await project.delete()
-    except ProjectError as e:
-        print(f'Failed to delete project {project_id!r}: {e}')
+        backend = Backend(DATABASE, project_name)
+        await backend.delete()
+    except BackendError as e:
+        print(f'Failed to delete project {project_name!r}: {e}')
         return Response(response=str(e), status=400)
     except Exception:
-        print(f'ERROR: Failed to delete project {project_id!r}')
+        print(f'ERROR: Failed to delete project {project_name!r}')
         print_exc()
         return Response(response='Failed to delete project, please try again later', status=500)
 
-    return Response(response='OK', status=200)
+    return Response(status=200)
 
 
-@app.get("/project/<string:project_id>/summarize")
-async def summarize(project_id: str):
+@app.get("/project/<string:project_name>/summarize")
+async def summarize(project_name: str):
     # noinspection DuplicatedCode
-    project_id = project_id.lower()
-    if not RX.GUID.match(project_id):
+    project_name = project_name.lower()
+    if not RX.GUID.match(project_name):
         return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
     path: str = request.args.get('path', '')
     tail: str = request.args.get('tail', '')
     name: str = request.args.get('name', '')
+
+    print(f'Summarize project {project_name!r}: path={path!r}, tail={tail!r}, name={name!r}')
 
     if path == '.':
         path = '/'
@@ -166,36 +194,33 @@ async def summarize(project_id: str):
     if not path.startswith('/'):
         path = f'/{path}'
 
-    print(f'Summarize project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}')
-
-    inventory = Inventory()
-    project = Project(project_id)
-    if not project.exists:
-        url = inventory.get_project_url(project_id)
+    backend = Backend(DATABASE, project_name)
+    if not backend.exists:
+        url = inventory.get_project_url(project_name)
         if not url:
             return Response(response='No such project', status=404)
-        await project.download(url)
+        await backend.create(url)
         for _ in range(10):
             await asyncio.sleep(1.0)
-            if await inventory.has_project_extracted(project_id):
+            if await inventory.has_project_extracted(project_name):
                 break
 
-    if not project.exists:
+    if not backend.exists:
         return Response(response='No such project', status=404)
 
-    inventory.touch_project(project_id)
+    inventory.touch_project(project_name)
 
     # noinspection PyBroadException
     try:
-        text = await project.summarize(path=path, tail=tail, name=name)
-    except ProjectError as e:
-        print(f'Failed to summarize project {project_id!r}: {e}')
+        text = await backend.summarize(path=path, tail=tail, name=name)
+    except BackendError as e:
+        print(f'Failed to summarize project {project_name!r}: {e}')
         print(f'- path={path!r}')
         print(f'- tail={tail!r}')
         print(f'- name={name!r}')
         return Response(response=str(e), status=400)
     except Exception:
-        print(f'ERROR: Failed to summarize project {project_id!r}')
+        print(f'ERROR: Failed to summarize project {project_name!r}')
         print(f'- path={path!r}')
         print(f'- tail={tail!r}')
         print(f'- name={name!r}')
@@ -219,14 +244,21 @@ High level documentation and code references in the project as a starting point:
     # Use the name search to find class, function, method and variable definitions.
     # Use the text search to find their usages in code.
 
-    return Response(response=text, status=200)
+    # FIXME: Return information on indexing progress or hints if the search did not give any result
+    info = None
+
+    response = dict(summary=text)
+    if info:
+        response['info'] = info
+
+    return Response(response=json.dumps(response, indent=2), status=200)
 
 
-@app.get("/project/<string:project_id>/search")
-async def search(project_id: str):
+@app.get("/project/<string:project_name>/search")
+async def search(project_name: str):
     # noinspection DuplicatedCode
-    project_id = project_id.lower()
-    if not RX.GUID.match(project_id):
+    project_name = project_name.lower()
+    if not RX.GUID.match(project_name):
         return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
     path: str = request.args.get('path', '')
@@ -234,24 +266,7 @@ async def search(project_id: str):
     name: str = request.args.get('name', '')
     text: str = request.args.get('text', '')
 
-    print(f'Search project {project_id!r}: path={path!r}, tail={tail!r}, name={name!r}, text={text!r}')
-
-    inventory = Inventory()
-    project = Project(project_id)
-    if not project.exists:
-        url = inventory.get_project_url(project_id)
-        if not url:
-            return Response(response='No such project', status=404)
-        await project.download(url)
-        for _ in range(10):
-            await asyncio.sleep(1.0)
-            if await inventory.has_project_extracted(project_id):
-                break
-
-    if not project.exists:
-        return Response(response='No such project', status=404)
-
-    inventory.touch_project(project_id)
+    print(f'Search project {project_name!r}: path={path!r}, tail={tail!r}, name={name!r}, text={text!r}')
 
     if path == '.':
         path = '/'
@@ -259,28 +274,44 @@ async def search(project_id: str):
     if not path.startswith('/'):
         path = f'/{path}'
 
+    backend = Backend(DATABASE, project_name)
+    if not backend.exists:
+        url = inventory.get_project_url(project_name)
+        if not url:
+            return Response(response='No such project', status=404)
+        await backend.create(url)
+        for _ in range(10):
+            await asyncio.sleep(1.0)
+            if await inventory.has_project_extracted(project_name):
+                break
+
+    if not backend.exists:
+        return Response(response='No such project', status=404)
+
+    inventory.touch_project(project_name)
+
     limit = 50 if tail or name else 10
 
     # noinspection PyBroadException
     try:
-        hits = await project.search(path=path, tail=tail, name=name, text=text, limit=limit)
+        hits = await backend.search(path=path, tail=tail, name=name, text=text, limit=limit)
         if not hits and name:
-            hits = await project.search(path=path, tail=tail, text=name, limit=limit)
+            hits = await backend.search(path=path, tail=tail, text=name, limit=limit)
             if not hits:
-                hits = await project.search(tail=tail, text=name, limit=limit)
+                hits = await backend.search(tail=tail, text=name, limit=limit)
             if not hits:
-                hits = await project.search(text=name, limit=10)
+                hits = await backend.search(text=name, limit=10)
         if not hits and path:
-            hits = await project.search(tail='/' + path.rsplit('/')[-1], text=text, limit=limit)
-    except ProjectError as e:
-        print(f'Failed to search project {project_id!r}: {e}')
+            hits = await backend.search(tail='/' + path.rsplit('/')[-1], text=text, limit=limit)
+    except BackendError as e:
+        print(f'Failed to search project {project_name!r}: {e}')
         print(f'- path={path!r}')
         print(f'- tail={tail!r}')
         print(f'- name={name!r}')
         print(f'- text={text!r}')
         return Response(response=str(e), status=400)
     except Exception:
-        print(f'ERROR: Failed to search project {project_id!r}')
+        print(f'ERROR: Failed to search project {project_name!r}')
         print(f'- path={path!r}')
         print(f'- tail={tail!r}')
         print(f'- name={name!r}')
@@ -309,23 +340,27 @@ async def search(project_id: str):
 
         hits = hits[:i]
 
-    response = dict(
-        path=path,
-        lineno=hits[0].lineno,
-        text='\n'.join(hit.text for hit in hits),
-    )
+    result = '\n'.join(hit.text for hit in hits)
 
-    for hit in hits:
-        if hit.name:
-            response['name'] = name
-            break
+    # FIXME: Return information on indexing progress or hints if the search did not give any result
+    info = None
 
-    progress = await project.get_progress()
-    if progress < 100:
-        response['progress'] = progress
+    response = dict(summary=text)
+    if info:
+        response['info'] = info
 
     return Response(response=json.dumps(response, indent=2), status=200)
 
 
+async def main():
+    global DATABASE
+    async with Database.create_pool(C.DSN) as db:
+        DATABASE = db
+        try:
+            await run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT)
+        finally:
+            DATABASE = None
+
+
 if __name__ == "__main__":
-    asyncio.run(run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT))
+    asyncio.run(main())

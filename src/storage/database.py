@@ -15,6 +15,12 @@ class Database:
 
     def __init__(self, pool: asyncpg.Pool):
         self.pool = pool
+        
+    @classmethod
+    @asynccontextmanager
+    async def create_pool(cls, dsn: str):
+        async with asyncpg.create_pool(dsn, command_timeout=60) as pool:
+            yield Database(pool)
 
     # Contexts
 
