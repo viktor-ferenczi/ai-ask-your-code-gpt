@@ -177,7 +177,7 @@ async def summarize(project_id: str):
         await project.download(url)
         for _ in range(10):
             await asyncio.sleep(1.0)
-            if inventory.has_project_extracted(project_id):
+            if await inventory.has_project_extracted(project_id):
                 break
 
     if not project.exists:
@@ -245,7 +245,7 @@ async def search(project_id: str):
         await project.download(url)
         for _ in range(10):
             await asyncio.sleep(1.0)
-            if inventory.has_project_extracted(project_id):
+            if await inventory.has_project_extracted(project_id):
                 break
 
     if not project.exists:

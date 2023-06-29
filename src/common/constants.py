@@ -11,6 +11,11 @@ class C:
     PRODUCTION = bool(int(os.environ.get('PRODUCTION', '0')))
     DEVELOPMENT = not PRODUCTION
 
+    # Database
+
+    # postgres://user:password@host:port/database
+    DSN = os.environ.get('DSN', 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode')
+
     # Limits
 
     # Archive file
@@ -18,6 +23,9 @@ class C:
     MAX_TOTAL_SIZE = 200 << 20
     MAX_FILE_SIZE = 1 << 20
     MAX_FILE_COUNT = 100 << 10
+
+    # Task queue
+    TASK_TIMEOUT = 300  # s
 
     # Splitter
     MAX_TOKENS_PER_FRAGMENT = 150  # Tokens

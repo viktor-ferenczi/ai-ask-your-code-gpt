@@ -1,12 +1,14 @@
 import asyncio
+import time
 import unittest
 from datetime import datetime
-from typing import List, NoReturn
+from typing import List, NoReturn, Any
 
 import asyncpg
+from asyncpg import Pool
 
 from storage.database import Database
-from storage.tasks import Tasks, TaskName, Task, THandlerResult, TaskState, TaskFailed
+from storage.task_queue import TaskQueue, Operation, Task, THandlerResult, TaskState, TaskFailed
 
 
 class TestTasks(unittest.IsolatedAsyncioTestCase):
@@ -16,120 +18,115 @@ class TestTasks(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 
-        async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
+        self.pool: Pool = asyncpg.create_pool(self.dsn, command_timeout=60)
+        await self.pool._async__init__()
+        self.db = Database(self.pool)
 
-            db = Database(pool)
-            await db.migrate()
+        await self.db.migrate()
 
-            tasks = Tasks(db)
-            await tasks.delete_all_tasks()
+        self.tasks = TaskQueue(self.db)
+        await self.tasks.delete_all_tasks()
+
+    async def asyncTearDown(self) -> None:
+        del self.tasks
+        del self.db
+        self.pool.terminate()
+        del self.pool
 
     async def test_produce_consume(self) -> None:
-        async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
-            tasks0: List[Task] = []
+        numbers: List[int] = []
 
-            async def handler(task: Task) -> THandlerResult:
-                tasks0.append(task)
-                self.assertEqual(task.name, TaskName.Test1)
-                self.assertEqual(task.state, TaskState.running)
-                self.assertIsNotNone(task.started)
-                self.assertIsNone(task.params)
-                return None
+        async def handler(x) -> THandlerResult:
+            numbers.append(x)
+            return None
 
-            db = Database(pool)
-            tasks = Tasks(db)
-            tasks.handlers[TaskName.Test1] = handler
+        self.tasks.register_handler(Operation.Test1, handler)
 
-            async with tasks.listener():
+        # Listen for tasks and handle them
+        async with self.tasks.listener():
+            # Schedule a task
+            task = Task.create_pending(Operation.Test1, x=42)
+            before = datetime.utcnow()
+            await self.tasks.schedule(task)
+            after = datetime.utcnow()
+            created = task.created
+            self.assertTrue(before <= created, f'{before!r} <= {created!r}')
+            self.assertTrue(created <= after, f'{created!r} <= {after!r}')
 
-                # Produce task
-                task = Task(name=TaskName.Test1)
-                started = datetime.utcnow()
-                await tasks.schedule(task)
-                finished = datetime.utcnow()
-                created = task.created
-                self.assertTrue(started <= created, f'{started!r} <= {created!r}')
-                self.assertTrue(created <= finished, f'{created!r} <= {finished!r}')
+            await self.wait_for_processing(numbers)
 
-                # Handle task
-                for _ in range(50):
-                    await asyncio.sleep(0.01)
-                    if tasks0:
-                        break
+        # Verify
+        self.assertEqual(len(numbers), 1)
+        self.assertEqual(numbers[0], 42)
+        task = await self.tasks.get_task(task.created)
+        await self.verify_task(task, x=42)
 
-            self.assertEqual(len(tasks0), 1)
-            t = await tasks.get_task(task.created)
-            self.assertEqual(t.state, TaskState.completed)
-            self.assertTrue(bool(t.started))
-            self.assertTrue(bool(t.finished))
-            self.assertIsNone(t.message)
-            self.assertIsNone(t.traceback)
+        # No tasks left
+        pending1 = await self.tasks.list_pending_tasks(Operation.Test1)
+        self.assertEqual(len(pending1), 0)
+        pending2 = await self.tasks.list_pending_tasks(Operation.Test2)
+        self.assertEqual(len(pending2), 0)
 
-            tasks1 = await tasks.list_pending_tasks(TaskName.Test1)
-            self.assertEqual(len(tasks1), 0)
-
-            tasks2 = await tasks.list_pending_tasks(TaskName.Test2)
-            self.assertEqual(len(tasks2), 0)
+    async def verify_task(self, task, **params):
+        self.assertEqual(task.operation, Operation.Test1)
+        self.assertEqual(task.state, TaskState.completed)
+        self.assertEqual(task.params, params)
+        self.assertIsNotNone(task.started)
+        self.assertIsNotNone(task.finished)
+        self.assertIsNone(task.message)
+        print(f'Task was handled in {(task.finished - task.started).total_seconds() * 1000:.3f}ms')
+        print(f'From task creation {(task.finished - task.created).total_seconds() * 1000:.3f}ms')
 
     async def test_failed_handler(self) -> None:
-        async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
-            tasks0: List[Task] = []
+        tasks: List[int] = []
 
-            async def handler(task: Task) -> NoReturn:
-                tasks0.append(task)
-                raise TaskFailed('Testing')
+        async def handler() -> NoReturn:
+            tasks.append(1)
+            raise TaskFailed('Test failure')
 
-            db = Database(pool)
-            tasks = Tasks(db)
-            tasks.handlers[TaskName.Test1] = handler
+        self.tasks.register_handler(Operation.Test1, handler)
 
-            async with tasks.listener():
-                task = Task(name=TaskName.Test1)
-                await tasks.schedule(task)
+        async with self.tasks.listener():
+            task = Task.create_pending(Operation.Test1)
+            await self.tasks.schedule(task)
 
-                # Handle task
-                for _ in range(50):
-                    await asyncio.sleep(0.01)
-                    if tasks0:
-                        break
+            await self.wait_for_processing(tasks)
 
-            self.assertEqual(len(tasks0), 1)
-            t = await tasks.get_task(task.created)
-            self.assertEqual(t.state, TaskState.failed)
-            self.assertTrue(bool(t.started))
-            self.assertTrue(bool(t.finished))
-            self.assertEqual(t.message, 'Testing')
-            self.assertIsNone(t.traceback)
+        self.assertEqual(len(tasks), 1)
+        task = await self.tasks.get_task(task.created)
+        self.assertEqual(task.state, TaskState.failed)
+        self.assertTrue(bool(task.started))
+        self.assertTrue(bool(task.finished))
+        self.assertEqual(task.message, 'Test failure')
 
     async def test_crashed_handler(self) -> None:
-        async with asyncpg.create_pool(self.dsn, command_timeout=60) as pool:
-            tasks0: List[Task] = []
+        tasks: List[int] = []
 
-            async def handler(task: Task) -> NoReturn:
-                tasks0.append(task)
-                raise Exception('Testing')
+        async def handler() -> NoReturn:
+            tasks.append(1)
+            raise Exception('Test crash')
 
-            db = Database(pool)
-            tasks = Tasks(db)
-            tasks.handlers[TaskName.Test1] = handler
+        self.tasks.register_handler(Operation.Test1, handler)
 
-            async with tasks.listener():
-                task = Task(name=TaskName.Test1)
-                await tasks.schedule(task)
+        async with self.tasks.listener():
+            task = Task.create_pending(Operation.Test1)
+            await self.tasks.schedule(task)
 
-                # Handle task
-                for _ in range(50):
-                    await asyncio.sleep(0.01)
-                    if tasks0:
-                        break
+            await self.wait_for_processing(tasks)
 
-            self.assertEqual(len(tasks0), 1)
-            t = await tasks.get_task(task.created)
-            self.assertEqual(t.state, TaskState.crashed)
-            self.assertTrue(bool(t.started))
-            self.assertTrue(bool(t.finished))
-            self.assertIsNone(t.message)
-            self.assertTrue('Exception: Testing' in t.traceback)
+        self.assertEqual(len(tasks), 1)
+        task = await self.tasks.get_task(task.created)
+        self.assertEqual(task.state, TaskState.crashed)
+        self.assertTrue(bool(task.started))
+        self.assertTrue(bool(task.finished))
+        self.assertTrue('Exception: Test crash' in task.message)
+
+    async def wait_for_processing(self, tasks: List[Any], expected_count: int = 1, timeout: float = 1.0):
+        deadline = time.time() + timeout
+        while len(tasks) < expected_count and time.time() < deadline:
+            await asyncio.sleep(0)
+            if tasks:
+                break
 
 
 if __name__ == '__main__':

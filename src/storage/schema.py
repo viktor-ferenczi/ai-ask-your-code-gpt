@@ -50,7 +50,7 @@ create table public.task
     finished  timestamp,
     state     task_state default 'pending'::task_state                        not null,
     operation varchar(30)                                                     not null,
-    params    text,
+    params    text       default '{}'::text                                   not null,
     message   text
 );
 

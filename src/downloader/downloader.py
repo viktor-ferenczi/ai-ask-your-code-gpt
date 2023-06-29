@@ -1,4 +1,5 @@
 import asyncio
+import functools
 import io
 import os
 import re
@@ -16,29 +17,29 @@ from common.server import run_app
 from common.timer import timer
 from common.tools import wait_until_cancelled
 from common.zip_support import extract_verify_documents
-from storage.inventory import Inventory
+from storage.database import Database
 from project.project import Project
-from storage.tasks import Tasks, TaskName, THandlerResult, Task, TaskFailed
+from storage.task_queue import TaskQueue, Operation, THandlerResult, Task, TaskFailed
 
 RX_GITHUB_USER_CONTENT = re.compile(r'https://raw.githubusercontent.com/(.+?)(/.+?)/(.*)')
 
 
 class Downloader:
 
-    def __init__(self, url: str) -> None:
+    def __init__(self, db: Database, url: str) -> None:
+        self.db: Database = db
         self.url: str = url
-        self.inventory = Inventory()
 
     async def download_verify(self) -> str:
         # Find existing project with an archive file (not cleaned yet)
         cached = ''
         project = None
         new_project = True
-        project_id = self.inventory.find_project(self.url)
+        project_id = self.db.find_project(self.url)
         if project_id:
             project = Project(project_id)
             if os.path.exists(project.archive_path):
-                cached = self.inventory.get_archive_checksum(project_id)
+                cached = self.db.get_archive_checksum(project_id)
 
         # Download, if an archive found then send Etag (cached)
         with timer(f'Downloaded archive from {self.url!r}'):
@@ -60,7 +61,7 @@ class Downloader:
                 archive = f.read()
             new_project = False
         else:
-            project_id = self.inventory.find_project(self.url, checksum)
+            project_id = self.db.find_project(self.url, checksum)
             if project_id is None:
                 assert new_project
                 project_id = str(uuid.uuid4())
@@ -68,11 +69,11 @@ class Downloader:
                 new_project = False
                 project = Project(project_id)
                 if not project.exists:
-                    self.inventory.reprocess_project(project_id)
+                    self.db.reprocess_project(project_id)
 
         if not new_project:
             print(f'Archive matches an existing project: {project.project_id!r}')
-            self.inventory.touch_project(project_id)
+            self.db.touch_project(project_id)
 
         await asyncio.sleep(0)
 
@@ -88,7 +89,7 @@ class Downloader:
         await project.create_database()
 
         if new_project:
-            self.inventory.register_project(project_id, self.url, checksum)
+            self.db.register_project(project_id, self.url, checksum)
 
         return project_id
 
@@ -138,12 +139,12 @@ class Downloader:
         print(f'Extracted {document_count} files')
 
 
-async def download(task: Task) -> THandlerResult:
+async def download(db: Database, task: Task) -> THandlerResult:
     url = task.params['url']
 
     try:
         with timer(f'Downloaded archive {url!r}'):
-            downloader = Downloader(url)
+            downloader = Downloader(db, url)
             project_id = await downloader.download_verify()
     except DownloadError as e:
         message = str(e)
@@ -154,22 +155,14 @@ async def download(task: Task) -> THandlerResult:
     project = Project(project_id)
     path = project.archive_path
 
-    task.project = project_id
-    async with Tasks.init() as tasks:
-        await tasks.update_task(task)
-
-    return Task(
-        name=TaskName.IndexArchive,
-        project=project_id,
-        params=dict(path=path)
-    )
+    return Task.create_pending(Operation.IndexArchive, project_id=project_id, path=path)
 
 
 async def download_worker():
     while 1:
         try:
-            async with Tasks.init() as tasks:
-                tasks.handlers[TaskName.DownloadArchive] = download
+            async with TaskQueue.init() as tasks:
+                tasks.handlers[Operation.DownloadArchive] = functools.partial(download, tasks.db)
                 async with tasks.listener():
                     await wait_until_cancelled()
         except Exception:
@@ -188,9 +181,6 @@ async def canary():
 
 
 def main():
-    inventory = Inventory()
-    inventory.create_database()
-
     port = int(os.environ.get('HTTP_PORT', '40001'))
     asyncio.run(run_app(app, *[worker() for worker in workers], debug=C.DEVELOPMENT, host='localhost', port=port))
 

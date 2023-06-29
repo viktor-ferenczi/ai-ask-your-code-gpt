@@ -1,17 +1,13 @@
-import os.path
-import time
-from contextlib import asynccontextmanager
-from typing import Optional, Tuple, List, AsyncContextManager
-
-from asyncpg import Connection
+from time import time
+from typing import Optional
 
 from storage.database import Database
 
 
 class Inventory:
 
-    def __init__(self, db: Database) -> None:
-        self.db = db
+    def __init__(self, db: Database):
+        self.db: Database = db
 
     async def find_project(self, url: str, checksum: str = '') -> Optional[str]:
         async with self.db.connection() as conn:
@@ -25,7 +21,7 @@ class Inventory:
 
     async def register_project(self, project_id: str, url: str, checksum: str):
         async with self.db.connection() as conn:
-            now = int(time.time())
+            now = int(time())
             conn.execute('INSERT INTO Inventory(project_id, url, checksum, registered, last_used) VALUES (?, ?, ?, ?, ?)', (project_id, url, checksum, now, now))
 
     async def reprocess_project(self, project_id: str):
@@ -39,7 +35,7 @@ class Inventory:
     async def get_next_project_to_extract(self) -> Optional[str]:
         async with self.db.connection() as conn:
             for project_id, registered in conn.execute('SELECT project_id, registered FROM Inventory WHERE extracted = 0 ORDER BY registered DESC LIMIT 1'):
-                wait_time = int(time.time()) - registered
+                wait_time = int(time()) - registered
                 print(f'Project {project_id} extract queue duration: {wait_time}s')
                 return project_id
         return None
@@ -53,11 +49,11 @@ class Inventory:
             conn.execute('UPDATE Inventory SET extracted = 2 WHERE project_id = ?', (project_id,))
 
     async def touch_project(self, project_id: str):
-        now = int(time.time())
+        now = int(time())
         async with self.db.connection() as conn:
             conn.execute('UPDATE Inventory SET last_used = ? WHERE project_id = ?', (project_id, now))
 
-    def has_project_extracted(self, project_id: str) -> bool:
+    async def has_project_extracted(self, project_id: str) -> bool:
         async with self.db.connection() as conn:
             for row in conn.execute('SELECT extracted FROM Inventory WHERE project_id = ?', (project_id,)):
                 return bool(row[0])
@@ -65,7 +61,7 @@ class Inventory:
     async def get_next_project_to_embed(self) -> Optional[str]:
         async with self.db.connection() as conn:
             for project_id, registered in conn.execute('SELECT project_id, registered FROM Inventory WHERE extracted = 1 AND embedded = 0 ORDER BY registered LIMIT 1'):
-                wait_time = int(time.time()) - registered
+                wait_time = int(time()) - registered
                 print(f'Project {project_id} embed queue duration: {wait_time}s')
                 return project_id
         return None

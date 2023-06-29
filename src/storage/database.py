@@ -5,12 +5,34 @@ import asyncpg
 from asyncpg import UndefinedTableError, Connection
 
 from storage import schema
-from storage import sql
 
 
 class Database:
+
     def __init__(self, pool: asyncpg.Pool):
         self.pool = pool
+
+    # Contexts
+
+    # @classmethod
+    # @asynccontextmanager
+    # async def from_dsn(cls, dsn: str) -> AsyncContextManager["Database"]:
+    #     # FIXME: This should work, but instead freezes at the end of block:
+    #     # async with asyncpg.create_pool(dsn, command_timeout=60) as pool:
+    #
+    #     # Workaround
+    #     pool: Pool = asyncpg.create_pool(cls.dsn, command_timeout=60)
+    #     await pool._async__init__()
+    #     try:
+    #         yield Database(pool)
+    #     finally:
+    #         pool.terminate()
+
+    @classmethod
+    @asynccontextmanager
+    async def from_dsn(cls, dsn: str) -> AsyncContextManager["Database"]:
+        async with asyncpg.create_pool(dsn, command_timeout=60) as pool:
+            yield cls(pool)
 
     @asynccontextmanager
     async def connection(self) -> AsyncContextManager[Connection]:
@@ -22,6 +44,8 @@ class Database:
         async with self.pool.acquire() as conn:
             async with conn.transaction(readonly=readonly):
                 yield conn
+
+    # Admin
 
     async def drop(self):
         async with self.connection() as conn:
@@ -37,7 +61,12 @@ class Database:
         while 1:
             async with self.connection() as conn:
                 try:
-                    version = await conn.fetchval(sql.GET_VERSION) or 0
+                    version = await conn.fetchval('''
+                        SELECT number 
+                        FROM property 
+                        WHERE name = 'Version' 
+                        FOR UPDATE                    
+                    ''') or 0
                 except UndefinedTableError:
                     version = 0
 
@@ -53,7 +82,11 @@ class Database:
 
                 await conn.execute(migration)
 
-                new_version = await conn.fetchval(sql.GET_VERSION) or 0
+                new_version = await conn.fetchval('''
+                    SELECT number 
+                    FROM property 
+                    WHERE name = 'Version'                
+                ''') or 0
                 if new_version <= version:
                     raise ValueError(f'New version {new_version} after migration must be higher than the former version {version}')
 

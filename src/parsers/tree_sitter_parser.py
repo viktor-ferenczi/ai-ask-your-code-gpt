@@ -87,7 +87,7 @@ class TreeSitterParser(BaseParser):
             if not names:
                 continue
 
-            names = [name for name in names if len(name.name) >= 3 or name.name[:1].isupper()]
+            names = [name for name in names if len(name.operation) >= 3 or name.operation[:1].isupper()]
             if not names:
                 continue
 
@@ -99,12 +99,12 @@ class TreeSitterParser(BaseParser):
                         lineno=name.lineno,
                         depth=name.depth,
                         type=name.category,
-                        name=name.name,
+                        name=name.operation,
                         text=name.definition,
                     )
 
             label = self.categories[key]
-            summary.append(f"  {label}: {' '.join(sorted({name.name for name in names}))}\n")
+            summary.append(f"  {label}: {' '.join(sorted({name.operation for name in names}))}\n")
 
         if usages:
             summary.append(f"  Usages: {' '.join(sorted({name.name for name in usages}))}\n")

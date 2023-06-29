@@ -62,7 +62,8 @@ async def async_retry(fn: Callable[[], Awaitable[Any]], handle_exceptions=(), ma
     for attempt in range(max_retries):
         try:
             return await fn()
-        except handle_exceptions:
+        except handle_exceptions as e:
+            print(f'WARNING: Retry {1 + attempt}/{max_retries} of {fn.__name__} in {delay:.3f}s due to error: [{e.__class__.__name__}] {e}')
             await asyncio.sleep(delay)
             delay = min(max_delay, delay * delay_multiplier)
 
