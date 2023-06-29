@@ -127,22 +127,20 @@ class Backend:
         return hits
 
     async def free_text_search(self, query: str, limit: int) -> List[str]:
+        sql = '''
+            SELECT s.id
+            FROM (
+                SELECT id, document_cs, ts_rank_cd(to_tsvector(body), query) AS rank
+                FROM fragment, phraseto_tsquery($2) query
+                WHERE body @@ query
+            ) AS s
+            INNER JOIN file AS e ON e.document_cs = s.document_cs
+            WHERE e.project_id = $1
+            ORDER BY s.rank DESC
+            LIMIT $3
+        '''
         async with self.db.transaction() as conn:
-            return [
-                row[0]
-                for row in await conn.fetch(
-                    '''
-                        SELECT id, ts_rank_cd(to_tsvector('english', body), query) AS rank
-                        FROM (
-                            SELECT f.*, e.path 
-                            FROM fragment AS f
-                            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-                        ) AS s, plainto_tsquery($2) AS query
-                        WHERE to_tsvector('english', body) @@ query 
-                        ORDER BY rank DESC
-                        LIMIT $3
-                    ''', self.project.id, query, limit)
-            ]
+            return [row[0] for row in await conn.fetch(sql, self.project.id, query, limit)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         async with self.db.transaction() as conn:
