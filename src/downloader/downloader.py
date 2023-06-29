@@ -19,7 +19,7 @@ from common.tools import wait_until_cancelled
 from common.zip_support import extract_verify_documents
 from storage.database import Database
 from project.project import Project
-from storage.task_queue import TaskQueue, Operation, THandlerResult, Task, TaskFailed
+from storage.scheduler import Scheduler, Operation, THandlerResult, Task, TaskFailed
 
 RX_GITHUB_USER_CONTENT = re.compile(r'https://raw.githubusercontent.com/(.+?)(/.+?)/(.*)')
 
@@ -161,7 +161,7 @@ async def download(db: Database, task: Task) -> THandlerResult:
 async def download_worker():
     while 1:
         try:
-            async with TaskQueue.init() as tasks:
+            async with Scheduler.init() as tasks:
                 tasks.handlers[Operation.DownloadArchive] = functools.partial(download, tasks.db)
                 async with tasks.listener():
                     await wait_until_cancelled()

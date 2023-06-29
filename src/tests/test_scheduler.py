@@ -8,10 +8,10 @@ import asyncpg
 from asyncpg import Pool
 
 from storage.database import Database
-from storage.task_queue import TaskQueue, Operation, Task, THandlerResult, TaskState, TaskFailed
+from storage.scheduler import Scheduler, Operation, Task, THandlerResult, TaskState, TaskFailed
 
 
-class TestTasks(unittest.IsolatedAsyncioTestCase):
+class TestScheduler(unittest.IsolatedAsyncioTestCase):
     # postgres://user:password@host:port/database
     dsn = 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test'
 
@@ -24,7 +24,7 @@ class TestTasks(unittest.IsolatedAsyncioTestCase):
 
         await self.db.migrate()
 
-        self.tasks = TaskQueue(self.db)
+        self.tasks = Scheduler(self.db)
         await self.tasks.delete_all_tasks()
 
     async def asyncTearDown(self) -> None:

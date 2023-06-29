@@ -16,7 +16,7 @@ from common.tools import tiktoken_len
 from model.fragment import Fragment
 from model.hit import Hit
 from project.inventory import Inventory
-from storage.task_queue import TaskQueue, Task, Operation, TaskState
+from storage.scheduler import Scheduler, Task, Operation, TaskState
 
 
 class ProjectError(Exception):
@@ -195,7 +195,7 @@ class Project:
     async def download(cls, url: str, *, timeout: float = 30.0 if C.PRODUCTION else 999999.0) -> str:
         try:
             with timer(f'Downloaded {url!r}'):
-                async with TaskQueue.init() as tasks:
+                async with Scheduler.init() as tasks:
                     task = Task(
                         operation=Operation.DownloadArchive,
                         params=dict(url=url)

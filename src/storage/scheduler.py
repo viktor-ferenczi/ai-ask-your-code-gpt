@@ -71,7 +71,7 @@ THandlerResult = Optional[Union[Task, List[Task]]]
 THandler = Callable[..., Awaitable[THandlerResult]]
 
 
-class TaskQueue:
+class Scheduler:
 
     def __init__(self, db: Database):
         self.db: Database = db
