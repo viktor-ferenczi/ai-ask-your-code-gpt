@@ -7,14 +7,13 @@ from typing import List
 
 from quart import Quart, send_file
 
+from base_test_case import BaseTestCase
 from common.constants import C
 from common.http import download_into_memory
-from downloader.downloader import app as downloader_app, workers as downloader_workers
-from loader.extractor import app as loader_app, workers as loader_workers
+from services.downloader import app as downloader_app, workers as downloader_workers
+from services.extractor import app as loader_app, workers as loader_workers
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
-from project.inventory import Inventory
-from project.backend import Project, ProjectError
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -70,17 +69,12 @@ def normalize_fragments(fragments: List[Fragment]):
         fragment.uuid = f'NORMALIZED'
 
 
-class TestProject(unittest.IsolatedAsyncioTestCase):
+class TestProject(BaseTestCase):
     test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
 
     def setUp(self) -> None:
         self.maxDiff = 32768
 
-        Inventory.filename = 'test-inventory.sqlite'
-        inventory = Inventory()
-        inventory.drop_database()
-
-        Project.dirname = 'test-projects'
         test_projects_dir = os.path.join(C.DATA_DIR, Project.dirname)
         if os.path.isdir(test_projects_dir):
             shutil.rmtree(test_projects_dir)
@@ -149,15 +143,15 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         await self.wait_for_processing(project)
 
-        actual = ''.join(hit.text for hit in await project.search(path='/readme.md', limit=50))
+        actual = ''.join(hit.body for hit in await project.search(path='/readme.md', limit=50))
         self.verify(f'README.md', actual)
 
         if name == 'hypedtask':
-            actual = '\n'.join(hit.text for hit in await project.search(name='Kernel', limit=50))
+            actual = '\n'.join(hit.body for hit in await project.search(name='Kernel', limit=50))
             self.verify(f'name-Kernel', actual)
 
         if name == 'langchain':
-            actual = '\n'.join(hit.text for hit in await project.search(name='PromptTemplate', limit=50))
+            actual = '\n'.join(hit.body for hit in await project.search(name='PromptTemplate', limit=50))
             self.verify(f'name-PromptTemplate', actual)
 
         actual = await project.summarize(token_limit=999999999)
@@ -184,7 +178,7 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
         if name == 'taso':
             try:
                 await project.search(text='libtaso_runtime.so')
-            except ProjectError as e:
+            except BackendError as e:
                 self.assertTrue('No hits with this search expression.' in str(e))
 
             hits = await project.search(text='using namespace taso', limit=10)

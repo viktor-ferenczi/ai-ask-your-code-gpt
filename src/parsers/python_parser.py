@@ -68,19 +68,19 @@ class PythonParser(BaseParser):
                 continue
 
             if node.type == 'class' and node.next_sibling and node.parent:
-                name = decode_replace(node.next_sibling.text)
+                name = decode_replace(node.next_sibling.body)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.body)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
                 continue
 
             if node.type == 'def' and node.next_sibling and node.parent:
-                name = decode_replace(node.next_sibling.text)
+                name = decode_replace(node.next_sibling.body)
                 if depth > 1:
                     methods.add(name)
                 else:
                     functions.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.body)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
                 continue
 
@@ -117,4 +117,4 @@ class PythonParser(BaseParser):
             summary.append(f"  Variables and usages: {' '.join(sorted(variables))}")
 
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, 0)

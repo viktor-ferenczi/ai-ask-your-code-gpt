@@ -10,7 +10,7 @@ from common.tools import tiktoken_len
 @dataclass
 class Fragment:
     document_cs: str = ''
-    start: int = 0
+    id: int = ''
     lineno: int = 1
     tokens: int = 0
     depth: int = 0
@@ -25,7 +25,7 @@ class Fragment:
     def from_row(cls, row: Record) -> "Fragment":
         return cls(
             document_cs=row['document_cs'],
-            start=row['start'],
+            id=row['id'],
             lineno=row['lineno'],
             tokens=row['tokens'],
             depth=row['depth'],
@@ -44,37 +44,37 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE fragment')
 
 
-async def create(conn: Connection, document_cs: str, start: int, lineno: int, depth: int, parent_id: Optional[int], category: str, definition: bool, summary: bool, name: str, body: str) -> Fragment:
+async def create(conn: Connection, document_cs: str, lineno: int, depth: int, parent_id: Optional[int], category: str, definition: bool, summary: bool, name: str, body: str) -> Fragment:
     partition_key = document_cs[:2]
     tokens = tiktoken_len(body)
 
-    await conn.execute(
-        '''INSERT INTO fragment (partition_key, document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)''',
-        partition_key, document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body
+    id = await conn.fetchval(
+        '''INSERT INTO fragment (partition_key, document_cs, lineno, tokens, depth, parent_id, category, definition, summary, name, body) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id''',
+        partition_key, document_cs, lineno, tokens, depth, parent_id, category, definition, summary, name, body
     )
 
-    return Fragment(document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
+    return Fragment(document_cs, id, lineno, tokens, depth, parent_id, category, definition, summary, name, body)
 
 
-async def query(conn: Connection, document_cs: str, start: int) -> List[Fragment]:
+async def query(conn: Connection, document_cs: str, id: int) -> List[Fragment]:
     return [
         Fragment.from_row(row)
         for row in await conn.fetch(
-            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_cs = $2 AND start = $3''',
-            document_cs[:2], document_cs, start
+            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_cs = $2 AND id= $3''',
+            document_cs[:2], document_cs, id
         )
     ]
 
 
 async def insert(conn: Connection, fragment: Fragment):
-    await conn.execute(
+    fragment.id = await conn.fetchval(
         '''
-        INSERT INTO fragment (partition_key, document_cs, start, lineno, tokens, depth, parent_id, category, definition, summary, name, body) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        INSERT INTO fragment (partition_key, document_cs, lineno, tokens, depth, parent_id, category, definition, summary, name, body) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        RETURNING id
         ''',
         fragment.document_cs[:2],
         fragment.document_cs,
-        fragment.start,
         fragment.lineno,
         fragment.tokens,
         fragment.depth,

@@ -92,7 +92,7 @@ class Backend:
                 fragments: List[Fragment] = self.search_by_path_tail_name(cursor, path, tail, name, limit)
 
         # FIXME: Integrate this into the query
-        fragments = [fragment for fragment in fragments if fragment.type != 'summary']
+        fragments = [fragment for fragment in fragments if fragment.category != 'summary']
 
         if not text:
             # Ordering and limit was already applied in SQL
@@ -230,8 +230,8 @@ class Backend:
                 subdir_name = fragment.path.split('/')[min_slash_count + 1]
                 subdir_hit_counts[subdir_name] = subdir_hit_counts.get(subdir_name, 0) + 1
                 continue
-            if fragment.type == 'summary':
-                strip_text = fragment.text.strip('\n')
+            if fragment.category == 'summary':
+                strip_text = fragment.body.strip('\n')
                 file_summaries.append(f'{strip_text}\n\n')
 
         if file_summaries:

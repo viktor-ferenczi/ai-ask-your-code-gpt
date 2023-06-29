@@ -9,6 +9,7 @@ from common.constants import C
 from common.server import run_app
 from common.text import decode_replace
 from common.tools import sleep_forever
+from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_NAME
 from storage import documents, fragments
 from storage.database import Database
@@ -31,8 +32,18 @@ async def index(db: Database, document_cs: str) -> THandlerResult:
         parser = parser_cls()
         text = decode_replace(document.body)
         for fragment in parser.parse(text):
-            fragment.document_cs = document_cs
-            await fragments.insert(conn, fragment)
+            assert isinstance(fragment, Fragment)
+            await fragments.create(
+                conn,
+                document_cs,
+                fragment.lineno,
+                fragment.depth,
+                None,
+                fragment.category,
+                True,
+                fragment.category == 'summary',
+                fragment.name,
+                fragment.body)
 
 
 async def worker():

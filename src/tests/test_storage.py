@@ -1,13 +1,13 @@
 import hashlib
 import unittest
 
-from base_storage_test import BaseStorageTest
+from base_test_case import BaseTestCase
 from storage import archives, documents, files, fragments, projects, properties, usages
 from storage.archives import Archive
 from storage.schema import VERSION
 
 
-class TestStorage(BaseStorageTest):
+class TestStorage(BaseTestCase):
 
     async def test_archives(self) -> None:
         async with self.db.transaction() as conn:
@@ -55,13 +55,13 @@ class TestStorage(BaseStorageTest):
             sha = hashlib.sha256()
             sha.update(body)
 
-            o = await fragments.create(conn, sha.hexdigest(), 0, 1, 0, None, 'doc', False, False, '', body.decode())
+            o = await fragments.create(conn, sha.hexdigest(), 1, 0, None, 'doc', False, False, '', body.decode())
 
-            r = await fragments.query(conn, sha.hexdigest(), 0)
+            r = await fragments.query(conn, sha.hexdigest(), o.id)
             self.assertEqual(len(r), 1)
             self.assertEqual(repr(o), repr(r[0]))
 
-            r = await fragments.query(conn, sha.hexdigest(), 7)
+            r = await fragments.query(conn, sha.hexdigest(), o.id + 1)
             self.assertEqual(len(r), 0)
 
     async def test_projects(self) -> None:

@@ -7,12 +7,15 @@ from common.constants import C
 from storage.database import Database
 
 
-class BaseStorageTest(unittest.IsolatedAsyncioTestCase):
+class BaseTestCase(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 
-        self.pool: Pool = asyncpg.create_pool(C.TEST_DSN, command_timeout=60)
+        if C.IS_PRODUCTION:
+            raise RuntimeError('Do not run the test suite in production!')
+
+        self.pool: Pool = asyncpg.create_pool(C.DSN, command_timeout=60)
         await self.pool._async__init__()
         self.db = Database(self.pool)
 

@@ -146,7 +146,7 @@ def validate_url(url: str) -> Union[str, Response]:
         return Response(response='Google Drive and OneDrive are not supported, Dropbox works. The URL must point to a publicly and directly downloadable ZIP file. Please use a GitHub ZIP download link or a direct file link from Discord. Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
 
     # Protect against attacks
-    if C.PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
+    if C.IS_PRODUCTION and ('://localhost' in lc_url or '://127.' in url or '://192.168.' in url or '://10.' in url):
         return Response(response='Invalid URL', status=400)
 
     return url
@@ -330,17 +330,17 @@ async def search(project_name: str):
         hits = [hit for hit in hits if hit.path == path]
         hits.sort(key=lambda hit: hit.lineno)
 
-        tokens = tiktoken_len(hits[0].text)
+        tokens = tiktoken_len(hits[0].body)
         i = 1
         while i < len(hits):
-            tokens += tiktoken_len(hits[i].text)
+            tokens += tiktoken_len(hits[i].body)
             if tokens > 2000:
                 break
             i += 1
 
         hits = hits[:i]
 
-    results = '\n'.join(hit.text for hit in hits)
+    results = '\n'.join(hit.body for hit in hits)
 
     # FIXME: Return information on indexing progress or hints if the search did not give any result
     info = None

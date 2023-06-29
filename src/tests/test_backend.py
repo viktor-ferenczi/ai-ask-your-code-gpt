@@ -1,38 +1,27 @@
 import asyncio
 import os
 import pprint
-import shutil
 import unittest
 import zipfile
 from typing import List
 
 from quart import Quart, send_file
 
-from common.constants import C
-from downloader.downloader import app as downloader_app, workers as downloader_workers
-from loader.extractor import app as loader_app, workers as loader_workers
+from base_test_case import BaseTestCase
 from model.hit import Hit
-from project.inventory import Inventory
-from project.backend import Project, ProjectError
+from plugin.backend import Backend, BackendError
+from services.downloader import app as downloader_app, workers as downloader_workers
+from services.extractor import app as loader_app, workers as loader_workers
 
 MODULE_DIR = os.path.dirname(__file__)
 
 
-class TestProject(unittest.IsolatedAsyncioTestCase):
+class TestProject(BaseTestCase):
     test_project_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestProject')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
-    def setUp(self) -> None:
+    async def asyncSetUp(self) -> None:
         self.maxDiff = 32768
-
-        Inventory.filename = 'test-inventory.sqlite'
-        inventory = Inventory()
-        inventory.drop_database()
-
-        Project.dirname = 'test-projects'
-        test_projects_dir = os.path.join(C.DATA_DIR, Project.dirname)
-        if os.path.isdir(test_projects_dir):
-            shutil.rmtree(test_projects_dir)
 
         dir_len = len(self.test_project_dir) + 1
         with zipfile.ZipFile(self.zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -42,17 +31,20 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
                     archive_path = path[dir_len:]
                     zipf.write(path, archive_path)
 
-    def tearDown(self) -> None:
+    async def asyncTearDown(self) -> None:
         try:
             os.remove(self.zip_path)
         except (IOError, OSError):
             pass
 
-    def test_download_server_not_running(self):
-        def should_fail():
-            asyncio.run(Project.create('http://127.0.0.1:57575/anything', timeout=1.0))
-
-        self.assertRaises(ProjectError, should_fail)
+    async def test_download_server_not_running(self):
+        try:
+            backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
+            await backend.download('http://127.0.0.1:57575/anything', timeout=1.0)
+        except BackendError:
+            self.assertTrue(True)
+        else:
+            self.fail()
 
     async def serve_zip(self):
         self.app = Quart('test_zip_server')
@@ -119,11 +111,12 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
     async def download_error(self):
         try:
-            await Project.create('http://127.0.0.1:49001/this-wont-exist')
-        except ProjectError as e:
+            backend = Backend.ensure_project(self.db, 'tester', 'download_error')
+            await backend.download('http://127.0.0.1:49001/this-wont-exist')
+        except BackendError as e:
             self.assertTrue('Failed to download' in str(e))
         else:
-            self.fail("ProjectError not raised")
+            self.fail("BackendError not raised")
 
     async def small_project(self) -> str:
         project_id = await Project.create('http://127.0.0.1:49001/test.zip')
@@ -148,8 +141,8 @@ class TestProject(unittest.IsolatedAsyncioTestCase):
 
         hits = await project.search(text='class Duplicates', limit=10)
         self.verify_hits(hits, 2, path='/find_duplicates.py', contains=['class Duplicates:'])
-        self.assertEqual(len([hit for hit in hits if hit.type == 'module']), 1)
-        self.assertEqual(len([hit for hit in hits if hit.type == 'class']), 1)
+        self.assertEqual(len([hit for hit in hits if hit.category == 'module']), 1)
+        self.assertEqual(len([hit for hit in hits if hit.category == 'class']), 1)
         self.verify_hits(hits[:1], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
         self.verify_hits(hits[1:], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
 
@@ -270,7 +263,7 @@ Matches under subdirectories:
 
             if contains:
                 for text in contains:
-                    self.assertTrue(any((text in hit.text) for hit in hits))
+                    self.assertTrue(any((text in hit.body) for hit in hits))
         except AssertionError:
             print()
             print('hits = ')

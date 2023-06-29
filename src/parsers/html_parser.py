@@ -97,4 +97,4 @@ class HtmlParser(BaseParser):
 
         summary = [f'{self.name}: {path}'] + headers
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, 0)

@@ -28,6 +28,6 @@ def walk_nodes(cursor: TreeCursor, *, debug: bool = False, debug_file: Optional[
     for cur, depth in walk_children(cursor):
         node = cur.node
         lineno = 1 + node.start_point[0]
-        if debug and node.type.strip():
-            print(f"|#{lineno:05d} {'  ' * depth}[{node.type}] {decode_replace(node.text).rstrip()}", file=debug_file)
+        if debug and node.category.strip():
+            print(f"|#{lineno:05d} {'  ' * depth}[{node.category}] {decode_replace(node.body).rstrip()}", file=debug_file)
         yield node, lineno, depth

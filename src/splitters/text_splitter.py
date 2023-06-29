@@ -9,6 +9,7 @@ class Sentence:
     length: int
     depth: int
     text: str
+    start: int
 
 
 class TextSplitter:
@@ -31,9 +32,11 @@ class TextSplitter:
 
     def split_text(self, text: str) -> Iterator[Sentence]:
         lineno = 1
+        start = 0
         for length, depth, text in self.__split_recursive(text, 0):
-            yield Sentence(lineno, length, depth, text)
+            yield Sentence(lineno, length, depth, text, start)
             lineno += text.count('\n')
+            start += len(text)
 
     def __split_recursive(self, text: str, depth: int) -> Iterator[Tuple[int, int, str]]:
         if not text:

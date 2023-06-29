@@ -60,16 +60,16 @@ class CppParser(TreeSitterParser):
     def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]) -> Iterator[Code]:
         def simple(category: str, identifier_type: str, definition: str):
             for child in node.children:
-                if child.type == identifier_type:
-                    yield Code(category=category, name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                if child.category == identifier_type:
+                    yield Code(category=category, name=child.body, definition=node.text, lineno=lineno, depth=depth)
                     return
 
         def two_level(category: str, declarator_type: str, identifier_type: str, definition: str):
             for child in node.children:
-                if child.type == declarator_type:
+                if child.category == declarator_type:
                     for grandchild in child.children:
-                        if grandchild.type == identifier_type:
-                            yield Code(category=category, name=grandchild.text, definition=node.text, lineno=lineno, depth=depth)
+                        if grandchild.category == identifier_type:
+                            yield Code(category=category, name=grandchild.body, definition=node.text, lineno=lineno, depth=depth)
                             return
 
         for node, lineno, depth in nodes:
@@ -105,7 +105,7 @@ class CppParser(TreeSitterParser):
                 yield from simple('using', 'identifier', node.text)
             elif node.type == 'namespace_definition':
                 for child in node.children:
-                    if child.type == 'namespace_identifier':
-                        yield Code(category='namespace', name=child.text, definition=f'namespace {child.text} {{...}}', lineno=lineno, depth=depth)
+                    if child.category == 'namespace_identifier':
+                        yield Code(category='namespace', name=child.body, definition=f'namespace {child.body} {{...}}', lineno=lineno, depth=depth)
             elif self.debug and node.type not in self.unhandled:
                 self.unhandled[node.type] = (lineno, node.text)

@@ -52,7 +52,7 @@ class CssParser(BaseParser):
                 if name not in class_set:
                     classes.append(name)
                     class_set.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_replace(node.parent.body)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
 
         if not classes:
@@ -63,4 +63,4 @@ class CssParser(BaseParser):
         ]
         summary.append(f"  Classes: {' '.join(classes)}")
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, 0)

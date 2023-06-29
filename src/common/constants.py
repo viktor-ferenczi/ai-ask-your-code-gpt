@@ -10,15 +10,34 @@ class RX:
 
 
 class C:
-    # Environment
-    PRODUCTION = bool(int(os.environ.get('PRODUCTION', '0')))
-    DEVELOPMENT = not PRODUCTION
+    # Environments
+    PRODUCTION = 'PRODUCTION'
+    DEVELOPMENT = 'DEVELOPMENT'
+    TEST_SUITE = 'TEST_SUITE'
+
+    ENVIRONMENTS = (
+        PRODUCTION,
+        DEVELOPMENT,
+        TEST_SUITE,
+    )
+
+    # Current environment
+    ENVIRONMENT = os.environ.get('ENVIRONMENT', 'development')
+    assert ENVIRONMENT in ENVIRONMENTS
+
+    # Environment flags
+    IS_PRODUCTION = ENVIRONMENT == PRODUCTION
+    IS_DEVELOPMENT = ENVIRONMENT == DEVELOPMENT
+    IS_TEST_SUITE = ENVIRONMENT == TEST_SUITE
 
     # Database
-
     # postgres://user:password@host:port/database
-    DSN = os.environ.get('DSN', 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode')
-    TEST_DSN = os.environ.get('DSN', 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test')
+    DEFAULT_DSN = {
+        PRODUCTION: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode',
+        DEVELOPMENT: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode',
+        TEST_SUITE: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test',
+    }[ENVIRONMENT]
+    DSN = os.environ.get('DSN', DEFAULT_DSN)
 
     # Limits
 
@@ -43,7 +62,12 @@ class C:
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     DATA_DIR = os.path.normpath(os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode')))
-    ARCHIVE_DIR = os.path.join(DATA_DIR, 'archive')
+    ARCHIVE_SUBDIR_NAME = {
+        PRODUCTION: 'archive',
+        DEVELOPMENT: 'archive-dev',
+        TEST_SUITE: 'archive-test',
+    }[ENVIRONMENT]
+    ARCHIVE_DIR = os.path.join(DATA_DIR, ARCHIVE_SUBDIR_NAME)
 
     # HTTP
     FAKE_BROWSER_HEADERS = {

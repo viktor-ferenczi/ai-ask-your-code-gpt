@@ -48,36 +48,36 @@ class CSharpParser(TreeSitterParser):
             # namespace
             if node.type == "namespace_declaration":
                 for child in node.children:
-                    if child.type == "identifier":
-                        yield Code(category="namespace", name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                    if child.category == "identifier":
+                        yield Code(category="namespace", name=child.body, definition=node.text, lineno=lineno, depth=depth)
 
             # interface
             elif node.type == "interface_declaration":
                 for child in node.children:
-                    if child.type == "identifier":
-                        yield Code(category="interface", name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                    if child.category == "identifier":
+                        yield Code(category="interface", name=child.body, definition=node.text, lineno=lineno, depth=depth)
 
             # class
             elif node.type == "class_declaration":
                 for child in node.children:
-                    if child.type == "identifier":
-                        yield Code(category="class", name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                    if child.category == "identifier":
+                        yield Code(category="class", name=child.body, definition=node.text, lineno=lineno, depth=depth)
 
             # method
             elif node.type in ("method_declaration", "constructor_declaration"):
                 for child in node.children:
-                    if child.type == "identifier":
-                        yield Code(category="method", name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                    if child.category == "identifier":
+                        yield Code(category="method", name=child.body, definition=node.text, lineno=lineno, depth=depth)
 
             # variable (definition)
             elif node.type == "variable_declaration":
                 for child in node.children:
-                    if child.type == "identifier":
-                        yield Code(category="variable", name=child.text, definition=node.text, lineno=lineno, depth=depth)
+                    if child.category == "identifier":
+                        yield Code(category="variable", name=child.body, definition=node.text, lineno=lineno, depth=depth)
 
             # variable (usage)
             elif node.type == "identifier":
-                if node.parent and node.parent.type not in ("variable_declaration", "method_declaration",
+                if node.parent and node.parent.category not in ("variable_declaration", "method_declaration",
                                                             "constructor_declaration", "class_declaration",
                                                             "interface_declaration", "namespace_declaration"):
                     yield Code(category="variable", name=node.text, definition='', lineno=lineno, depth=depth)

@@ -85,9 +85,6 @@ create table public.archive
 alter table public.archive
     owner to askyourcode;
 
-create index archive_path_index
-    on public.archive (path);
-
 create index archive_url_index
     on public.archive (url);
 
@@ -124,7 +121,9 @@ create table public.fragment
 (
     partition_key char(2)               not null,
     document_cs   varchar(64)           not null,
-    start         integer               not null,
+    id       bigserial
+        constraint fragment_pk
+            primary key,
     lineno        integer               not null,
     tokens        integer               not null,
     depth         integer               not null,
@@ -133,9 +132,7 @@ create table public.fragment
     definition    boolean               not null,
     summary       boolean  not null,
     name          varchar(80)           not null,
-    body          text                  not null,
-    constraint fragment_pk
-        primary key (partition_key, document_cs, start)
+    body          text                  not null
 );
 
 alter table public.fragment
@@ -171,18 +168,18 @@ create table public.usage
     partition_key      char(2) not null,
     project_id         bigint  not null,
     definition_file_id bigint  not null,
-    definition_start   integer not null,
+    definition_fragment_id   integer not null,
     usage_file_id      bigint  not null,
-    usage_start        integer not null,
+    usage_fragment_id        integer not null,
     constraint usage_pk
-        primary key (partition_key, project_id, definition_file_id, definition_start, usage_file_id, usage_start)
+        primary key (partition_key, project_id, definition_file_id, definition_fragment_id, usage_file_id, usage_fragment_id)
 );
 
 alter table public.usage
     owner to askyourcode;
     
 create index usage_index
-    on public.usage (usage_file_id, usage_start);
+    on public.usage (usage_file_id, usage_fragment_id);
 
 ''' + f'''
 insert into public.property (name, number) values ('Version', {VERSION});

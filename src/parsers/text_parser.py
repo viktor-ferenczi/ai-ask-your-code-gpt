@@ -35,9 +35,9 @@ class TextParser(BaseParser):
                         path=path,
                         lineno=sentence.lineno,
                         depth=sentence.depth,
-                        type='documentation',
+                        category='documentation',
                         name='',
-                        text=sentence.text,
+                        body=sentence.text,
                     )
 
         yield Fragment(
@@ -45,7 +45,7 @@ class TextParser(BaseParser):
             path=path,
             lineno=1,
             depth=0,
-            type='summary',
+            category='summary',
             name='',
-            text=f'File: {path}\n',
+            body=f'File: {path}\n',
         )
