@@ -26,20 +26,7 @@ class TestScheduler(BaseTestCase):
             numbers.append(x)
             return None
 
-        self.tasks.register_handler(Operation.Test1, handler)
-
-        # Listen for tasks and handle them
-        async with self.tasks.listen():
-            # Schedule a task
-            task = Task.create_pending(Operation.Test1, x=42)
-            before = datetime.utcnow()
-            await self.tasks.schedule(task)
-            after = datetime.utcnow()
-            created = task.created
-            self.assertTrue(before <= created, f'{before!r} <= {created!r}')
-            self.assertTrue(created <= after, f'{created!r} <= {after!r}')
-
-            await self.wait_for_processing(numbers)
+        task = await self.run_test_task(handler, numbers, x=42)
 
         # Verify
         self.assertEqual(len(numbers), 1)
@@ -64,21 +51,15 @@ class TestScheduler(BaseTestCase):
         print(f'From task creation {(task.finished - task.created).total_seconds() * 1000:.3f}ms')
 
     async def test_failed_handler(self) -> None:
-        tasks: List[int] = []
+        numbers: List[int] = []
 
         async def handler() -> NoReturn:
-            tasks.append(1)
+            numbers.append(1)
             raise TaskFailed('Test failure')
 
-        self.tasks.register_handler(Operation.Test1, handler)
+        task = await self.run_test_task(handler, numbers)
 
-        async with self.tasks.listen():
-            task = Task.create_pending(Operation.Test1)
-            await self.tasks.schedule(task)
-
-            await self.wait_for_processing(tasks)
-
-        self.assertEqual(len(tasks), 1)
+        self.assertEqual(len(numbers), 1)
         task = await self.tasks.get_task(task.created)
         self.assertEqual(task.state, TaskState.failed)
         self.assertTrue(bool(task.started))
@@ -86,26 +67,41 @@ class TestScheduler(BaseTestCase):
         self.assertEqual(task.message, 'Test failure')
 
     async def test_crashed_handler(self) -> None:
-        tasks: List[int] = []
+        numbers: List[int] = []
 
         async def handler() -> NoReturn:
-            tasks.append(1)
+            numbers.append(1)
             raise Exception('Test crash')
 
-        self.tasks.register_handler(Operation.Test1, handler)
+        task = await self.run_test_task(handler, numbers)
 
-        async with self.tasks.listen():
-            task = Task.create_pending(Operation.Test1)
-            await self.tasks.schedule(task)
-
-            await self.wait_for_processing(tasks)
-
-        self.assertEqual(len(tasks), 1)
+        self.assertEqual(len(numbers), 1)
         task = await self.tasks.get_task(task.created)
         self.assertEqual(task.state, TaskState.crashed)
         self.assertTrue(bool(task.started))
         self.assertTrue(bool(task.finished))
         self.assertTrue('Exception: Test crash' in task.message)
+
+    async def run_test_task(self, handler, numbers, **params) -> Task:
+        async def schedule_task() -> Task:
+            task = Task.create_pending(Operation.Test1, **params)
+            before = datetime.utcnow()
+            await self.tasks.schedule(task)
+            after = datetime.utcnow()
+            created = task.created
+            self.assertTrue(before <= created, f'{before!r} <= {created!r}')
+            self.assertTrue(created <= after, f'{created!r} <= {after!r}')
+            return task
+
+        listener = asyncio.create_task(self.tasks.listen(Operation.Test1, handler))
+        try:
+            task = await schedule_task()
+            await self.wait_for_processing(numbers)
+        finally:
+            await asyncio.sleep(0.1)
+            listener.cancel()
+
+        return task
 
     async def wait_for_processing(self, tasks: List[Any], expected_count: int = 1, timeout: float = 1.0):
         deadline = time.time() + timeout

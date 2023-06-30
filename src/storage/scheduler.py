@@ -1,14 +1,12 @@
 import asyncio
 import json
-from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from traceback import format_exc
-from typing import Any, Dict, Callable, List, Optional, Union, Awaitable, AsyncContextManager
+from traceback import format_exc, print_exc
+from typing import Any, Dict, Callable, List, Optional, Union, Awaitable
 
-import asyncpg
-from asyncpg import Connection, Record
+from asyncpg import Record
 from asyncpg.utils import _quote_ident
 
 from common.constants import C
@@ -75,10 +73,6 @@ class Scheduler:
 
     def __init__(self, db: Database):
         self.db: Database = db
-        self.handlers: Dict[Operation, THandler] = {}
-
-    def register_handler(self, operation: Operation, handler: THandler):
-        self.handlers[operation] = handler
 
     async def schedule(self, task: Task):
         params_json = json.dumps(task.params)
@@ -91,7 +85,7 @@ class Scheduler:
                         VALUES ($1, $2)
                         RETURNING created;
                     ''', name, params_json)
-                notify = f"NOTIFY {_quote_ident(name)}, '{created.isoformat()}'"
+                notify = f"NOTIFY {_quote_ident(name)}"
                 print(notify)
                 await conn.execute(notify)
                 task.created = created
@@ -109,50 +103,35 @@ class Scheduler:
             ''', operation.name, limit)
         return [Task.from_row(row) for row in rows]
 
-    @asynccontextmanager
-    async def listen(self) -> AsyncContextManager:
-        assert self.handlers, 'No tasks registered'
+    async def listen(self, operation: Operation, handler: THandler):
+        event = asyncio.Event()
+
+        def callback(*args):
+            event.set()
+
         async with self.db.connection() as conn:
-            await self.__add_listeners(conn)
+            await conn.add_listener(operation.name, callback)
             try:
-                yield
+                while 1:
+                    event.clear()
+                    if await self.process(operation, handler):
+                        continue
+                    await event.wait()
             finally:
-                await self.__remove_listeners(conn)
+                await conn.remove_listener(operation.name, callback)
 
-    async def __add_listeners(self, conn: Connection):
-        for operation in self.handlers:
-            await conn.add_listener(f'{operation.name}', self.handle_notification)
-
-    async def __remove_listeners(self, conn: Connection):
-        for operation in self.handlers:
-            await conn.remove_listener(f'{operation.name}', self.handle_notification)
-
-    async def handle_notification(self, listener_conn: asyncpg.Connection, pid: int, name: str, payload: str):
-        print(f'TASK pid={pid!r}, name={name!r}, payload={payload!r}')
-        # if pid == listener_conn.get_server_pid():
-        #     return
-
-        handler: THandler = self.handlers.get(Operation(name))
-        if handler is None:
-            # Ignore any tasks not listened to explicitly
-            return
-
-        result = None
+    async def process(self, operation: Operation, handler: THandler) -> bool:
         async with self.db.transaction() as conn:
-
-            row = await conn.fetchrow('''
-                SELECT * FROM task
-                WHERE created = $1 AND state = 'pending'
-                ORDER BY created
-                LIMIT 1 FOR UPDATE SKIP LOCKED;
-            ''', datetime.fromisoformat(payload))
+            # Get the next task to process
+            row = await self.get_next_task(conn, operation)
             if row is None:
-                # The task has been consumed by another worker, so just skip it
-                return
+                # No more tasks
+                return False
 
-            # Start the task, while still in the transaction, so other workers must skip it
+            # Run the task while still in the transaction, so other workers must skip it
             task: Task = Task.from_row(row)
             task.started = datetime.utcnow()
+            result = None
             # noinspection PyBroadException
             try:
                 try:
@@ -205,6 +184,19 @@ class Scheduler:
             print(f'Task: {task!r}')
             print(f'Handler: {handler!r}')
             print(f'Follow-up tasks: {follow_up_tasks!r}')
+            print_exc()
+
+        # Attempt to read more tasks from the queue
+        return True
+
+    async def get_next_task(self, conn, operation: Operation) -> Optional[Record]:
+        row = await conn.fetchrow('''
+                SELECT * FROM task
+                WHERE operation = $1 AND state = 'pending'
+                ORDER BY created
+                LIMIT 1 FOR UPDATE SKIP LOCKED;
+            ''', operation.name)
+        return row
 
     async def get_task(self, created: datetime) -> Optional[Task]:
         async with self.db.transaction() as conn:
