@@ -1,7 +1,6 @@
 import asyncio
 import functools
 import os
-from traceback import print_exc
 from typing import Iterator
 
 from quart import Quart
@@ -10,7 +9,6 @@ from common.constants import C
 from common.doc import remove_common_base_dir
 from common.server import run_app
 from common.timer import timer
-from common.tools import sleep_forever
 from common.zip_support import extract_verify_documents, ZipDoc
 from parsers.registrations import detect, detect_mime
 from storage import archives, documents, files
@@ -20,7 +18,7 @@ from storage.scheduler import Scheduler, Operation, THandlerResult, Task
 
 
 async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerResult:
-    print(f'Extracting archive {archive_cs!r} for project {project_id!r}')
+    # print(f'Extracting archive {archive_cs!r} for project {project_id!r}')
     with timer(f'Extracted archive {archive_cs!r} for project {project_id!r}'):
 
         async with db.connection() as conn:
@@ -57,15 +55,7 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
 async def worker():
     async with Database.from_dsn(C.DSN) as db:
         scheduler = Scheduler(db)
-        scheduler.register_handler(Operation.ExtractArchive, functools.partial(extract, db))
-        while 1:
-            # noinspection PyBroadException
-            try:
-                async with scheduler.listen():
-                    await sleep_forever()
-            except Exception:
-                print('Unexpected failure:')
-                print_exc()
+        await scheduler.listen(Operation.ExtractArchive, functools.partial(extract, db))
 
 
 app = Quart(__name__)

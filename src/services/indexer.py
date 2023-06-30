@@ -1,14 +1,12 @@
 import asyncio
 import functools
 import os
-from traceback import print_exc
 
 from quart import Quart
 
 from common.constants import C
 from common.server import run_app
 from common.timer import timer
-from common.tools import sleep_forever
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_NAME
 from storage import documents, fragments
@@ -18,7 +16,7 @@ from storage.scheduler import Scheduler, Operation, THandlerResult
 
 
 async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
-    print(f'Indexing: {document_cs} {path}')
+    # print(f'Indexing: {document_cs} {path}')
     with timer(f'Indexed: {document_cs} {path}'):
         async with db.connection() as conn:
             document: Document = await documents.find_by_checksum(conn, document_cs)
@@ -50,15 +48,7 @@ async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
 async def worker():
     async with Database.from_dsn(C.DSN) as db:
         scheduler = Scheduler(db)
-        scheduler.register_handler(Operation.IndexSource, functools.partial(index, db))
-        while 1:
-            # noinspection PyBroadException
-            try:
-                async with scheduler.listen():
-                    await sleep_forever()
-            except Exception:
-                print('Unexpected failure:')
-                print_exc()
+        await scheduler.listen(Operation.IndexSource, functools.partial(index, db))
 
 
 app = Quart(__name__)

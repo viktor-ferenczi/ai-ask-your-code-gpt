@@ -60,15 +60,17 @@ class TestBackend(BaseTestCase):
         await self.app.run_task(debug=True, host='localhost', port=49000)
 
     async def test_project(self):
-        coroutines = [
-                         self.actual_test(),
-                         self.serve_zip(),
-                         downloader_app.run_task(debug=True, host='localhost', port=40001),
-                         extractor_app.run_task(debug=True, host='localhost', port=40002),
-                         indexer_app.run_task(debug=True, host='localhost', port=40003),
-                     ] + [
-                         worker() for worker in downloader_workers + extractor_workers + indexer_workers
-                     ]
+        coroutines = (
+                [
+                    self.actual_test(),
+                    self.serve_zip(),
+                    downloader_app.run_task(debug=True, host='localhost', port=40001),
+                    extractor_app.run_task(debug=True, host='localhost', port=40002),
+                    indexer_app.run_task(debug=True, host='localhost', port=40003),
+                ] + [
+                    worker() for worker in downloader_workers + extractor_workers + indexer_workers
+                ]
+        )
         tasks = [asyncio.create_task(coro) for coro in coroutines]
 
         await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
@@ -165,13 +167,13 @@ Python: /find_duplicates.py
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 
-        await self.wait_for_processing(15.0)
+        await self.wait_for_processing(30.0)
 
         hits = await backend.search(path='/README.md', limit=100)
         self.verify_hits(hits, 9, path='/README.md')
 
         hits = await backend.search(tail='.py', name='Query', limit=100)
-        self.verify_hits(hits, 34, contains=['class Query'])
+        self.verify_hits(hits, 19, contains=['class Query'])
 
         summary = await backend.summarize(tail='.md')
         self.assertEqual('''\

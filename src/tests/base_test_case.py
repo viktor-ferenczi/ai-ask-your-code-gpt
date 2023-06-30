@@ -1,3 +1,4 @@
+import asyncio
 import unittest
 
 import asyncpg
@@ -10,7 +11,6 @@ from storage.scheduler import Scheduler
 
 
 class BaseTestCase(unittest.IsolatedAsyncioTestCase):
-
     first = True
 
     async def asyncSetUp(self) -> None:
@@ -40,5 +40,8 @@ class BaseTestCase(unittest.IsolatedAsyncioTestCase):
 
         self.pool.terminate()
         del self.pool
+
+        # Without this the test suite continues to spin in PyCharm
+        await asyncio.sleep(0.01)
 
         await super().asyncTearDown()

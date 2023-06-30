@@ -12,7 +12,6 @@ from common.doc import find_common_base_dir
 from common.http import download_into_memory, DownloadError, NotModified
 from common.server import run_app
 from common.timer import timer
-from common.tools import sleep_forever
 from common.zip_support import extract_verify_documents
 from storage import archives
 from storage.archives import Archive
@@ -96,13 +95,11 @@ class Downloader:
 
 
 async def download(db: Database, url: str, project_id: int) -> THandlerResult:
-    print(f'Downloading {url!r} for project {project_id!r}')
+    # print(f'Downloading {url!r} for project {project_id!r}')
     try:
         downloader = Downloader(db, url)
         with timer(f'Downloaded archive {url!r} for project {project_id!r}'):
             archive: Archive = await downloader.download_verify()
-    except asyncio.CancelledError:
-        raise TaskFailed('The download was cancelled, please try again in a few seconds')
     except DownloadError as e:
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
@@ -118,15 +115,7 @@ async def download(db: Database, url: str, project_id: int) -> THandlerResult:
 async def worker():
     async with Database.from_dsn(C.DSN) as db:
         scheduler = Scheduler(db)
-        scheduler.register_handler(Operation.DownloadArchive, functools.partial(download, db))
-        while 1:
-            # noinspection PyBroadException
-            try:
-                async with scheduler.listen():
-                    await sleep_forever()
-            except Exception:
-                print('Unexpected failure:')
-                print_exc()
+        await scheduler.listen(Operation.DownloadArchive, functools.partial(download, db))
 
 
 app = Quart(__name__)

@@ -2,7 +2,11 @@ import os.path
 import re
 import sys
 
+from aiodebug import log_slow_callbacks
+
 sys.setrecursionlimit(10000)
+
+log_slow_callbacks.enable(0.05)
 
 
 class RX:

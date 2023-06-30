@@ -4,6 +4,7 @@ from typing import AsyncContextManager
 import asyncpg
 from asyncpg import UndefinedTableError, Connection
 
+from common.constants import C
 from storage import schema, properties
 
 
@@ -15,7 +16,7 @@ class Database:
 
     def __init__(self, pool: asyncpg.Pool):
         self.pool = pool
-        
+
     @classmethod
     @asynccontextmanager
     async def create_pool(cls, dsn: str):
@@ -23,20 +24,6 @@ class Database:
             yield Database(pool)
 
     # Contexts
-
-    # @classmethod
-    # @asynccontextmanager
-    # async def from_dsn(cls, dsn: str) -> AsyncContextManager["Database"]:
-    #     # FIXME: This should work, but instead freezes at the end of block:
-    #     # async with asyncpg.create_pool(dsn, command_timeout=60) as pool:
-    #
-    #     # Workaround
-    #     pool: Pool = asyncpg.create_pool(cls.dsn, command_timeout=60)
-    #     await pool._async__init__()
-    #     try:
-    #         yield Database(pool)
-    #     finally:
-    #         pool.terminate()
 
     @classmethod
     @asynccontextmanager
@@ -58,6 +45,9 @@ class Database:
     # Schema creation and migration
 
     async def drop(self):
+        if C.IS_PRODUCTION:
+            raise RuntimeError('Refusing to drop the database in production')
+
         async with self.connection() as conn:
             async with conn.transaction():
                 await conn.execute(schema.DROP)
