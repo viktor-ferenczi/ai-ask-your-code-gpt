@@ -45,21 +45,21 @@ class JavaParser(TreeSitterParser):
             if node.type in ['class_declaration', 'interface_declaration']:
                 for child in node.children:
                     if child.type == 'identifier':
-                        yield Code(category='class' if node.type == 'class_declaration' else 'interface', name=child.body, definition=node.text, lineno=lineno, depth=depth)
+                        yield Code(category='class' if node.type == 'class_declaration' else 'interface', name=child.text, definition=node.text, lineno=lineno, depth=depth)
                     if child.type == 'method_declaration':
                         for method_child in child.children:
                             if method_child.type == 'identifier':
-                                yield Code(category='method', name=method_child.body, definition=node.text, lineno=lineno, depth=depth)
+                                yield Code(category='method', name=method_child.text, definition=node.text, lineno=lineno, depth=depth)
 
             elif node.type == 'method_declaration':
                 for child in node.children:
                     if child.type == 'identifier':
-                        yield Code(category='method', name=child.body, definition=node.text, lineno=lineno, depth=depth)
+                        yield Code(category='method', name=child.text, definition=node.text, lineno=lineno, depth=depth)
 
             elif node.type in ['variable_declaration', 'constant_declaration']:
                 for child in node.children:
                     if child.type == 'identifier':
-                        yield Code(category='variable', name=child.body, definition=node.text, lineno=lineno, depth=depth)
+                        yield Code(category='variable', name=child.text, definition=node.text, lineno=lineno, depth=depth)
 
             elif node.type == 'identifier':
                 parent = node.parent
@@ -69,4 +69,4 @@ class JavaParser(TreeSitterParser):
                 elif parent is not None and parent.type == 'method_invocation':
                     for sibling in parent.children:
                         if sibling is not node and sibling.type == 'identifier':
-                            yield Code(category='method', name=sibling.body, definition='', lineno=lineno, depth=depth)
+                            yield Code(category='method', name=sibling.text, definition='', lineno=lineno, depth=depth)

@@ -27,8 +27,9 @@ class TestStorage(BaseTestCase):
             body = b'Hello World!'
             sha = hashlib.sha256()
             sha.update(body)
+            checksum = sha.hexdigest()
 
-            o = await documents.create(conn, body, 'text')
+            o = await documents.create(conn, checksum, body, 'text')
             self.assertEqual(o.checksum, sha.hexdigest())
 
             r = await documents.find_by_checksum(conn, o.checksum)

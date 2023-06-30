@@ -1,5 +1,6 @@
 import asyncio
 import functools
+import hashlib
 import os
 from typing import Iterator
 
@@ -36,18 +37,23 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
                 if not zip_doc.body or len(zip_doc.body) > C.MAX_FILE_SIZE:
                     continue
 
+                sha = hashlib.sha256()
+                sha.update(zip_doc.body)
+                checksum = sha.hexdigest()
+
                 mime_type = detect_mime(zip_doc.body)
-                doc_type = detect(zip_doc.path, mime_type)
 
-                document_cs = None
-                if doc_type is not None:
-                    document = await documents.create(conn, zip_doc.body, doc_type.name)
-                    document_cs = document.checksum
-                    task = Task.create_pending(Operation.IndexSource, document_cs=document_cs, path=zip_doc.path)
-                    indexing_tasks.append(task)
+                document = await documents.find_by_checksum(conn, checksum)
+                if document is None:
 
-                if project_id:
-                    await files.create(conn, project_id, zip_doc.path, mime_type, len(zip_doc.body), document_cs, archive_cs)
+                    doc_type = detect(zip_doc.path, mime_type)
+                    if doc_type is not None:
+                        document = await documents.create(conn, checksum, zip_doc.body, doc_type.name)
+                        task = Task.create_pending(Operation.IndexSource, document_cs=checksum, path=zip_doc.path)
+                        indexing_tasks.append(task)
+
+                if project_id and document is not None:
+                    await files.create(conn, project_id, zip_doc.path, mime_type, len(zip_doc.body), checksum, archive_cs)
 
     return indexing_tasks
 

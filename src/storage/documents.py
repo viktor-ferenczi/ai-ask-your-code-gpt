@@ -28,11 +28,7 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE document')
 
 
-async def create(conn: Connection, body: bytes, doctype: str) -> Document:
-    sha = hashlib.sha256()
-    sha.update(body)
-    checksum = sha.hexdigest()
-
+async def create(conn: Connection, checksum: str, body: bytes, doctype: str) -> Document:
     partition_key = checksum[:2]
 
     await conn.execute(
