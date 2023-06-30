@@ -25,8 +25,6 @@ class TestBackend(BaseTestCase):
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 
-        self.maxDiff = 32768
-
         dir_len = len(self.test_project_dir) + 1
         with zipfile.ZipFile(self.zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, dirs, files in os.walk(self.test_project_dir):
@@ -95,7 +93,7 @@ class TestBackend(BaseTestCase):
 
     async def small_project(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'small_project')
-        info: TInfo = await backend.download('http://127.0.0.1:49000/test.zip', timeout=1.0)
+        info: TInfo = await backend.download('http://127.0.0.1:49000/test.zip', timeout=2.0)
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 

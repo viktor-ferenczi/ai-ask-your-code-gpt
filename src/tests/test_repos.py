@@ -1,4 +1,3 @@
-import asyncio
 import os
 import shutil
 from pprint import pformat
@@ -6,13 +5,12 @@ from typing import List
 
 from quart import Quart, send_file
 
-from base_test_case import BaseTestCase
 from common.constants import C
 from common.http import download_into_memory
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
-from services.downloader import app as downloader_app, workers as downloader_workers
-from services.extractor import app as loader_app, workers as loader_workers
+from plugin.backend import Backend, TInfo, BackendError
+from test_backend import TestBackend
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -68,17 +66,8 @@ def normalize_fragments(fragments: List[Fragment]):
         fragment.uuid = f'NORMALIZED'
 
 
-class TestRepos(BaseTestCase):
+class TestRepos(TestBackend):
     test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
-
-    async def asyncSetUp(self) -> None:
-        await super().asyncSetUp()
-
-        self.maxDiff = 32768
-
-        test_projects_dir = os.path.join(C.DATA_DIR, Project.dirname)
-        if os.path.isdir(test_projects_dir):
-            shutil.rmtree(test_projects_dir)
 
     async def serve_zip(self):
         self.app = Quart('test_zip_server')
@@ -92,23 +81,6 @@ class TestRepos(BaseTestCase):
             return await send_file(os.path.join(self.test_repos_dir, filename), as_attachment=True)
 
         await self.app.run_task(debug=True, host='localhost', port=49000)
-
-    async def test_repos(self):
-        actual_test = asyncio.create_task(self.actual_test())
-        zip_server_task = asyncio.create_task(self.serve_zip())
-        downloader_task = asyncio.create_task(downloader_app.run_task(debug=True, host='localhost', port=40001))
-        loader_task = asyncio.create_task(loader_app.run_task(debug=True, host='localhost', port=40002))
-        loader_worker_tasks = [asyncio.create_task(worker()) for worker in loader_workers]
-        downloader_worker_tasks = [asyncio.create_task(worker()) for worker in downloader_workers]
-
-        tasks = [actual_test, zip_server_task, downloader_task, loader_task] + loader_worker_tasks + downloader_worker_tasks
-
-        await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
-
-        actual_test.result()
-        for task in tasks:
-            if task is not actual_test:
-                task.cancel()
 
     async def actual_test(self):
         self.failures = []
@@ -133,82 +105,69 @@ class TestRepos(BaseTestCase):
             with open(zip_path, 'wb') as zip_file:
                 zip_file.write(zip_content)
 
+        await self.wait_for_processing(300.0)
+
         self.project_name = name
         self.project_path = os.path.join(self.test_repos_dir, name)
         os.makedirs(f'{self.project_path}/actual', exist_ok=True)
         os.makedirs(f'{self.project_path}/expected', exist_ok=True)
 
+        backend = await Backend.ensure_project(self.db, 'tester', 'small_project')
         local_zip_url = f'http://127.0.0.1:49000/{name}.zip'
-        project_id = await Project.create(local_zip_url)
-        project = Project(project_id)
+        info: TInfo = await backend.download(local_zip_url, timeout=10.0)
+        print(info)
+        self.assertTrue('Archive downloaded' in info['status'])
 
-        await self.wait_for_processing(project)
+        await self.wait_for_processing(300.0)
 
-        actual = ''.join(hit.body for hit in await project.search(path='/readme.md', limit=50))
+        actual = ''.join(hit.body for hit in await backend.search(path='/readme.md', limit=50))
         self.verify(f'README.md', actual)
 
         if name == 'hypedtask':
-            actual = '\n'.join(hit.body for hit in await project.search(name='Kernel', limit=50))
+            actual = '\n'.join(hit.body for hit in await backend.search(name='Kernel', limit=50))
             self.verify(f'name-Kernel', actual)
 
         if name == 'langchain':
-            actual = '\n'.join(hit.body for hit in await project.search(name='PromptTemplate', limit=50))
+            actual = '\n'.join(hit.body for hit in await backend.search(name='PromptTemplate', limit=50))
             self.verify(f'name-PromptTemplate', actual)
 
-        actual = await project.summarize(token_limit=999999999)
+        actual = await backend.summarize(token_limit=999999999)
         self.verify(f'root-summary', actual)
 
-        actual = await project.summarize(path='/readme.md', token_limit=999999999)
+        actual = await backend.summarize(path='/readme.md', token_limit=999999999)
         self.verify(f'README-summary', actual)
 
         if name == 'redcoin':
-            actual = await project.summarize(tail='.sol', token_limit=999999999)
+            actual = await backend.summarize(tail='.sol', token_limit=999999999)
             self.verify(f'summary.sol', actual)
 
         for extension in PARSERS_BY_EXTENSION:
-            actual = await project.summarize(tail=f'.{extension}', token_limit=999999999)
+            actual = await backend.summarize(tail=f'.{extension}', token_limit=999999999)
             if actual:
                 self.verify(f'summary.{extension}', actual)
 
-        with project.cursor() as conn:
-            fragments = await project.get_all_fragments(conn, self.project.id)
+        async with self.db.connection() as conn:
+            fragments = await backend.get_all_fragments(conn, self.project.id)
             normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)
 
         if name == 'taso':
             try:
-                await project.search(text='libtaso_runtime.so')
+                await backend.search(text='libtaso_runtime.so')
             except BackendError as e:
                 self.assertTrue('No hits with this search expression.' in str(e))
 
-            hits = await project.search(text='using namespace taso', limit=10)
+            hits = await backend.search(text='using namespace taso', limit=10)
             normalize_fragments(hits)
             actual = '\n\n'.join(pformat(hit) for hit in hits)
             self.verify('fts5_using_namespace_taso.txt', actual)
 
         if name == 'unreal':
-            actual = await project.summarize(path='/Plugins/FX/Niagara', tail='.h')
+            actual = await backend.summarize(path='/Plugins/FX/Niagara', tail='.h')
             self.verify('unreal_niagara_headers.txt', actual)
 
         pass
-
-    async def wait_for_processing(self, project):
-        inventory = Inventory()
-
-        print('Waiting for extracting fragments...')
-        while 1:
-            if inventory.has_project_extracted(project.project_name):
-                break
-            await asyncio.sleep(0.2)
-        print('Downloaded')
-
-        print('Waiting for embedding fragments...')
-        while 1:
-            if inventory.has_project_embedded(project.project_name):
-                break
-            await asyncio.sleep(0.2)
-        print('Embedded')
 
     def verify(self, name: str, actual: str):
         if len(actual) >= 50_000_000:

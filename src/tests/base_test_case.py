@@ -19,6 +19,8 @@ class BaseTestCase(unittest.IsolatedAsyncioTestCase):
         if C.IS_PRODUCTION:
             raise RuntimeError('Do not run the test suite in production!')
 
+        self.maxDiff = 32768
+
         self.pool: Pool = asyncpg.create_pool(C.DSN, command_timeout=60)
         await self.pool._async__init__()
         self.db = Database(self.pool)

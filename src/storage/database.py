@@ -25,6 +25,7 @@ class Database:
 
     # Contexts
 
+
     @classmethod
     @asynccontextmanager
     async def from_dsn(cls, dsn: str) -> AsyncContextManager["Database"]:
