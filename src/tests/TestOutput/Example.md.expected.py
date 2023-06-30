@@ -6,17 +6,17 @@ f0 = Fragment(uuid='TEST-00',
          path='Example.md',
          lineno=1,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='# Markdown Syntax Examples\n\nThis Markdown document showcases various Markdown syntax elements.\n\n')
+         text='# Markdown Syntax Examples\n\nThis Markdown document showcases various Markdown syntax elements.\n\n')
 
 f1 = Fragment(uuid='TEST-01',
          path='Example.md',
          lineno=5,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Headings\n'
+         text='## Headings\n'
               '\n'
               'This section demonstrates different levels of headings in Markdown.\n'
               '\n'
@@ -28,17 +28,17 @@ f2 = Fragment(uuid='TEST-02',
          path='Example.md',
          lineno=12,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Heading 2\nThis is a level 2 heading.\n\n### Heading 3\nThis is a level 3 heading.\n\n')
+         text='## Heading 2\nThis is a level 2 heading.\n\n### Heading 3\nThis is a level 3 heading.\n\n')
 
 f3 = Fragment(uuid='TEST-03',
          path='Example.md',
          lineno=18,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Emphasis\n'
+         text='## Emphasis\n'
               '\n'
               'This section demonstrates how to apply emphasis to text.\n'
               '\n'
@@ -56,9 +56,9 @@ f4 = Fragment(uuid='TEST-04',
          path='Example.md',
          lineno=31,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Lists\n'
+         text='## Lists\n'
               '\n'
               'This section demonstrates ordered and unordered lists.\n'
               '\n'
@@ -79,9 +79,9 @@ f5 = Fragment(uuid='TEST-05',
          path='Example.md',
          lineno=47,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Links\n'
+         text='## Links\n'
               '\n'
               'This section demonstrates creating links in Markdown.\n'
               '\n'
@@ -93,9 +93,9 @@ f6 = Fragment(uuid='TEST-06',
          path='Example.md',
          lineno=54,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Images\n'
+         text='## Images\n'
               '\n'
               'This section demonstrates adding images to a Markdown document.\n'
               '\n'
@@ -107,9 +107,9 @@ f7 = Fragment(uuid='TEST-07',
          path='Example.md',
          lineno=61,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Blockquotes\n'
+         text='## Blockquotes\n'
               '\n'
               'This section demonstrates blockquotes in Markdown.\n'
               '\n'
@@ -121,9 +121,9 @@ f8 = Fragment(uuid='TEST-08',
          path='Example.md',
          lineno=68,
          depth=1,
-         category='documentation',
+         type='documentation',
          name='',
-         body='## Code\n'
+         text='## Code\n'
               '\n'
               'This section demonstrates adding code blocks in Markdown.\n'
               '\n'
@@ -140,9 +140,9 @@ f9 = Fragment(uuid='TEST-09',
          path='Example.md',
          lineno=1,
          depth=0,
-         category='summary',
+         type='summary',
          name='',
-         body='# Markdown Syntax Examples\n'
+         text='# Markdown Syntax Examples\n'
               '## Headings\n'
               '# Heading 1\n'
               '## Heading 2\n'
