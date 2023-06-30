@@ -223,5 +223,5 @@ class Backend:
             subdir_info = [f'Relevant subdirectories:\n']
             max_count = max(subdir_hit_counts.values())
             for subdir, count in sorted(subdir_hit_counts.items(), reverse=True, key=lambda pair: pair[1]):
-                subdir_info.append(f"  {subdir}: {'*' * int(5.0 * count / max_count + 0.5)}\n")
+                subdir_info.append(f"  {subdir}: {int(100.0 * count / max_count)}%\n")
             yield ''.join(subdir_info)

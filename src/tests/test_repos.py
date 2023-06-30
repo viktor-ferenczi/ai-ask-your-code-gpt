@@ -9,6 +9,7 @@ from base_backend_test import BaseBackendTest
 from common.constants import C
 from common.http import download_into_memory
 from model.fragment import Fragment
+from model.hit import Hit
 from parsers.registrations import PARSERS_BY_EXTENSION
 from plugin.backend import Backend, TInfo, BackendError
 from storage.fragments import get_all_fragments
@@ -17,7 +18,7 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # # Markdown, Python
-    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    # ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
     #
     # # Markdown, Python, GitHub Workflow, YAML
     # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
@@ -63,6 +64,11 @@ REPOS = [
 
 
 def normalize_fragments(fragments: List[Fragment]):
+    for i, fragment in enumerate(fragments):
+        fragment.id = -1
+
+
+def normalize_hits(fragments: List[Hit]):
     for i, fragment in enumerate(fragments):
         fragment.uuid = f'NORMALIZED'
 
@@ -123,7 +129,7 @@ class TestRepos(BaseBackendTest):
 
         await self.wait_for_processing(300.0)
 
-        actual = ''.join(hit.text for hit in await backend.search(path='/readme.md', limit=50))
+        actual = ''.join(hit.text for hit in await backend.search(path='/readme.md', limit=100))
         self.verify(f'README.md', actual)
 
         if zip_name == 'hypedtask':
@@ -162,7 +168,7 @@ class TestRepos(BaseBackendTest):
                 self.assertTrue('No hits with this search expression.' in str(e))
 
             hits = await backend.search(text='using namespace taso', limit=10)
-            normalize_fragments(hits)
+            normalize_hits(hits)
             actual = '\n\n'.join(pformat(hit) for hit in hits)
             self.verify('fts5_using_namespace_taso.txt', actual)
 

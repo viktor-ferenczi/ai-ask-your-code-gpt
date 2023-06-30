@@ -32,9 +32,9 @@ class BaseBackendTest(BaseTestCase):
                 [
                     self.actual_test(),
                     self.serve_zip(),
-                    downloader_app.run_task(debug=True, host='localhost', port=40001),
-                    extractor_app.run_task(debug=True, host='localhost', port=40002),
-                    indexer_app.run_task(debug=True, host='localhost', port=40003),
+                    downloader_app.run_task(debug=True, host='localhost', port=51000),
+                    extractor_app.run_task(debug=True, host='localhost', port=52000),
+                    indexer_app.run_task(debug=True, host='localhost', port=53000),
                 ] + [
                     worker() for worker in downloader_workers + extractor_workers + indexer_workers
                 ]

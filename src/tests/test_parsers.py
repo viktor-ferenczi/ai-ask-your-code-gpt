@@ -56,7 +56,7 @@ class TestParsers(unittest.TestCase):
                     with open(expected_path, 'wt') as _:
                         expected = ''
                 else:
-                    with open(expected_path, 'rt') as f:
+                    with open(expected_path, 'rt', encoding='utf-8') as f:
                         expected = f.read()
                     good = actual == expected
 
@@ -65,7 +65,7 @@ class TestParsers(unittest.TestCase):
                         os.remove(actual_path)
                 else:
                     failed.append((relpath, actual, expected))
-                    with open(actual_path, 'wt') as f:
+                    with open(actual_path, 'wt', encoding='utf-8') as f:
                         f.write(actual)
 
         if failed:

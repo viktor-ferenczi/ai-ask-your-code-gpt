@@ -170,11 +170,11 @@ Python: /lib/dblayer/util.py
 
 
 Relevant subdirectories:
-  backend: 987
-  model: 877
-  test: 388
-  graph: 28
-  generator: 18
+  backend: 100%
+  model: 88%
+  test: 39%
+  graph: 2%
+  generator: 1%
 ''', summary)
 
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):

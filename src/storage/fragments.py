@@ -93,7 +93,7 @@ async def get_all_fragments(conn: Connection, project_id: int) -> List[Fragment]
             SELECT f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            ORDER BY f.document_cs, f.lineno, f.category, f.definition, f.summary
+            ORDER BY f.document_cs, f.lineno, f.category, f.definition, f.summary, f.id
         ''', project_id)
     ]
 
@@ -108,7 +108,7 @@ async def search_by_path_tail_name(conn: Connection, project_id: int, path: str,
             WHERE e.path ILIKE $2 
               AND e.path ILIKE $3
               AND f.name ILIKE $4
-            ORDER BY LENGTH(name), e.path, lineno 
+            ORDER BY LENGTH(name), e.path, f.lineno, f.id 
             LIMIT $5
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}', limit)
     ]
@@ -124,7 +124,7 @@ async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, 
             WHERE e.path ILIKE $2
               AND e.path ILIKE $3
               AND f.name ILIKE $4
-            ORDER BY LENGTH(name), e.path, lineno
+            ORDER BY LENGTH(name), e.path, f.lineno, f.id
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
     ]
 
@@ -140,7 +140,7 @@ async def list_fragments_by_id(conn: Connection, project_id: int, ids: List[int]
             SELECT e.path, f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            WHERE id IN ({placeholders})
+            WHERE f.id IN ({placeholders})
         ''', project_id, *ids)
     ]
     return fragments

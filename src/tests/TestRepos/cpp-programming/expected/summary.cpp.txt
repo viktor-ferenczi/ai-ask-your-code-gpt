@@ -1,33 +1,32 @@
 File extensions: .cpp
 
-Matches under subdirectories:
-Matches under subdirectories:
-  Bank management system: 17
-  E-Commerce App V1.0: 210
-  E-Commerce App V2.0: 201
-  E-Commerce App V3.0: 217
-  Labirint Game: 56
-  New Year Congratulation: 126
-  OOP1-Lab1: 40
-  OOP1-Lab2: 33
-  OOP1-Lab3: 47
-  OOP1-Lab4: 29
-  OOP1-Lab5: 35
-  OOP1-Lab6: 93
-  OOP1-Lab7: 39
-  OOP1-Lab8: 47
-  OOP1-Lab9: 119
-  OOP2-FA: 155
-  OOP2_Lab1: 30
-  OOP2_Lab10: 53
-  OOP2_Lab2: 62
-  OOP2_Lab3: 40
-  OOP2_Lab4: 40
-  OOP2_Lab5: 24
-  OOP2_Lab6: 57
-  OOP2_Lab7: 87
-  OOP2_Lab7_Extra: 61
-  OOP2_Lab8: 35
-  OOP2_Lab9: 36
-  Quiz Game: 210
-  Snake Game: 66
+Relevant subdirectories:
+  E-Commerce App V3.0: 100%
+  E-Commerce App V1.0: 96%
+  Quiz Game: 96%
+  E-Commerce App V2.0: 92%
+  OOP2-FA: 71%
+  New Year Congratulation: 58%
+  OOP1-Lab9: 54%
+  OOP1-Lab6: 42%
+  OOP2_Lab7: 40%
+  Snake Game: 30%
+  OOP2_Lab2: 28%
+  OOP2_Lab7_Extra: 28%
+  OOP2_Lab6: 26%
+  Labirint Game: 25%
+  OOP2_Lab10: 24%
+  OOP1-Lab3: 21%
+  OOP1-Lab8: 21%
+  OOP1-Lab1: 18%
+  OOP2_Lab3: 18%
+  OOP2_Lab4: 18%
+  OOP1-Lab7: 17%
+  OOP2_Lab9: 16%
+  OOP1-Lab5: 16%
+  OOP2_Lab8: 16%
+  OOP1-Lab2: 15%
+  OOP2_Lab1: 13%
+  OOP1-Lab4: 13%
+  OOP2_Lab5: 11%
+  Bank management system: 7%

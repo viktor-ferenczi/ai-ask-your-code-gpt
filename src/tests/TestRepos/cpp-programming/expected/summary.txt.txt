@@ -1,6 +1,6 @@
 File extensions: .txt
 
-Matches under subdirectories:
-  E-Commerce App V2.0: 2
-  E-Commerce App V3.0: 2
-  OOP2_Lab9: 10
+Relevant subdirectories:
+  OOP2_Lab9: 100%
+  E-Commerce App V2.0: 20%
+  E-Commerce App V3.0: 20%

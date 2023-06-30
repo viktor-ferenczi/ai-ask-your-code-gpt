@@ -1,7 +1,7 @@
 File extensions: .h
 
-Matches under subdirectories:
-  Bank management system: 71
-  E-Commerce App V1.0: 126
-  E-Commerce App V2.0: 98
-  E-Commerce App V3.0: 137
+Relevant subdirectories:
+  E-Commerce App V3.0: 100%
+  E-Commerce App V1.0: 91%
+  E-Commerce App V2.0: 71%
+  Bank management system: 51%

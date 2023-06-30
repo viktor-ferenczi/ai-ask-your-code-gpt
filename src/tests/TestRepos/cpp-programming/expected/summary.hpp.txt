@@ -1,4 +1,4 @@
 File extensions: .hpp
 
-Matches under subdirectories:
-  Labirint Game: 3084
+Relevant subdirectories:
+  Labirint Game: 100%
