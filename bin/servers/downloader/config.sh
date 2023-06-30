@@ -3,7 +3,7 @@
 NAME="downloader-$INSTANCE_INDEX"
 TITLE="Downloader-$INSTANCE_INDEX"
 
-INSTANCE_COUNT=$CPU_COUNT
+INSTANCE_COUNT=4
 
 WORKING_DIR="$HOME/src/downloader"
 COMMAND_LINE="python -O -u downloader.py -$INSTANCE_INDEX-"

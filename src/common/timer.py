@@ -4,7 +4,7 @@ from typing import Dict, Optional
 
 
 @contextmanager
-def timer(prefix='', *, count: int = None, unit: str = None, stats: Dict[str, any] = None, minimum: Optional[float] = None):
+def timer(prefix='', *, count: int = None, unit: str = None, stats: Dict[str, any] = None, minimum: Optional[float] = None, show: bool = True):
     started = time.time()
     yield
     duration = time.time() - started

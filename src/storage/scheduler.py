@@ -86,7 +86,7 @@ class Scheduler:
                         RETURNING created;
                     ''', name, params_json)
                 notify = f"NOTIFY {_quote_ident(name)}"
-                print(notify)
+                # print(notify)
                 await conn.execute(notify)
                 task.created = created
 

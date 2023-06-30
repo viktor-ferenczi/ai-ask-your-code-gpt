@@ -47,8 +47,6 @@ class Downloader:
                 archive = await archives.find_by_checksum(conn, d.checksum)
 
             if archive is not None and archive.checksum == d.checksum:
-                print(archive)
-                print(d)
                 assert d.size == archive.size, (d.size, archive.size)
                 assert common_base_dir == archive.common_base_dir, (common_base_dir, archive.common_base_dir)
             else:

@@ -17,7 +17,7 @@ from storage.scheduler import Scheduler, Operation, THandlerResult
 
 async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
     # print(f'Indexing: {document_cs} {path}')
-    with timer(f'Indexed: {document_cs} {path}'):
+    with timer(f'Indexed: {document_cs} {path}', show=not C.PRODUCTION):
         async with db.connection() as conn:
             document: Document = await documents.find_by_checksum(conn, document_cs)
             if document is None:
