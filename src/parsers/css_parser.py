@@ -63,4 +63,4 @@ class CssParser(BaseParser):
         ]
         summary.append(f"  Classes: {' '.join(classes)}")
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, 0)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)

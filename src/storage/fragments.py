@@ -93,7 +93,7 @@ async def get_all_fragments(conn: Connection, project_id: int) -> List[Fragment]
             SELECT f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            ORDER BY e.path, lineno
+            ORDER BY f.document_cs, f.lineno, f.category, f.definition, f.summary
         ''', project_id)
     ]
 

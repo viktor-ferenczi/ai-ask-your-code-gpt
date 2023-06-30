@@ -38,13 +38,13 @@ class PythonNotebookParser(PythonParser):
         if '/.ipynb_checkpoints' in path:
             return
 
-        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '').strip()
+        content = decode_replace(content).replace('\r\n', '\n').replace('\r', '').strip()
 
-        for sentence in self.splitter.split_text(text_content):
+        for sentence in self.splitter.split_text(content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text)
 
         try:
-            data = json.loads(text_content)
+            data = json.loads(content)
         except json.JSONDecodeError:
             print(f'Failed to decode as JSON, indexing it as text only: {path}')
             return

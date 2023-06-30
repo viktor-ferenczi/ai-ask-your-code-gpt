@@ -32,9 +32,9 @@ class MarkdownParser(BaseParser):
                 path=path,
                 lineno=sentence.lineno,
                 depth=sentence.depth,
-                category='documentation',
+                type='documentation',
                 name='',
-                body=sentence.text
+                text=sentence.text,
             )
 
             for line in sentence.text.split('\n'):
@@ -50,7 +50,7 @@ class MarkdownParser(BaseParser):
             path=path,
             lineno=1,
             depth=0,
-            category='summary',
+            type='summary',
             name='',
-            body=''.join(summary)
+            text=''.join(summary),
         )

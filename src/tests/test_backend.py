@@ -116,8 +116,8 @@ class TestBackend(BaseTestCase):
 
         hits = await backend.search(text='class Duplicates', limit=10)
         self.verify_hits(hits, 2, path='/find_duplicates.py', contains=['class Duplicates:'])
-        self.assertEqual(len([hit for hit in hits if hit.category == 'module']), 1)
-        self.assertEqual(len([hit for hit in hits if hit.category == 'class']), 1)
+        self.assertEqual(len([hit for hit in hits if hit.type == 'module']), 1)
+        self.assertEqual(len([hit for hit in hits if hit.type == 'class']), 1)
         self.verify_hits(hits[:1], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
         self.verify_hits(hits[1:], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
 
@@ -229,7 +229,7 @@ Matches under subdirectories:
 
             if contains:
                 for text in contains:
-                    self.assertTrue(any((text in hit.body) for hit in hits))
+                    self.assertTrue(any((text in hit.text) for hit in hits))
         except AssertionError:
             print()
             print('hits = ')

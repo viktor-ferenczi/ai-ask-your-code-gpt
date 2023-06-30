@@ -28,9 +28,9 @@ def fragment_from_db_fragment(path: str, dbf: DbFragment) -> Fragment:
         path=path,
         lineno=dbf.lineno,
         depth=dbf.depth,
-        category=dbf.category,
+        type=dbf.category,
         name=dbf.name,
-        body=dbf.body,
+        text=dbf.body,
     )
 
 
@@ -67,19 +67,19 @@ class Backend:
             return dict(
                 status=f'Failed to download archive: {task.message}',
                 hint='Try the download URL in a private browser. Does it work?',
-                support_site='https://askyourcode.ai',
+                support='https://askyourcode.ai',
             )
         if task.state == TaskState.crashed:
             return dict(
                 status='Internal error while downloading archive.',
                 hint='Please try again later. The backend is monitored and we will fix this.',
-                support_site='https://askyourcode.ai',
+                support='https://askyourcode.ai',
             )
         if task.state != TaskState.completed:
             return dict(
                 status='The download is still in progress.',
                 hint='Try to request a project summary later.',
-                support_site='https://askyourcode.ai',
+                support='https://askyourcode.ai',
             )
         return dict(status='Archive downloaded')
 
@@ -96,7 +96,7 @@ class Backend:
         fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
         # FIXME: Integrate this into the query
-        fragments = [fragment for fragment in fragments if fragment.category != 'summary']
+        fragments = [fragment for fragment in fragments if fragment.type != 'summary']
 
         if not text:
             # Ordering and limit was already applied in SQL
@@ -212,8 +212,8 @@ class Backend:
                 subdir_name = fragment.path.split('/')[min_slash_count + 1]
                 subdir_hit_counts[subdir_name] = subdir_hit_counts.get(subdir_name, 0) + 1
                 continue
-            if fragment.category == 'summary':
-                strip_text = fragment.body.strip('\n')
+            if fragment.type == 'summary':
+                strip_text = fragment.text.strip('\n')
                 file_summaries.append(f'{strip_text}\n\n')
 
         if file_summaries:

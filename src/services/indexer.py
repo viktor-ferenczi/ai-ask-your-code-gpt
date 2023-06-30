@@ -38,11 +38,11 @@ async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
                     fragment.lineno,
                     fragment.depth,
                     None,
-                    fragment.category,
+                    fragment.type,
                     True,
-                    fragment.category == 'summary',
+                    fragment.type == 'summary',
                     fragment.name,
-                    fragment.body)
+                    fragment.text)
 
 
 async def worker():

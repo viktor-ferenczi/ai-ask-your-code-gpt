@@ -98,9 +98,9 @@ class TreeSitterParser(BaseParser):
                         path=path,
                         lineno=code.lineno,
                         depth=code.depth,
-                        category=code.category,
+                        type=code.category,
                         name=code.name,
-                        body=code.definition,
+                        text=code.definition,
                     )
 
             label = self.categories[key]

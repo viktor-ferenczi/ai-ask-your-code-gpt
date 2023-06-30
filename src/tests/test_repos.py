@@ -1,4 +1,5 @@
 import os
+import shutil
 from pprint import pformat
 from typing import List
 
@@ -98,8 +99,8 @@ class TestRepos(TestBackend):
 
             self.fail('One of more output were not what was expected. See above.')
 
-    async def verify_repo(self, name: str, zip_url: str):
-        zip_path = os.path.join(self.test_repos_dir, f'{name}.zip')
+    async def verify_repo(self, zip_name: str, zip_url: str):
+        zip_path = os.path.join(self.test_repos_dir, f'{zip_name}.zip')
         if not os.path.isfile(zip_path):
             zip_content, _ = await download_into_memory(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
             with open(zip_path, 'wb') as zip_file:
@@ -107,28 +108,27 @@ class TestRepos(TestBackend):
 
         await self.wait_for_processing(300.0)
 
-        self.project_name = name
-        self.project_path = os.path.join(self.test_repos_dir, name)
-        os.makedirs(f'{self.project_path}/actual', exist_ok=True)
-        os.makedirs(f'{self.project_path}/expected', exist_ok=True)
+        self.project_name = zip_name
+        self.project_path = os.path.join(self.test_repos_dir, zip_name)
+        self.prepare_test_output_dirs()
 
-        backend = await Backend.ensure_project(self.db, 'tester', 'small_project')
-        local_zip_url = f'http://127.0.0.1:49000/{name}.zip'
+        backend = await Backend.ensure_project(self.db, 'tester', zip_name)
+        local_zip_url = f'http://127.0.0.1:49000/{zip_name}.zip'
         info: TInfo = await backend.download(local_zip_url, timeout=10.0)
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 
         await self.wait_for_processing(300.0)
 
-        actual = ''.join(hit.body for hit in await backend.search(path='/readme.md', limit=50))
+        actual = ''.join(hit.text for hit in await backend.search(path='/readme.md', limit=50))
         self.verify(f'README.md', actual)
 
-        if name == 'hypedtask':
-            actual = '\n'.join(hit.body for hit in await backend.search(name='Kernel', limit=50))
+        if zip_name == 'hypedtask':
+            actual = '\n'.join(hit.text for hit in await backend.search(name='Kernel', limit=50))
             self.verify(f'name-Kernel', actual)
 
-        if name == 'langchain':
-            actual = '\n'.join(hit.body for hit in await backend.search(name='PromptTemplate', limit=50))
+        if zip_name == 'langchain':
+            actual = '\n'.join(hit.text for hit in await backend.search(name='PromptTemplate', limit=50))
             self.verify(f'name-PromptTemplate', actual)
 
         actual = await backend.summarize(token_limit=999999999)
@@ -137,7 +137,7 @@ class TestRepos(TestBackend):
         actual = await backend.summarize(path='/readme.md', token_limit=999999999)
         self.verify(f'README-summary', actual)
 
-        if name == 'redcoin':
+        if zip_name == 'redcoin':
             actual = await backend.summarize(tail='.sol', token_limit=999999999)
             self.verify(f'summary.sol', actual)
 
@@ -152,7 +152,7 @@ class TestRepos(TestBackend):
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)
 
-        if name == 'taso':
+        if zip_name == 'taso':
             try:
                 await backend.search(text='libtaso_runtime.so')
             except BackendError as e:
@@ -163,11 +163,21 @@ class TestRepos(TestBackend):
             actual = '\n\n'.join(pformat(hit) for hit in hits)
             self.verify('fts5_using_namespace_taso.txt', actual)
 
-        if name == 'unreal':
+        if zip_name == 'unreal':
             actual = await backend.summarize(path='/Plugins/FX/Niagara', tail='.h')
             self.verify('unreal_niagara_headers.txt', actual)
 
         pass
+
+    def prepare_test_output_dirs(self):
+        self.actual_dir = os.path.join(self.project_path, 'actual')
+        self.expected_dir = os.path.join(self.project_path, 'expected')
+
+        if os.path.isdir(self.actual_dir):
+            shutil.rmtree(self.actual_dir)
+
+        os.makedirs(self.actual_dir)
+        os.makedirs(self.expected_dir, exist_ok=True)
 
     def verify(self, name: str, actual: str):
         if len(actual) >= 50_000_000:

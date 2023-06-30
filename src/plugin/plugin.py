@@ -330,17 +330,17 @@ async def search(project_name: str):
         hits = [hit for hit in hits if hit.path == path]
         hits.sort(key=lambda hit: hit.lineno)
 
-        tokens = tiktoken_len(hits[0].body)
+        tokens = tiktoken_len(hits[0].text)
         i = 1
         while i < len(hits):
-            tokens += tiktoken_len(hits[i].body)
+            tokens += tiktoken_len(hits[i].text)
             if tokens > 2000:
                 break
             i += 1
 
         hits = hits[:i]
 
-    results = '\n'.join(hit.body for hit in hits)
+    results = '\n'.join(hit.text for hit in hits)
 
     # FIXME: Return information on indexing progress or hints if the search did not give any result
     info = None
