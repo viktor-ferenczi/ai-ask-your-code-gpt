@@ -37,26 +37,8 @@ Python: /ci_compile.py
   Functions: compile_py start_compile
   Variables and usages: Path PyZipFile ZIP_STORED compile compile_pyc desc_path dest dirs filename files filter fnmatch pathlib prepare_directory print py_compile relative_path relative_to replace root src_py string utils walk zipfile
 
-Python: /sentient_sims/career_descriptions.py
-  Variables and usages: career_descriptions
 
-Python: /sentient_sims/interaction_descriptions.py
-  Variables and usages: interaction_descriptions num_keys print
-
-Python: /sentient_sims/sim_descriptions.py
-  Variables and usages: sim_descriptions
-
-Python: /sentient_sims/trait_descriptions.py
-  Variables and usages: trait_descriptions
-
-Python: /sentient_sims/zone_descriptions.py
-  Variables and usages: join zone_descriptions
-
-Python: /utils/check_github_workflow.py
-  Variables and usages: Github conclusion failed_runs get_repo get_runs get_workflows getenv github html_url name print pylint_workflow repo runs workflow workflows
-
-Python: /utils/utils.py
-  Functions: clean_directory create_directory prepare_directory
-  Variables and usages: Path exist_ok exists isdir mkdir parents path pathlib rmtree shutil string
-
-File: /.github/workflows/build.yml
+Relevant subdirectories:
+  sentient_sims: 100%
+  .github: 0%
+  utils: 0%

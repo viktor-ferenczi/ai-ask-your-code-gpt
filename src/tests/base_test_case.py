@@ -1,4 +1,6 @@
 import asyncio
+import os
+import shutil
 import unittest
 
 import asyncpg
@@ -21,14 +23,23 @@ class BaseTestCase(unittest.IsolatedAsyncioTestCase):
 
         self.maxDiff = 32768
 
-        self.pool: Pool = asyncpg.create_pool(C.DSN, command_timeout=60)
+        print(f'Cleared archive directory: {C.ARCHIVE_DIR}')
+        if os.path.isdir(C.ARCHIVE_DIR):
+            for _ in range(10):
+                try:
+                    shutil.rmtree(C.ARCHIVE_DIR)
+                except (IOError, OSError):
+                    await asyncio.sleep(0.5)
+                else:
+                    break
+
+        self.pool: Pool = asyncpg.create_pool(C.DSN, command_timeout=60, min_size=1, max_size=10)
         await self.pool._async__init__()
         self.db = Database(self.pool)
 
-        cls = self.__class__
-        if cls.first:
+        if BaseTestCase.first:
             await self.db.drop()
-            cls.first = False
+            BaseTestCase.first = False
 
         await self.db.migrate()
 
@@ -36,6 +47,8 @@ class BaseTestCase(unittest.IsolatedAsyncioTestCase):
         self.pubsub = PubSub(self.db)
 
         await self.scheduler.delete_all_tasks()
+
+        await asyncio.sleep(0.01)
 
     async def asyncTearDown(self) -> None:
         del self.db

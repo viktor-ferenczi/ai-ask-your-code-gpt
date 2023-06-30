@@ -1,0 +1,48 @@
+File extensions: .php
+
+PHP: /app/Beta.php
+  Classes: Beta
+  Usages: fillable table
+
+PHP: /app/Client.php
+  Functions: projects
+  Classes: Client
+  Usages: fillable hidden table this
+
+PHP: /app/Credential.php
+  Classes: Credential
+  Usages: fillable hidden
+
+PHP: /app/Project.php
+  Functions: client credentials isMember isOwner members tasks totalWeight uploads
+  Classes: Project
+  Usages: fillable hidden this
+
+PHP: /app/Projectuser.php
+  Classes: Projectuser
+  Usages: fillable hidden table
+
+PHP: /app/Task.php
+  Functions: project
+  Classes: Task
+  Usages: fillable hidden this
+
+PHP: /app/Upload.php
+  Functions: project user
+  Classes: Upload
+  Usages: fillable this
+
+PHP: /app/User.php
+  Functions: clients get_gravatar inProjects projects tasks weight
+  Classes: User
+  Usages: atts email fillable hidden img key result table this url val
+
+
+Relevant subdirectories:
+  Http: 100%
+  Providers: 10%
+  Helpers: 4%
+  Console: 2%
+  Exceptions: 2%
+  Events: 1%
+  Jobs: 1%

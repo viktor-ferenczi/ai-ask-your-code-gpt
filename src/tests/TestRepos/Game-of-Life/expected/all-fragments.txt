@@ -1,10 +1,14 @@
-Fragment(uuid='NORMALIZED-000000',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=1,
+         tokens=110,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='import java.awt.*;\n'
+         body='import java.awt.*;\n'
               'import java.awt.event.ActionEvent;\n'
               'import java.awt.event.ActionListener;\n'
               'import java.util.*;\n'
@@ -27,49 +31,44 @@ Fragment(uuid='NORMALIZED-000000',
               '        super("Game of Life");\n'
               '        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n'
               '        setSize(720, 789);\n'
-              '        setLocati')
+              '        setLocationRel')
 
-Fragment(uuid='NORMALIZED-000001',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=1,
+         tokens=122,
          depth=0,
-         type='summary',
+         parent_id=None,
+         category='summary',
+         definition=True,
+         summary=True,
          name='',
-         text='Java: /GameOfLife.java\n'
+         body='Java: /GameOfLife.java\n'
               '  Classes: Evolution GameOfLife PauseListener RestartListener '
               'Universe UniversePanel\n'
-              '  Methods: actionPerformed actionPerformed create evolve '
-              'getSize main paintComponent print setGenerations setSize\n'
-              '  Usages: BorderFactory BorderFactory BorderFactory Thread '
-              'Thread add add add add add add add addActionListener '
-              'addActionListener alive aliveLabel aliveLabel aliveLabel '
-              'aliveLabel controlPanel controlPanel controlPanel controlPanel '
-              'controlPanel create createEtchedBorder createEtchedBorder '
-              'createLineBorder drawLine drawLine evolution evolution evolve '
-              'fillRect generationLabel generationLabel generationLabel '
-              'generationLabel generations getSize getSize getSize getSize '
-              'getSize getSize getSize getSize getSize getSize getSize '
-              'infoPanel infoPanel infoPanel infoPanel infoPanel infoPanel '
-              'inheritIO neighbours neighbours neighbours neighbours '
-              'neighbours neighbours neighbours neighbours nextBoolean '
-              'paintComponent pauseButton pauseButton print print print '
-              'printStackTrace println println println println println repaint '
-              'restart restartButton restartButton setBorder setBorder '
-              'setBorder setBounds setBounds setBounds setBounds setBounds '
-              'setDefaultCloseOperation setGenerations setLayout setLayout '
-              'setLayout setLocationRelativeTo setName setName setName setName '
-              'setSize setSize setText setText setText setText setText '
-              'setVisible size sleep sleep start universe universe universe '
-              'universe universe universe universe universe universe universe '
-              'universe universe universePanel waitFor\n')
+              '  Methods: actionPerformed create evolve getSize main '
+              'paintComponent print setGenerations setSize\n'
+              '  Usages: BorderFactory Thread add addActionListener alive '
+              'aliveLabel controlPanel create createEtchedBorder '
+              'createLineBorder drawLine e evolution evolve fillRect g '
+              'generationLabel generations getSize i infoPanel inheritIO j n '
+              'neighbours nextBoolean paintComponent pauseButton print '
+              'printStackTrace println repaint restart restartButton s '
+              'setBorder setBounds setDefaultCloseOperation setGenerations '
+              'setLayout setLocationRelativeTo setName setSize setText '
+              'setVisible size sleep start universe universePanel w waitFor\n')
 
-Fragment(uuid='NORMALIZED-000002',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=7,
+         tokens=476,
          depth=0,
-         type='class',
+         parent_id=None,
+         category='class',
+         definition=True,
+         summary=False,
          name='GameOfLife',
-         text='public class GameOfLife extends JFrame {\n'
+         body='public class GameOfLife extends JFrame {\n'
               '\n'
               '    JPanel infoPanel;\n'
               '    static JLabel generationLabel;\n'
@@ -154,13 +153,17 @@ Fragment(uuid='NORMALIZED-000002',
               '    }\n'
               '}')
 
-Fragment(uuid='NORMALIZED-000003',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=24,
+         tokens=126,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='onRelativeTo(null);\n'
+         body='ativeTo(null);\n'
               '        setLayout(null);\n'
               '        setVisible(true);\n'
               '\n'
@@ -179,15 +182,19 @@ Fragment(uuid='NORMALIZED-000003',
               '        infoPanel.add(generationLabel);\n'
               '\n'
               '        aliveLabel = new JLabel();\n'
-              '        aliveLa')
+              '        aliveLabel.')
 
-Fragment(uuid='NORMALIZED-000004',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=41,
+         tokens=128,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='bel.setName("AliveLabel");\n'
+         body='setName("AliveLabel");\n'
               '        aliveLabel.setText(" Alive: " + '
               'GameOfLife.universe.alive);\n'
               '        aliveLabel.setBounds(0, 20, 400, 20);\n'
@@ -203,15 +210,19 @@ Fragment(uuid='NORMALIZED-000004',
               '\n'
               '        JToggleButton pauseButton = new JToggleButton("||");\n'
               '        pauseButton.setName("PlayToggleButton");\n'
-              '        ActionListener pauseListener = new Pau')
+              '        ActionListener pauseListener = new Pa')
 
-Fragment(uuid='NORMALIZED-000005',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=54,
+         tokens=108,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='seListener();\n'
+         body='useListener();\n'
               '        pauseButton.addActionListener(pauseListener);\n'
               '        controlPanel.add(pauseButton);\n'
               '\n'
@@ -232,13 +243,17 @@ Fragment(uuid='NORMALIZED-000005',
               '        universe.setSize(35);\n'
               '        evolution.setGenerations(500);\n')
 
-Fragment(uuid='NORMALIZED-000006',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=68,
+         tokens=60,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='main',
-         text='public static void main(String[] args) {\n'
+         body='public static void main(String[] args) {\n'
               '\n'
               '        new GameOfLife();\n'
               '        universe.setSize(35);\n'
@@ -255,13 +270,17 @@ Fragment(uuid='NORMALIZED-000006',
               '        }\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000007',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=73,
+         tokens=33,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '        while (true) {\n'
               '\n'
               '            if (!evolution.restart) {\n'
@@ -274,13 +293,17 @@ Fragment(uuid='NORMALIZED-000007',
               '    }\n'
               '}\n')
 
-Fragment(uuid='NORMALIZED-000008',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=85,
+         tokens=129,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               'class Universe {\n'
               '\n'
               '    int size;\n'
@@ -320,13 +343,17 @@ Fragment(uuid='NORMALIZED-000008',
               '\n'
               '        this.field = new char[size][size];\n')
 
-Fragment(uuid='NORMALIZED-000009',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=86,
+         tokens=316,
          depth=0,
-         type='class',
+         parent_id=None,
+         category='class',
+         definition=True,
+         summary=False,
          name='Universe',
-         text='class Universe {\n'
+         body='class Universe {\n'
               '\n'
               '    int size;\n'
               '    static int genNum;\n'
@@ -401,21 +428,29 @@ Fragment(uuid='NORMALIZED-000009',
               '    }\n'
               '}')
 
-Fragment(uuid='NORMALIZED-000010',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=96,
+         tokens=12,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='getSize',
-         text='public int getSize() {\n\n        return this.size;\n\n    }')
+         body='public int getSize() {\n\n        return this.size;\n\n    }')
 
-Fragment(uuid='NORMALIZED-000011',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=102,
+         tokens=43,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='setSize',
-         text='public void setSize(int size) {\n'
+         body='public void setSize(int size) {\n'
               '\n'
               '        if (size > 0) {\n'
               '\n'
@@ -430,13 +465,17 @@ Fragment(uuid='NORMALIZED-000011',
               '\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000012',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=116,
+         tokens=117,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='create',
-         text='public void create() {\n'
+         body='public void create() {\n'
               '\n'
               '        this.genNum = 0;\n'
               '        this.alive = 0;\n'
@@ -462,21 +501,29 @@ Fragment(uuid='NORMALIZED-000012',
               '        }\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000013',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=123,
+         tokens=18,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n        for (int i = 0; i < this.size; i++) {\n')
+         body='\n        for (int i = 0; i < this.size; i++) {\n')
 
-Fragment(uuid='NORMALIZED-000014',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=125,
+         tokens=103,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '            for (int j = 0; j < this.size; j++) {\n'
               '\n'
               '                if (this.rand.nextBoolean()) {\n'
@@ -499,13 +546,17 @@ Fragment(uuid='NORMALIZED-000014',
               'GameOfLife.universe.alive);\n'
               '        System.out.println("Alive: " + this.alive);\n')
 
-Fragment(uuid='NORMALIZED-000015',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=142,
+         tokens=107,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='print',
-         text='public void print() {\n'
+         body='public void print() {\n'
               '\n'
               '        GameOfLife.aliveLabel.setText(" Alive: " + '
               'GameOfLife.universe.alive);\n'
@@ -522,21 +573,29 @@ Fragment(uuid='NORMALIZED-000015',
               '        }\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000016',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=146,
+         tokens=18,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n        for (int i = 0; i < this.size; i++) {\n')
+         body='\n        for (int i = 0; i < this.size; i++) {\n')
 
-Fragment(uuid='NORMALIZED-000017',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=148,
+         tokens=53,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '            for (int j = 0; j < this.size; j++) {\n'
               '\n'
               '                System.out.print(j == size - 1 ? '
@@ -547,13 +606,17 @@ Fragment(uuid='NORMALIZED-000017',
               '    }\n'
               '}\n')
 
-Fragment(uuid='NORMALIZED-000018',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=157,
+         tokens=127,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               'class Evolution {\n'
               '\n'
               '    int generations;\n'
@@ -588,13 +651,17 @@ Fragment(uuid='NORMALIZED-000018',
               '\n'
               '            try {\n')
 
-Fragment(uuid='NORMALIZED-000019',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=158,
+         tokens=766,
          depth=0,
-         type='class',
+         parent_id=None,
+         category='class',
+         definition=True,
+         summary=False,
          name='Evolution',
-         text='class Evolution {\n'
+         body='class Evolution {\n'
               '\n'
               '    int generations;\n'
               '    char[][] field;\n'
@@ -748,13 +815,17 @@ Fragment(uuid='NORMALIZED-000019',
               '    }\n'
               '}')
 
-Fragment(uuid='NORMALIZED-000020',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=166,
+         tokens=693,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='evolve',
-         text='public void evolve(Universe universe) {\n'
+         body='public void evolve(Universe universe) {\n'
               '\n'
               '        this.field = new char[universe.size][universe.size];\n'
               '\n'
@@ -885,13 +956,17 @@ Fragment(uuid='NORMALIZED-000020',
               '        }\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000021',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=190,
+         tokens=80,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '                while (GameOfLife.paused) {\n'
               '\n'
               '                    Thread.sleep(1000l);\n'
@@ -913,21 +988,29 @@ Fragment(uuid='NORMALIZED-000021',
               '\n'
               '            universe.alive = 0;\n')
 
-Fragment(uuid='NORMALIZED-000022',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=210,
+         tokens=18,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
+         body='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
 
-Fragment(uuid='NORMALIZED-000023',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=212,
+         tokens=61,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '                for (int j = 0; j < universe.getSize(); j++) {\n'
               '\n'
               '                    int neighbours = 0;\n'
@@ -936,13 +1019,17 @@ Fragment(uuid='NORMALIZED-000023',
               '                    int w = j - 1;\n'
               '                    int e = j + 1;\n')
 
-Fragment(uuid='NORMALIZED-000024',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=220,
+         tokens=43,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '                    if (i == 0) {\n'
               '\n'
               '                        n = universe.getSize() - 1;\n'
@@ -953,13 +1040,17 @@ Fragment(uuid='NORMALIZED-000024',
               '\n'
               '                    }\n')
 
-Fragment(uuid='NORMALIZED-000025',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=230,
+         tokens=88,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '                    if (j == 0) {\n'
               '\n'
               '                        w = universe.getSize() - 1;\n'
@@ -974,15 +1065,19 @@ Fragment(uuid='NORMALIZED-000025',
               '1 : 0;\n'
               "                    neighbours += universe.field[n][j] == 'O' ? "
               '1 : 0;\n'
-              '                    neighbours += u')
+              '                    neighbours += univ')
 
-Fragment(uuid='NORMALIZED-000026',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=243,
+         tokens=118,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text="niverse.field[n][e] == 'O' ? 1 : 0;\n"
+         body="erse.field[n][e] == 'O' ? 1 : 0;\n"
               "                    neighbours += universe.field[i][w] == 'O' ? "
               '1 : 0;\n'
               "                    neighbours += universe.field[i][e] == 'O' ? "
@@ -994,13 +1089,17 @@ Fragment(uuid='NORMALIZED-000026',
               "                    neighbours += universe.field[s][e] == 'O' ? "
               '1 : 0;\n')
 
-Fragment(uuid='NORMALIZED-000027',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=249,
+         tokens=69,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               "                    if (universe.field[i][j] == 'O') {\n"
               '\n'
               '                        this.field[i][j] = neighbours < 2 || '
@@ -1015,32 +1114,44 @@ Fragment(uuid='NORMALIZED-000027',
               '                }\n'
               '            }\n')
 
-Fragment(uuid='NORMALIZED-000028',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=261,
+         tokens=18,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
+         body='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
 
-Fragment(uuid='NORMALIZED-000029',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=263,
+         tokens=32,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '                for (int j = 0; j < universe.getSize(); j++) {\n'
               '\n'
               '                    universe.field[i][j] = this.field[i][j];\n')
 
-Fragment(uuid='NORMALIZED-000030',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=267,
+         tokens=86,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               "                    if (this.field[i][j] == 'O') {\n"
               '\n'
               '                        universe.alive++;\n'
@@ -1060,13 +1171,17 @@ Fragment(uuid='NORMALIZED-000030',
               '\n'
               '    public void setGenerations(int generations) {\n')
 
-Fragment(uuid='NORMALIZED-000031',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=284,
+         tokens=47,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='setGenerations',
-         text='public void setGenerations(int generations) {\n'
+         body='public void setGenerations(int generations) {\n'
               '\n'
               '        if (generations >= 0) {\n'
               '\n'
@@ -1080,13 +1195,17 @@ Fragment(uuid='NORMALIZED-000031',
               '        }\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000032',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=285,
+         tokens=40,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '        if (generations >= 0) {\n'
               '\n'
               '            this.generations = generations;\n'
@@ -1100,13 +1219,17 @@ Fragment(uuid='NORMALIZED-000032',
               '    }\n'
               '}\n')
 
-Fragment(uuid='NORMALIZED-000033',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=297,
+         tokens=56,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               'class UniversePanel extends JPanel {\n'
               '\n'
               '    public UniversePanel() {\n'
@@ -1121,13 +1244,17 @@ Fragment(uuid='NORMALIZED-000033',
               '\n'
               '        super.paintComponent(g);\n')
 
-Fragment(uuid='NORMALIZED-000034',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=298,
+         tokens=204,
          depth=0,
-         type='class',
+         parent_id=None,
+         category='class',
+         definition=True,
+         summary=False,
          name='UniversePanel',
-         text='class UniversePanel extends JPanel {\n'
+         body='class UniversePanel extends JPanel {\n'
               '\n'
               '    public UniversePanel() {\n'
               '\n'
@@ -1165,13 +1292,17 @@ Fragment(uuid='NORMALIZED-000034',
               '    }\n'
               '}')
 
-Fragment(uuid='NORMALIZED-000035',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=307,
+         tokens=162,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='paintComponent',
-         text='public void paintComponent(Graphics g) {\n'
+         body='public void paintComponent(Graphics g) {\n'
               '\n'
               '        super.paintComponent(g);\n'
               '\n'
@@ -1198,13 +1329,17 @@ Fragment(uuid='NORMALIZED-000035',
               '        }\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000036',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=310,
+         tokens=62,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '        for (int i = 1; i < GameOfLife.universe.getSize(); i++) '
               '{\n'
               '\n'
@@ -1213,23 +1348,31 @@ Fragment(uuid='NORMALIZED-000036',
               '\n'
               '        }\n')
 
-Fragment(uuid='NORMALIZED-000037',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=317,
+         tokens=22,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '        for (int i = 0; i < GameOfLife.universe.getSize(); i++) '
               '{\n')
 
-Fragment(uuid='NORMALIZED-000038',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=319,
+         tokens=68,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               '            for (int j = 0; j < GameOfLife.universe.getSize(); '
               'j++) {\n'
               '\n'
@@ -1243,13 +1386,17 @@ Fragment(uuid='NORMALIZED-000038',
               '    }\n'
               '}\n')
 
-Fragment(uuid='NORMALIZED-000039',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=331,
+         tokens=30,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               'class PauseListener implements ActionListener {\n'
               '\n'
               '    public void actionPerformed(ActionEvent e) {\n'
@@ -1259,13 +1406,17 @@ Fragment(uuid='NORMALIZED-000039',
               '    }\n'
               '}\n')
 
-Fragment(uuid='NORMALIZED-000040',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=332,
+         tokens=29,
          depth=0,
-         type='class',
+         parent_id=None,
+         category='class',
+         definition=True,
+         summary=False,
          name='PauseListener',
-         text='class PauseListener implements ActionListener {\n'
+         body='class PauseListener implements ActionListener {\n'
               '\n'
               '    public void actionPerformed(ActionEvent e) {\n'
               '\n'
@@ -1274,25 +1425,33 @@ Fragment(uuid='NORMALIZED-000040',
               '    }\n'
               '}')
 
-Fragment(uuid='NORMALIZED-000041',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=334,
+         tokens=21,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='actionPerformed',
-         text='public void actionPerformed(ActionEvent e) {\n'
+         body='public void actionPerformed(ActionEvent e) {\n'
               '\n'
               '        GameOfLife.paused = !GameOfLife.paused;\n'
               '\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000042',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=340,
+         tokens=28,
          depth=0,
-         type='module',
+         parent_id=None,
+         category='module',
+         definition=True,
+         summary=False,
          name='',
-         text='\n'
+         body='\n'
               'class RestartListener implements ActionListener {\n'
               '\n'
               '    public void actionPerformed(ActionEvent e) {\n'
@@ -1302,13 +1461,17 @@ Fragment(uuid='NORMALIZED-000042',
               '    }\n'
               '}\n')
 
-Fragment(uuid='NORMALIZED-000043',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=341,
+         tokens=27,
          depth=0,
-         type='class',
+         parent_id=None,
+         category='class',
+         definition=True,
+         summary=False,
          name='RestartListener',
-         text='class RestartListener implements ActionListener {\n'
+         body='class RestartListener implements ActionListener {\n'
               '\n'
               '    public void actionPerformed(ActionEvent e) {\n'
               '\n'
@@ -1317,25 +1480,33 @@ Fragment(uuid='NORMALIZED-000043',
               '    }\n'
               '}')
 
-Fragment(uuid='NORMALIZED-000044',
-         path='/GameOfLife.java',
+Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+         id=-1,
          lineno=343,
+         tokens=19,
          depth=2,
-         type='method',
+         parent_id=None,
+         category='method',
+         definition=True,
+         summary=False,
          name='actionPerformed',
-         text='public void actionPerformed(ActionEvent e) {\n'
+         body='public void actionPerformed(ActionEvent e) {\n'
               '\n'
               '        GameOfLife.evolution.restart = true;\n'
               '\n'
               '    }')
 
-Fragment(uuid='NORMALIZED-000045',
-         path='/README.md',
+Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d67ddb14',
+         id=-1,
          lineno=1,
+         tokens=66,
          depth=0,
-         type='documentation',
+         parent_id=None,
+         category='documentation',
+         definition=True,
+         summary=False,
          name='',
-         text='# Game of Life\n'
+         body='# Game of Life\n'
               '\n'
               'My 8th project from Hyperskill.\n'
               '\n'
@@ -1348,10 +1519,14 @@ Fragment(uuid='NORMALIZED-000045',
               '- generation number and alive cells counters;\n'
               '- pause and restart buttons.\n')
 
-Fragment(uuid='NORMALIZED-000046',
-         path='/README.md',
+Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d67ddb14',
+         id=-1,
          lineno=1,
+         tokens=5,
          depth=0,
-         type='summary',
+         parent_id=None,
+         category='summary',
+         definition=True,
+         summary=True,
          name='',
-         text='# Game of Life\n')
+         body='# Game of Life\n')

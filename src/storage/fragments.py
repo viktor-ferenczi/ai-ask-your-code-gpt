@@ -60,7 +60,7 @@ async def query(conn: Connection, document_cs: str, id: int) -> List[Fragment]:
     return [
         Fragment.from_row(row)
         for row in await conn.fetch(
-            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_cs = $2 AND id= $3''',
+            '''SELECT * FROM fragment WHERE partition_key = $1 AND document_cs = $2 AND id = $3''',
             document_cs[:2], document_cs, id
         )
     ]
@@ -90,10 +90,11 @@ async def insert(conn: Connection, fragment: Fragment):
 async def get_all_fragments(conn: Connection, project_id: int) -> List[Fragment]:
     return [
         Fragment.from_row(row) for row in await conn.fetch('''
-            SELECT f.* 
-            FROM fragment AS f
-            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            ORDER BY f.document_cs, f.lineno, f.category, f.definition, f.summary, f.id
+            SELECT c.* 
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1 
+            ORDER BY f.document_cs, c.lineno, c.category, c.definition, c.summary, c.id
         ''', project_id)
     ]
 
@@ -102,13 +103,14 @@ async def search_by_path_tail_name(conn: Connection, project_id: int, path: str,
     return [
         (row['path'], Fragment.from_row(row))
         for row in await conn.fetch('''
-            SELECT e.path, f.* 
-            FROM fragment AS f
-            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            WHERE e.path ILIKE $2 
-              AND e.path ILIKE $3
-              AND f.name ILIKE $4
-            ORDER BY LENGTH(name), e.path, f.lineno, f.id 
+            SELECT f.path, c.* 
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1 
+              AND f.path ILIKE $2 
+              AND f.path ILIKE $3
+              AND c.name ILIKE $4
+            ORDER BY char_length(f.path) - char_length(replace(f.path, '/', '')), f.path, c.lineno, c.id 
             LIMIT $5
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}', limit)
     ]
@@ -118,13 +120,14 @@ async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, 
     return [
         (row['path'], Fragment.from_row(row))
         for row in await conn.fetch('''
-            SELECT e.path, f.* 
-            FROM fragment AS f
-            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            WHERE e.path ILIKE $2
-              AND e.path ILIKE $3
-              AND f.name ILIKE $4
-            ORDER BY LENGTH(name), e.path, f.lineno, f.id
+            SELECT f.path, c.* 
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1 
+              AND f.path ILIKE $2
+              AND f.path ILIKE $3
+              AND c.name ILIKE $4
+            ORDER BY char_length(f.path) - char_length(replace(f.path, '/', '')), f.path, c.lineno, c.id
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
     ]
 
@@ -137,10 +140,11 @@ async def list_fragments_by_id(conn: Connection, project_id: int, ids: List[int]
     fragments = [
         (row['path'], Fragment.from_row(row))
         for row in await conn.fetch(f'''
-            SELECT e.path, f.* 
-            FROM fragment AS f
-            INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            WHERE f.id IN ({placeholders})
+            SELECT f.path, c.* 
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1
+              AND f.id IN ({placeholders})
         ''', project_id, *ids)
     ]
     return fragments

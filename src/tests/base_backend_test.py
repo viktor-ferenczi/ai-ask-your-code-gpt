@@ -18,7 +18,7 @@ MODULE_DIR = os.path.dirname(__file__)
 class BaseBackendTest(BaseTestCase):
     zip_path = ''
     indexer_count = os.cpu_count()
-    use_multiprocessing = True
+    use_multiprocessing = False
 
     async def serve_zip(self):
         assert self.zip_path
@@ -70,7 +70,8 @@ class BaseBackendTest(BaseTestCase):
 
     async def wait_for_processing(self, timeout):
         print('Waiting for all tasks to be processed...')
-        deadline = time() + timeout
+        started = time()
+        deadline = started + timeout
         while 1:
             count = await self.scheduler.count_tasks(TaskState.pending)
             if not count:
@@ -82,4 +83,5 @@ class BaseBackendTest(BaseTestCase):
             print(f'Pending tasks: {count}')
             await asyncio.sleep(1.0)
 
-        print('Processing finished, no pending tasks left.')
+        duration = time() - started
+        print(f'Processing finished in {duration:.3f}s. No pending tasks left.')

@@ -12,14 +12,14 @@ from model.fragment import Fragment
 from model.hit import Hit
 from parsers.registrations import PARSERS_BY_EXTENSION
 from plugin.backend import Backend, TInfo, BackendError
-from storage.fragments import get_all_fragments
+from storage.fragments import get_all_fragments, Fragment as DbFragment
 
 MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
-    # # Markdown, Python
-    # ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
-    #
+    # Markdown, Python
+    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+
     # # Markdown, Python, GitHub Workflow, YAML
     # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
     #
@@ -31,35 +31,36 @@ REPOS = [
     #
     # # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
     # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
-    #
-    # # C++, CMake
+
+    # C++, CMake
     ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
-    #
-    # # C#, Batch
-    # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
-    #
-    # # Java
-    # ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
-    #
+
+    # C#, Batch
+    ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+
+    # Java
+    ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+
     # # Python, Shell, JSON, CSV, Python Notebook
     # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
-    #
-    # # Python, Markdown
-    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
 
-    # TypeScript
+    # Python, Markdown
+    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
+
+    # # TypeScript
     # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
-
-    # Python, C++, CUDA
+    #
+    # # Python, C++, CUDA
     # ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
-
-    # TypeScript, JavaScript, HTML
-    # FIXME: Crashes tiktoken_len at a data.ts file:
-    # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
+    #
+    # # TypeScript, JavaScript, HTML
+    # # FIXME: Crashes tiktoken_len at a data.ts file:
+    # # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
     # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
 
     # Part of Unreal: C++, shader
-    # ('unreal', 'http://rebecca.sh/PluginsShadersSourceTargets.zip'),
+    # http://rebecca.sh/PluginsShadersSourceTargets.zip
+    ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
 ]
 
 
@@ -75,6 +76,7 @@ def normalize_hits(fragments: List[Hit]):
 
 class TestRepos(BaseBackendTest):
     test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
+    use_multiprocessing = True
 
     async def serve_zip(self):
         self.app = Quart('test_zip_server')
@@ -123,7 +125,7 @@ class TestRepos(BaseBackendTest):
 
         backend = await Backend.ensure_project(self.db, 'tester', zip_name)
         local_zip_url = f'http://127.0.0.1:49000/{zip_name}.zip'
-        info: TInfo = await backend.download(local_zip_url, timeout=10.0)
+        info: TInfo = await backend.download(local_zip_url, timeout=60.0)
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 
@@ -132,9 +134,17 @@ class TestRepos(BaseBackendTest):
         actual = ''.join(hit.text for hit in await backend.search(path='/readme.md', limit=100))
         self.verify(f'README.md', actual)
 
+        if zip_name == 'dblayer':
+            actual = await backend.summarize(path='/lib/dblayer/model', tail='.py', token_limit=999999999)
+            self.verify(f'summary-lib-dblayer-model.py', actual)
+
         if zip_name == 'hypedtask':
             actual = '\n'.join(hit.text for hit in await backend.search(name='Kernel', limit=50))
             self.verify(f'name-Kernel', actual)
+            actual = await backend.summarize(path='/public/assets/js', tail='.js', token_limit=999999999)
+            self.verify(f'summary-public-assets-js.js', actual)
+            actual = await backend.summarize(path='/app', tail='.php', token_limit=999999999)
+            self.verify(f'summary-app.php', actual)
 
         if zip_name == 'langchain':
             actual = '\n'.join(hit.text for hit in await backend.search(name='PromptTemplate', limit=50))
@@ -150,14 +160,29 @@ class TestRepos(BaseBackendTest):
             actual = await backend.summarize(tail='.sol', token_limit=999999999)
             self.verify(f'summary.sol', actual)
 
+        if zip_name == 'sentient-sims':
+            actual = await backend.summarize(path='/sentient_sims', tail='.py', token_limit=999999999)
+            self.verify(f'summary-sentient-sims.py', actual)
+
+        if zip_name == 'toolbar-manager':
+            actual = await backend.summarize(path='/ToolbarManager/Gui', tail='.cs', token_limit=999999999)
+            self.verify(f'summary-gui.cs', actual)
+
+        if zip_name == 'neovim':
+            actual = await backend.summarize(path='/src/nvim', tail='.c', token_limit=999999999)
+            self.verify(f'summary-src-nvim.c', actual)
+            actual = await backend.summarize(path='/src/nvim', tail='.h', token_limit=999999999)
+            self.verify(f'summary-src-nvim.h', actual)
+
         for extension in PARSERS_BY_EXTENSION:
             actual = await backend.summarize(tail=f'.{extension}', token_limit=999999999)
             if actual:
                 self.verify(f'summary.{extension}', actual)
 
         async with self.db.connection() as conn:
-            fragments = await get_all_fragments(conn, backend.project.id)
-            normalize_fragments(fragments)
+            fragments: List[DbFragment] = await get_all_fragments(conn, backend.project.id)
+        fragments.sort(key=lambda f: (f.document_cs, f.lineno, f.id, f.category, f.definition, f.summary))
+        normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)
 
@@ -175,8 +200,6 @@ class TestRepos(BaseBackendTest):
         if zip_name == 'unreal':
             actual = await backend.summarize(path='/Plugins/FX/Niagara', tail='.h')
             self.verify('unreal_niagara_headers.txt', actual)
-
-        pass
 
     def prepare_test_output_dirs(self):
         self.actual_dir = os.path.join(self.project_path, 'actual')

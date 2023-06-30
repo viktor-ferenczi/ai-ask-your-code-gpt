@@ -1,3 +1,4 @@
 File extensions: .txt
 
-File: /data/text/data_100_random_text.txt
+Relevant subdirectories:
+  data: 100%

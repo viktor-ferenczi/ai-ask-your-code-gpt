@@ -77,6 +77,7 @@ create table public.archive
         constraint archive_pk
             primary key,
     size bigint not null,
+    count bigint not null,
     url  varchar(400) not null,
     etag varchar(160) not null,
     common_base_dir varchar(400) not null
@@ -112,18 +113,33 @@ create table public.document
     doctype       varchar(40) default 'text'::character varying not null,
     constraint document_pk
         primary key (partition_key, checksum)
-);
+) partition by range (partition_key);
+
+CREATE TABLE document_0 PARTITION OF document FOR VALUES FROM ('00') TO ('10');
+CREATE TABLE document_1 PARTITION OF document FOR VALUES FROM ('10') TO ('20');
+CREATE TABLE document_2 PARTITION OF document FOR VALUES FROM ('20') TO ('30');
+CREATE TABLE document_3 PARTITION OF document FOR VALUES FROM ('30') TO ('40');
+CREATE TABLE document_4 PARTITION OF document FOR VALUES FROM ('40') TO ('50');
+CREATE TABLE document_5 PARTITION OF document FOR VALUES FROM ('50') TO ('60');
+CREATE TABLE document_6 PARTITION OF document FOR VALUES FROM ('60') TO ('70');
+CREATE TABLE document_7 PARTITION OF document FOR VALUES FROM ('70') TO ('80');
+CREATE TABLE document_8 PARTITION OF document FOR VALUES FROM ('80') TO ('90');
+CREATE TABLE document_9 PARTITION OF document FOR VALUES FROM ('90') TO ('a0');
+CREATE TABLE document_a PARTITION OF document FOR VALUES FROM ('a0') TO ('b0');
+CREATE TABLE document_b PARTITION OF document FOR VALUES FROM ('b0') TO ('c0');
+CREATE TABLE document_c PARTITION OF document FOR VALUES FROM ('c0') TO ('d0');
+CREATE TABLE document_d PARTITION OF document FOR VALUES FROM ('d0') TO ('e0');
+CREATE TABLE document_e PARTITION OF document FOR VALUES FROM ('e0') TO ('f0');
+CREATE TABLE document_f PARTITION OF document FOR VALUES FROM ('f0') TO ('g0');
 
 alter table public.document
     owner to askyourcode;
 
 create table public.fragment
 (
+    id            bigserial,
     partition_key char(2)               not null,
     document_cs   varchar(64)           not null,
-    id       bigserial
-        constraint fragment_pk
-            primary key,
     lineno        integer               not null,
     tokens        integer               not null,
     depth         integer               not null,
@@ -132,8 +148,27 @@ create table public.fragment
     definition    boolean               not null,
     summary       boolean  not null,
     name          varchar(80)           not null,
-    body          text                  not null
-);
+    body          text                  not null,
+    constraint fragment_pk
+        primary key (id, partition_key)    
+) partition by range (partition_key);
+
+CREATE TABLE fragment_0 PARTITION OF fragment FOR VALUES FROM ('00') TO ('10');
+CREATE TABLE fragment_1 PARTITION OF fragment FOR VALUES FROM ('10') TO ('20');
+CREATE TABLE fragment_2 PARTITION OF fragment FOR VALUES FROM ('20') TO ('30');
+CREATE TABLE fragment_3 PARTITION OF fragment FOR VALUES FROM ('30') TO ('40');
+CREATE TABLE fragment_4 PARTITION OF fragment FOR VALUES FROM ('40') TO ('50');
+CREATE TABLE fragment_5 PARTITION OF fragment FOR VALUES FROM ('50') TO ('60');
+CREATE TABLE fragment_6 PARTITION OF fragment FOR VALUES FROM ('60') TO ('70');
+CREATE TABLE fragment_7 PARTITION OF fragment FOR VALUES FROM ('70') TO ('80');
+CREATE TABLE fragment_8 PARTITION OF fragment FOR VALUES FROM ('80') TO ('90');
+CREATE TABLE fragment_9 PARTITION OF fragment FOR VALUES FROM ('90') TO ('a0');
+CREATE TABLE fragment_a PARTITION OF fragment FOR VALUES FROM ('a0') TO ('b0');
+CREATE TABLE fragment_b PARTITION OF fragment FOR VALUES FROM ('b0') TO ('c0');
+CREATE TABLE fragment_c PARTITION OF fragment FOR VALUES FROM ('c0') TO ('d0');
+CREATE TABLE fragment_d PARTITION OF fragment FOR VALUES FROM ('d0') TO ('e0');
+CREATE TABLE fragment_e PARTITION OF fragment FOR VALUES FROM ('e0') TO ('f0');
+CREATE TABLE fragment_f PARTITION OF fragment FOR VALUES FROM ('f0') TO ('g0');
 
 alter table public.fragment
     owner to askyourcode;

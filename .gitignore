@@ -135,5 +135,8 @@ dmypy.json
 TestProject.zip
 /src/tests/TestRepos/*.zip
 /src/tests/TestRepos/*/actual/
+/src/tests/TestRepos/neovim
+/src/tests/TestRepos/sanity
+/src/tests/TestRepos/unreal
 *.actual
 *-actual

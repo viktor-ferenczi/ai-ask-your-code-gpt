@@ -53,10 +53,14 @@ class Database:
             async with conn.transaction():
                 await conn.execute(schema.DROP)
 
+        print(f'Dropped database')
+
     async def create(self):
         async with self.connection() as conn:
             async with conn.transaction():
                 await conn.execute(schema.CREATE)
+
+        print(f'Created database version {schema.VERSION}')
 
     async def migrate(self):
         while 1:
@@ -64,7 +68,8 @@ class Database:
                 try:
                     version = await properties.read(conn, 'Version')
                 except UndefinedTableError:
-                    version = 0
+                    await self.create()
+                    break
 
                 if version == schema.VERSION:
                     break

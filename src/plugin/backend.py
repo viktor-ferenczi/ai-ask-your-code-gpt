@@ -44,7 +44,7 @@ class Backend:
     @classmethod
     async def ensure_project(cls, db: Database, uid: str, project_name: str) -> Optional["Backend"]:
         async with db.transaction() as conn:
-            project = await projects.find_by_name(conn, uid, project_name)
+            project = await projects.find_by_uid_and_name(conn, uid, project_name)
             if project is None:
                 project = await projects.create(conn, uid, project_name)
         return Backend(db, project)
@@ -62,32 +62,41 @@ class Backend:
             except asyncio.TimeoutError:
                 pass
 
-        task = await self.scheduler.get_task(task.created)
+        for _ in range(10):
+            task = await self.scheduler.get_task(task.created)
+            if task.state != TaskState.pending:
+                break
+            await asyncio.sleep(0.05)
+
         if task.state == TaskState.failed:
             return dict(
                 status=f'Failed to download archive: {task.message}',
                 hint='Try the download URL in a private browser. Does it work?',
                 support='https://askyourcode.ai',
             )
+
         if task.state == TaskState.crashed:
             return dict(
                 status='Internal error while downloading archive.',
                 hint='Please try again later. The backend is monitored and we will fix this.',
                 support='https://askyourcode.ai',
             )
-        if task.state != TaskState.completed:
+
+        if task.state == TaskState.pending:
             return dict(
                 status='The download is still in progress.',
                 hint='Try to request a project summary later.',
                 support='https://askyourcode.ai',
             )
+
+        assert task.state == TaskState.completed
         return dict(status='Archive downloaded')
 
     async def delete(self):
         pass
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
-        async with self.db.transaction() as conn:
+        async with self.db.connection() as conn:
             if text:
                 pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
             else:
@@ -115,7 +124,7 @@ class Backend:
             fts_ids = [uuid for uuid in fts_ids if uuid in fragment_map]
         else:
             # Pull the fragments referenced from the full text search uuids
-            async with self.db.transaction() as conn:
+            async with self.db.connection() as conn:
                 pairs = await list_fragments_by_id(conn, self.project.id, list(map(int, fts_ids)))
 
             fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
@@ -128,23 +137,23 @@ class Backend:
 
     async def free_text_search(self, query: str, limit: int) -> List[str]:
         sql = '''
-            SELECT s.id
+            SELECT s.id, ts_rank_cd(to_tsvector(s.body), query) AS rank
             FROM (
-                SELECT id, document_cs, ts_rank_cd(to_tsvector(body), query) AS rank
-                FROM fragment, phraseto_tsquery($2) query
-                WHERE body @@ query
-            ) AS s
-            INNER JOIN file AS e ON e.document_cs = s.document_cs
-            WHERE e.project_id = $1
-            ORDER BY s.rank DESC
+                SELECT c.id, c.body
+                FROM file AS f
+                INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+                WHERE f.project_id = $1
+            ) AS s, phraseto_tsquery($2) query 
+            WHERE s.body @@ query
+            ORDER BY rank DESC
             LIMIT $3
         '''
-        async with self.db.transaction() as conn:
+        async with self.db.connection() as conn:
             return [str(row[0]) for row in await conn.fetch(sql, self.project.id, query, limit)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
-        async with self.db.transaction() as conn:
-            pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+        async with self.db.connection() as conn:
+            pairs = await search_by_path_tail_name(conn, self.project.id, path, tail, name, 1000)
 
         fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
@@ -153,7 +162,7 @@ class Backend:
         else:
             if tail or name:
                 return ''
-            async with self.db.transaction() as conn:
+            async with self.db.connection() as conn:
                 pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, '/', '', '')
                 fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             if not fragments:

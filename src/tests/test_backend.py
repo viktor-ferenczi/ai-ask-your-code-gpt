@@ -4,10 +4,21 @@ import zipfile
 from typing import List
 
 from base_backend_test import BaseBackendTest
+from base_test_case import BaseTestCase
 from model.hit import Hit
 from plugin.backend import Backend, TInfo
 
 MODULE_DIR = os.path.dirname(__file__)
+
+
+class TestDownloadServerNotRunning(BaseTestCase):
+
+    async def test_download_server_not_running(self):
+        backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
+        info: TInfo = await backend.download('http://127.0.0.1:57575', timeout=1.0)
+        print(info)
+        self.assertTrue('The download is still in progress' in info['status'])
+        self.assertTrue('hint' in info)
 
 
 class TestBackend(BaseBackendTest):
@@ -33,18 +44,12 @@ class TestBackend(BaseBackendTest):
 
         await super().asyncTearDown()
 
-    async def test_download_server_not_running(self):
-        backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
-        info: TInfo = await backend.download('http://127.0.0.1:57575', timeout=1.0)
-        print(info)
-        self.assertTrue('The download is still in progress' in info['status'])
-        self.assertTrue('hint' in info)
-
     async def test_backend(self):
         await self.coordinate_test()
 
     async def actual_test(self):
         await self.download_error()
+        await self.small_project()
         await self.small_project()
         await self.medium_project()
 
@@ -52,8 +57,7 @@ class TestBackend(BaseBackendTest):
         backend = await Backend.ensure_project(self.db, 'tester', 'download_error')
         info: TInfo = await backend.download('http://127.0.0.1:49000/this-will-fail', timeout=10.0)
         print(info)
-        # FIXME: Flaky test case!!!
-        # self.assertTrue('Failed to download' in info['status'])
+        self.assertTrue('Failed to download' in info['status'])
         self.assertTrue('hint' in info)
         await self.scheduler.delete_all_tasks()
 
@@ -63,7 +67,7 @@ class TestBackend(BaseBackendTest):
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 
-        await self.wait_for_processing(5.0)
+        await self.wait_for_processing(10.0)
 
         hits = await backend.search(tail='.py', name='Duplicates')
         self.verify_hits(hits, 1, contains=['class Duplicates'])
@@ -110,6 +114,14 @@ File extensions: .md
 ### Doc types and languages
 ### Some long section
 ## Summary
+
+# C++ Programming
+## Contents
+## Keep These Tips in Mind While Learning Programming
+## Computer Science Basics
+## Learning Resources
+## Problem Solving
+## Projects Ideas
 
 ''', summary)
 

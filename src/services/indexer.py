@@ -1,7 +1,9 @@
 import asyncio
 import functools
 import os
+from typing import List, Tuple
 
+import asyncpg
 from quart import Quart
 
 from common.constants import C
@@ -15,9 +17,14 @@ from storage.documents import Document
 from storage.scheduler import Scheduler, Operation, THandlerResult
 
 
-async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
-    # print(f'Indexing: {document_cs} {path}')
-    with timer(f'Indexed: {document_cs} {path}', show=not C.PRODUCTION):
+async def index_batch(db: Database, batch: List[Tuple[str, str]]) -> THandlerResult:
+    for document_cs, path in batch:
+        await index_document(db, document_cs, path)
+    return None
+
+
+async def index_document(db: Database, document_cs: str, path: str) -> None:
+    with timer(f'Indexed: {document_cs} {path}', show=C.DEVELOPMENT):
         async with db.connection() as conn:
             document: Document = await documents.find_by_checksum(conn, document_cs)
             if document is None:
@@ -32,23 +39,38 @@ async def index(db: Database, document_cs: str, path: str) -> THandlerResult:
             parser = parser_cls()
             for fragment in parser.parse(path, document.body):
                 assert isinstance(fragment, Fragment)
-                await fragments.create(
-                    conn,
-                    document_cs,
-                    fragment.lineno,
-                    fragment.depth,
-                    None,
-                    fragment.type,
-                    True,
-                    fragment.type == 'summary',
-                    fragment.name,
-                    fragment.text)
+
+                if len(fragment.type) > 24:
+                    print(f'WARNING: fragment.type is too long: {fragment.type!r}')
+                    print(f'Skipped fragment: {fragment!r}')
+                    continue
+
+                if len(fragment.name) > 80:
+                    print(f'WARNING: fragment.name is too long: {fragment.name!r}')
+                    print(f'Skipped fragment: {fragment!r}')
+                    continue
+
+                try:
+                    await fragments.create(
+                        conn,
+                        document_cs,
+                        fragment.lineno,
+                        fragment.depth,
+                        None,
+                        fragment.type,
+                        True,
+                        fragment.type == 'summary',
+                        fragment.name,
+                        fragment.text)
+                except asyncpg.CharacterNotInRepertoireError as e:
+                    print(f'WARNING: Failed to store fragment: {e}')
+                    print(f'Skipped fragment: {fragment!r}')
 
 
 async def worker():
     async with Database.from_dsn(C.DSN) as db:
         scheduler = Scheduler(db)
-        await scheduler.listen(Operation.IndexSource, functools.partial(index, db))
+        await scheduler.listen(Operation.IndexSource, functools.partial(index_batch, db))
 
 
 app = Quart(__name__)

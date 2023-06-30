@@ -34,6 +34,7 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
 
     size = 0
     chunks = []
+    chunk_size = max_size + 1024 if max_size else 0x100_0000
     checksum = hashlib.sha256()
 
     if headers is None:
@@ -72,12 +73,11 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
                     raise DownloadError(f'Failed to download {url!r} with HTTP {response.status}: {reason}')
 
                 while 1:
-                    chunk: bytes = await response.content.read(32768)
+                    chunk: bytes = await response.content.read(chunk_size)
                     if not chunk:
                         break
 
                     checksum.update(chunk)
-
                     chunks.append(chunk)
                     size += len(chunk)
 
@@ -87,7 +87,14 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
     except aiohttp.ClientError as e:
         raise DownloadError(f'Failed to download archive from {url!r}: [{e.__class__.__name__}] {e}')
 
-    body = b''.join(chunks)
+    if len(chunks) == 1:
+        body = chunks[0]
+    elif chunks:
+        body = b''.join(chunks)
+    else:
+        body = b''
+    del chunks
+
     assert len(body) == size
     checksum = checksum.hexdigest()
 

@@ -1,3 +1,4 @@
 File extensions: .txt
 
-File: /public/robots.txt
+Relevant subdirectories:
+  public: 100%

@@ -49,8 +49,14 @@ async def find(conn: Connection, id: int) -> Optional[Project]:
     return Project.from_row(row)
 
 
-async def find_by_name(conn: Connection, uid: str, name: str) -> Optional[Project]:
-    row = await conn.fetchrow('''SELECT * FROM project WHERE uid = $1 AND name = $2 LIMIT 1''', uid, name)
+async def find_by_uid_and_name(conn: Connection, uid: str, name: str) -> Optional[Project]:
+    row = await conn.fetchrow('''
+            SELECT * 
+            FROM project 
+            WHERE uid = $1 
+              AND name = $2 
+            LIMIT 1
+        ''', uid, name)
     if row is None:
         return None
     return Project.from_row(row)

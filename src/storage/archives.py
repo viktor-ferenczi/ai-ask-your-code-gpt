@@ -11,6 +11,7 @@ from common.constants import C
 class Archive:
     checksum: str
     size: int
+    count: int
     url: str
     etag: str
     common_base_dir: str
@@ -20,6 +21,7 @@ class Archive:
         return cls(
             checksum=row['checksum'],
             size=row['size'],
+            count=row['count'],
             url=row['url'],
             etag=row['etag'],
             common_base_dir=row['common_base_dir'],
@@ -36,12 +38,12 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE archive')
 
 
-async def create(conn: Connection, checksum: str, size: int, url: str, etag: str, common_base_dir: str) -> Archive:
+async def create(conn: Connection, checksum: str, size: int, count: int, url: str, etag: str, common_base_dir: str) -> Archive:
     await conn.execute(
-        '''INSERT INTO archive (checksum, size, url, etag, common_base_dir) VALUES ($1, $2, $3, $4, $5)''',
-        checksum, size, url, etag, common_base_dir
+        '''INSERT INTO archive (checksum, size, count, url, etag, common_base_dir) VALUES ($1, $2, $3, $4, $5, $6)''',
+        checksum, size, count, url, etag, common_base_dir
     )
-    return Archive(checksum, size, url, etag, common_base_dir)
+    return Archive(checksum, size, count, url, etag, common_base_dir)
 
 
 async def find_by_checksum(conn: Connection, checksum: str) -> Optional[Archive]:

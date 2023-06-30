@@ -2,7 +2,7 @@ import asyncio
 import functools
 import os
 from traceback import print_exc
-from typing import Iterator
+from typing import Iterator, List, Tuple
 from zipfile import BadZipFile, LargeZipFile
 
 from quart import Quart
@@ -26,7 +26,7 @@ class Downloader:
         self.db: Database = db
         self.url: str = url
 
-    async def download_verify(self) -> Archive:
+    async def download_verify(self) -> Tuple[bool, Archive]:
         async with self.db.transaction() as conn:
             archive = await archives.find_by_url(conn, self.url)
             cached_etag = archive.etag if archive is not None else None
@@ -34,23 +34,32 @@ class Downloader:
                 d = await download_into_memory(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached_etag=cached_etag)
             except NotModified:
                 print(f'Not modified, skipping download: {self.url!r}')
-                return archive
+                assert archive is not None
+                return False, archive
             except Exception as e:
                 print(f'Failed to download archive: {archive!r}')
                 print_exc()
                 raise DownloadError(f'Failed to download archive: {e}')
 
-            common_base_dir: str = find_common_base_dir(self.__verify(d.body))
-            print(f'Common base dir: {common_base_dir!r}')
+            # Different (modified) archive from the same URL?
+            if archive is not None and archive.checksum != d.checksum:
+                archive = None
 
+            # Try to find existing archive by checksum
             if archive is None:
                 archive = await archives.find_by_checksum(conn, d.checksum)
 
-            if archive is not None and archive.checksum == d.checksum:
-                assert d.size == archive.size, (d.size, archive.size)
-                assert common_base_dir == archive.common_base_dir, (common_base_dir, archive.common_base_dir)
-            else:
-                archive = await archives.create(conn, d.checksum, d.size, self.url, d.etag, common_base_dir)
+            # Use the existing archive
+            if archive is not None:
+                return False, archive
+
+            # New archive, store and request extracting it
+            out_count = [0]
+            common_base_dir: str = find_common_base_dir(self.__verify(d.body, out_count))
+            print(f'Common base dir: {common_base_dir!r}')
+            doc_count = out_count[0]
+
+            archive = await archives.create(conn, d.checksum, d.size, doc_count, self.url[:400], d.etag[:160], common_base_dir[:400])
 
             path = archive.path
             dirname = os.path.dirname(path)
@@ -59,9 +68,9 @@ class Downloader:
             with open(path, 'wb') as f:
                 f.write(d.body)
 
-        return archive
+            return True, archive
 
-    def __verify(self, body: bytes) -> Iterator[str]:
+    def __verify(self, body: bytes, out_count: List[int]) -> Iterator[str]:
         try:
             doc_count = 0
             for zip_doc in extract_verify_documents(
@@ -69,7 +78,6 @@ class Downloader:
                     max_file_count=C.MAX_FILE_COUNT,
                     max_file_size=C.MAX_FILE_SIZE,
                     max_total_size=C.MAX_TOTAL_SIZE,
-                    # supported_extensions=set(parsers.PARSERS_BY_EXTENSION),
                     verify_only=True):
                 doc_count += 1
                 yield zip_doc.path
@@ -90,24 +98,31 @@ class Downloader:
             raise DownloadError('The archive does not contain any supported documents')
 
         print(f'Found {doc_count} files in the archive')
+        out_count[0] = doc_count
 
 
 async def download(db: Database, url: str, project_id: int) -> THandlerResult:
-    # print(f'Downloading {url!r} for project {project_id!r}')
     try:
         downloader = Downloader(db, url)
-        with timer(f'Downloaded archive {url!r} for project {project_id!r}'):
-            archive: Archive = await downloader.download_verify()
+        with timer(f'Downloaded and verified archive {url!r} for project {project_id!r}'):
+            new, archive = await downloader.download_verify()
     except DownloadError as e:
         message = str(e)
         if url.startswith('https://github.com/') and 'HTTP 404: Not Found' in message:
             message += '; Test your URL in a private browser tab without authentication. Private repositories will work at a later time. Authentication is currently not supported by AskYourCode.'
         raise TaskFailed(message)
 
+    followup: Task = None
+    if new:
+        print(f'Downloaded new archive {archive.checksum!r} for project {project_id!r}, requesting extraction')
+        followup = Task.create_pending(Operation.ExtractArchive, archive_cs=archive.checksum, project_id=project_id)
+    else:
+        print(f'Reusing existing archive {archive.checksum!r} for project {project_id!r}, already extracted')
+
     pubsub = PubSub(db)
     await pubsub.send(ChannelName.DownloadCompleted.name, url=url)
 
-    return Task.create_pending(Operation.ExtractArchive, archive_cs=archive.checksum, project_id=project_id)
+    return followup
 
 
 async def worker():
