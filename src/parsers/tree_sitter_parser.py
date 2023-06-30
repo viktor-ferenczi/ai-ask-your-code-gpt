@@ -1,5 +1,5 @@
 import os.path
-from typing import List, Tuple, Iterator, Dict, Optional, Set
+from typing import Tuple, Iterator, Dict, Optional, Set
 
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
@@ -35,7 +35,7 @@ class TreeSitterParser(BaseParser):
         for sentence in self.splitter.split_text(decode_replace(content)):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text.replace('\r\n', '\n').replace('\r', ''))
 
-        name_map = {name: set() for name in self.categories}
+        name_map: Dict[str, Set[Code]] = {name: set() for name in self.categories}
 
         debug_file = None
         if self.debug:
@@ -73,8 +73,8 @@ class TreeSitterParser(BaseParser):
 
         usages: Set[Code] = name_map.pop('usage', set())
         for key in name_map:
-            names = name_map[key]
-            non_definitions = {name for name in names if not name.definition}
+            codes = name_map[key]
+            non_definitions = {name for name in codes if not name.definition}
             usages.update(non_definitions)
             name_map[key] -= non_definitions
 
@@ -82,16 +82,16 @@ class TreeSitterParser(BaseParser):
             f'{self.name}: {path}\n',
         ]
 
-        for key, names in name_map.items():
+        for key, codes in name_map.items():
             assert key in self.categories, key
-            if not names:
+            if not codes:
                 continue
 
-            names = [name for name in names if len(name.operation) >= 3 or name.operation[:1].isupper()]
-            if not names:
+            codes = [code for code in codes if len(code.name) >= 3 or code.name[:1].isupper()]
+            if not codes:
                 continue
 
-            for code in names:
+            for code in codes:
                 if code.definition:
                     yield Fragment(
                         uuid=new_uuid(),
@@ -99,12 +99,12 @@ class TreeSitterParser(BaseParser):
                         lineno=code.lineno,
                         depth=code.depth,
                         category=code.category,
-                        name=code.operation,
+                        name=code.name,
                         body=code.definition,
                     )
 
             label = self.categories[key]
-            summary.append(f"  {label}: {' '.join(sorted({name.operation for name in names}))}\n")
+            summary.append(f"  {label}: {' '.join(sorted({name.name for name in codes}))}\n")
 
         if usages:
             summary.append(f"  Usages: {' '.join(sorted({name.name for name in usages}))}\n")
