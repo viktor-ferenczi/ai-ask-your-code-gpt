@@ -55,23 +55,23 @@ class PhpParser(BaseParser):
             if debug and not node.child_count:
                 print(f"@{depth}|{node.type}|{decode_replace(node.text)}|")
             lineno = 1 + node.start_point[0]
-            if node.type == 'class' and node.next_sibling is not None and node.next_sibling.category == 'name':
+            if node.type == 'class' and node.next_sibling is not None and node.next_sibling.type == 'name':
                 name = decode_replace(node.next_sibling.text)
                 classes.add(name)
                 for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
-            elif node.type == 'function' and node.next_sibling is not None and node.next_sibling.category == 'name':
+            elif node.type == 'function' and node.next_sibling is not None and node.next_sibling.type == 'name':
                 name = decode_replace(node.next_sibling.text)
                 functions.add(name)
                 for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif (node.type == '$' and
                   node.next_sibling is not None and
-                  node.next_sibling.category == 'name'):
+                  node.next_sibling.type == 'name'):
                 name = decode_replace(node.next_sibling.text)
 
                 if (node.next_sibling.next_sibling is not None and
-                        node.next_sibling.next_sibling.category == '='):
+                        node.next_sibling.next_sibling.type == '='):
                     text = decode_replace(node.parent.text)
                     variables.add(name)
                     for sentence in self.splitter.split_text(text):
@@ -80,7 +80,7 @@ class PhpParser(BaseParser):
                     usages.add(name)
             elif (node.type == 'name' and
                   node.child_count and
-                  node.children[0].category == '('):
+                  node.children[0].type == '('):
                 name = decode_replace(node.text)
                 usages.add(name)
 

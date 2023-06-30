@@ -62,13 +62,13 @@ class TypeScriptParser(BaseParser):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
             elif (node.type == 'namespace' and
                   node.next_sibling is not None and
-                  node.next_sibling.category == 'identifier'):
+                  node.next_sibling.type == 'identifier'):
                 name = decode_replace(node.next_sibling.text)
                 namespaces.add(name)
                 yield Fragment(new_uuid(), path, lineno, depth, 'namespace', name, f'namespace {name} {{...}}')
             elif (node.type == 'interface' and
                   node.next_sibling is not None and
-                  node.next_sibling.category == 'type_identifier' and
+                  node.next_sibling.type == 'type_identifier' and
                   node.parent is not None):
                 name = decode_replace(node.next_sibling.text)
                 interfaces.add(name)
@@ -76,7 +76,7 @@ class TypeScriptParser(BaseParser):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'interface', name, sentence.text)
             elif (node.type == 'class' and
                   node.next_sibling is not None and
-                  node.next_sibling.category == 'type_identifier' and
+                  node.next_sibling.type == 'type_identifier' and
                   node.parent is not None):
                 name = decode_replace(node.next_sibling.text)
                 classes.add(name)
@@ -84,7 +84,7 @@ class TypeScriptParser(BaseParser):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
             elif (node.type == 'function' and
                   node.next_sibling is not None and
-                  node.next_sibling.category == 'identifier' and
+                  node.next_sibling.type == 'identifier' and
                   node.parent is not None):
                 name = decode_replace(node.next_sibling.text)
                 functions.add(name)
@@ -92,16 +92,16 @@ class TypeScriptParser(BaseParser):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif (node.type == 'identifier' and
                   node.next_sibling is not None and
-                  node.next_sibling.category == '=' and
+                  node.next_sibling.type == '=' and
                   node.next_sibling.next_sibling is not None and
-                  node.next_sibling.next_sibling.category == 'function'):
+                  node.next_sibling.next_sibling.type == 'function'):
                 name = decode_replace(node.text)
                 functions.add(name)
                 for sentence in self.splitter.split_text(decode_replace(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
             elif (node.type == 'variable_declarator' and
                   node.child_count and
-                  node.children[0].category == 'identifier'):
+                  node.children[0].type == 'identifier'):
                 text = decode_replace(node.text)
                 name = decode_replace(node.children[0].text)
                 variables.add(name)

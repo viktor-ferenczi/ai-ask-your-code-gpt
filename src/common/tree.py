@@ -26,8 +26,8 @@ def walk_children(cursor: TreeCursor, depth=0, max_depth=30) -> Iterator[TreeCur
 
 def walk_nodes(cursor: TreeCursor, *, debug: bool = False, debug_file: Optional[IO]) -> Iterator[Tuple[Node, int, int]]:
     for cur, depth in walk_children(cursor):
-        node = cur.node
+        node: Node = cur.node
         lineno = 1 + node.start_point[0]
-        if debug and node.category.strip():
-            print(f"|#{lineno:05d} {'  ' * depth}[{node.category}] {decode_replace(node.text).rstrip()}", file=debug_file)
+        if debug and node.type.strip():
+            print(f"|#{lineno:05d} {'  ' * depth}[{node.type}] {decode_replace(node.text).rstrip()}", file=debug_file)
         yield node, lineno, depth
