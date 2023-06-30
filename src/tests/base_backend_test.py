@@ -1,13 +1,15 @@
 import asyncio
+import multiprocessing
 import os
 from time import time
+from typing import List
 
 from quart import Quart, send_file
 
 from base_test_case import BaseTestCase
 from services.downloader import app as downloader_app, workers as downloader_workers
 from services.extractor import app as extractor_app, workers as extractor_workers
-from services.indexer import app as indexer_app, workers as indexer_workers
+from services.indexer import app as indexer_app, workers as indexer_workers, main as indexer_main
 from storage.scheduler import TaskState
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -15,6 +17,8 @@ MODULE_DIR = os.path.dirname(__file__)
 
 class BaseBackendTest(BaseTestCase):
     zip_path = ''
+    indexer_count = os.cpu_count()
+    use_multiprocessing = True
 
     async def serve_zip(self):
         assert self.zip_path
@@ -28,24 +32,38 @@ class BaseBackendTest(BaseTestCase):
         await self.app.run_task(debug=True, host='localhost', port=49000)
 
     async def coordinate_test(self):
-        coroutines = (
-                [
-                    self.actual_test(),
-                    self.serve_zip(),
-                    downloader_app.run_task(debug=True, host='localhost', port=51000),
-                    extractor_app.run_task(debug=True, host='localhost', port=52000),
-                    indexer_app.run_task(debug=True, host='localhost', port=53000),
-                ] + [
-                    worker() for worker in downloader_workers + extractor_workers + indexer_workers
-                ]
-        )
-        tasks = [asyncio.create_task(coro) for coro in coroutines]
+        processes: List[multiprocessing.Process] = []
+        if self.use_multiprocessing:
+            processes = [
+                multiprocessing.Process(target=indexer_main, args=(53000 + index,))
+                for index in range(1, self.indexer_count)
+            ]
+            for process in processes:
+                process.start()
 
-        await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
+        try:
+            coroutines = (
+                    [
+                        self.actual_test(),
+                        self.serve_zip(),
+                        downloader_app.run_task(debug=True, host='localhost', port=51000),
+                        extractor_app.run_task(debug=True, host='localhost', port=52000),
+                        indexer_app.run_task(debug=True, host='localhost', port=53000),
+                    ] + [
+                        worker() for worker in downloader_workers + extractor_workers + indexer_workers
+                    ]
+            )
+            tasks = [asyncio.create_task(coro) for coro in coroutines]
 
-        tasks[0].result()
-        for task in tasks[1:]:
-            task.cancel()
+            await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
+
+            tasks[0].result()
+            for task in tasks[1:]:
+                task.cancel()
+        finally:
+            for process in processes:
+                process.kill()
+            processes.clear()
 
     async def actual_test(self):
         raise NotImplementedError()

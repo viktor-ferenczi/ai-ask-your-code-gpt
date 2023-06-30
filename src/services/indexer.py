@@ -61,6 +61,9 @@ async def canary():
     return 'OK', 200
 
 
+def main(http_port: int) -> None:
+    asyncio.run(run_app(app, *[worker() for worker in workers], host='localhost', port=http_port, debug=C.DEVELOPMENT))
+
+
 if __name__ == "__main__":
-    port = int(os.environ.get('HTTP_PORT', '40002'))
-    asyncio.run(run_app(app, *[worker() for worker in workers], host='localhost', port=port, debug=C.DEVELOPMENT))
+    main(int(os.environ.get('HTTP_PORT', '40002')))
