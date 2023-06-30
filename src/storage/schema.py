@@ -149,7 +149,7 @@ create table public.file
     id              bigserial,
     project_id      bigint       not null,
     path            varchar(400) not null,
-    mime_type       varchar(40)  not null,
+    mime_type       varchar(160) not null,
     size            bigint       not null,
     document_cs     varchar(64),
     archive_cs      varchar(64),

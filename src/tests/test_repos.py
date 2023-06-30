@@ -1,5 +1,4 @@
 import os
-import shutil
 from pprint import pformat
 from typing import List
 
@@ -10,6 +9,7 @@ from common.http import download_into_memory
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
 from plugin.backend import Backend, TInfo, BackendError
+from storage.fragments import get_all_fragments
 from test_backend import TestBackend
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -147,7 +147,7 @@ class TestRepos(TestBackend):
                 self.verify(f'summary.{extension}', actual)
 
         async with self.db.connection() as conn:
-            fragments = await backend.get_all_fragments(conn, self.project.id)
+            fragments = await get_all_fragments(conn, backend.project.id)
             normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)
