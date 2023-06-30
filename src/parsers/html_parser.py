@@ -50,7 +50,7 @@ class HtmlParser(BaseParser):
         # tree: Tree = parser.parse(content)
         # cursor: TreeCursor = tree.walk()
 
-        text_content = decode_replace(content)
+        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
         for sentence in self.splitter.split_text(text_content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 

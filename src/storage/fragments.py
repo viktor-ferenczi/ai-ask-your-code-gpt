@@ -141,6 +141,6 @@ async def list_fragments_by_id(conn: Connection, project_id: int, ids: List[int]
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
             WHERE id IN ({placeholders})
-        ''', *ids)
+        ''', project_id, *ids)
     ]
     return fragments

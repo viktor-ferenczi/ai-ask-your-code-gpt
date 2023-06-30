@@ -116,7 +116,7 @@ class Backend:
         else:
             # Pull the fragments referenced from the full text search uuids
             async with self.db.transaction() as conn:
-                pairs = await list_fragments_by_id(conn, self.project.id, fts_ids)
+                pairs = await list_fragments_by_id(conn, self.project.id, list(map(int, fts_ids)))
 
             fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             fragment_map = {fragment.uuid: fragment for fragment in fragments}
@@ -220,7 +220,8 @@ class Backend:
             yield ''.join(file_summaries)
 
         if subdir_hit_counts:
-            subdir_info = [f'Matches under subdirectories:\n']
-            for subdir, count in sorted(subdir_hit_counts.items()):
-                subdir_info.append(f'  {subdir}: {count}\n')
+            subdir_info = [f'Relevant subdirectories:\n']
+            max_count = max(subdir_hit_counts.values())
+            for subdir, count in sorted(subdir_hit_counts.items(), reverse=True, key=lambda pair: pair[1]):
+                subdir_info.append(f"  {subdir}: {'*' * int(5.0 * count / max_count + 0.5)}\n")
             yield ''.join(subdir_info)

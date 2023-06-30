@@ -2,6 +2,7 @@ import uuid
 from typing import Iterator
 
 from common.constants import C
+from common.text import decode_replace
 from common.tools import tiktoken_len
 from model.fragment import Fragment
 from parsers.base_parser import BaseParser
@@ -19,17 +20,17 @@ class TextParser(BaseParser):
     )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        text = content.decode('utf-8', errors='replace').replace('\r', '')
-        if not text.strip():
+        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        if not text_content.strip():
             return
 
         # Avoid single line JSON files and such, they are a CPU hog
         data_file = path.endswith('.json') or path.endswith('.csv') or path.endswith('.tsv') or path.endswith('.dsv')
         if not data_file:
-            first_line_length = text.find('\n')
-            line_count = text.count('\n')
+            first_line_length = text_content.find('\n')
+            line_count = text_content.count('\n')
             if first_line_length >= 0 and first_line_length < 1000 and line_count < 5000:
-                for sentence in self.splitter.split_text(text):
+                for sentence in self.splitter.split_text(text_content):
                     yield Fragment(
                         uuid=str(uuid.uuid4()),
                         path=path,

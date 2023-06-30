@@ -5,8 +5,8 @@ from common.constants import C
 from common.text import decode_replace
 from common.tools import tiktoken_len, new_uuid
 from model.fragment import Fragment
-from .python_parser import PythonParser
 from splitters.text_splitter import TextSplitter
+from .python_parser import PythonParser
 
 
 class PythonNotebookParser(PythonParser):
@@ -38,13 +38,13 @@ class PythonNotebookParser(PythonParser):
         if '/.ipynb_checkpoints' in path:
             return
 
-        content = decode_replace(content).replace('\r\n', '\n').replace('\r', '').strip()
+        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
 
-        for sentence in self.splitter.split_text(content):
+        for sentence in self.splitter.split_text(text_content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text)
 
         try:
-            data = json.loads(content)
+            data = json.loads(text_content)
         except json.JSONDecodeError:
             print(f'Failed to decode as JSON, indexing it as text only: {path}')
             return
@@ -60,7 +60,4 @@ class PythonNotebookParser(PythonParser):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'documentation', '', sentence.text)
         del markdown
 
-        content = source.encode('utf-8')
-        del source
-
-        yield from self.iter_python_fragments(path, content)
+        yield from self.iter_python_fragments(path, source.encode('utf-8'))

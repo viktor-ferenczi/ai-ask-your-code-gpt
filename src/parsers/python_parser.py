@@ -38,7 +38,8 @@ class PythonParser(BaseParser):
         )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        for sentence in self.splitter.split_text(decode_replace(content)):
+        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        for sentence in self.splitter.split_text(text_content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         yield from self.iter_python_fragments(path, content)

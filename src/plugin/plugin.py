@@ -7,6 +7,7 @@ from typing import Dict, Optional, Union
 
 import quart
 import quart_cors
+from aiodebug import log_slow_callbacks
 from quart import request, Response
 
 from common.constants import C, RX
@@ -363,4 +364,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    log_slow_callbacks.enable(0.1)
     asyncio.run(main())

@@ -5,13 +5,13 @@ from typing import List
 
 from quart import Quart, send_file
 
+from base_backend_test import BaseBackendTest
 from common.constants import C
 from common.http import download_into_memory
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_EXTENSION
 from plugin.backend import Backend, TInfo, BackendError
 from storage.fragments import get_all_fragments
-from test_backend import TestBackend
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -67,7 +67,7 @@ def normalize_fragments(fragments: List[Fragment]):
         fragment.uuid = f'NORMALIZED'
 
 
-class TestRepos(TestBackend):
+class TestRepos(BaseBackendTest):
     test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
 
     async def serve_zip(self):
@@ -82,6 +82,9 @@ class TestRepos(TestBackend):
             return await send_file(os.path.join(self.test_repos_dir, filename), as_attachment=True)
 
         await self.app.run_task(debug=True, host='localhost', port=49000)
+
+    async def test_repos(self):
+        await self.coordinate_test()
 
     async def actual_test(self):
         self.failures = []

@@ -3,7 +3,7 @@ import os
 import unittest
 from pprint import pformat
 
-from parsers.registrations import BaseParser, detect
+from parsers.registrations import BaseParser, detect, detect_mime
 
 MODULE_DIR = os.path.dirname(__file__)
 TEST_PROJECT_DIR = os.path.join(MODULE_DIR, 'TestProject')
@@ -26,7 +26,8 @@ class TestParsers(unittest.TestCase):
                     content: bytes = f.read()
 
                 relpath = path[strip_len:]
-                parser_cls = detect(relpath, content)
+                mime_type = detect_mime(content)
+                parser_cls = detect(relpath, mime_type)
                 self.assertIsNotNone(parser_cls)
 
                 parser: BaseParser = parser_cls()
@@ -38,8 +39,8 @@ class TestParsers(unittest.TestCase):
 
                 # In case of documentation joining the fragments must reproduce the original document
                 if not parser.is_code:
-                    joined_texts = ''.join(fragment.text for fragment in fragments if fragment.type == 'documentation').replace('\r\n', '\n')
-                    original_text = content.decode('utf-8').replace('\r\n', '\n')
+                    joined_texts = ''.join(fragment.text for fragment in fragments if fragment.type == 'documentation').replace('\r\n', '\n').replace('\r', '')
+                    original_text = content.decode('utf-8').replace('\r\n', '\n').replace('\r', '')
                     self.assertEqual(original_text, joined_texts)
 
                 actual = f'from model.fragment import Fragment\n\n# Parser: {parser_cls.__name__}\n\n' + ''.join(

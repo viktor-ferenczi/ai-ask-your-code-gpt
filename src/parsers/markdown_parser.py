@@ -2,6 +2,7 @@ import uuid
 from typing import Iterator
 
 from common.constants import C
+from common.text import decode_replace
 from common.tools import tiktoken_len
 from model.fragment import Fragment
 from parsers.registrations import BaseParser
@@ -20,12 +21,12 @@ class MarkdownParser(BaseParser):
     )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        text = content.decode('utf-8', errors='replace').replace('\r', '')
-        if not text.strip():
+        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        if not text_content.strip():
             return
 
         summary = []
-        for sentence in self.splitter.split_text(text):
+        for sentence in self.splitter.split_text(text_content):
 
             yield Fragment(
                 uuid=str(uuid.uuid4()),

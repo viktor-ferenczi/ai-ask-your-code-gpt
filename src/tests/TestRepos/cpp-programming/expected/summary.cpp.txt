@@ -1,6 +1,7 @@
 File extensions: .cpp
 
 Matches under subdirectories:
+Matches under subdirectories:
   Bank management system: 17
   E-Commerce App V1.0: 210
   E-Commerce App V2.0: 201
