@@ -171,7 +171,7 @@ Python: /find_duplicates.py
         self.verify_hits(hits, 9, path='/README.md')
 
         hits = await backend.search(tail='.py', name='Query', limit=100)
-        self.verify_hits(hits, 19, contains=['class Query'])
+        self.verify_hits(hits, 34, contains=['class Query'])
 
         summary = await backend.summarize(tail='.md')
         self.assertEqual('''\

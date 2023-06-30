@@ -2,7 +2,7 @@ import hashlib
 import unittest
 
 from base_test_case import BaseTestCase
-from storage import archives, documents, files, fragments, projects, properties, usages
+from storage import archives, documents, files, fragments, projects, properties
 from storage.archives import Archive
 from storage.schema import VERSION
 
@@ -86,26 +86,6 @@ class TestStorage(BaseTestCase):
             await properties.write(conn, 'Version', VERSION)
             version = await properties.read(conn, 'Version')
             self.assertEqual(version, VERSION)
-
-    async def test_usages(self) -> None:
-        async with self.db.transaction() as conn:
-            await usages.truncate(conn)
-
-            o = await usages.create(conn, 42, 101, 11, 102, 12)
-
-            r = await usages.find_usages(conn, 42, 101, 11)
-            self.assertEqual(len(r), 1)
-            self.assertEqual(repr([o]), repr(r))
-
-            r = await usages.find_definitions(conn, 42, 102, 12)
-            self.assertEqual(len(r), 1)
-            self.assertEqual(repr([o]), repr(r))
-
-            r = await usages.find_usages(conn, 42, 101, 13)
-            self.assertEqual(len(r), 0)
-
-            r = await usages.find_definitions(conn, 42, 103, 12)
-            self.assertEqual(len(r), 0)
 
 
 if __name__ == '__main__':

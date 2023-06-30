@@ -105,9 +105,9 @@ async def search_by_path_tail_name(conn: Connection, project_id: int, path: str,
             SELECT e.path, f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            WHERE e.path LIKE $2 
-              AND e.path LIKE $3
-              AND f.name LIKE $4
+            WHERE e.path ILIKE $2 
+              AND e.path ILIKE $3
+              AND f.name ILIKE $4
             ORDER BY LENGTH(name), e.path, lineno 
             LIMIT $5
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}', limit)
@@ -121,9 +121,9 @@ async def search_by_path_tail_name_unlimited(conn: Connection, project_id: int, 
             SELECT e.path, f.* 
             FROM fragment AS f
             INNER JOIN file AS e ON e.document_cs = f.document_cs AND e.project_id = $1
-            WHERE e.path LIKE $2
-              AND e.path LIKE $3
-              AND f.name LIKE $4
+            WHERE e.path ILIKE $2
+              AND e.path ILIKE $3
+              AND f.name ILIKE $4
             ORDER BY LENGTH(name), e.path, lineno
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
     ]

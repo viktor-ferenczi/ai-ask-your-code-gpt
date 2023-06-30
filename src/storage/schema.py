@@ -163,24 +163,6 @@ alter table public.file
 create index file_path_index
     on public.file (project_id, path);
     
-create table public.usage
-(
-    partition_key      char(2) not null,
-    project_id         bigint  not null,
-    definition_file_id bigint  not null,
-    definition_fragment_id   integer not null,
-    usage_file_id      bigint  not null,
-    usage_fragment_id        integer not null,
-    constraint usage_pk
-        primary key (partition_key, project_id, definition_file_id, definition_fragment_id, usage_file_id, usage_fragment_id)
-);
-
-alter table public.usage
-    owner to askyourcode;
-    
-create index usage_index
-    on public.usage (usage_file_id, usage_fragment_id);
-
 ''' + f'''
 insert into public.property (name, number) values ('Version', {VERSION});
 '''
