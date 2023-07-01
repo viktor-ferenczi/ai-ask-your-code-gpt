@@ -189,6 +189,7 @@ create table public.file
     id              bigserial,
     project_id      bigint       not null,
     path            varchar(400) not null,
+    depth           integer      not null,
     document_cs     varchar(64),
     archive_cs      varchar(64),
     constraint file_pk

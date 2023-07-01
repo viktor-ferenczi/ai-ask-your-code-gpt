@@ -11,6 +11,7 @@ class File:
     id: int
     project_id: int
     path: str
+    depth: int
     document_cs: str
     archive_cs: str
 
@@ -20,6 +21,7 @@ class File:
             id=row['id'],
             project_id=row['project_id'],
             path=row['path'],
+            depth=row['depth'],
             document_cs=row['document_cs'],
             archive_cs=row['archive_cs'],
         )
@@ -32,11 +34,12 @@ async def truncate(conn: Connection):
 
 
 async def create(conn: Connection, project_id: int, path: str, document_cs: Optional[str], archive_cs: Optional[str]) -> File:
+    depth = path.count('/')
     id = await conn.fetchval(
-        '''INSERT INTO file (project_id, path, document_cs, archive_cs) VALUES ($1, $2, $3, $4) RETURNING id''',
-        project_id, path, document_cs, archive_cs
+        '''INSERT INTO file (project_id, path, depth, document_cs, archive_cs) VALUES ($1, $2, $3, $4, $5) RETURNING id''',
+        project_id, path, depth, document_cs, archive_cs
     )
-    return File(id, project_id, path, document_cs, archive_cs)
+    return File(id, project_id, path, depth, document_cs, archive_cs)
 
 
 async def find(conn: Connection, id: int) -> Optional[File]:
