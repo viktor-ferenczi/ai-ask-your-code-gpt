@@ -6,7 +6,7 @@ from enum import Enum
 from traceback import format_exc, print_exc
 from typing import Any, Dict, Callable, List, Optional, Union, Awaitable
 
-from asyncpg import Record
+from asyncpg import Record, Connection
 from asyncpg.utils import _quote_ident
 
 from common.constants import C
@@ -75,32 +75,34 @@ class Scheduler:
         self.db: Database = db
 
     async def schedule(self, task: Task):
-        params_json = json.dumps(task.params)
-
         async def fn():
             async with self.db.transaction() as conn:
-                name = task.operation.name
-                created: datetime = await conn.fetchval('''
-                        INSERT INTO task (operation, params)
-                        VALUES ($1, $2)
-                        RETURNING created;
-                    ''', name, params_json)
-                notify = f"NOTIFY {_quote_ident(name)}"
-                # print(notify)
-                await conn.execute(notify)
-                task.created = created
+                await self.insert(conn, task)
 
         await async_retry(fn)
+
+    async def insert(self, conn: Connection, task: Task):
+        name = task.operation.name
+        params_json = json.dumps(task.params)
+        created: datetime = await conn.fetchval('''
+                    INSERT INTO task (operation, params)
+                    VALUES ($1, $2)
+                    RETURNING created;
+                ''', name, params_json)
+        notify = f"NOTIFY {_quote_ident(name)}"
+        # print(notify)
+        await conn.execute(notify)
+        task.created = created
 
     async def list_pending_tasks(self, operation: Operation, limit=1_000_000) -> List[Task]:
         async with self.db.transaction(readonly=True) as conn:
             rows = await conn.fetch('''
-                SELECT created, started, finished, state, operation, params, message 
-                FROM task
-                WHERE operation = $1 AND state = 'pending'
-                ORDER BY created
-                LIMIT $2;            
-            ''', operation.name, limit)
+                    SELECT created, started, finished, state, operation, params, message 
+                    FROM task
+                    WHERE operation = $1 AND state = 'pending'
+                    ORDER BY created
+                    LIMIT $2;            
+                ''', operation.name, limit)
         return [Task.from_row(row) for row in rows]
 
     async def listen(self, operation: Operation, handler: THandler):
@@ -130,11 +132,11 @@ class Scheduler:
 
             # Run the task while still in the transaction, so other workers must skip it
             task: Task = Task.from_row(row)
-            task.started = datetime.utcnow()
             result = None
             # noinspection PyBroadException
             try:
                 try:
+                    task.started = datetime.utcnow()
                     result = await asyncio.wait_for(handler(**task.params), timeout=C.TASK_TIMEOUT)
                 finally:
                     task.finished = datetime.utcnow()
@@ -155,65 +157,65 @@ class Scheduler:
                 task.state = TaskState.completed
 
             await conn.execute('''
-                UPDATE task
-                SET state = $2,
-                    message = $3,
-                    started = $4, 
-                    finished = $5
-                WHERE created = $1
-            ''', task.created, task.state.name, task.message, task.started, task.finished)
+                    UPDATE task
+                    SET state = $2,
+                        message = $3,
+                        started = $4, 
+                        finished = $5
+                    WHERE created = $1
+                ''', task.created, task.state.name, task.message, task.started, task.finished)
 
-        # Schedule any follow-up tasks
-        follow_up_tasks = ()
-        # noinspection PyBroadException
-        try:
-            if isinstance(result, Task):
-                follow_up_tasks = [result]
-            elif isinstance(result, (list, tuple)) and all(isinstance(t, Task) for t in result):
-                follow_up_tasks = result
-            elif result is not None:
-                print(f'ERROR: Invalid result returned by a task handler:')
+            # Schedule any follow-up tasks
+            follow_up_tasks = ()
+            # noinspection PyBroadException
+            try:
+                if isinstance(result, Task):
+                    follow_up_tasks = [result]
+                elif isinstance(result, (list, tuple)) and all(isinstance(t, Task) for t in result):
+                    follow_up_tasks = result
+                elif result is not None:
+                    print(f'ERROR: Invalid result returned by a task handler:')
+                    print(f'Task: {task!r}')
+                    print(f'Handler: {handler!r}')
+                    print(f'Result: {result!r}')
+
+                for response_task in follow_up_tasks:
+                    await self.insert(conn, response_task)
+            except Exception:
+                print(f'ERROR: Failed to schedule follow-up tasks')
                 print(f'Task: {task!r}')
                 print(f'Handler: {handler!r}')
-                print(f'Result: {result!r}')
-
-            for response_task in follow_up_tasks:
-                await self.schedule(response_task)
-        except Exception:
-            print(f'ERROR: Failed to schedule follow-up tasks')
-            print(f'Task: {task!r}')
-            print(f'Handler: {handler!r}')
-            print(f'Follow-up tasks: {follow_up_tasks!r}')
-            print_exc()
+                print(f'Follow-up tasks: {follow_up_tasks!r}')
+                print_exc()
 
         # Attempt to read more tasks from the queue
         return True
 
     async def get_next_task(self, conn, operation: Operation) -> Optional[Record]:
         row = await conn.fetchrow('''
-                SELECT * FROM task
-                WHERE operation = $1 AND state = 'pending'
-                ORDER BY created
-                LIMIT 1 FOR UPDATE SKIP LOCKED;
-            ''', operation.name)
+                    SELECT * FROM task
+                    WHERE operation = $1 AND state = 'pending'
+                    ORDER BY created
+                    LIMIT 1 FOR UPDATE SKIP LOCKED;
+                ''', operation.name)
         return row
 
     async def get_task(self, created: datetime) -> Optional[Task]:
         async with self.db.transaction() as conn:
             row = await conn.fetchrow('''
-                SELECT * 
-                FROM task 
-                WHERE created = $1
-            ''', created)
+                    SELECT * 
+                    FROM task 
+                    WHERE created = $1
+                ''', created)
             return Task.from_row(row) if row else None
 
     async def count_tasks(self, state: TaskState) -> int:
         async with self.db.transaction() as conn:
             return await conn.fetchval('''
-                SELECT COUNT(1) 
-                FROM task 
-                WHERE state = $1
-            ''', state.name)
+                    SELECT COUNT(1) 
+                    FROM task 
+                    WHERE state = $1
+                ''', state.name)
 
     async def delete_all_tasks(self):
         async with self.db.transaction() as conn:
