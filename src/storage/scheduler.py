@@ -82,16 +82,18 @@ class Scheduler:
         await async_retry(fn)
 
     async def insert(self, conn: Connection, task: Task):
+        created = datetime.utcnow()
         name = task.operation.name
         params_json = json.dumps(task.params)
-        created: datetime = await conn.fetchval('''
-                    INSERT INTO task (operation, params)
-                    VALUES ($1, $2)
-                    RETURNING created;
-                ''', name, params_json)
+        id = await conn.fetchval('''
+                    INSERT INTO task (created, operation, params)
+                    VALUES ($1, $2, $3)
+                    RETURNING id;
+                ''', created, name, params_json)
         notify = f"NOTIFY {_quote_ident(name)}"
         # print(notify)
         await conn.execute(notify)
+        task.id = id
         task.created = created
 
     async def list_pending_tasks(self, operation: Operation, limit=1_000_000) -> List[Task]:
@@ -179,8 +181,8 @@ class Scheduler:
                     print(f'Handler: {handler!r}')
                     print(f'Result: {result!r}')
 
-                for response_task in follow_up_tasks:
-                    await self.insert(conn, response_task)
+                for i, response_task in enumerate(follow_up_tasks):
+                    await self.insert(conn, response_task, i)
             except Exception:
                 print(f'ERROR: Failed to schedule follow-up tasks')
                 print(f'Task: {task!r}')

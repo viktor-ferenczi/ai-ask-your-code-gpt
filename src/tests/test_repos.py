@@ -39,13 +39,13 @@ REPOS = [
     # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    # ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
     # # Python, Shell, JSON, CSV, Python Notebook
     # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 
     # Python, Markdown
-    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
+    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
 
     # TypeScript
     # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),

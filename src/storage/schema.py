@@ -43,9 +43,8 @@ alter table public.property
 
 create table public.task
 (
-    created   timestamp  default (CURRENT_TIMESTAMP AT TIME ZONE 'utc'::text) not null
-        constraint task_pk
-            primary key,
+    id        bigserial  constraint task_pk primary key, 
+    created   timestamp                                                       not null,
     started   timestamp,
     finished  timestamp,
     state     task_state default 'pending'::task_state                        not null,
@@ -67,9 +66,13 @@ comment on column public.task.operation is 'Operation to execute, "type" of the 
 comment on column public.task.params is 'JSON encoded parameters to pass to the operation, the actual fields depend on the operation.';
 
 comment on column public.task.message is 'Message explaining the error if failed or a full traceback if crashed.';
-
+   
 alter table public.task
     owner to askyourcode;
+    
+create index task_created_state_index
+    on public.task (created, state);
+
 
 create table public.archive
 (
