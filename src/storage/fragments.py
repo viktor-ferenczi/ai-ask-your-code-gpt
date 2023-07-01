@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Iterable
 
 from asyncpg import Record, Connection
 
@@ -10,7 +10,7 @@ from common.tools import tiktoken_len
 @dataclass
 class Fragment:
     document_cs: str = ''
-    id: int = ''
+    id: int = -1
     lineno: int = 1
     tokens: int = 0
     depth: int = 0
@@ -84,6 +84,32 @@ async def insert(conn: Connection, fragment: Fragment):
         fragment.summary,
         fragment.name,
         fragment.body
+    )
+
+
+# See: https://stackoverflow.com/questions/43739123/best-way-to-insert-multiple-rows-with-asyncpg
+async def insert_many(conn: Connection, fragments: Iterable[Fragment]):
+    await conn.executemany(
+        '''
+        INSERT INTO fragment (partition_key, document_cs, lineno, tokens, depth, parent_id, category, definition, summary, name, body) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        ''',
+        [
+            (
+                fragment.document_cs[:2],
+                fragment.document_cs,
+                fragment.lineno,
+                fragment.tokens,
+                fragment.depth,
+                fragment.parent_id,
+                fragment.category,
+                fragment.definition,
+                fragment.summary,
+                fragment.name,
+                fragment.body
+            )
+            for fragment in fragments
+        ]
     )
 
 

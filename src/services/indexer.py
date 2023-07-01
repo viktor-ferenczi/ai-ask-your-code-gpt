@@ -1,41 +1,45 @@
 import asyncio
 import functools
 import os
-from typing import List, Tuple
+from typing import List, Tuple, Iterator
 
-import asyncpg
+from asyncpg import Connection
 from quart import Quart
 
 from common.constants import C
 from common.server import run_app
 from common.timer import timer
+from common.tools import tiktoken_len
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_NAME
 from storage import documents, fragments
 from storage.database import Database
 from storage.documents import Document
+from storage.fragments import Fragment as DbFragment
 from storage.scheduler import Scheduler, Operation, THandlerResult
 
 
 async def index_batch(db: Database, batch: List[Tuple[str, str]]) -> THandlerResult:
-    for document_cs, path in batch:
-        await index_document(db, document_cs, path)
+    with timer(f'Indexed {len(batch)} documents'):
+        async with db.connection() as conn:
+            for document_cs, path in batch:
+                await index_document(conn, document_cs, path)
     return None
 
 
-async def index_document(db: Database, document_cs: str, path: str) -> None:
+async def index_document(conn: Connection, document_cs: str, path: str) -> None:
     with timer(f'Indexed: {document_cs} {path}', show=C.DEVELOPMENT):
-        async with db.connection() as conn:
-            document: Document = await documents.find_by_checksum(conn, document_cs)
-            if document is None:
-                print(f'WARNING: Document is missing when trying to index it: {document_cs}')
-                return
+        document: Document = await documents.find_by_checksum(conn, document_cs)
+        if document is None:
+            print(f'WARNING: Document is missing when trying to index it: {document_cs}')
+            return
 
-            parser_cls = PARSERS_BY_NAME.get(document.doc_type)
-            if parser_cls is None:
-                print(f'WARNING: Cannot find parser class by name {document.doc_type}, document: {document_cs}')
-                return
+        parser_cls = PARSERS_BY_NAME.get(document.doc_type)
+        if parser_cls is None:
+            print(f'WARNING: Cannot find parser class by name {document.doc_type}, document: {document_cs}')
+            return
 
+        def iter_fragments() -> Iterator[DbFragment]:
             parser = parser_cls()
             for fragment in parser.parse(path, document.body):
                 assert isinstance(fragment, Fragment)
@@ -50,21 +54,20 @@ async def index_document(db: Database, document_cs: str, path: str) -> None:
                     print(f'Skipped fragment: {fragment!r}')
                     continue
 
-                try:
-                    await fragments.create(
-                        conn,
-                        document_cs,
-                        fragment.lineno,
-                        fragment.depth,
-                        None,
-                        fragment.type,
-                        True,
-                        fragment.type == 'summary',
-                        fragment.name,
-                        fragment.text)
-                except asyncpg.CharacterNotInRepertoireError as e:
-                    print(f'WARNING: Failed to store fragment: {e}')
-                    print(f'Skipped fragment: {fragment!r}')
+                yield DbFragment(
+                    document_cs=document_cs,
+                    lineno=fragment.lineno,
+                    tokens=tiktoken_len(fragment.text),
+                    depth=fragment.depth,
+                    parent_id=None,
+                    category=fragment.type,
+                    definition=True,
+                    summary=fragment.type == 'summary',
+                    name=fragment.name,
+                    body=fragment.text,
+                )
+
+        await fragments.insert_many(conn, iter_fragments())
 
 
 async def worker():
