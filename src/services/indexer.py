@@ -49,7 +49,7 @@ async def index_document(conn: Connection, document_cs: str, path: str) -> None:
                     print(f'Skipped fragment: {fragment!r}')
                     continue
 
-                if len(fragment.name) > 80:
+                if len(fragment.name) > 160:
                     print(f'WARNING: fragment.name is too long: {fragment.name!r}')
                     print(f'Skipped fragment: {fragment!r}')
                     continue

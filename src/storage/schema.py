@@ -152,7 +152,7 @@ create table public.fragment
     category      varchar(24)           not null,
     definition    boolean               not null,
     summary       boolean  not null,
-    name          varchar(80)           not null,
+    name          varchar(160)          not null,
     body          text                  not null,
     constraint fragment_pk
         primary key (id, partition_key)    

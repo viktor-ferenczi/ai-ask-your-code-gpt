@@ -82,7 +82,7 @@ async def insert(conn: Connection, fragment: Fragment):
         fragment.category,
         fragment.definition,
         fragment.summary,
-        fragment.name,
+        fragment.name[:160],
         fragment.body
     )
 
@@ -105,7 +105,7 @@ async def insert_many(conn: Connection, fragments: Iterable[Fragment]):
                 fragment.category,
                 fragment.definition,
                 fragment.summary,
-                fragment.name,
+                fragment.name[:160],
                 fragment.body
             )
             for fragment in fragments
