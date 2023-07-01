@@ -1,16 +1,15 @@
 import asyncio
 import json
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
-from traceback import format_exc, print_exc
-from typing import Any, Dict, Callable, List, Optional, Union, Awaitable
+from traceback import format_exc
+from typing import Any, Dict, Callable, List, Optional, Union, Awaitable, Iterable
 
 from asyncpg import Record, Connection
 from asyncpg.utils import _quote_ident
 
 from common.constants import C
-from common.tools import async_retry
 from storage.database import Database
 
 
@@ -40,6 +39,7 @@ class Operation(Enum):
 
 @dataclass
 class Task:
+    id: int = 0
     created: datetime = datetime(2000, 1, 1)
     started: Optional[datetime] = None
     finished: Optional[datetime] = None
@@ -48,6 +48,18 @@ class Task:
     params: Dict[str, Any] = field(default_factory=lambda: {})
     message: Optional[str] = None
 
+    @property
+    def wait_time(self) -> timedelta:
+        if self.started is None:
+            return datetime.utcnow() - self.created
+        return self.started - self.created
+
+    @property
+    def runtime(self) -> Optional[timedelta]:
+        if self.finished is None:
+            return None
+        return self.finished - self.started
+
     @classmethod
     def create_pending(cls, operation: Operation, **params: Any) -> "Task":
         return cls(operation=operation, params=params)
@@ -55,12 +67,13 @@ class Task:
     @classmethod
     def from_row(cls, row: Record) -> "Task":
         return cls(
-            operation=Operation(row['operation']),
-            params=json.loads(row['params']),
-            state=TaskState(row['state']),
+            id=row['id'],
             created=row['created'],
             started=row['started'],
             finished=row['finished'],
+            state=TaskState(row['state']),
+            operation=Operation(row['operation']),
+            params=json.loads(row['params']),
             message=row['message'],
         )
 
@@ -75,13 +88,15 @@ class Scheduler:
         self.db: Database = db
 
     async def schedule(self, task: Task):
-        async def fn():
-            async with self.db.transaction() as conn:
-                await self.insert(conn, task)
+        async with self.db.transaction() as conn:
+            await self.__insert(conn, task)
 
-        await async_retry(fn)
+    async def schedule_many(self, tasks: Iterable[Task]):
+        async with self.db.transaction() as conn:
+            for task in tasks:
+                await self.__insert(conn, task)
 
-    async def insert(self, conn: Connection, task: Task):
+    async def __insert(self, conn: Connection, task: Task):
         created = datetime.utcnow()
         name = task.operation.name
         params_json = json.dumps(task.params)
@@ -157,6 +172,16 @@ class Scheduler:
                 print(task.message)
             else:
                 task.state = TaskState.completed
+                if isinstance(result, Task):
+                    await self.__insert(conn, result)
+                elif isinstance(result, (list, tuple)) and all(isinstance(t, Task) for t in result):
+                    for t in result:
+                        await self.__insert(conn, t)
+                elif result is not None:
+                    print('WARNING: The task completed, but an invalid result was returned by its handler')
+                    print(f'Task: {task!r}')
+                    print(f'Handler: {handler!r}')
+                    print(f'Result: {result!r}')
 
             await conn.execute('''
                     UPDATE task
@@ -164,31 +189,8 @@ class Scheduler:
                         message = $3,
                         started = $4, 
                         finished = $5
-                    WHERE created = $1
-                ''', task.created, task.state.name, task.message, task.started, task.finished)
-
-            # Schedule any follow-up tasks
-            follow_up_tasks = ()
-            # noinspection PyBroadException
-            try:
-                if isinstance(result, Task):
-                    follow_up_tasks = [result]
-                elif isinstance(result, (list, tuple)) and all(isinstance(t, Task) for t in result):
-                    follow_up_tasks = result
-                elif result is not None:
-                    print(f'ERROR: Invalid result returned by a task handler:')
-                    print(f'Task: {task!r}')
-                    print(f'Handler: {handler!r}')
-                    print(f'Result: {result!r}')
-
-                for i, response_task in enumerate(follow_up_tasks):
-                    await self.insert(conn, response_task, i)
-            except Exception:
-                print(f'ERROR: Failed to schedule follow-up tasks')
-                print(f'Task: {task!r}')
-                print(f'Handler: {handler!r}')
-                print(f'Follow-up tasks: {follow_up_tasks!r}')
-                print_exc()
+                    WHERE id = $1
+                ''', task.id, task.state.name, task.message, task.started, task.finished)
 
         # Attempt to read more tasks from the queue
         return True
@@ -197,18 +199,18 @@ class Scheduler:
         row = await conn.fetchrow('''
                     SELECT * FROM task
                     WHERE operation = $1 AND state = 'pending'
-                    ORDER BY created
+                    ORDER BY id
                     LIMIT 1 FOR UPDATE SKIP LOCKED;
                 ''', operation.name)
         return row
 
-    async def get_task(self, created: datetime) -> Optional[Task]:
+    async def get_task(self, id: int) -> Optional[Task]:
         async with self.db.transaction() as conn:
             row = await conn.fetchrow('''
                     SELECT * 
                     FROM task 
-                    WHERE created = $1
-                ''', created)
+                    WHERE id = $1
+                ''', id)
             return Task.from_row(row) if row else None
 
     async def count_tasks(self, state: TaskState) -> int:

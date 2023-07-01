@@ -84,4 +84,4 @@ class BaseBackendTest(BaseTestCase):
             await asyncio.sleep(1.0)
 
         duration = time() - started
-        print(f'Processing finished in {duration:.3f}s. No pending tasks left.')
+        print(f'Processed all tasks in {duration:.3f}s')

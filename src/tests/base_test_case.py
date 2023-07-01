@@ -2,6 +2,7 @@ import asyncio
 import os
 import shutil
 import unittest
+from typing import Any
 
 import asyncpg
 from asyncpg import Pool
@@ -60,3 +61,9 @@ class BaseTestCase(unittest.IsolatedAsyncioTestCase):
         await asyncio.sleep(0.01)
 
         await super().asyncTearDown()
+
+    def assertEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
+        super().assertEqual(second, first, msg)
+
+    def assertNotEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
+        super().assertNotEqual(second, first, msg)
