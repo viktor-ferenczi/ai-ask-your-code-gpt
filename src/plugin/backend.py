@@ -153,7 +153,7 @@ class Backend:
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         async with self.db.connection() as conn:
-            pairs = await search_by_path_tail_name(conn, self.project.id, path, tail, name, 1000)
+            pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
 
         fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
