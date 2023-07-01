@@ -29,7 +29,7 @@ class TestStorage(BaseTestCase):
             sha.update(body)
             checksum = sha.hexdigest()
 
-            o = await documents.create(conn, checksum, body, 'text')
+            o = await documents.create(conn, checksum, 'text', 'text/plain', body)
             self.assertEqual(o.checksum, sha.hexdigest())
 
             r = await documents.find_by_checksum(conn, o.checksum)
@@ -43,7 +43,7 @@ class TestStorage(BaseTestCase):
             sha = hashlib.sha256()
             sha.update(body)
 
-            o = await files.create(conn, 42, '/a/b.txt', 'text/plain', len(body), sha.hexdigest(), None)
+            o = await files.create(conn, 42, '/a/b.txt', sha.hexdigest(), None)
 
             r = await files.find(conn, o.id)
             self.assertEqual(repr(o), repr(r))

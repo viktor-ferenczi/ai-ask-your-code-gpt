@@ -70,12 +70,12 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
 
                     doc_type = detect(zip_doc.path, mime_type)
                     if doc_type is not None:
-                        document = await documents.create(conn, document_cs, zip_doc.body, doc_type.name)
+                        document = await documents.create(conn, document_cs, doc_type.name, mime_type, zip_doc.body)
                         add(len(zip_doc.body), document_cs, zip_doc.path)
                         doc_count += 1
 
                 if project_id and document is not None:
-                    await files.create(conn, project_id, zip_doc.path[:400], mime_type[:160], len(zip_doc.body), document_cs, archive_cs)
+                    await files.create(conn, project_id, zip_doc.path[:400], document_cs, archive_cs)
 
             if batch:
                 store()

@@ -31,9 +31,9 @@ async def index_document(db: Database, document_cs: str, path: str) -> None:
                 print(f'WARNING: Document is missing when trying to index it: {document_cs}')
                 return
 
-            parser_cls = PARSERS_BY_NAME.get(document.doctype)
+            parser_cls = PARSERS_BY_NAME.get(document.doc_type)
             if parser_cls is None:
-                print(f'WARNING: Cannot find parser class by name {document.doctype}, document: {document_cs}')
+                print(f'WARNING: Cannot find parser class by name {document.doc_type}, document: {document_cs}')
                 return
 
             parser = parser_cls()

@@ -10,15 +10,19 @@ from common.constants import C
 @dataclass
 class Document:
     checksum: str
+    doc_type: str
+    mime_type: str
+    size: int
     body: bytes
-    doctype: str
 
     @classmethod
     def from_row(cls, row: Record) -> "Document":
         return cls(
             checksum=row['checksum'],
+            doc_type=row['doc_type'],
+            mime_type=row['mime_type'],
+            size=row['size'],
             body=row['body'],
-            doctype=row['doctype'],
         )
 
 
@@ -28,15 +32,19 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE document')
 
 
-async def create(conn: Connection, checksum: str, body: bytes, doctype: str) -> Document:
+async def create(conn: Connection, checksum: str, doc_type: str, mime_type: str, body: bytes) -> Document:
+    assert len(doc_type) <= 40
+    assert len(mime_type) <= 96
+
     partition_key = checksum[:2]
+    size = len(body)
 
     await conn.execute(
-        '''INSERT INTO document (partition_key, checksum, body, doctype) VALUES ($1, $2, $3, $4)''',
-        partition_key, checksum, body, doctype
+        '''INSERT INTO document (partition_key, checksum, doc_type, mime_type, size, body) VALUES ($1, $2, $3, $4, $5, $6)''',
+        partition_key, checksum, doc_type[:40], mime_type[:96], size, body
     )
 
-    return Document(checksum, body, doctype)
+    return Document(checksum, doc_type, mime_type, size, body)
 
 
 async def find_by_checksum(conn: Connection, checksum: str) -> Optional[Document]:

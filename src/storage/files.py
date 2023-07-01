@@ -11,8 +11,6 @@ class File:
     id: int
     project_id: int
     path: str
-    mime_type: str
-    size: int
     document_cs: str
     archive_cs: str
 
@@ -22,8 +20,6 @@ class File:
             id=row['id'],
             project_id=row['project_id'],
             path=row['path'],
-            mime_type=row['mime_type'],
-            size=row['size'],
             document_cs=row['document_cs'],
             archive_cs=row['archive_cs'],
         )
@@ -35,12 +31,12 @@ async def truncate(conn: Connection):
     await conn.execute('TRUNCATE file')
 
 
-async def create(conn: Connection, project_id: int, path: str, mime_type: str, size: int, document_cs: Optional[str], archive_cs: Optional[str]) -> File:
+async def create(conn: Connection, project_id: int, path: str, document_cs: Optional[str], archive_cs: Optional[str]) -> File:
     id = await conn.fetchval(
-        '''INSERT INTO file (project_id, path, mime_type, size, document_cs, archive_cs) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id''',
-        project_id, path, mime_type, size, document_cs, archive_cs
+        '''INSERT INTO file (project_id, path, document_cs, archive_cs) VALUES ($1, $2, $3, $4) RETURNING id''',
+        project_id, path, document_cs, archive_cs
     )
-    return File(id, project_id, path, mime_type, size, document_cs, archive_cs)
+    return File(id, project_id, path, document_cs, archive_cs)
 
 
 async def find(conn: Connection, id: int) -> Optional[File]:

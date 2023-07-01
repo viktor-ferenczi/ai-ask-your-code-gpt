@@ -109,8 +109,10 @@ create table public.document
 (
     partition_key char(2)                                       not null,
     checksum      varchar(64)                                   not null,
+    doc_type      varchar(40)                                   not null,
+    mime_type     varchar(96)                                   not null,
+    size          bigint                                        not null,
     body          bytea                                         not null,
-    doctype       varchar(40) default 'text'::character varying not null,
     constraint document_pk
         primary key (partition_key, checksum)
 ) partition by range (partition_key);
@@ -184,8 +186,6 @@ create table public.file
     id              bigserial,
     project_id      bigint       not null,
     path            varchar(400) not null,
-    mime_type       varchar(160) not null,
-    size            bigint       not null,
     document_cs     varchar(64),
     archive_cs      varchar(64),
     constraint file_pk
