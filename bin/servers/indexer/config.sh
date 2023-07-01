@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME="indexer-$INSTANCE_INDEX"
-TITLE="Loader-$INSTANCE_INDEX"
+TITLE="Indexer-$INSTANCE_INDEX"
 
 INSTANCE_COUNT=16
 

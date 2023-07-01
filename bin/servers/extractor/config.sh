@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME="extractor-$INSTANCE_INDEX"
-TITLE="Loader-$INSTANCE_INDEX"
+TITLE="Extractor-$INSTANCE_INDEX"
 
 INSTANCE_COUNT=4
 

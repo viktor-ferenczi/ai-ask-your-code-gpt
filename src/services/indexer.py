@@ -91,4 +91,4 @@ def main(http_port: int) -> None:
 
 
 if __name__ == "__main__":
-    main(int(os.environ.get('HTTP_PORT', '40002')))
+    main(int(os.environ.get('HTTP_PORT', '43000')))

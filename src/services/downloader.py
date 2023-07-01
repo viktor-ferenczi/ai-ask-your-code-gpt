@@ -142,7 +142,7 @@ async def canary():
 
 
 def main():
-    port = int(os.environ.get('HTTP_PORT', '40000'))
+    port = int(os.environ.get('HTTP_PORT', '41000'))
     asyncio.run(run_app(app, *[worker() for worker in workers], debug=C.DEVELOPMENT, host='localhost', port=port))
 
 

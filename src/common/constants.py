@@ -59,6 +59,10 @@ class C:
     # Summary generation
     MAX_SUMMARY_WIDTH = 80
 
+    # Cleanup
+    FIRST_CLEANUP_DELAY: int = 77  # s
+    CLEANUP_PERIOD: int = 777  # s
+
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     DATA_DIR = os.path.normpath(os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode')))
