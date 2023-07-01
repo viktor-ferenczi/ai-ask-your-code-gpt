@@ -62,6 +62,8 @@ class Backend:
             except asyncio.TimeoutError:
                 pass
 
+        task = await self.scheduler.wait_task_leave_state(task.id, TaskState.pending)
+
         if task.state == TaskState.failed:
             return dict(
                 status=f'Failed to download archive: {task.message}',

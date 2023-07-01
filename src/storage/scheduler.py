@@ -125,7 +125,7 @@ class Scheduler:
     async def listen(self, operation: Operation, handler: THandler):
         event = asyncio.Event()
 
-        def callback(*args):
+        def callback(*_):
             event.set()
 
         async with self.db.connection() as conn:
@@ -142,7 +142,7 @@ class Scheduler:
     async def process(self, operation: Operation, handler: THandler) -> bool:
         async with self.db.transaction() as conn:
             # Get the next task to process
-            row = await self.get_next_task(conn, operation)
+            row = await self.get_next_unclaimed_task_for_update(conn, operation)
             if row is None:
                 # No more tasks
                 return False
@@ -195,7 +195,7 @@ class Scheduler:
         # Attempt to read more tasks from the queue
         return True
 
-    async def get_next_task(self, conn, operation: Operation) -> Optional[Record]:
+    async def get_next_unclaimed_task_for_update(self, conn, operation: Operation) -> Optional[Record]:
         row = await conn.fetchrow('''
                     SELECT * FROM task
                     WHERE operation = $1 AND state = 'pending'
@@ -212,6 +212,14 @@ class Scheduler:
                     WHERE id = $1
                 ''', id)
             return Task.from_row(row) if row else None
+
+    async def wait_task_leave_state(self, id: int, state_to_leave: TaskState.pending, *, polling_period: float = 0.2) -> Task:
+        await asyncio.sleep(0)
+        while 1:
+            task = await self.get_task(id)
+            if task.state != state_to_leave:
+                return task
+            await asyncio.sleep(polling_period)
 
     async def count_tasks(self, state: TaskState) -> int:
         async with self.db.transaction() as conn:
