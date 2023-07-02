@@ -39,7 +39,7 @@ REPOS = [
     # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    # ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
     # # Python, Shell, JSON, CSV, Python Notebook
     # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
@@ -60,7 +60,7 @@ REPOS = [
 
     # Part of Unreal: C++, shader
     # http://rebecca.sh/PluginsShadersSourceTargets.zip
-    ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
+    # ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
 ]
 
 

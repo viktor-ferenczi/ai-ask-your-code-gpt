@@ -2,14 +2,14 @@ import hashlib
 import unittest
 from pprint import pformat
 
-from base_test_case import BaseTestCase
+from base_database_test import BaseDatabaseTest
 from common.tools import hash_bytes
 from storage import archives, documents, files, fragments, projects, properties
 from storage.archives import Archive
 from storage.schema import VERSION
 
 
-class TestStorage(BaseTestCase):
+class TestStorage(BaseDatabaseTest):
 
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()

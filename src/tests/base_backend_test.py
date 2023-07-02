@@ -7,7 +7,7 @@ from typing import List
 
 from quart import Quart, send_file
 
-from base_test_case import BaseTestCase
+from base_database_test import BaseDatabaseTest
 from services.downloader import app as downloader_app, workers as downloader_workers
 from services.extractor import app as extractor_app, workers as extractor_workers
 from services.indexer import app as indexer_app, workers as indexer_workers, main as indexer_main
@@ -16,7 +16,7 @@ from storage.scheduler import TaskState
 MODULE_DIR = os.path.dirname(__file__)
 
 
-class BaseBackendTest(BaseTestCase):
+class BaseBackendTest(BaseDatabaseTest):
     zip_path = ''
     indexer_count = os.cpu_count()
     use_multiprocessing = False

@@ -1,11 +1,11 @@
 import asyncio
 from typing import List
 
-from base_test_case import BaseTestCase
+from base_database_test import BaseDatabaseTest
 from storage.pubsub import PubSub
 
 
-class TestPubSub(BaseTestCase):
+class TestPubSub(BaseDatabaseTest):
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
         self.pubsub = PubSub(self.db)

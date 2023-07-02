@@ -1,0 +1,26 @@
+import os
+from pprint import pformat
+
+from base_test_case import BaseTestCase
+from common.tools import tiktoken_len
+from splitters.markdown_splitter import MarkdownSplitter
+from splitters.text_splitter import TextSplitter
+
+
+class TestSplitters(BaseTestCase):
+    test_script = __file__
+
+    def verify_splitter(self, splitter: TextSplitter, filename: str):
+        path = os.path.join(self.data_dir, 'input', filename)
+        with open(path, 'rt', encoding='utf-8') as f:
+            text = f.read()
+        actual = pformat(list(splitter.split_text(text)))
+        self.verify(filename, actual)
+
+    def test_text_splitter(self):
+        splitter = TextSplitter(chunk_size=150, length_function=tiktoken_len)
+        self.verify_splitter(splitter, 'paul_graham_essay.txt')
+
+    def test_markdown_splitter(self):
+        splitter = MarkdownSplitter(chunk_size=150, length_function=tiktoken_len)
+        self.verify_splitter(splitter, 'LangChain_README.md')

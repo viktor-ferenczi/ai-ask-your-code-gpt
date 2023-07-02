@@ -4,11 +4,11 @@ import unittest
 from datetime import datetime
 from typing import List, NoReturn, Any
 
-from base_test_case import BaseTestCase
+from base_database_test import BaseDatabaseTest
 from storage.scheduler import Scheduler, Operation, Task, THandlerResult, TaskState, TaskFailed
 
 
-class TestScheduler(BaseTestCase):
+class TestScheduler(BaseDatabaseTest):
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 

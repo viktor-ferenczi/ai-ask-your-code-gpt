@@ -140,3 +140,4 @@ TestProject.zip
 /src/tests/TestRepos/unreal
 *.actual
 *-actual
+/src/tests/**/actual/*

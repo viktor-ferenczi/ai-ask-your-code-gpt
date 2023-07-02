@@ -1,69 +1,57 @@
-import asyncio
 import os
-import shutil
 import unittest
-from typing import Any
-
-import asyncpg
-from asyncpg import Pool
-
-from common.constants import C
-from storage.database import Database
-from storage.pubsub import PubSub
-from storage.scheduler import Scheduler
 
 
-class BaseTestCase(unittest.IsolatedAsyncioTestCase):
-    first = True
+class BaseTestCase(unittest.TestCase):
+    test_script: str = ''
+    max_output_file_size = 20_000_000
 
-    async def asyncSetUp(self) -> None:
-        await super().asyncSetUp()
+    def setUp(self) -> None:
+        super().setUp()
+        self.failures = []
+        assert self.test_script
 
-        if C.IS_PRODUCTION:
-            raise RuntimeError('Do not run the test suite in production!')
+    def assertNoFailures(self):
+        self.assertFalse(bool(self.failures), f"Failed examples: {', '.join(self.failures)}")
 
-        self.maxDiff = 32768
+    @property
+    def data_dir(self) -> str:
+        return f'{self.test_script[:-3]}_data'
 
-        print(f'Cleared archive directory: {C.ARCHIVE_DIR}')
-        if os.path.isdir(C.ARCHIVE_DIR):
-            for _ in range(10):
-                try:
-                    shutil.rmtree(C.ARCHIVE_DIR)
-                except (IOError, OSError):
-                    await asyncio.sleep(0.5)
-                else:
-                    break
+    def verify(self, name: str, actual: str):
+        if len(actual) >= self.max_output_file_size:
 
-        self.pool: Pool = asyncpg.create_pool(C.DSN, command_timeout=60, min_size=1, max_size=10)
-        await self.pool._async__init__()
-        self.db = Database(self.pool)
+            half = len(actual) // 2
+            while actual[half] != '\n':
+                half += 1
+            half += 1
 
-        if BaseTestCase.first:
-            await self.db.drop()
-            BaseTestCase.first = False
+            self.verify(f'{name}-1', actual[:half])
+            self.verify(f'{name}-2', actual[half:])
+            return
 
-        await self.db.migrate()
+        data_dir = self.data_dir
 
-        self.scheduler = Scheduler(self.db)
-        self.pubsub = PubSub(self.db)
+        actual_dir = os.path.join(data_dir, 'actual')
+        expected_dir = os.path.join(data_dir, 'expected')
 
-        await self.scheduler.delete_all_tasks()
+        os.makedirs(actual_dir, exist_ok=True)
+        os.makedirs(expected_dir, exist_ok=True)
 
-        await asyncio.sleep(0.01)
+        actual_path = os.path.join(actual_dir, f'{name}.py')
+        expected_path = os.path.join(expected_dir, f'{name}.py')
 
-    async def asyncTearDown(self) -> None:
-        del self.db
+        good = False
+        if os.path.exists(expected_path):
+            with open(expected_path, 'rt', encoding='utf-8') as f:
+                expected = f.read()
+            good = actual == expected
 
-        self.pool.terminate()
-        del self.pool
+        if good:
+            if os.path.exists(actual_path):
+                os.remove(actual_path)
+        else:
+            with open(actual_path, 'wb') as f:
+                f.write(actual.encode('utf-8', errors='replace'))
 
-        # Without this the test suite continues to spin in PyCharm
-        await asyncio.sleep(0.01)
-
-        await super().asyncTearDown()
-
-    def assertEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
-        super().assertEqual(second, first, msg)
-
-    def assertNotEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
-        super().assertNotEqual(second, first, msg)
+            self.failures.append(name)

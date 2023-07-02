@@ -4,14 +4,14 @@ import zipfile
 from typing import List
 
 from base_backend_test import BaseBackendTest
-from base_test_case import BaseTestCase
+from base_database_test import BaseDatabaseTest
 from model.hit import Hit
 from plugin.backend import Backend, TInfo
 
 MODULE_DIR = os.path.dirname(__file__)
 
 
-class TestDownloadServerNotRunning(BaseTestCase):
+class TestDownloadServerNotRunning(BaseDatabaseTest):
 
     async def test_download_server_not_running(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
