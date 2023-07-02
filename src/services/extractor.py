@@ -2,7 +2,7 @@ import asyncio
 import functools
 import hashlib
 import os
-from typing import Iterator, List, Tuple
+from typing import Iterator, List
 
 from quart import Quart
 
@@ -30,7 +30,8 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
         iter_zip_docs: Iterator[ZipDoc] = extract_verify_documents(path, max_file_size=C.MAX_FILE_SIZE)
         iter_zip_docs: Iterator[ZipDoc] = remove_common_base_dir(archive.common_base_dir, iter_zip_docs)
 
-        batch: List[Tuple[str, str]] = []
+        docs = []
+        paths = []
         total = 0
         doc_count = 0
 
@@ -38,19 +39,21 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
         max_files_per_batch = min(200, max(10, archive.count // (2 * os.cpu_count())))
 
         def add(size: int, document_cs: str, path: str) -> None:
-            nonlocal batch, total
-            batch.append((document_cs, path))
+            nonlocal docs, paths, total
+            docs.append(document_cs)
+            paths.append(path)
             total += size
-            if total >= max_bytes_per_batch or len(batch) >= max_files_per_batch:
+            if total >= max_bytes_per_batch or len(docs) >= max_files_per_batch:
                 store()
 
         def store() -> None:
-            nonlocal batch, total
+            nonlocal docs, paths, total
             if not C.PRODUCTION:
-                print(f'Scheduled a batch of {len(batch)} documents ({total >> 10}kB) for indexing')
-            task = Task.create_pending(Operation.IndexSource, batch=batch)
+                print(f'Scheduled a batch of {len(docs)} documents ({total >> 10}kB) for indexing')
+            task = Task.create_pending(Operation.IndexSource, checksums=docs, paths=paths)
             indexing_tasks.append(task)
-            batch = []
+            docs = []
+            paths = []
             total = 0
 
         async with db.transaction() as conn:
@@ -77,7 +80,7 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
                 if project_id and document is not None:
                     await files.create(conn, project_id, zip_doc.path[:400], document_cs, archive_cs)
 
-            if batch:
+            if docs:
                 store()
 
     print(f'Produced {doc_count} documents and {len(indexing_tasks)} indexing tasks')

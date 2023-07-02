@@ -1,6 +1,5 @@
-import hashlib
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, List
 
 from asyncpg import Record, Connection
 
@@ -48,7 +47,34 @@ async def create(conn: Connection, checksum: str, doc_type: str, mime_type: str,
 
 
 async def find_by_checksum(conn: Connection, checksum: str) -> Optional[Document]:
-    row = await conn.fetchrow('''SELECT * FROM document WHERE partition_key = $1 AND checksum = $2 LIMIT 1''', checksum[:2], checksum)
+    row = await conn.fetchrow(
+        '''
+            SELECT * 
+            FROM document 
+            WHERE partition_key = $1 
+              AND checksum = $2 
+            LIMIT 1
+        ''',
+        checksum[:2], checksum
+    )
+
     if row is None:
         return None
+
     return Document.from_row(row)
+
+
+async def find_many_by_checksums(conn: Connection, checksums: List[str]) -> List[Document]:
+    partition_keys = set(checksum[:2] for checksum in checksums)
+    return [
+        Document.from_row(row)
+        for row in await conn.fetch(
+            '''
+                SELECT * 
+                FROM document 
+                WHERE partition_key = any($1::char(2)[]) 
+                  AND checksum = any($2::char(64)[]) 
+            ''',
+            partition_keys, checksums
+        )
+    ]

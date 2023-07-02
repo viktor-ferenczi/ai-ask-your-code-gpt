@@ -92,7 +92,7 @@ class TestBackend(BaseBackendTest):
         self.verify_hits(hits[1:], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
 
         summary = await backend.summarize(tail='.md')
-        self.assertEqual('''\
+        self.assertEqual(summary, '''\
 File extensions: .md
 
 # Markdown Syntax Examples
@@ -123,10 +123,10 @@ File extensions: .md
 ## Problem Solving
 ## Projects Ideas
 
-''', summary)
+''')
 
         summary = await backend.summarize(tail='.py')
-        self.assertEqual('''\
+        self.assertEqual(summary, '''\
 File extensions: .py
 
 Python: /find_duplicates.py
@@ -135,7 +135,7 @@ Python: /find_duplicates.py
   Methods: __init__ collect
   Variables and usages: CHUNK_SIZE ProcessPoolExecutor append collections concurrent data defaultdict desc dirpath duplicates executor extend file_checksum file_checksums file_list file_path file_size filename filenames files files_by_checksum files_by_size first futures getsize hasher hashlib hexdigest input isdir items join open path pbar print read root_dir total total_size total_space_saved tqdm unit unit_scale update values walk
 
-''', summary)
+''')
 
     async def medium_project(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'medium_project')
@@ -152,7 +152,7 @@ Python: /find_duplicates.py
         self.verify_hits(hits, 34, contains=['class Query'])
 
         summary = await backend.summarize(tail='.md')
-        self.assertEqual('''\
+        self.assertEqual(summary, '''\
 File extensions: .md
 
 # Database Abstraction Layer Generator
@@ -165,10 +165,10 @@ File extensions: .md
 ## Performance
 ## Limitations
 
-''', summary)
+''')
 
         summary = await backend.summarize(path='/lib/dblayer', tail='.py')
-        self.assertEqual('''\
+        self.assertEqual(summary, '''\
 File extensions: .py
 
 Python: /lib/dblayer/constants.py
@@ -187,7 +187,7 @@ Relevant subdirectories:
   test: 39%
   graph: 2%
   generator: 1%
-''', summary)
+''')
 
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
         print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')

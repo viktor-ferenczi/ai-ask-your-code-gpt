@@ -38,7 +38,6 @@ class Downloader:
                 return False, archive
             except Exception as e:
                 print(f'Failed to download archive: {archive!r}')
-                print_exc()
                 raise DownloadError(f'Failed to download archive: {e}')
 
             # Different (modified) archive from the same URL?

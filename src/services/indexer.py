@@ -1,9 +1,8 @@
 import asyncio
 import functools
 import os
-from typing import List, Tuple, Iterator
+from typing import List, Iterable
 
-from asyncpg import Connection
 from quart import Quart
 
 from common.constants import C
@@ -16,58 +15,72 @@ from storage import documents, fragments
 from storage.database import Database
 from storage.documents import Document
 from storage.fragments import Fragment as DbFragment
-from storage.scheduler import Scheduler, Operation, THandlerResult
+from storage.scheduler import Scheduler, Operation, THandlerResult, TaskFailed
 
 
-async def index_batch(db: Database, batch: List[Tuple[str, str]]) -> THandlerResult:
-    with timer(f'Indexed {len(batch)} documents'):
-        async with db.connection() as conn:
-            for document_cs, path in batch:
-                await index_document(conn, document_cs, path)
+async def index_batch(db: Database, checksums: List[str], paths: List[str]) -> THandlerResult:
+    if not checksums:
+        return
+
+    if len(checksums) != len(paths):
+        raise TaskFailed('Mismatching number of checksums and paths')
+
+    async with db.connection() as conn:
+        docs = await documents.find_many_by_checksums(conn, checksums)
+
+    if len(docs) != len(checksums):
+        found = set(doc.checksum for doc in docs)
+        missing = set(checksums) - found
+        raise TaskFailed(f'Missing documents: {sorted(missing)!r}')
+
+    # Order of docs may not match the order of checksums, so paths need to be looked up
+    path_map = {checksum: path for checksum, path in zip(checksums, paths)}
+
+    frags = []
+    with timer(f'Indexed {len(docs)} documents'):
+        for document in docs:
+            frags.extend(index_document(document, path_map[document.checksum]))
+            await asyncio.sleep(0)
+
+    with timer(f'Stored {len(frags)} fragments of {len(docs)} documents'):
+        async with db.transaction() as conn:
+            await fragments.insert_many(conn, frags)
+
     return None
 
 
-async def index_document(conn: Connection, document_cs: str, path: str) -> None:
-    with timer(f'Indexed: {document_cs} {path}', show=C.DEVELOPMENT):
-        document: Document = await documents.find_by_checksum(conn, document_cs)
-        if document is None:
-            print(f'WARNING: Document is missing when trying to index it: {document_cs}')
-            return
-
+def index_document(document: Document, path: str) -> Iterable[DbFragment]:
+    with timer(f'Indexed: {document.checksum} {path}', show=C.DEVELOPMENT):
         parser_cls = PARSERS_BY_NAME.get(document.doc_type)
         if parser_cls is None:
-            print(f'WARNING: Cannot find parser class by name {document.doc_type}, document: {document_cs}')
+            print(f'WARNING: Cannot find parser class by name {document.doc_type}, document: {document.checksum}')
             return
 
-        def iter_fragments() -> Iterator[DbFragment]:
-            parser = parser_cls()
-            for fragment in parser.parse(path, document.body):
-                assert isinstance(fragment, Fragment)
+        parser = parser_cls()
+        for fragment in parser.parse(path, document.body):
+            assert isinstance(fragment, Fragment)
 
-                if len(fragment.type) > 24:
-                    print(f'WARNING: fragment.type is too long: {fragment.type!r}')
-                    print(f'Skipped fragment: {fragment!r}')
-                    continue
+            if len(fragment.type) > 24:
+                print(f'WARNING: fragment.type is too long: {fragment.type!r}')
+                print(f'Skipped fragment: {fragment!r}')
+                continue
 
-                if len(fragment.name) > 160:
-                    print(f'WARNING: fragment.name is too long: {fragment.name!r}')
-                    print(f'Skipped fragment: {fragment!r}')
-                    continue
+            if len(fragment.name) > 160:
+                print(f'WARNING: fragment.name is too long: {fragment.name!r}')
+                print(f'Skipped fragment: {fragment!r}')
+                continue
 
-                yield DbFragment(
-                    document_cs=document_cs,
-                    lineno=fragment.lineno,
-                    tokens=tiktoken_len(fragment.text),
-                    depth=fragment.depth,
-                    parent_id=None,
-                    category=fragment.type,
-                    definition=True,
-                    summary=fragment.type == 'summary',
-                    name=fragment.name,
-                    body=fragment.text,
-                )
-
-        await fragments.insert_many(conn, iter_fragments())
+            yield DbFragment(
+                document_cs=document.checksum,
+                lineno=fragment.lineno,
+                tokens=tiktoken_len(fragment.text),
+                depth=fragment.depth,
+                parent_id=None,
+                category=fragment.type,
+                summary=fragment.type == 'summary',
+                name=fragment.name,
+                body=fragment.text,
+            )
 
 
 async def worker():

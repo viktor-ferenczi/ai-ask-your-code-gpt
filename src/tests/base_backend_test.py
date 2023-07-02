@@ -1,6 +1,7 @@
 import asyncio
 import multiprocessing
 import os
+from pprint import pprint
 from time import time
 from typing import List
 
@@ -85,3 +86,13 @@ class BaseBackendTest(BaseTestCase):
 
         duration = time() - started
         print(f'Processed all tasks in {duration:.3f}s')
+
+        good = True
+        for task in await self.scheduler.get_all_tasks():
+            if task.state != TaskState.completed:
+                if good:
+                    print('Failed tasks:')
+                pprint(task)
+                good = False
+
+        self.assertTrue(good, 'Failed tasks, see above.')

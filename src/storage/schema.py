@@ -76,7 +76,7 @@ create index task_created_state_index
 
 create table public.archive
 (
-    checksum varchar(64)  not null
+    checksum char(64)  not null
         constraint archive_pk
             primary key,
     size bigint not null,
@@ -111,7 +111,7 @@ alter table public.project
 create table public.document
 (
     partition_key char(2)                                       not null,
-    checksum      varchar(64)                                   not null,
+    checksum      char(64)                                      not null,
     doc_type      varchar(40)                                   not null,
     mime_type     varchar(96)                                   not null,
     size          bigint                                        not null,
@@ -144,14 +144,13 @@ create table public.fragment
 (
     id            bigserial,
     partition_key char(2)               not null,
-    document_cs   varchar(64)           not null,
+    document_cs   char(64)              not null,
     lineno        integer               not null,
     tokens        integer               not null,
     depth         integer               not null,
     parent_id     integer,
     category      varchar(24)           not null,
-    definition    boolean               not null,
-    summary       boolean  not null,
+    summary       boolean               not null,
     name          varchar(160)          not null,
     body          text                  not null,
     constraint fragment_pk
@@ -190,8 +189,8 @@ create table public.file
     project_id      bigint       not null,
     path            varchar(400) not null,
     depth           integer      not null,
-    document_cs     varchar(64),
-    archive_cs      varchar(64),
+    document_cs     char(64),
+    archive_cs      char(64),
     constraint file_pk
         primary key (id)
 );

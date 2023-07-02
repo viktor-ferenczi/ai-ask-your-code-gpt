@@ -2,7 +2,6 @@ import asyncio
 import hashlib
 import time
 import uuid
-from asyncio import CancelledError
 from typing import List, Callable, Iterator, Awaitable, Any
 
 import tiktoken
@@ -66,6 +65,12 @@ async def async_retry(fn: Callable[[], Awaitable[Any]], handle_exceptions=(), ma
             delay = min(max_delay, delay * delay_multiplier)
 
     return await fn()
+
+
+def hash_bytes(data: bytes) -> str:
+    sha = hashlib.sha256()
+    sha.update(data)
+    return sha.hexdigest()
 
 
 def hash_file(path: str) -> str:

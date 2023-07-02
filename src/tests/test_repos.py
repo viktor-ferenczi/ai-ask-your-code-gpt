@@ -12,7 +12,7 @@ from model.fragment import Fragment
 from model.hit import Hit
 from parsers.registrations import PARSERS_BY_EXTENSION
 from plugin.backend import Backend, TInfo, BackendError
-from storage.fragments import get_all_fragments, Fragment as DbFragment
+from storage.fragments import get_all_fragments_in_project, Fragment as DbFragment
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -180,8 +180,8 @@ class TestRepos(BaseBackendTest):
                 self.verify(f'summary.{extension}', actual)
 
         async with self.db.connection() as conn:
-            fragments: List[DbFragment] = await get_all_fragments(conn, backend.project.id)
-        fragments.sort(key=lambda f: (f.document_cs, f.lineno, f.id, f.category, f.definition, f.summary))
+            fragments: List[DbFragment] = await get_all_fragments_in_project(conn, backend.project.id)
+        fragments.sort(key=lambda f: (f.document_cs, f.lineno, f.id, f.category, f.summary))
         normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)

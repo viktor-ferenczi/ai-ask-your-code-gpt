@@ -1,13 +1,25 @@
 import hashlib
 import unittest
+from pprint import pformat
 
 from base_test_case import BaseTestCase
+from common.tools import hash_bytes
 from storage import archives, documents, files, fragments, projects, properties
 from storage.archives import Archive
 from storage.schema import VERSION
 
 
 class TestStorage(BaseTestCase):
+
+    async def asyncSetUp(self) -> None:
+        await super().asyncSetUp()
+
+        self.bodies = [
+            b'Hello 1',
+            b'Hello 2',
+            b'Hello 3',
+        ]
+        self.checksums = [hash_bytes(body) for body in self.bodies]
 
     async def test_archives(self) -> None:
         async with self.db.transaction() as conn:
@@ -24,16 +36,24 @@ class TestStorage(BaseTestCase):
         async with self.db.transaction() as conn:
             await documents.truncate(conn)
 
-            body = b'Hello World!'
-            sha = hashlib.sha256()
-            sha.update(body)
-            checksum = sha.hexdigest()
+            bodies = self.bodies
+            checksums = self.checksums
 
-            o = await documents.create(conn, checksum, 'text', 'text/plain', body)
-            self.assertEqual(o.checksum, sha.hexdigest())
+            docs = [
+                await documents.create(conn, checksum, 'text', 'text/plain', body)
+                for body, checksum in zip(bodies, checksums)
+            ]
 
-            r = await documents.find_by_checksum(conn, o.checksum)
-            self.assertEqual(repr(o), repr(r))
+            for doc, checksum in zip(docs, checksums):
+                self.assertEqual(doc.checksum, checksum)
+
+            r = await documents.find_by_checksum(conn, checksums[0])
+            self.assertEqual(pformat(r), pformat(docs[0]))
+
+            r = await documents.find_many_by_checksums(conn, checksums)
+            r.sort(key=lambda d: d.body)
+            self.assertEqual(len(r), len(checksums))
+            self.assertEqual(pformat(r), pformat(docs))
 
     async def test_files(self) -> None:
         async with self.db.transaction() as conn:
@@ -52,18 +72,26 @@ class TestStorage(BaseTestCase):
         async with self.db.transaction() as conn:
             await fragments.truncate(conn)
 
-            body = b'Hello World!'
-            sha = hashlib.sha256()
-            sha.update(body)
+            bodies = self.bodies
+            checksums = self.checksums
 
-            o = await fragments.create(conn, sha.hexdigest(), 1, 0, None, 'doc', False, False, '', body.decode())
+            frags = [
+                await fragments.create(conn, checksum, 1, 0, None, 'doc', False, '', body.decode())
+                for body, checksum in zip(bodies, checksums)
+            ]
 
-            r = await fragments.query(conn, sha.hexdigest(), o.id)
+            r = await fragments.query(conn, checksums[0], frags[0].id)
             self.assertEqual(len(r), 1)
-            self.assertEqual(repr(o), repr(r[0]))
+            self.assertEqual(r[0].document_cs, frags[0].document_cs)
 
-            r = await fragments.query(conn, sha.hexdigest(), o.id + 1)
-            self.assertEqual(len(r), 0)
+            await fragments.truncate(conn)
+
+            await fragments.insert_many(conn, frags)
+            r = await fragments.list_all_fragments(conn)
+            self.assertEqual(len(r), 3)
+
+            for o, i in zip(r, frags):
+                self.assertEqual(o.document_cs, i.document_cs)
 
     async def test_projects(self) -> None:
         async with self.db.transaction() as conn:

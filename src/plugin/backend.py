@@ -9,7 +9,7 @@ from model.fragment import Fragment
 from model.hit import Hit
 from storage import projects
 from storage.database import Database
-from storage.fragments import search_by_path_tail_name_unlimited, search_by_path_tail_name, list_fragments_by_id, Fragment as DbFragment
+from storage.fragments import search_in_project_by_path_tail_name_unlimited, search_in_project_by_path_tail_name, list_project_fragments_by_id, Fragment as DbFragment
 from storage.projects import Project
 from storage.pubsub import PubSub, ChannelName
 from storage.scheduler import Scheduler, Task, Operation, TaskState
@@ -94,9 +94,9 @@ class Backend:
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         async with self.db.connection() as conn:
             if text:
-                pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+                pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
             else:
-                pairs = await search_by_path_tail_name(conn, self.project.id, path, tail, name, limit)
+                pairs = await search_in_project_by_path_tail_name(conn, self.project.id, path, tail, name, limit)
 
         fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
@@ -121,7 +121,7 @@ class Backend:
         else:
             # Pull the fragments referenced from the full text search uuids
             async with self.db.connection() as conn:
-                pairs = await list_fragments_by_id(conn, self.project.id, list(map(int, fts_ids)))
+                pairs = await list_project_fragments_by_id(conn, self.project.id, list(map(int, fts_ids)))
 
             fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             fragment_map = {fragment.uuid: fragment for fragment in fragments}
@@ -149,7 +149,7 @@ class Backend:
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         async with self.db.connection() as conn:
-            pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+            pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
 
         fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
 
@@ -159,7 +159,7 @@ class Backend:
             if tail or name:
                 return ''
             async with self.db.connection() as conn:
-                pairs = await search_by_path_tail_name_unlimited(conn, self.project.id, '/', '', '')
+                pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, '/', '', '')
                 fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             if not fragments:
                 return ''

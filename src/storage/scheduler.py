@@ -229,6 +229,17 @@ class Scheduler:
                     WHERE state = $1
                 ''', state.name)
 
+    async def get_all_tasks(self) -> List[Task]:
+        async with self.db.transaction() as conn:
+            return [
+                Task.from_row(row)
+                for row in await conn.fetch('''
+                    SELECT * 
+                    FROM task 
+                    ORDER BY id
+                ''')
+            ]
+
     async def delete_all_tasks(self):
         async with self.db.transaction() as conn:
             await conn.execute('TRUNCATE task')
