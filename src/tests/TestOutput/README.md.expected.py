@@ -2,28 +2,21 @@ from model.fragment import Fragment
 
 # Parser: MarkdownParser
 
-f0 = Fragment(uuid='TEST-00', path='README.md', lineno=1, depth=1, type='documentation', name='', text='# Test project\n\n')
-
-f1 = Fragment(uuid='TEST-01',
+f0 = Fragment(uuid='TEST-00',
          path='README.md',
-         lineno=3,
-         depth=2,
+         lineno=1,
+         depth=1,
          type='documentation',
          name='',
-         text='## Rationale\n'
+         text='# Test project\n'
+              '\n'
+              '## Rationale\n'
               '\n'
               'This is a project used by the unit tests of the **AskYourCode** _ChatGPT_ plugin.\n'
               '\n'
               'We need a standard set of source code files to validate the unit tests results with.\n'
-              '\n')
-
-f2 = Fragment(uuid='TEST-02',
-         path='README.md',
-         lineno=9,
-         depth=2,
-         type='documentation',
-         name='',
-         text='### Doc types and languages\n'
+              '\n'
+              '### Doc types and languages\n'
               '\n'
               'Supported **document types** and **programming languages**:\n'
               '\n'
@@ -43,7 +36,7 @@ f2 = Fragment(uuid='TEST-02',
               '- HTML\n'
               '\n')
 
-f3 = Fragment(uuid='TEST-03',
+f1 = Fragment(uuid='TEST-01',
          path='README.md',
          lineno=28,
          depth=2,
@@ -58,7 +51,7 @@ f3 = Fragment(uuid='TEST-03',
               'stretched and warped by matter.\n'
               '\n')
 
-f4 = Fragment(uuid='TEST-04',
+f2 = Fragment(uuid='TEST-02',
          path='README.md',
          lineno=36,
          depth=1,
@@ -66,7 +59,7 @@ f4 = Fragment(uuid='TEST-04',
          name='',
          text='## Summary\n\nThis has been a test document for the Markdown parser.\n\nEnd of test doc.')
 
-f5 = Fragment(uuid='TEST-05',
+f3 = Fragment(uuid='TEST-03',
          path='README.md',
          lineno=1,
          depth=0,

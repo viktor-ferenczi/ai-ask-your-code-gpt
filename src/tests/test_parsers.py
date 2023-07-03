@@ -12,8 +12,11 @@ TEST_OUTPUT_DIR = os.path.join(MODULE_DIR, 'TestOutput')
 
 class TestParsers(unittest.TestCase):
 
+    def setUp(self) -> None:
+        super().setUp()
+        self.maxDiff = 30000
+
     def test_parsers(self):
-        self.maxDiff = 10000
         failed = []
         strip_len = len(TEST_PROJECT_DIR) + 1
         for root, dirs, files in os.walk(TEST_PROJECT_DIR):
@@ -41,7 +44,7 @@ class TestParsers(unittest.TestCase):
                 if not parser.is_code:
                     joined_texts = ''.join(fragment.text for fragment in fragments if fragment.type == 'documentation').replace('\r\n', '\n').replace('\r', '')
                     original_text = content.decode('utf-8').replace('\r\n', '\n').replace('\r', '')
-                    self.assertEqual(original_text, joined_texts)
+                    self.assertEqual(joined_texts, original_text)
 
                 actual = f'from model.fragment import Fragment\n\n# Parser: {parser_cls.__name__}\n\n' + ''.join(
                     f'f{i} = {pformat(fragment, width=120)}\n\n'

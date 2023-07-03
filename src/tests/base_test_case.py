@@ -1,5 +1,6 @@
 import os
 import unittest
+from typing import Any
 
 
 class BaseTestCase(unittest.TestCase):
@@ -8,11 +9,18 @@ class BaseTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
         super().setUp()
+        self.maxDiff = 1_000_000
         self.failures = []
         assert self.test_script
 
     def assertNoFailures(self):
         self.assertFalse(bool(self.failures), f"Failed examples: {', '.join(self.failures)}")
+
+    def assertEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
+        super().assertEqual(second, first, msg)
+
+    def assertNotEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
+        super().assertNotEqual(second, first, msg)
 
     @property
     def data_dir(self) -> str:

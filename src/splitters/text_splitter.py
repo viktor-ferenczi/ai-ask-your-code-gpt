@@ -40,7 +40,7 @@ class TextSplitter:
             # Merging subsequent sentences at the same length
             if sentence is None:
                 sentence = Sentence(lineno, length, depth, text, start)
-            elif sentence.depth <= depth and sentence.length + length <= self.chunk_size:
+            elif sentence.depth == depth and sentence.length + length <= self.chunk_size:
                 sentence.length += length
                 sentence.text += text
             else:
@@ -87,7 +87,7 @@ class TextSplitter:
         if affinity == '>':
             yield from self.__split_recursive(parts[0] + seps[0], sep_index + 1, depth)
             if len(parts) > 2:
-                for part, sep in zip(parts[1:-1], seps):
+                for part, sep in zip(parts[1:-1], seps[1:]):
                     yield from self.__split_recursive(part + sep, sep_index + 1, sep_index + 1)
             if parts[-1]:
                 yield from self.__split_recursive(parts[-1], sep_index + 1, sep_index + 1)

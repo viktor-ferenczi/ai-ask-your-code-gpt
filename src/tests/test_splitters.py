@@ -14,7 +14,13 @@ class TestSplitters(BaseTestCase):
         path = os.path.join(self.data_dir, 'input', filename)
         with open(path, 'rt', encoding='utf-8') as f:
             text = f.read()
-        actual = pformat(list(splitter.split_text(text)))
+
+        sentences = list(splitter.split_text(text))
+
+        merged = ''.join(sentence.text for sentence in sentences)
+        self.assertEqual(merged, text, 'Merged sentences do not match the original text')
+
+        actual = pformat(sentences)
         self.verify(filename, actual)
 
     def test_text_splitter(self):
@@ -24,3 +30,4 @@ class TestSplitters(BaseTestCase):
     def test_markdown_splitter(self):
         splitter = MarkdownSplitter(chunk_size=150, length_function=tiktoken_len)
         self.verify_splitter(splitter, 'LangChain_README.md')
+        self.verify_splitter(splitter, 'cpp_programming_README.md')

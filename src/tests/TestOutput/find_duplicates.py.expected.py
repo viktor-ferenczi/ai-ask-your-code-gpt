@@ -26,29 +26,17 @@ f0 = Fragment(uuid='TEST-00',
               '            if not data:\n'
               '                break\n'
               '            hasher.update(data)\n'
-              '    return hasher.hexdigest()\n')
-
-f1 = Fragment(uuid='TEST-01',
-         path='find_duplicates.py',
-         lineno=20,
-         depth=0,
-         type='module',
-         name='',
-         text='\n\nclass Duplicates:\n')
-
-f2 = Fragment(uuid='TEST-02',
-         path='find_duplicates.py',
-         lineno=23,
-         depth=0,
-         type='module',
-         name='',
-         text='\n'
+              '    return hasher.hexdigest()\n'
+              '\n'
+              '\n'
+              'class Duplicates:\n'
+              '\n'
               '    def __init__(self, root_dir: str) -> None:\n'
               '        super().__init__()\n'
               '        self.root_dir = root_dir\n'
               '        self.files = []\n')
 
-f3 = Fragment(uuid='TEST-03',
+f1 = Fragment(uuid='TEST-01',
          path='find_duplicates.py',
          lineno=28,
          depth=0,
@@ -71,7 +59,7 @@ f3 = Fragment(uuid='TEST-03',
               '\n'
               '        # Calculate the hash only for groups with more than one file\n')
 
-f4 = Fragment(uuid='TEST-04',
+f2 = Fragment(uuid='TEST-02',
          path='find_duplicates.py',
          lineno=43,
          depth=0,
@@ -88,7 +76,7 @@ f4 = Fragment(uuid='TEST-04',
               '\n'
               '        self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)\n')
 
-f5 = Fragment(uuid='TEST-05',
+f3 = Fragment(uuid='TEST-03',
          path='find_duplicates.py',
          lineno=52,
          depth=0,
@@ -111,17 +99,12 @@ f5 = Fragment(uuid='TEST-05',
               '        print("No duplicate files found.")\n'
               '        return\n'
               '\n'
-              '    print("Duplicate files found:")\n')
+              '    print("Duplicate files found:")\n'
+              '    for file_list in duplicates.files:\n'
+              '        print("Duplicate group:")\n'
+              '        first = True\n')
 
-f6 = Fragment(uuid='TEST-06',
-         path='find_duplicates.py',
-         lineno=70,
-         depth=0,
-         type='module',
-         name='',
-         text='    for file_list in duplicates.files:\n        print("Duplicate group:")\n        first = True\n')
-
-f7 = Fragment(uuid='TEST-07',
+f4 = Fragment(uuid='TEST-04',
          path='find_duplicates.py',
          lineno=73,
          depth=0,
@@ -141,23 +124,23 @@ f7 = Fragment(uuid='TEST-07',
               "if __name__ == '__main__':\n"
               '    main()\n')
 
-f8 = Fragment(uuid='TEST-08', path='find_duplicates.py', lineno=1, depth=1, type='dependency', name='', text='import')
+f5 = Fragment(uuid='TEST-05', path='find_duplicates.py', lineno=1, depth=1, type='dependency', name='', text='import')
 
-f9 = Fragment(uuid='TEST-09', path='find_duplicates.py', lineno=2, depth=1, type='dependency', name='', text='import')
+f6 = Fragment(uuid='TEST-06', path='find_duplicates.py', lineno=2, depth=1, type='dependency', name='', text='import')
 
-f10 = Fragment(uuid='TEST-10', path='find_duplicates.py', lineno=3, depth=1, type='dependency', name='', text='from')
+f7 = Fragment(uuid='TEST-07', path='find_duplicates.py', lineno=3, depth=1, type='dependency', name='', text='from')
 
-f11 = Fragment(uuid='TEST-11', path='find_duplicates.py', lineno=3, depth=1, type='dependency', name='', text='import')
+f8 = Fragment(uuid='TEST-08', path='find_duplicates.py', lineno=3, depth=1, type='dependency', name='', text='import')
 
-f12 = Fragment(uuid='TEST-12', path='find_duplicates.py', lineno=4, depth=1, type='dependency', name='', text='from')
+f9 = Fragment(uuid='TEST-09', path='find_duplicates.py', lineno=4, depth=1, type='dependency', name='', text='from')
 
-f13 = Fragment(uuid='TEST-13', path='find_duplicates.py', lineno=4, depth=1, type='dependency', name='', text='import')
+f10 = Fragment(uuid='TEST-10', path='find_duplicates.py', lineno=4, depth=1, type='dependency', name='', text='import')
 
-f14 = Fragment(uuid='TEST-14', path='find_duplicates.py', lineno=6, depth=1, type='dependency', name='', text='from')
+f11 = Fragment(uuid='TEST-11', path='find_duplicates.py', lineno=6, depth=1, type='dependency', name='', text='from')
 
-f15 = Fragment(uuid='TEST-15', path='find_duplicates.py', lineno=6, depth=1, type='dependency', name='', text='import')
+f12 = Fragment(uuid='TEST-12', path='find_duplicates.py', lineno=6, depth=1, type='dependency', name='', text='import')
 
-f16 = Fragment(uuid='TEST-16',
+f13 = Fragment(uuid='TEST-13',
          path='find_duplicates.py',
          lineno=11,
          depth=1,
@@ -173,27 +156,20 @@ f16 = Fragment(uuid='TEST-16',
               '            hasher.update(data)\r\n'
               '    return hasher.hexdigest()')
 
-f17 = Fragment(uuid='TEST-17',
+f14 = Fragment(uuid='TEST-14',
          path='find_duplicates.py',
          lineno=22,
          depth=1,
          type='class',
          name='Duplicates',
-         text='class Duplicates:\r\n')
-
-f18 = Fragment(uuid='TEST-18',
-         path='find_duplicates.py',
-         lineno=23,
-         depth=1,
-         type='class',
-         name='Duplicates',
-         text='\r\n'
+         text='class Duplicates:\r\n'
+              '\r\n'
               '    def __init__(self, root_dir: str) -> None:\r\n'
               '        super().__init__()\r\n'
               '        self.root_dir = root_dir\r\n'
               '        self.files = []\r\n')
 
-f19 = Fragment(uuid='TEST-19',
+f15 = Fragment(uuid='TEST-15',
          path='find_duplicates.py',
          lineno=28,
          depth=1,
@@ -216,7 +192,7 @@ f19 = Fragment(uuid='TEST-19',
               '\r\n'
               '        # Calculate the hash only for groups with more than one file\r\n')
 
-f20 = Fragment(uuid='TEST-20',
+f16 = Fragment(uuid='TEST-16',
          path='find_duplicates.py',
          lineno=43,
          depth=1,
@@ -233,7 +209,7 @@ f20 = Fragment(uuid='TEST-20',
               '\r\n'
               '        self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)')
 
-f21 = Fragment(uuid='TEST-21',
+f17 = Fragment(uuid='TEST-17',
          path='find_duplicates.py',
          lineno=24,
          depth=3,
@@ -244,7 +220,7 @@ f21 = Fragment(uuid='TEST-21',
               '        self.root_dir = root_dir\r\n'
               '        self.files = []')
 
-f22 = Fragment(uuid='TEST-22',
+f18 = Fragment(uuid='TEST-18',
          path='find_duplicates.py',
          lineno=29,
          depth=3,
@@ -266,7 +242,7 @@ f22 = Fragment(uuid='TEST-22',
               '\r\n'
               '        # Calculate the hash only for groups with more than one file\r\n')
 
-f23 = Fragment(uuid='TEST-23',
+f19 = Fragment(uuid='TEST-19',
          path='find_duplicates.py',
          lineno=43,
          depth=3,
@@ -283,7 +259,7 @@ f23 = Fragment(uuid='TEST-23',
               '\r\n'
               '        self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)')
 
-f24 = Fragment(uuid='TEST-24',
+f20 = Fragment(uuid='TEST-20',
          path='find_duplicates.py',
          lineno=33,
          depth=4,
@@ -291,7 +267,7 @@ f24 = Fragment(uuid='TEST-24',
          name='',
          text='# Group files by size\r')
 
-f25 = Fragment(uuid='TEST-25',
+f21 = Fragment(uuid='TEST-21',
          path='find_duplicates.py',
          lineno=42,
          depth=4,
@@ -299,7 +275,7 @@ f25 = Fragment(uuid='TEST-25',
          name='',
          text='# Calculate the hash only for groups with more than one file\r')
 
-f26 = Fragment(uuid='TEST-26',
+f22 = Fragment(uuid='TEST-22',
          path='find_duplicates.py',
          lineno=54,
          depth=1,
@@ -320,17 +296,12 @@ f26 = Fragment(uuid='TEST-26',
               '        print("No duplicate files found.")\r\n'
               '        return\r\n'
               '\r\n'
-              '    print("Duplicate files found:")\r\n')
+              '    print("Duplicate files found:")\r\n'
+              '    for file_list in duplicates.files:\r\n'
+              '        print("Duplicate group:")\r\n'
+              '        first = True\r\n')
 
-f27 = Fragment(uuid='TEST-27',
-         path='find_duplicates.py',
-         lineno=70,
-         depth=1,
-         type='function',
-         name='main',
-         text='    for file_list in duplicates.files:\r\n        print("Duplicate group:")\r\n        first = True\r\n')
-
-f28 = Fragment(uuid='TEST-28',
+f23 = Fragment(uuid='TEST-23',
          path='find_duplicates.py',
          lineno=73,
          depth=1,
@@ -345,7 +316,7 @@ f28 = Fragment(uuid='TEST-28',
               '\r\n'
               '    print(f"\\nTotal disk space that could be saved by deleting duplicates: {total_space_saved} bytes")')
 
-f29 = Fragment(uuid='TEST-29',
+f24 = Fragment(uuid='TEST-24',
          path='find_duplicates.py',
          lineno=55,
          depth=7,
@@ -353,7 +324,7 @@ f29 = Fragment(uuid='TEST-29',
          name='',
          text='Enter the root directory to search for duplicate files: ')
 
-f30 = Fragment(uuid='TEST-30',
+f25 = Fragment(uuid='TEST-25',
          path='find_duplicates.py',
          lineno=58,
          depth=8,
@@ -361,7 +332,7 @@ f30 = Fragment(uuid='TEST-30',
          name='',
          text='Invalid directory path. Please try again.')
 
-f31 = Fragment(uuid='TEST-31',
+f26 = Fragment(uuid='TEST-26',
          path='find_duplicates.py',
          lineno=66,
          depth=8,
@@ -369,7 +340,7 @@ f31 = Fragment(uuid='TEST-31',
          name='',
          text='No duplicate files found.')
 
-f32 = Fragment(uuid='TEST-32',
+f27 = Fragment(uuid='TEST-27',
          path='find_duplicates.py',
          lineno=69,
          depth=6,
@@ -377,7 +348,7 @@ f32 = Fragment(uuid='TEST-32',
          name='',
          text='Duplicate files found:')
 
-f33 = Fragment(uuid='TEST-33',
+f28 = Fragment(uuid='TEST-28',
          path='find_duplicates.py',
          lineno=80,
          depth=6,
@@ -385,7 +356,7 @@ f33 = Fragment(uuid='TEST-33',
          name='',
          text='\\nTotal disk space that could be saved by deleting duplicates: ')
 
-f34 = Fragment(uuid='TEST-34',
+f29 = Fragment(uuid='TEST-29',
          path='find_duplicates.py',
          lineno=1,
          depth=0,
