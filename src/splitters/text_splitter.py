@@ -40,7 +40,7 @@ class TextSplitter:
             # Merging subsequent sentences at the same length
             if sentence is None:
                 sentence = Sentence(lineno, length, depth, text, start)
-            elif sentence.depth == depth and sentence.length + length <= self.chunk_size:
+            elif sentence.depth <= depth and sentence.length + length <= self.chunk_size:
                 sentence.length += length
                 sentence.text += text
             else:

@@ -1,5 +1,5 @@
 [Sentence(lineno=1,
-          length=147,
+          length=141,
           depth=1,
           text='# C++ Programming\n'
                '\n'
@@ -19,30 +19,29 @@
                'understand the input to your program and the output from your '
                'code.\n'
                '3. Learn to debug your code - look at the code line by line to '
-               'see how it works.\n'
-               '4. ',
+               'see how it works.\n',
           start=0),
  Sentence(lineno=17,
-          length=139,
-          depth=11,
-          text='Surround yourself with other people who are learning. Teach '
+          length=67,
+          depth=10,
+          text='4. Surround yourself with other people who are learning. Teach '
                'each other.\n'
                '5. Learn taking notes.\n'
                '6. Build something, anything. For example, simple calculator, '
                'or program to save and read data from TXT files.\n'
                '7. Focus on 1 thing! Take small steps, but every day, '
-               'consistency is very important again.\n'
-               '8. Learn to ask GOOD questions to others:\n'
+               'consistency is very important again.\n',
+          start=592),
+ Sentence(lineno=21,
+          length=140,
+          depth=10,
+          text='8. Learn to ask GOOD questions to others:\n'
                '  - G: Give context on what you are trying to do, clearly '
                'describing the problem.\n'
                '  - O: Outline the things you have already tried to fix the '
                'issue.\n'
-               '  - O: Offer your best guess as to what the problem might be. ',
-          start=595),
- Sentence(lineno=24,
-          length=82,
-          depth=11,
-          text='It helps the person who is helping you not only know what '
+               '  - O: Offer your best guess as to what the problem might be. '
+               'It helps the person who is helping you not only know what '
                "you're thinking, but also know that you've thought of "
                'something yourself.\n'
                "  - D: Demonstrate what's going on. Include the code, the "
@@ -52,7 +51,7 @@
                '```\n'
                '\n'
                '\n',
-          start=1145),
+          start=892),
  Sentence(lineno=29,
           length=118,
           depth=1,
@@ -66,7 +65,7 @@
           start=1511),
  Sentence(lineno=32,
           length=42,
-          depth=12,
+          depth=15,
           text='- [Computer Science for '
                'Everyone](https://www.youtube.com/playlist?list=PLrC-HcVNfULbGKkhJSgfqvqmaFAZvfHes) \n'
                '\n',
@@ -84,7 +83,7 @@
           start=1955),
  Sentence(lineno=38,
           length=139,
-          depth=12,
+          depth=15,
           text='- EN [C++ by '
                'freeCodeCamp.org](https://www.youtube.com/watch?v=vLnPwxZdW4Y)\n'
                '- RU [C++ by Denis '
@@ -96,7 +95,7 @@
           start=2304),
  Sentence(lineno=42,
           length=77,
-          depth=11,
+          depth=14,
           text='- [cplusplus.com](https://cplusplus.com/doc/tutorial/)\n'
                '  - '
                '[w3schools.com](https://www.w3schools.com/cpp/default.asp) \n'
@@ -107,7 +106,7 @@
                '\n',
           start=2610),
  Sentence(lineno=47,
-          length=138,
+          length=141,
           depth=1,
           text='## Problem Solving\n'
                '```\n'
@@ -121,13 +120,12 @@
                'char\n'
                '8. C++ Program to Demonstrate the Working of Keyword long\n'
                '9. C++ Program to Swap Two Numbers\n'
-               '10. ',
+               '10. C++ Program to Check Whether a Number is Even or Odd\n',
           start=2876),
- Sentence(lineno=58,
-          length=150,
-          depth=11,
-          text='C++ Program to Check Whether a Number is Even or Odd\n'
-               '11. C++ Program to Check Whether a Character is Vowel or '
+ Sentence(lineno=59,
+          length=148,
+          depth=10,
+          text='11. C++ Program to Check Whether a Character is Vowel or '
                'Consonant\n'
                '12. C++ Program to Find the Largest Number Among Three '
                'Numbers\n'
@@ -140,14 +138,13 @@
                '17. C++ Program to Calculate the Sum of Natural Numbers\n'
                '18. C++ Program to Find Factorial of a Number\n'
                '19. C++ Program to Generate Multiplication Table\n'
-               '20. ',
-          start=3344),
- Sentence(lineno=68,
-          length=144,
-          depth=11,
-          text='C++ Program to Display Fibonacci Sequence\n'
-               '21. C++ Program to Find GCD of two Numbers\n'
-               '22. C++ Program to Find LCM of two Numbers\n'
+               '20. C++ Program to Display Fibonacci Sequence\n'
+               '21. C++ Program to Find GCD of two Numbers\n',
+          start=3397),
+ Sentence(lineno=70,
+          length=147,
+          depth=10,
+          text='22. C++ Program to Find LCM of two Numbers\n'
                '23. C++ Program to Display Characters from A to Z Using Loop\n'
                '24. C++ Program to Count Number of Digits in an Integer\n'
                '25. C++ Program to Reverse a Number\n'
@@ -157,16 +154,15 @@
                '28. C++ Program to Check Whether a Number is Prime or Not\n'
                '29. C++ Program to Display Prime Numbers Between Two '
                'Intervals\n'
-               '30. ',
-          start=3908),
- Sentence(lineno=78,
-          length=140,
-          depth=11,
-          text='C++ Program to Check Armstrong Number\n'
+               '30. C++ Program to Check Armstrong Number\n'
                '31. C++ Program to Display Armstrong Number Between Two '
                'Intervals\n'
-               '32. C++ Program to Display Factors of a Number\n'
-               '33. C++ Programming Code To Create Pyramid and Structure\n'
+               '32. C++ Program to Display Factors of a Number\n',
+          start=3993),
+ Sentence(lineno=81,
+          length=141,
+          depth=10,
+          text='33. C++ Programming Code To Create Pyramid and Structure\n'
                '34. C++ Program to Make a Simple Calculator Using '
                'switch...case\n'
                '35. C++ Program to Display Prime Numbers Between Intervals '
@@ -177,16 +173,15 @@
                'Sum of Two Prime Numbers\n'
                '38. C++ Program to Find the Sum of Natural Numbers using '
                'Recursion\n'
-               '39. ',
-          start=4428),
- Sentence(lineno=87,
-          length=150,
-          depth=11,
-          text='C++ Program to Find Factorial of a Number Using Recursion\n'
+               '39. C++ Program to Find Factorial of a Number Using Recursion\n'
                '40. C++ Program to Find G.C.D Using Recursion\n'
                '41. C++ Program to Convert Binary Number to Decimal and '
-               'vice-versa\n'
-               '42. C++ Program to Convert Octal Number to Decimal and '
+               'vice-versa\n',
+          start=4579),
+ Sentence(lineno=90,
+          length=135,
+          depth=10,
+          text='42. C++ Program to Convert Octal Number to Decimal and '
                'vice-versa\n'
                '43. C++ Program to Convert Binary Number to Octal and '
                'vice-versa\n'
@@ -195,16 +190,16 @@
                '46. C++ Program to Calculate Average Using Arrays\n'
                '47. C++ Program to Find Largest Element of an Array\n'
                '48. C++ Program to Calculate Standard Deviation\n'
-               '49. ',
-          start=5011),
- Sentence(lineno=97,
-          length=144,
-          depth=11,
-          text='C++ Program to Add Two Matrix Using Multi-dimensional Arrays\n'
+               '49. C++ Program to Add Two Matrix Using Multi-dimensional '
+               'Arrays\n'
                '50. C++ Program to Multiply to Matrix Using Multi-dimensional '
                'Arrays\n'
-               '51. C++ Program to Find Transpose of a Matrix\n'
-               '52. C++ Program to Multiply two Matrices by Passing Matrix to '
+               '51. C++ Program to Find Transpose of a Matrix\n',
+          start=5182),
+ Sentence(lineno=100,
+          length=145,
+          depth=10,
+          text='52. C++ Program to Multiply two Matrices by Passing Matrix to '
                'a Function\n'
                '53. C++ Program to Access Elements of an Array Using Pointer\n'
                '54. C++ Program Swap Numbers in Cyclic Order Using Call by '
@@ -215,17 +210,16 @@
                'String\n'
                '57. C++ Program to count the number of vowels, consonants and '
                'so on\n'
-               '58. ',
-          start=5576),
- Sentence(lineno=106,
-          length=148,
-          depth=11,
-          text='C++ Program to Remove all Characters in a String Except '
+               '58. C++ Program to Remove all Characters in a String Except '
                'Alphabet\n'
                '59. C++ Program to Find the Length of a String\n'
                '60. C++ Program to Concatenate Two Strings\n'
-               '61. C++ Program to Copy String Without Using strcpy()\n'
-               '62. C++ Program to Sort Elements in Lexicographical Order '
+               '61. C++ Program to Copy String Without Using strcpy()\n',
+          start=5752),
+ Sentence(lineno=110,
+          length=146,
+          depth=10,
+          text='62. C++ Program to Sort Elements in Lexicographical Order '
                '(Dictionary Order)\n'
                '63. C++ Program to Store Information(name, roll and marks) of '
                'a Student Using Structure\n'
@@ -235,23 +229,23 @@
                'Structure to a Function\n'
                '66. C++ Program to Calculate Difference Between Two Time '
                'Periods\n'
-               '67. ',
-          start=6162),
- Sentence(lineno=115,
-          length=89,
-          depth=11,
-          text='C++ Program to Store Information of Students Using Structure\n'
+               '67. C++ Program to Store Information of Students Using '
+               'Structure\n'
                '68. C++ Program to Store Information Using Structures with '
                'Dynamically Memory Allocation\n'
                '69. C++ Program to Write a Sentence to a File\n'
-               '70. C++ Program to Read a Line From a File and Display it\n'
-               '71. C++ Program to Display its own Source Code as Output\n'
+               '70. C++ Program to Read a Line From a File and Display it\n',
+          start=6371),
+ Sentence(lineno=119,
+          length=28,
+          depth=10,
+          text='71. C++ Program to Display its own Source Code as Output\n'
                '72. C++ Programming Code To Create Pyramid and Pattern\n'
                '```\n'
                '\n',
-          start=6759),
+          start=7013),
  Sentence(lineno=123,
-          length=58,
+          length=148,
           depth=1,
           text='## Projects Ideas\n'
                '```\n'
@@ -260,32 +254,26 @@
                'loans for purchasing vehicles, apartments, houses, setting up '
                'business, education loan, management of ATMs and all other '
                'features.\n'
-               '2. ',
-          start=7130),
- Sentence(lineno=126,
-          length=143,
-          depth=11,
-          text='Airline flight reservation system (online booking of tickets '
-               'in different flights for different destinations all over the '
-               'world, cancellation of tickets, clear display of cancellation '
-               'amount, refund of amount after cancellation, showing  '
-               'availability of all flights, showing flights timings for all 7 '
-               'days of a week, seats availability, seat selection for '
-               'travelers by giving the complete layout of the seating '
+               '2. Airline flight reservation system (online booking of '
+               'tickets in different flights for different destinations all '
+               'over the world, cancellation of tickets, clear display of '
+               'cancellation amount, refund of amount after cancellation, '
+               'showing  availability of all flights, showing flights timings '
+               'for all 7 days of a week, seats availability, seat selection '
+               'for travelers by giving the complete layout of the seating '
                'arrangement inside the flights, food '
                'availability/non-availability inside the flights, change of '
-               'travel dates and amount charged.)\n'
-               '3. Taxi/cab sharing\n'
+               'travel dates and amount charged.)\n',
+          start=7130),
+ Sentence(lineno=127,
+          length=137,
+          depth=10,
+          text='3. Taxi/cab sharing\n'
                '4. University education portal (providing all information '
                'about under-graduate, post graduate and doctoral programs '
                'offered, facilities available, location & map, fee structure '
                'in all the universities)\n'
-               '5. ',
-          start=7410),
- Sentence(lineno=129,
-          length=148,
-          depth=11,
-          text='Online exam management system (with total security of '
+               '5. Online exam management system (with total security of '
                'identifying the students during exam, monitoring the students’ '
                'activities during the exam, selection of different questions '
                'for each student, development of a large question bank '
@@ -295,19 +283,18 @@
                '7. E-content management system \n'
                '8. Plagiarism checker & file management system\n'
                '9. Hotel reservation & management portal\n'
-               '10. Restaurant management\n'
-               '11. Healthcare consulting system (doctors with different '
+               '10. Restaurant management\n',
+          start=7952),
+ Sentence(lineno=135,
+          length=147,
+          depth=10,
+          text='11. Healthcare consulting system (doctors with different '
                'specializations for consultation, hospitals with all '
                'facilities for treating different diseases & abroad - one stop '
                'portal for all consultations and treatments)\n'
                '12. Electronic health record management system with builtin '
                'security \n'
-               '13. ',
-          start=8177),
- Sentence(lineno=137,
-          length=146,
-          depth=11,
-          text='Pharmacy - medical store management \n'
+               '13. Pharmacy - medical store management \n'
                '14. Blood bank system\n'
                '15. Online shopping and delivery system (like amazon)\n'
                '16. Online car shopping \n'
@@ -320,16 +307,15 @@
                'verification\n'
                '23. Face recognition - based attendance checking system\n'
                '24. Aircraft communication and monitoring system\n'
-               '25. Ticket booking management system for concert ceremonies\n'
-               '26. All store stock management (inventory control)\n'
+               '25. Ticket booking management system for concert ceremonies\n',
+          start=8684),
+ Sentence(lineno=150,
+          length=135,
+          depth=10,
+          text='26. All store stock management (inventory control)\n'
                '27. Multiplayer gaming applications\n'
                '28. City traffic monitoring and control system\n'
-               '29. ',
-          start=8976),
- Sentence(lineno=153,
-          length=120,
-          depth=11,
-          text='Police traffic violation reporting & control system\n'
+               '29. Police traffic violation reporting & control system\n'
                '30. The marriage function hall booking & food/music '
                'arrangement system\n'
                '31. Any vehicle (car, bus, heavy vehicles for parties, '
@@ -341,13 +327,12 @@
                '35. Railway booking and train tracking system\n'
                '36. Warehouse management system\n'
                '37. Courier tracking, cargo and freight transportation\n'
-               '38. Online code testing system\n'
-               '39. ',
-          start=9633),
+               '38. Online code testing system\n',
+          start=9495),
  Sentence(lineno=163,
-          length=143,
-          depth=11,
-          text='Online quiz system (with total security of identifying the '
+          length=135,
+          depth=10,
+          text='39. Online quiz system (with total security of identifying the '
                'students during the quiz, monitoring the students’ activities '
                'during the quiz, selection of different quiz questions for '
                'each student, development of a large quiz question bank '
@@ -362,13 +347,12 @@
                '44. Cryptocurrency trading portal (exchange) allowing trading '
                'of all crypto coins using security, confidentiality and '
                'authentication\n'
-               '45. Parking management system\n'
-               '46. ',
-          start=10187),
+               '45. Parking management system\n',
+          start=10183),
  Sentence(lineno=170,
-          length=21,
-          depth=11,
-          text='Online food delivery system (linked to all restaurants in '
+          length=23,
+          depth=10,
+          text='46. Online food delivery system (linked to all restaurants in '
                'different districts in different regions in some country)\n'
                '```\n',
-          start=10935)]
+          start=10931)]

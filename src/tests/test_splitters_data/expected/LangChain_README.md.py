@@ -1,6 +1,6 @@
 [Sentence(lineno=1,
-          length=150,
-          depth=1,
+          length=149,
+          depth=12,
           text='# 🦜️🔗 LangChain\n'
                '\n'
                '⚡ Building applications with LLMs through composability ⚡\n'
@@ -11,42 +11,38 @@
                '[![test](https://github.com/hwchase17/langchain/actions/workflows/test.yml/badge.svg)](https://github.com/hwchase17/langchain/actions/workflows/test.yml)\n',
           start=0),
  Sentence(lineno=8,
-          length=76,
+          length=145,
           depth=12,
           text='[![linkcheck](https://github.com/hwchase17/langchain/actions/workflows/linkcheck.yml/badge.svg)](https://github.com/hwchase17/langchain/actions/workflows/linkcheck.yml)\n'
                '[![Downloads](https://static.pepy.tech/badge/langchain/month)](https://pepy.tech/project/langchain)\n'
-               '[![License: ',
+               '[![License: '
+               'MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\n'
+               '[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/langchainai.svg?style=social&label=Follow%20%40LangChainAI)](https://twitter.com/langchainai)\n',
           start=511),
- Sentence(lineno=10,
+ Sentence(lineno=12,
+          length=118,
+          depth=12,
+          text='[![](https://dcbadge.vercel.app/api/server/6adMQxSpJS?compact=true&style=flat)](https://discord.gg/6adMQxSpJS)\n'
+               '[![Open in Dev '
+               'Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/hwchase17/langchain)\n',
+          start=1047),
+ Sentence(lineno=14,
           length=111,
-          depth=11,
-          text='MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\n'
-               '[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/langchainai.svg?style=social&label=Follow%20%40LangChainAI)](https://twitter.com/langchainai)\n'
-               '[![](https://dcbadge.vercel.app/api/server/6adMQxSpJS?compact=true&style=flat)](https://discord.gg/6adMQxSpJS)\n',
-          start=792),
- Sentence(lineno=13,
-          length=110,
           depth=12,
-          text='[![Open in Dev '
-               'Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/hwchase17/langchain)\n'
-               '[![Open in GitHub '
-               'Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hwchase17/langchain)\n',
-          start=1158),
- Sentence(lineno=15,
-          length=116,
-          depth=12,
-          text='[![GitHub star '
+          text='[![Open in GitHub '
+               'Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hwchase17/langchain)\n'
+               '[![GitHub star '
                'chart](https://img.shields.io/github/stars/hwchase17/langchain?style=social)](https://star-history.com/#hwchase17/langchain)\n'
                '[![Dependency '
-               'Status](https://img.shields.io/librariesio/github/hwchase17/langchain)](https://libraries.io/github/hwchase17/langchain)\n'
-               '[![Open '
+               'Status](https://img.shields.io/librariesio/github/hwchase17/langchain)](https://libraries.io/github/hwchase17/langchain)\n',
+          start=1423),
+ Sentence(lineno=17,
+          length=125,
+          depth=12,
+          text='[![Open '
                'Issues](https://img.shields.io/github/issues-raw/hwchase17/langchain)](https://github.com/hwchase17/langchain/issues)\n'
-               '\n',
-          start=1539),
- Sentence(lineno=19,
-          length=90,
-          depth=10,
-          text='\n'
+               '\n'
+               '\n'
                'Looking for the JS/TS version? Check out '
                '[LangChain.js](https://github.com/hwchase17/langchainjs).\n'
                '\n'
@@ -56,7 +52,7 @@
                "form](https://forms.gle/57d8AmXBYp8PP8tZA) and we'll set up a "
                'dedicated support Slack channel.\n'
                '\n',
-          start=1941),
+          start=1814),
  Sentence(lineno=25,
           length=127,
           depth=1,
@@ -83,7 +79,7 @@
           start=2276),
  Sentence(lineno=38,
           length=112,
-          depth=10,
+          depth=13,
           text='\n'
                '- '
                '[Documentation](https://langchain.readthedocs.io/en/latest/use_cases/question_answering.html)\n'
@@ -101,7 +97,7 @@
           start=2900),
  Sentence(lineno=48,
           length=54,
-          depth=10,
+          depth=13,
           text='\n'
                '- '
                '[Documentation](https://langchain.readthedocs.io/en/latest/modules/agents.html)\n'
@@ -138,7 +134,7 @@
           start=3488),
  Sentence(lineno=69,
           length=127,
-          depth=10,
+          depth=13,
           text='\n'
                '**🔗 Chains:**\n'
                '\n'
@@ -160,7 +156,7 @@
           start=4120),
  Sentence(lineno=79,
           length=109,
-          depth=10,
+          depth=13,
           text='\n'
                'Agents involve an LLM making decisions about which Actions to '
                'take, taking that Action, seeing an Observation, and repeating '
@@ -179,7 +175,7 @@
           start=4694),
  Sentence(lineno=87,
           length=71,
-          depth=10,
+          depth=13,
           text='\n'
                '[BETA] Generative models are notoriously hard to evaluate with '
                'traditional metrics. One new way of evaluating them is using '

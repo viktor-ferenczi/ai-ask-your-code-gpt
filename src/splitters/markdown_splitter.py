@@ -17,12 +17,21 @@ class MarkdownSplitter(TextSplitter):
                            ('<', r"^#####\s"),
                            ('<', r"^######\s"),
 
-                           # End of code block
-                           ('>', r"^```\s*$"),
-
                            # Separator lines
                            ('>', r"^\s*\*{3,}\s*$"),
                            ('>', r"^\s*-{3,}\s*$"),
                            ('>', r"^\s*_{3,}\s*$"),
+
+                           # End of code block
+                           ('>', r"^```\s*$"),
+
+                           # Numbered lists
+                           ('<', r"^\s*\d+\.\s+"),
+
+                           # Unordered lists
+                           ('<', r"^\s*[\*\-]\.\s+"),
+
+                           # Links on separate lines
+                           ('<', r"^\s*\[\!"),
                        ) + TextSplitter.default_separators
         )
