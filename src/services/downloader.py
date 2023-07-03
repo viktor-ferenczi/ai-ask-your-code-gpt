@@ -54,7 +54,8 @@ class Downloader:
 
             # New archive, store and request extracting it
             out_count = [0]
-            common_base_dir: str = find_common_base_dir(self.__verify(d.body, out_count))
+            paths = list(self.__verify(d.body, out_count))
+            common_base_dir: str = find_common_base_dir(paths)
             print(f'Common base dir: {common_base_dir!r}')
             doc_count = out_count[0]
 

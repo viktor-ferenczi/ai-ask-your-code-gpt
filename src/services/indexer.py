@@ -50,10 +50,6 @@ async def index_batch(db: Database, checksums: List[str], paths: List[str]) -> T
 
 
 def index_document(document: Document, path: str) -> Iterable[DbFragment]:
-    assert path.startswith('/'), path
-    assert not path.startswith('//'), path
-    assert not path.endswith('/'), path
-
     with timer(f'Indexed: {document.checksum} {path}', show=C.DEVELOPMENT):
         parser_cls = PARSERS_BY_NAME.get(document.doc_type)
         if parser_cls is None:
