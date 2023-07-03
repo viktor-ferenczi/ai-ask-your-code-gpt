@@ -36,5 +36,5 @@ def find_common_base_dir(paths: List[str]) -> str:
 def remove_common_base_dir(common_base_dir: str, documents: Iterable[ZipDoc]) -> Iterator[ZipDoc]:
     strip_len = len(common_base_dir)
     for doc in documents:
-        doc.path = doc.path[strip_len:]
+        doc.path = f'/{doc.path[strip_len:].lstrip("/")}'
         yield doc

@@ -80,7 +80,7 @@ class Downloader:
                     max_total_size=C.MAX_TOTAL_SIZE,
                     verify_only=True):
                 doc_count += 1
-                yield zip_doc.path
+                yield zip_doc.path.lstrip('/')
         except BadZipFile:
             print(f'Not a ZIP file: {self.url!r}')
             print_exc()
