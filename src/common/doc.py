@@ -1,3 +1,4 @@
+import itertools
 from typing import Iterator, Iterable
 
 from common.zip_support import ZipDoc
@@ -15,11 +16,12 @@ def find_common_base_dir(paths: Iterable[str]) -> str:
             dir_sets.append(set())
         dir_sets[len(dirs)].add(None)
 
-    common = [dir_set for dir_set in dir_sets if None not in dir_set and len(dir_set) == 1]
+    common = list(itertools.takewhile(lambda dir_set: len(dir_set) == 1, dir_sets))
     if not common:
         return ''
 
-    return '/'.join(next(iter(dir_set)) for dir_set in common) + '/'
+    common_base_dir = '/'.join(next(iter(dir_set)) for dir_set in common) + '/'
+    return common_base_dir
 
 
 def remove_common_base_dir(common_base_dir: str, documents: Iterable[ZipDoc]) -> Iterator[ZipDoc]:
