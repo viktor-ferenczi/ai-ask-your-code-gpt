@@ -1,6 +1,4 @@
 File extensions: .js
 
-JavaScript: /docs/_static/js/mendablesearch.js
-  Functions: createRootElement initializeMendable loadScript
-  Variables: icon iconSpan1 iconSpan2 mendableFloatingButton rootElement script
-  Usages: Mendable MendableFloatingButton React ReactDOM document onLoadCallback src
+Relevant subdirectories:
+  docs: 100%

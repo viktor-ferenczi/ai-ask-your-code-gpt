@@ -1,4 +1,4 @@
 File extensions: .css
 
-CSS: /docs/_static/css/custom.css
-  Classes: container container-lg container-md container-sm container-xl
+Relevant subdirectories:
+  docs: 100%
