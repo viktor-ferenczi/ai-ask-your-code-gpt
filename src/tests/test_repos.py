@@ -66,7 +66,7 @@ REPOS = [
 
 def normalize_fragments(fragments: List[Fragment]):
     for i, fragment in enumerate(fragments):
-        fragment.id = -1
+        fragment.id = 1 + i
 
 
 def normalize_hits(fragments: List[Hit]):
@@ -75,7 +75,7 @@ def normalize_hits(fragments: List[Hit]):
 
 
 class TestRepos(BaseBackendTest):
-    test_repos_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestRepos')
+    test_repos_dir = os.path.join(MODULE_DIR, 'test_repos_data')
     use_multiprocessing = True
 
     async def serve_zip(self):
@@ -95,20 +95,11 @@ class TestRepos(BaseBackendTest):
         await self.coordinate_test()
 
     async def actual_test(self):
-        self.failures = []
         for name, zip_url in REPOS:
+            self.failures = []
             await self.verify_repo(name, zip_url)
-
-        if self.failures:
-            for project_name, name, expected, actual in self.failures:
-                # print('=' * 70)
-                print(f'FAILED: {project_name} / {name}')
-                # print('=' * 70)
-                # for line in difflib.unified_diff(expected.split('\n'), actual.split('\n')):
-                #     print(line)
-                # print()
-
-            self.fail('One of more output were not what was expected. See above.')
+            if self.failures:
+                self.fail(f'Indexing of project {name!r} produced unexpected output')
 
     async def verify_repo(self, zip_name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{zip_name}.zip')
@@ -211,8 +202,9 @@ class TestRepos(BaseBackendTest):
         os.makedirs(self.actual_dir)
         os.makedirs(self.expected_dir, exist_ok=True)
 
+    # FIXME: Redundant, reuse BaseTestCase (make an async version or separate helpers to higher base class)
     def verify(self, name: str, actual: str):
-        if len(actual) >= 50_000_000:
+        if len(actual) >= 20_000_000:
 
             half = len(actual) // 2
             while actual[half] != '\n':

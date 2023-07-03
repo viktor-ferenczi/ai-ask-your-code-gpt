@@ -133,11 +133,11 @@ dmypy.json
 
 # Test output
 TestProject.zip
-/src/tests/TestRepos/*.zip
-/src/tests/TestRepos/*/actual/
-/src/tests/TestRepos/neovim
-/src/tests/TestRepos/sanity
-/src/tests/TestRepos/unreal
+/src/tests/test_repos_data/*.zip
+/src/tests/test_repos_data/*/actual/
+/src/tests/test_repos_data/**/neovim
+/src/tests/test_repos_data/**/sanity
+/src/tests/test_repos_data/**/unreal
 *.actual
 *-actual
 /src/tests/**/actual/*
