@@ -1,4 +1,3 @@
-import os
 from pprint import pformat
 
 from base_test_case import BaseTestCase
@@ -11,10 +10,7 @@ class TestSplitters(BaseTestCase):
     test_script = __file__
 
     def verify_splitter(self, splitter: TextSplitter, filename: str):
-        path = os.path.join(self.data_dir, 'input', filename)
-        with open(path, 'rt', encoding='utf-8') as f:
-            text = f.read()
-
+        text = self.read_test_file_as_text(filename)
         sentences = list(splitter.split_text(text))
 
         merged = ''.join(sentence.text for sentence in sentences)
@@ -22,6 +18,8 @@ class TestSplitters(BaseTestCase):
 
         actual = pformat(sentences)
         self.verify(filename, actual)
+
+        self.assertAllSucceeded()
 
     def test_text_splitter(self):
         splitter = TextSplitter(chunk_size=150, length_function=tiktoken_len)

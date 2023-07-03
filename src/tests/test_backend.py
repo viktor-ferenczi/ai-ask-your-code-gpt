@@ -11,7 +11,7 @@ MODULE_DIR = os.path.dirname(__file__)
 
 
 class TestBackend(BaseBackendTest):
-    test_project_dir = os.path.join(MODULE_DIR, '..', 'tests', 'TestProject')
+    test_project_dir = os.path.join(MODULE_DIR, 'test_parsers_data', 'input')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
     async def asyncSetUp(self) -> None:

@@ -1,0 +1,376 @@
+from model.fragment import Fragment
+
+# Parser: MarkdownParser
+
+f0 = Fragment(uuid='TEST-00',
+         path='README2.md',
+         lineno=1,
+         depth=1,
+         type='documentation',
+         name='',
+         text='# C++ Programming\n'
+              '\n'
+              '\n'
+              '## Contents\n'
+              '- [Tips](#keep-these-tips-in-mind-while-learning-programming)\n'
+              '- [Computer Science Basics](#computer-science-basics)\n'
+              '- [Learning Resources](#learning-resources)\n'
+              '- [Problem Solving](#problem-solving)\n'
+              '- [Projects Ideas](#projects-ideas)\n'
+              '\n'
+              '\n'
+              '## Keep These Tips in Mind While Learning Programming\n'
+              '```\n'
+              '1. Learn and code every day, consistency is important.\n'
+              '2. Write it down - plan your code before you start coding and understand the input to your program and '
+              'the output from your code.\n'
+              '3. Learn to debug your code - look at the code line by line to see how it works.\n')
+
+f1 = Fragment(uuid='TEST-01',
+         path='README2.md',
+         lineno=17,
+         depth=10,
+         type='documentation',
+         name='',
+         text='4. Surround yourself with other people who are learning. Teach each other.\n'
+              '5. Learn taking notes.\n'
+              '6. Build something, anything. For example, simple calculator, or program to save and read data from TXT '
+              'files.\n'
+              '7. Focus on 1 thing! Take small steps, but every day, consistency is very important again.\n')
+
+f2 = Fragment(uuid='TEST-02',
+         path='README2.md',
+         lineno=21,
+         depth=10,
+         type='documentation',
+         name='',
+         text='8. Learn to ask GOOD questions to others:\n'
+              '  - G: Give context on what you are trying to do, clearly describing the problem.\n'
+              '  - O: Outline the things you have already tried to fix the issue.\n'
+              '  - O: Offer your best guess as to what the problem might be. It helps the person who is helping you '
+              "not only know what you're thinking, but also know that you've thought of something yourself.\n"
+              "  - D: Demonstrate what's going on. Include the code, the tracing error message, and an explanation of "
+              "the steps you followed that resulted in the error. That way, the person helping doesn't have to try to "
+              'recreate the problem.\n'
+              '```\n'
+              '\n'
+              '\n')
+
+f3 = Fragment(uuid='TEST-03',
+         path='README2.md',
+         lineno=29,
+         depth=1,
+         type='documentation',
+         name='',
+         text='## Computer Science Basics\n'
+              '- [Harvard CS50](https://youtube.com/playlist?list=PLhQjrBD2T383f9scHRNYJkior2VvYjpSL) - Scratch, C, '
+              'Arrays, Algorithms, Memory, Data structures, Python, SQL, HTML, CSS, JavaScript, Flask\n'
+              '- `Optional` [Crash Course Computer '
+              'Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo)\n')
+
+f4 = Fragment(uuid='TEST-04',
+         path='README2.md',
+         lineno=32,
+         depth=15,
+         type='documentation',
+         name='',
+         text='- [Computer Science for '
+              'Everyone](https://www.youtube.com/playlist?list=PLrC-HcVNfULbGKkhJSgfqvqmaFAZvfHes) \n'
+              '\n')
+
+f5 = Fragment(uuid='TEST-05',
+         path='README2.md',
+         lineno=34,
+         depth=1,
+         type='documentation',
+         name='',
+         text='## Learning Resources\n'
+              '- EN [C++ for beginners — '
+              'CodeBeauty](https://www.youtube.com/playlist?list=PL43pGnjiVwgQHLPnuH9ch-LhZdwckM8Tq)\n'
+              '- EN [C++ Programming Tutorial — '
+              'thenewboston](https://www.youtube.com/playlist?list=PLAE85DE8440AA6B83)\n'
+              '- EN [C++ by The '
+              'Cherno](https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb)\n')
+
+f6 = Fragment(uuid='TEST-06',
+         path='README2.md',
+         lineno=38,
+         depth=15,
+         type='documentation',
+         name='',
+         text='- EN [C++ by freeCodeCamp.org](https://www.youtube.com/watch?v=vLnPwxZdW4Y)\n'
+              '- RU [C++ by Denis Markov](https://www.youtube.com/playlist?list=PLbmlzoDQrXVFC13GjpPrJxl6mzTiX65gs)\n'
+              '- RU [C++ Уроки - Гоша '
+              'Дударь](https://www.youtube.com/watch?v=qSHP98i9mDU&list=PL0lO_mIqDDFXNfqIL9PHQM7Wg_kOtDZsW)\n'
+              '- To read:\n'
+              '  ')
+
+f7 = Fragment(uuid='TEST-07',
+         path='README2.md',
+         lineno=42,
+         depth=14,
+         type='documentation',
+         name='',
+         text='- [cplusplus.com](https://cplusplus.com/doc/tutorial/)\n'
+              '  - [w3schools.com](https://www.w3schools.com/cpp/default.asp) \n'
+              '  - [tutorialspoint.com](https://www.tutorialspoint.com/cplusplus/index.htm)\n'
+              '  - [GeegsForGeeks.org](https://www.geeksforgeeks.org/c-plus-plus/):\n'
+              '\n')
+
+f8 = Fragment(uuid='TEST-08',
+         path='README2.md',
+         lineno=47,
+         depth=1,
+         type='documentation',
+         name='',
+         text='## Problem Solving\n'
+              '```\n'
+              '1. C++ Program to print "Hello, World!"\n'
+              '2. C++ Program to Print an Integer (Entered by the User)\n'
+              '3. C++ Program to Add Two Integers\n'
+              '4. C++ Program to Multiply two Floating Point Numbers\n'
+              '5. C++ Program to Find ASCII Value of a Character\n'
+              '6. C++ Program to Compute Quotient and Remainder\n'
+              '7. C++ Program to Find the Size of int, float, double and char\n'
+              '8. C++ Program to Demonstrate the Working of Keyword long\n'
+              '9. C++ Program to Swap Two Numbers\n'
+              '10. C++ Program to Check Whether a Number is Even or Odd\n')
+
+f9 = Fragment(uuid='TEST-09',
+         path='README2.md',
+         lineno=59,
+         depth=10,
+         type='documentation',
+         name='',
+         text='11. C++ Program to Check Whether a Character is Vowel or Consonant\n'
+              '12. C++ Program to Find the Largest Number Among Three Numbers\n'
+              '13. C++ Program to Find all Roots of a Quadratic equation\n'
+              '14. C++ Program to Check Leap Year\n'
+              '15. C++ Program to Check Whether a Number is Positive or Negative\n'
+              '16. C++ Program to Check Whether a Character is an Alphabet or not\n'
+              '17. C++ Program to Calculate the Sum of Natural Numbers\n'
+              '18. C++ Program to Find Factorial of a Number\n'
+              '19. C++ Program to Generate Multiplication Table\n'
+              '20. C++ Program to Display Fibonacci Sequence\n'
+              '21. C++ Program to Find GCD of two Numbers\n')
+
+f10 = Fragment(uuid='TEST-10',
+         path='README2.md',
+         lineno=70,
+         depth=10,
+         type='documentation',
+         name='',
+         text='22. C++ Program to Find LCM of two Numbers\n'
+              '23. C++ Program to Display Characters from A to Z Using Loop\n'
+              '24. C++ Program to Count Number of Digits in an Integer\n'
+              '25. C++ Program to Reverse a Number\n'
+              '26. C++ Program to Calculate the Power of a Number\n'
+              '27. C++ Program to Check Whether a Number is Palindrome or Not\n'
+              '28. C++ Program to Check Whether a Number is Prime or Not\n'
+              '29. C++ Program to Display Prime Numbers Between Two Intervals\n'
+              '30. C++ Program to Check Armstrong Number\n'
+              '31. C++ Program to Display Armstrong Number Between Two Intervals\n'
+              '32. C++ Program to Display Factors of a Number\n')
+
+f11 = Fragment(uuid='TEST-11',
+         path='README2.md',
+         lineno=81,
+         depth=10,
+         type='documentation',
+         name='',
+         text='33. C++ Programming Code To Create Pyramid and Structure\n'
+              '34. C++ Program to Make a Simple Calculator Using switch...case\n'
+              '35. C++ Program to Display Prime Numbers Between Intervals Using Function\n'
+              '36. C++ Program to Check Prime or Armstrong Number Using User-defined Function\n'
+              '37. C++ Program to Check Whether a Number can be Expressed as Sum of Two Prime Numbers\n'
+              '38. C++ Program to Find the Sum of Natural Numbers using Recursion\n'
+              '39. C++ Program to Find Factorial of a Number Using Recursion\n'
+              '40. C++ Program to Find G.C.D Using Recursion\n'
+              '41. C++ Program to Convert Binary Number to Decimal and vice-versa\n')
+
+f12 = Fragment(uuid='TEST-12',
+         path='README2.md',
+         lineno=90,
+         depth=10,
+         type='documentation',
+         name='',
+         text='42. C++ Program to Convert Octal Number to Decimal and vice-versa\n'
+              '43. C++ Program to Convert Binary Number to Octal and vice-versa\n'
+              '44. C++ Program to Reverse a Sentence Using Recursion\n'
+              '45. C++ Program to calculate the power using recursion\n'
+              '46. C++ Program to Calculate Average Using Arrays\n'
+              '47. C++ Program to Find Largest Element of an Array\n'
+              '48. C++ Program to Calculate Standard Deviation\n'
+              '49. C++ Program to Add Two Matrix Using Multi-dimensional Arrays\n'
+              '50. C++ Program to Multiply to Matrix Using Multi-dimensional Arrays\n'
+              '51. C++ Program to Find Transpose of a Matrix\n')
+
+f13 = Fragment(uuid='TEST-13',
+         path='README2.md',
+         lineno=100,
+         depth=10,
+         type='documentation',
+         name='',
+         text='52. C++ Program to Multiply two Matrices by Passing Matrix to a Function\n'
+              '53. C++ Program to Access Elements of an Array Using Pointer\n'
+              '54. C++ Program Swap Numbers in Cyclic Order Using Call by Reference\n'
+              '55. C++ Program to Find Largest Number Using Dynamic Memory Allocation\n'
+              '56. C++ Program to Find the Frequency of Characters in a String\n'
+              '57. C++ Program to count the number of vowels, consonants and so on\n'
+              '58. C++ Program to Remove all Characters in a String Except Alphabet\n'
+              '59. C++ Program to Find the Length of a String\n'
+              '60. C++ Program to Concatenate Two Strings\n'
+              '61. C++ Program to Copy String Without Using strcpy()\n')
+
+f14 = Fragment(uuid='TEST-14',
+         path='README2.md',
+         lineno=110,
+         depth=10,
+         type='documentation',
+         name='',
+         text='62. C++ Program to Sort Elements in Lexicographical Order (Dictionary Order)\n'
+              '63. C++ Program to Store Information(name, roll and marks) of a Student Using Structure\n'
+              '64. C++ Program to Add Two Distances (in inch-feet) System Using Structures\n'
+              '65. C++ Program to Add Two Complex Numbers by Passing Structure to a Function\n'
+              '66. C++ Program to Calculate Difference Between Two Time Periods\n'
+              '67. C++ Program to Store Information of Students Using Structure\n'
+              '68. C++ Program to Store Information Using Structures with Dynamically Memory Allocation\n'
+              '69. C++ Program to Write a Sentence to a File\n'
+              '70. C++ Program to Read a Line From a File and Display it\n')
+
+f15 = Fragment(uuid='TEST-15',
+         path='README2.md',
+         lineno=119,
+         depth=10,
+         type='documentation',
+         name='',
+         text='71. C++ Program to Display its own Source Code as Output\n'
+              '72. C++ Programming Code To Create Pyramid and Pattern\n'
+              '```\n'
+              '\n')
+
+f16 = Fragment(uuid='TEST-16',
+         path='README2.md',
+         lineno=123,
+         depth=1,
+         type='documentation',
+         name='',
+         text='## Projects Ideas\n'
+              '```\n'
+              '1. Banking system with all banking facilities like – deposit, withdrawal, foreign exchange to any '
+              'currency, availability of loans for purchasing vehicles, apartments, houses, setting up business, '
+              'education loan, management of ATMs and all other features.\n'
+              '2. Airline flight reservation system (online booking of tickets in different flights for different '
+              'destinations all over the world, cancellation of tickets, clear display of cancellation amount, refund '
+              'of amount after cancellation, showing  availability of all flights, showing flights timings for all 7 '
+              'days of a week, seats availability, seat selection for travelers by giving the complete layout of the '
+              'seating arrangement inside the flights, food availability/non-availability inside the flights, change '
+              'of travel dates and amount charged.)\n')
+
+f17 = Fragment(uuid='TEST-17',
+         path='README2.md',
+         lineno=127,
+         depth=10,
+         type='documentation',
+         name='',
+         text='3. Taxi/cab sharing\n'
+              '4. University education portal (providing all information about under-graduate, post graduate and '
+              'doctoral programs offered, facilities available, location & map, fee structure in all the '
+              'universities)\n'
+              '5. Online exam management system (with total security of identifying the students during exam, '
+              'monitoring the students’ activities during the exam, selection of different questions for each student, '
+              'development of a large question bank containing hundreds of questions in each subject considering all '
+              'courses taught at the university)\n'
+              '6. Library management system\n'
+              '7. E-content management system \n'
+              '8. Plagiarism checker & file management system\n'
+              '9. Hotel reservation & management portal\n'
+              '10. Restaurant management\n')
+
+f18 = Fragment(uuid='TEST-18',
+         path='README2.md',
+         lineno=135,
+         depth=10,
+         type='documentation',
+         name='',
+         text='11. Healthcare consulting system (doctors with different specializations for consultation, hospitals '
+              'with all facilities for treating different diseases & abroad - one stop portal for all consultations '
+              'and treatments)\n'
+              '12. Electronic health record management system with builtin security \n'
+              '13. Pharmacy - medical store management \n'
+              '14. Blood bank system\n'
+              '15. Online shopping and delivery system (like amazon)\n'
+              '16. Online car shopping \n'
+              '17. Tourism portal\n'
+              '18. World tourism portal\n'
+              '19. Higher education abroad portal\n'
+              '20. Job search/recruitment portal\n'
+              '21. Company resource management system\n'
+              '22. Attendance monitoring system with fingerprints verification\n'
+              '23. Face recognition - based attendance checking system\n'
+              '24. Aircraft communication and monitoring system\n'
+              '25. Ticket booking management system for concert ceremonies\n')
+
+f19 = Fragment(uuid='TEST-19',
+         path='README2.md',
+         lineno=150,
+         depth=10,
+         type='documentation',
+         name='',
+         text='26. All store stock management (inventory control)\n'
+              '27. Multiplayer gaming applications\n'
+              '28. City traffic monitoring and control system\n'
+              '29. Police traffic violation reporting & control system\n'
+              '30. The marriage function hall booking & food/music arrangement system\n'
+              '31. Any vehicle (car, bus, heavy vehicles for parties, functions, family picnics, long distance travel) '
+              'booking portal\n'
+              '32. Teacher assisted program writing environment for students\n'
+              '33. Doctors reservation system for patients\n'
+              '34. Bus reservation & tracking system\n'
+              '35. Railway booking and train tracking system\n'
+              '36. Warehouse management system\n'
+              '37. Courier tracking, cargo and freight transportation\n'
+              '38. Online code testing system\n')
+
+f20 = Fragment(uuid='TEST-20',
+         path='README2.md',
+         lineno=163,
+         depth=10,
+         type='documentation',
+         name='',
+         text='39. Online quiz system (with total security of identifying the students during the quiz, monitoring the '
+              'students’ activities during the quiz, selection of different quiz questions for each student, '
+              'development of a large quiz question bank containing hundreds of quiz questions in each subject '
+              'considering all courses taught at the university)\n'
+              '40. Land/house/apartment rental & purchase portal\n'
+              '41. Housecleaning, plumbing, electricity service & maintenance system\n'
+              '42. Human organ transplantation management system\n'
+              '43. Covid-19 tracking, testing, treatment & hospital management system\n'
+              '44. Cryptocurrency trading portal (exchange) allowing trading of all crypto coins using security, '
+              'confidentiality and authentication\n'
+              '45. Parking management system\n')
+
+f21 = Fragment(uuid='TEST-21',
+         path='README2.md',
+         lineno=170,
+         depth=10,
+         type='documentation',
+         name='',
+         text='46. Online food delivery system (linked to all restaurants in different districts in different regions '
+              'in some country)\n'
+              '```\n')
+
+f22 = Fragment(uuid='TEST-22',
+         path='README2.md',
+         lineno=1,
+         depth=0,
+         type='summary',
+         name='',
+         text='# C++ Programming\n'
+              '## Contents\n'
+              '## Keep These Tips in Mind While Learning Programming\n'
+              '## Computer Science Basics\n'
+              '## Learning Resources\n'
+              '## Problem Solving\n'
+              '## Projects Ideas\n')
+
