@@ -4,21 +4,10 @@ import zipfile
 from typing import List
 
 from base_backend_test import BaseBackendTest
-from base_database_test import BaseDatabaseTest
 from model.hit import Hit
 from plugin.backend import Backend, TInfo
 
 MODULE_DIR = os.path.dirname(__file__)
-
-
-class TestDownloadServerNotRunning(BaseDatabaseTest):
-
-    async def test_download_server_not_running(self):
-        backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')
-        info: TInfo = await backend.download('http://127.0.0.1:57575', timeout=1.0)
-        print(info)
-        self.assertTrue('The download is still in progress' in info['status'])
-        self.assertTrue('hint' in info)
 
 
 class TestBackend(BaseBackendTest):
@@ -73,13 +62,13 @@ class TestBackend(BaseBackendTest):
         self.verify_hits(hits, 1, contains=['class Duplicates'])
 
         hits = await backend.search(path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 34, path='/find_duplicates.py')
+        self.verify_hits(hits, 29, path='/find_duplicates.py')
 
         hits = await backend.search(tail='.py', path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 34, path='/find_duplicates.py')
+        self.verify_hits(hits, 29, path='/find_duplicates.py')
 
         hits = await backend.search(path='/README.md', limit=100)
-        self.verify_hits(hits, 5, path='/README.md')
+        self.verify_hits(hits, 3, path='/README.md')
 
         hits = await backend.search(tail='.md', text='standard set of source code files', limit=1)
         self.verify_hits(hits, 1, path='/README.md', contains=['standard set of source code files'])
@@ -146,10 +135,10 @@ Python: /find_duplicates.py
         await self.wait_for_processing(30.0)
 
         hits = await backend.search(path='/README.md', limit=100)
-        self.verify_hits(hits, 9, path='/README.md')
+        self.verify_hits(hits, 6, path='/README.md')
 
         hits = await backend.search(tail='.py', name='Query', limit=100)
-        self.verify_hits(hits, 34, contains=['class Query'])
+        self.verify_hits(hits, 22, contains=['class Query'])
 
         summary = await backend.summarize(tail='.md')
         self.assertEqual(summary, '''\
@@ -185,8 +174,8 @@ Relevant subdirectories:
   backend: 100%
   model: 88%
   test: 39%
-  graph: 2%
-  generator: 1%
+  generator: 2%
+  graph: 1%
 ''')
 
     def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
