@@ -63,10 +63,12 @@ class C:
 
     # Project
     PROJECT_ACCESS_UPDATE_INTERVAL = timedelta(minutes=30)
+    PROJECT_EXPIRATION_INTERVAL = timedelta(days=1) + PROJECT_ACCESS_UPDATE_INTERVAL
 
     # Cleanup
     FIRST_CLEANUP_DELAY: int = 77  # s
     CLEANUP_PERIOD: int = 777  # s
+    CLEANUP_MAX_PROJECTS = 100  # maximum number of projects to cleanup per iteration
 
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))

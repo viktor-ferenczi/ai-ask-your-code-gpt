@@ -1,11 +1,15 @@
 import os
 import pprint
 import zipfile
+from datetime import datetime, timedelta
 from typing import List
 
 from base_backend_test import BaseBackendTest
+from common.constants import C
 from model.hit import Hit
 from plugin.backend import Backend, TInfo
+from services.cleanup import cleanup
+from storage import projects
 
 MODULE_DIR = os.path.dirname(__file__)
 
@@ -41,6 +45,7 @@ class TestBackend(BaseBackendTest):
         await self.small_project()
         await self.small_project()
         await self.medium_project()
+        await self.cleanup_projects()
 
     async def download_error(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'download_error')
@@ -203,3 +208,23 @@ Relevant subdirectories:
             pprint.pprint(hits, width=120)
             print()
             raise
+
+    async def cleanup_projects(self):
+        async with self.db.connection() as conn:
+            for table in ('project', 'file', 'document', 'fragment'):
+                count = await conn.fetchval(f'SELECT COUNT(1) FROM {table}')
+                self.assertNotEqual(count, 0, table)
+
+        expired_timestamp = datetime.utcnow() - (C.PROJECT_EXPIRATION_INTERVAL + timedelta(minutes=1))
+        async with self.db.transaction() as conn:
+            project_list = await projects.list_all(conn)
+            for project in project_list:
+                await projects.update_accessed(conn, project.id, expired_timestamp)
+
+        assert C.CLEANUP_MAX_PROJECTS >= len(project_list)
+        await cleanup(self.db)
+
+        async with self.db.connection() as conn:
+            for table in ('project', 'file', 'document', 'fragment'):
+                count = await conn.fetchval(f'SELECT COUNT(1) FROM {table}')
+                self.assertEqual(count, 0, table)

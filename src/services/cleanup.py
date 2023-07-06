@@ -1,5 +1,6 @@
 import asyncio
 import os
+from datetime import datetime
 
 from quart import Quart
 
@@ -9,8 +10,48 @@ from storage.database import Database
 
 
 async def cleanup(db: Database):
-    # TODO: Cleanup tasks, expired projects, files, documents, fragments, logs
-    pass
+    removed: bool = False
+    for _ in range(C.CLEANUP_MAX_PROJECTS):
+
+        async with db.transaction() as conn:
+
+            project_id = await conn.fetchval("""
+                SELECT id
+                FROM project
+                WHERE accessed < $1
+                LIMIT 1
+                FOR UPDATE SKIP LOCKED
+            """, datetime.utcnow() - C.PROJECT_EXPIRATION_INTERVAL)
+
+            if project_id is None:
+                break
+
+            await conn.execute("""
+                DELETE FROM file
+                WHERE project_id = $1
+            """, project_id)
+
+            await conn.execute("""
+                DELETE FROM project
+                WHERE id = $1
+            """, project_id)
+
+            removed = True
+
+    if not removed:
+        return
+
+    async with db.transaction() as conn:
+
+        await conn.execute("""
+            DELETE FROM document
+            WHERE checksum NOT IN (SELECT DISTINCT document_cs FROM file);
+        """)
+
+        await conn.execute("""
+            DELETE FROM fragment
+            WHERE document_cs NOT IN (SELECT checksum FROM document);
+        """)
 
 
 async def worker():

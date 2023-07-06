@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from asyncpg import Record, Connection
 
@@ -47,6 +47,13 @@ async def find(conn: Connection, id: int) -> Optional[Project]:
     if row is None:
         return None
     return Project.from_row(row)
+
+
+async def list_all(conn: Connection) -> List[Project]:
+    return [
+        Project.from_row(row)
+        for row in await conn.fetch('''SELECT * FROM project ORDER BY id''')
+    ]
 
 
 async def find_by_uid_and_name(conn: Connection, uid: str, name: str) -> Optional[Project]:
