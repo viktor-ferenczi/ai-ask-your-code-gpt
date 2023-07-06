@@ -40,5 +40,5 @@ Python: /ci_compile.py
 
 Relevant subdirectories:
   sentient_sims: 100%
-  .github: 0%
   utils: 0%
+  .github: 0%

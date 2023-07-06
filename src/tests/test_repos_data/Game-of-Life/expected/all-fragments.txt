@@ -1,5 +1,5 @@
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=1,
          lineno=1,
          tokens=110,
          depth=0,
@@ -33,7 +33,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '        setLocationRel')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=2,
          lineno=1,
          tokens=122,
          depth=0,
@@ -57,7 +57,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               'setVisible size sleep start universe universePanel w waitFor\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=3,
          lineno=7,
          tokens=476,
          depth=0,
@@ -151,7 +151,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=4,
          lineno=24,
          tokens=126,
          depth=0,
@@ -181,7 +181,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '        aliveLabel.')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=5,
          lineno=41,
          tokens=128,
          depth=0,
@@ -208,9 +208,9 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '        ActionListener pauseListener = new Pa')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=6,
          lineno=54,
-         tokens=108,
+         tokens=140,
          depth=0,
          parent_id=None,
          category='module',
@@ -235,10 +235,22 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '\n'
               '        new GameOfLife();\n'
               '        universe.setSize(35);\n'
-              '        evolution.setGenerations(500);\n')
+              '        evolution.setGenerations(500);\n'
+              '\n'
+              '        while (true) {\n'
+              '\n'
+              '            if (!evolution.restart) {\n'
+              '\n'
+              '                universe.create();\n'
+              '                evolution.evolve(universe);\n'
+              '\n'
+              '            }\n'
+              '        }\n'
+              '    }\n'
+              '}\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=7,
          lineno=68,
          tokens=60,
          depth=2,
@@ -264,31 +276,9 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=73,
-         tokens=33,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n'
-              '        while (true) {\n'
-              '\n'
-              '            if (!evolution.restart) {\n'
-              '\n'
-              '                universe.create();\n'
-              '                evolution.evolve(universe);\n'
-              '\n'
-              '            }\n'
-              '        }\n'
-              '    }\n'
-              '}\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=8,
          lineno=85,
-         tokens=129,
+         tokens=146,
          depth=0,
          parent_id=None,
          category='module',
@@ -332,10 +322,12 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '        this.alive = 0;\n'
               '        this.rand = new Random();\n'
               '\n'
-              '        this.field = new char[size][size];\n')
+              '        this.field = new char[size][size];\n'
+              '\n'
+              '        for (int i = 0; i < this.size; i++) {\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=9,
          lineno=86,
          tokens=316,
          depth=0,
@@ -419,7 +411,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=10,
          lineno=96,
          tokens=12,
          depth=2,
@@ -430,7 +422,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
          body='public int getSize() {\n\n        return this.size;\n\n    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=11,
          lineno=102,
          tokens=43,
          depth=2,
@@ -454,7 +446,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=12,
          lineno=116,
          tokens=117,
          depth=2,
@@ -489,20 +481,9 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=123,
-         tokens=18,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n        for (int i = 0; i < this.size; i++) {\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=13,
          lineno=125,
-         tokens=103,
+         tokens=120,
          depth=0,
          parent_id=None,
          category='module',
@@ -529,10 +510,12 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '\n'
               '        GameOfLife.aliveLabel.setText(" Alive: " + '
               'GameOfLife.universe.alive);\n'
-              '        System.out.println("Alive: " + this.alive);\n')
+              '        System.out.println("Alive: " + this.alive);\n'
+              '\n'
+              '        for (int i = 0; i < this.size; i++) {\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=14,
          lineno=142,
          tokens=107,
          depth=2,
@@ -558,18 +541,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=146,
-         tokens=18,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n        for (int i = 0; i < this.size; i++) {\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=15,
          lineno=148,
          tokens=53,
          depth=0,
@@ -589,7 +561,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=16,
          lineno=157,
          tokens=127,
          depth=0,
@@ -633,7 +605,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '            try {\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=17,
          lineno=158,
          tokens=766,
          depth=0,
@@ -796,7 +768,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=18,
          lineno=166,
          tokens=693,
          depth=2,
@@ -936,9 +908,9 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=19,
          lineno=190,
-         tokens=80,
+         tokens=97,
          depth=0,
          parent_id=None,
          category='module',
@@ -964,23 +936,14 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '\n'
               '            }\n'
               '\n'
-              '            universe.alive = 0;\n')
+              '            universe.alive = 0;\n'
+              '\n'
+              '            for (int i = 0; i < universe.getSize(); i++) {\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=210,
-         tokens=18,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=20,
          lineno=212,
-         tokens=61,
+         tokens=103,
          depth=0,
          parent_id=None,
          category='module',
@@ -993,18 +956,8 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '                    int n = i - 1;\n'
               '                    int s = i + 1;\n'
               '                    int w = j - 1;\n'
-              '                    int e = j + 1;\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=220,
-         tokens=43,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n'
+              '                    int e = j + 1;\n'
+              '\n'
               '                    if (i == 0) {\n'
               '\n'
               '                        n = universe.getSize() - 1;\n'
@@ -1016,7 +969,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '                    }\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=21,
          lineno=230,
          tokens=88,
          depth=0,
@@ -1042,7 +995,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '                    neighbours += univ')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=22,
          lineno=243,
          tokens=118,
          depth=0,
@@ -1063,7 +1016,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '1 : 0;\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=23,
          lineno=249,
          tokens=69,
          depth=0,
@@ -1087,40 +1040,21 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '            }\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=24,
          lineno=261,
-         tokens=18,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n            for (int i = 0; i < universe.getSize(); i++) {\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=263,
-         tokens=32,
+         tokens=134,
          depth=0,
          parent_id=None,
          category='module',
          summary=False,
          name='',
          body='\n'
+              '            for (int i = 0; i < universe.getSize(); i++) {\n'
+              '\n'
               '                for (int j = 0; j < universe.getSize(); j++) {\n'
               '\n'
-              '                    universe.field[i][j] = this.field[i][j];\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=267,
-         tokens=86,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n'
+              '                    universe.field[i][j] = this.field[i][j];\n'
+              '\n'
               "                    if (this.field[i][j] == 'O') {\n"
               '\n'
               '                        universe.alive++;\n'
@@ -1141,7 +1075,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    public void setGenerations(int generations) {\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=25,
          lineno=284,
          tokens=47,
          depth=2,
@@ -1164,7 +1098,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=26,
          lineno=285,
          tokens=40,
          depth=0,
@@ -1187,9 +1121,9 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=27,
          lineno=297,
-         tokens=56,
+         tokens=138,
          depth=0,
          parent_id=None,
          category='module',
@@ -1208,10 +1142,21 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '\n'
               '    public void paintComponent(Graphics g) {\n'
               '\n'
-              '        super.paintComponent(g);\n')
+              '        super.paintComponent(g);\n'
+              '\n'
+              '        for (int i = 1; i < GameOfLife.universe.getSize(); i++) '
+              '{\n'
+              '\n'
+              '            g.drawLine(20 * i, 0, 20 * i, 900);\n'
+              '            g.drawLine(0, 20 * i, 905, 20 * i);\n'
+              '\n'
+              '        }\n'
+              '\n'
+              '        for (int i = 0; i < GameOfLife.universe.getSize(); i++) '
+              '{\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=28,
          lineno=298,
          tokens=204,
          depth=0,
@@ -1258,7 +1203,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=29,
          lineno=307,
          tokens=162,
          depth=2,
@@ -1294,38 +1239,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=310,
-         tokens=62,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n'
-              '        for (int i = 1; i < GameOfLife.universe.getSize(); i++) '
-              '{\n'
-              '\n'
-              '            g.drawLine(20 * i, 0, 20 * i, 900);\n'
-              '            g.drawLine(0, 20 * i, 905, 20 * i);\n'
-              '\n'
-              '        }\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=317,
-         tokens=22,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n'
-              '        for (int i = 0; i < GameOfLife.universe.getSize(); i++) '
-              '{\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=30,
          lineno=319,
          tokens=68,
          depth=0,
@@ -1348,9 +1262,9 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=31,
          lineno=331,
-         tokens=30,
+         tokens=57,
          depth=0,
          parent_id=None,
          category='module',
@@ -1364,10 +1278,19 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '        GameOfLife.paused = !GameOfLife.paused;\n'
               '\n'
               '    }\n'
+              '}\n'
+              '\n'
+              'class RestartListener implements ActionListener {\n'
+              '\n'
+              '    public void actionPerformed(ActionEvent e) {\n'
+              '\n'
+              '        GameOfLife.evolution.restart = true;\n'
+              '\n'
+              '    }\n'
               '}\n')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=32,
          lineno=332,
          tokens=29,
          depth=0,
@@ -1385,7 +1308,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=33,
          lineno=334,
          tokens=21,
          depth=2,
@@ -1400,26 +1323,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
-         lineno=340,
-         tokens=28,
-         depth=0,
-         parent_id=None,
-         category='module',
-         summary=False,
-         name='',
-         body='\n'
-              'class RestartListener implements ActionListener {\n'
-              '\n'
-              '    public void actionPerformed(ActionEvent e) {\n'
-              '\n'
-              '        GameOfLife.evolution.restart = true;\n'
-              '\n'
-              '    }\n'
-              '}\n')
-
-Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=34,
          lineno=341,
          tokens=27,
          depth=0,
@@ -1437,7 +1341,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '}')
 
 Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-         id=-1,
+         id=35,
          lineno=343,
          tokens=19,
          depth=2,
@@ -1452,7 +1356,7 @@ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500
               '    }')
 
 Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d67ddb14',
-         id=-1,
+         id=36,
          lineno=1,
          tokens=66,
          depth=0,
@@ -1474,7 +1378,7 @@ Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d6
               '- pause and restart buttons.\n')
 
 Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d67ddb14',
-         id=-1,
+         id=37,
          lineno=1,
          tokens=5,
          depth=0,

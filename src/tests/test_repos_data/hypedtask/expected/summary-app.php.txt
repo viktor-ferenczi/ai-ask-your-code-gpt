@@ -40,9 +40,9 @@ PHP: /app/User.php
 
 Relevant subdirectories:
   Http: 100%
-  Providers: 10%
-  Helpers: 4%
-  Console: 2%
+  Providers: 8%
+  Helpers: 5%
+  Console: 3%
   Exceptions: 2%
   Events: 1%
   Jobs: 1%

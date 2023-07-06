@@ -23,5 +23,5 @@ File: /ToolbarManager.sln
 
 Relevant subdirectories:
   ToolbarManager: 100%
-  .run: 5%
-  .github: 5%
+  .run: 1%
+  .github: 1%

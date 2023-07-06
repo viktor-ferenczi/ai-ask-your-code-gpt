@@ -33,10 +33,10 @@ PHP: /server.php
 
 Relevant subdirectories:
   public: 100%
-  app: 19%
-  resources: 7%
-  database: 6%
-  config: 2%
-  storage: 0%
+  app: 35%
+  resources: 16%
+  database: 13%
+  config: 5%
+  storage: 1%
   bootstrap: 0%
   tests: 0%

@@ -1,11 +1,10 @@
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=1,
          lineno=1,
          tokens=32,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System.Collections.Generic;\n'
@@ -16,13 +15,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               'using VRage.Game;\n')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=2,
          lineno=1,
          tokens=110,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Gui/CustomSearchCondition.cs\n'
@@ -39,13 +37,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               'searchText si sl sortedBlocks ss su value\n')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=3,
          lineno=7,
          tokens=120,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -75,13 +72,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '        [MethodImpl(MethodImplOptions.AggressiveInlining)]')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=4,
          lineno=10,
          tokens=488,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='CustomSearchCondition',
          body='[SuppressMessage("ReSharper", "UnusedMember.Global")]\n'
@@ -176,13 +172,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '    }')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=5,
          lineno=23,
          tokens=24,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Clean',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -193,13 +188,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '        }')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=6,
          lineno=30,
-         tokens=109,
+         tokens=133,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -221,16 +215,20 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '\n'
               '        [MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
               '        public bool MatchesCondition(string name)\n'
-              '        {\n')
+              '        {\n'
+              '            if (name == null)\n'
+              '                return false;\n'
+              '\n'
+              '            var ss = searchText;\n'
+              '            var sl = ss.Length;\n')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=7,
          lineno=30,
          tokens=18,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CleanDefinitionGroups',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -238,13 +236,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               'sortedBlocks.Clear();')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=8,
          lineno=33,
          tokens=23,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='GetSortedBlocks',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -252,13 +249,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               'GetSortedBlocks() => sortedBlocks;')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=9,
          lineno=36,
          tokens=25,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='MatchesCondition',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -266,13 +262,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               'definition) => MatchesCondition(definition?.DisplayNameText);')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=10,
          lineno=39,
          tokens=28,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='AddDefinitionGroup',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -281,13 +276,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '=> sortedBlocks.Add(definitionGroup);')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=11,
          lineno=42,
          tokens=283,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='MatchesCondition',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -343,29 +337,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '        }')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
-         lineno=45,
-         tokens=24,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (name == null)\n'
-              '                return false;\n'
-              '\n'
-              '            var ss = searchText;\n'
-              '            var sl = ss.Length;\n')
-
-Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=12,
          lineno=50,
-         tokens=95,
+         tokens=142,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (sl == 0)\n'
@@ -381,45 +358,22 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '            // Walk on each character of the name\n'
               '            // Index based algorithm for speed (it does not '
               'allocate)\n'
-              '            var nl = name.Length;\n')
-
-Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
-         lineno=61,
-         tokens=24,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            for (var ii = 0; ii < nl; ii++)\n'
+              '            var nl = name.Length;\n'
+              '            for (var ii = 0; ii < nl; ii++)\n'
               '            {\n'
-              '                // Mismatching character?\n')
-
-Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
-         lineno=64,
-         tokens=23,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                if (name[ii] != sc)\n'
+              '                // Mismatching character?\n'
+              '                if (name[ii] != sc)\n'
               '                {\n'
               '                    // Digits and upper case characters allow '
               'skipping characters\n')
 
 Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
+         id=13,
          lineno=67,
-         tokens=38,
+         tokens=104,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                    if (su)\n'
@@ -431,19 +385,8 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '\n'
               '                // Skip the matching character in the search '
               'string\n'
-              '                si += 1;\n')
-
-Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa384f565',
-         id=-1,
-         lineno=76,
-         tokens=66,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                if (si == sl)\n'
+              '                si += 1;\n'
+              '                if (si == sl)\n'
               '                    return true;\n'
               '\n'
               '                // Recall the next character from the search '
@@ -459,13 +402,12 @@ Fragment(document_cs='08c68667cbc53f774bf816752ac57eeef754033c7f2f6b194244c68aa3
               '}')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=14,
          lineno=1,
-         tokens=54,
+         tokens=137,
          depth=1,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='# Toolbar Manager\n'
@@ -477,16 +419,30 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '\n'
               'Please consider [supporting my work on '
               'Patreon](https://www.patreon.com/semods).\n'
+              '\n'
+              '## Features\n'
+              '\n'
+              'This plugin allows for saving and loading toolbars. For example '
+              'you can \n'
+              'quickly load a "standard" toolbar into any game, which can '
+              'greatly speed\n'
+              'up your builds by using toolbar slots you have already '
+              'memorized.\n'
+              '\n'
+              'This plugin works for both offline and online multiplayer games '
+              'without\n'
+              'the need for any server side support. All your save files are '
+              'local, \n'
+              'nothing is stored on a server.\n'
               '\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=15,
          lineno=1,
          tokens=52,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='# Toolbar Manager\n'
@@ -504,39 +460,12 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '### Creators\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=9,
-         tokens=83,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='## Features\n'
-              '\n'
-              'This plugin allows for saving and loading toolbars. For example '
-              'you can \n'
-              'quickly load a "standard" toolbar into any game, which can '
-              'greatly speed\n'
-              'up your builds by using toolbar slots you have already '
-              'memorized.\n'
-              '\n'
-              'This plugin works for both offline and online multiplayer games '
-              'without\n'
-              'the need for any server side support. All your save files are '
-              'local, \n'
-              'nothing is stored on a server.\n'
-              '\n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=16,
          lineno=19,
-         tokens=122,
+         tokens=127,
          depth=2,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='### Toolbars\n'
@@ -557,28 +486,16 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '\n'
               'It is possible to save the toolbar from a cockpit and load into '
               'a remote control, for example.\n'
-              '\n')
+              '\n'
+              '### Quick block selection\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=34,
-         tokens=5,
-         depth=10,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='### Quick block selection\n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=17,
          lineno=35,
-         tokens=54,
-         depth=10,
+         tokens=140,
+         depth=13,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -587,94 +504,48 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               'block search menu. It works the same way as the original menu, '
               'but the search \n'
               'rules are optimized to find blocks primarily by capital letters '
-              'and digits:\n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=39,
-         tokens=66,
-         depth=10,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'and digits:\n'
+              '\n'
               '- `AB` **Armor Blocks**\n'
               '- `PB` **Programmable Block**\n'
               '- `SK` **Survival Kit**\n'
               '- `AT` **Atmospheric Thrusters**\n'
               '- `LHT` **Large Hydrogen Thrusters**\n'
-              '- `211` **All 2x1x1 armor blocks**\n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=46,
-         tokens=22,
-         depth=10,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '- `211` **All 2x1x1 armor blocks**\n'
+              '\n'
               'Adding the subsequent lower case letters after an upper case '
               'one allows \n'
               'for narrowing down in case of ambiguity:\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=18,
          lineno=49,
-         tokens=29,
-         depth=10,
+         tokens=68,
+         depth=13,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='\n'
               '- `PH` **Parachute Hatch** and **Point Hand**\n'
-              '- `PHat` **Parachute Hatch** only\n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=52,
-         tokens=27,
-         depth=10,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '- `PHat` **Parachute Hatch** only\n'
+              '\n'
               'The order of characters must match exactly. Lower case '
               'characters and\n'
               'space are skipped after a matching upper chase character or '
-              'digit. \n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=55,
-         tokens=14,
-         depth=10,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'digit. \n'
+              '\n'
               'Separating multiple search patterns by space is not supported, '
               'currently.\n'
               '\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=19,
          lineno=58,
          tokens=87,
          depth=2,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='### Planned features\n'
@@ -692,13 +563,12 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=20,
          lineno=68,
          tokens=92,
          depth=1,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='## Installation\n'
@@ -717,13 +587,12 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=21,
          lineno=80,
-         tokens=115,
+         tokens=118,
          depth=1,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='## Want to know more?\n'
@@ -734,28 +603,17 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '- [Source '
               'code](https://github.com/viktor-ferenczi/toolbar-manager)\n'
               '- [Bug reports](https://discord.gg/x3Z8Ug5YkQ)\n'
+              '\n'
+              '## Credits\n'
               '\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
-         lineno=87,
-         tokens=3,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='## Credits\n\n')
-
-Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=22,
          lineno=89,
          tokens=97,
          depth=2,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='### Patreon Supporters\n'
@@ -785,13 +643,12 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               '\n')
 
 Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782bea9c0',
-         id=-1,
+         id=23,
          lineno=114,
          tokens=76,
          depth=2,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='### Creators\n'
@@ -807,52 +664,18 @@ Fragment(document_cs='27136ae72fbe5b19df2148d24354798a7b030a78df952891c7b6ef0782
               'testing!**')
 
 Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
-         id=-1,
+         id=24,
          lineno=1,
-         tokens=3,
-         depth=1,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='MIT License\n')
-
-Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
-         id=-1,
-         lineno=1,
-         tokens=5,
+         tokens=126,
          depth=0,
          parent_id=None,
-         category='summary',
-         definition=True,
-         summary=True,
-         name='',
-         body='File: /LICENSE\n')
-
-Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
-         id=-1,
-         lineno=2,
-         tokens=13,
-         depth=1,
-         parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\nCopyright (c) 2021 Viktor Ferenczi\n')
-
-Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
-         id=-1,
-         lineno=4,
-         tokens=90,
-         depth=1,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+         body='MIT License\n'
+              '\n'
+              'Copyright (c) 2021 Viktor Ferenczi\n'
+              '\n'
               'Permission is hereby granted, free of charge, to any person '
               'obtaining a copy\n'
               'of this software and associated documentation files (the '
@@ -863,31 +686,30 @@ Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab6
               'and/or sell\n'
               'copies of the Software, and to permit persons to whom the '
               'Software is\n'
-              'furnished to do so, subject to the following conditions:\n')
-
-Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
-         id=-1,
-         lineno=11,
-         tokens=23,
-         depth=1,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'furnished to do so, subject to the following conditions:\n'
+              '\n'
               'The above copyright notice and this permission notice shall be '
               'included in all\n'
               'copies or substantial portions of the Software.\n')
 
 Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
-         id=-1,
+         id=25,
+         lineno=1,
+         tokens=5,
+         depth=0,
+         parent_id=None,
+         category='summary',
+         summary=True,
+         name='',
+         body='File: /LICENSE\n')
+
+Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab67c868c',
+         id=26,
          lineno=14,
          tokens=96,
          depth=1,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -906,54 +728,18 @@ Fragment(document_cs='2937863fb1807d91801bc84075221f38c70ab6a45215f25f80a0570ab6
               'SOFTWARE.\n')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=27,
          lineno=1,
-         tokens=18,
+         tokens=134,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\ufeffusing Sandbox.Definitions;\n'
               'using Sandbox.Game.Screens.Helpers;\n'
-              'using VRage.Game;\n')
-
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=1,
-         tokens=120,
-         depth=0,
-         parent_id=None,
-         category='summary',
-         definition=True,
-         summary=True,
-         name='',
-         body='CSharp: /ToolbarManager/Logic/Slot.cs\n'
-              '  Classes: Slot\n'
-              '  Methods: Activate Clear Get Merge Set Slot\n'
-              '  Usages: ActivateItemAtIndex Builder Clear CreateToolbarItem '
-              'CurrentPage Definitions Game GetId GetItemAtIndex '
-              'GetObjectBuilder Helpers Id Index IsEmpty Logic '
-              'MyDefinitionBase MyDefinitionId MyDefinitionManager '
-              'MyObjectBuilder_ToolbarItem MyToolbar MyToolbarItem '
-              'MyToolbarItemDefinition MyToolbarItemFactory Number '
-              'ObjectBuilderFromDefinition Page Sandbox Screens Set '
-              'SetItemAtIndex Static SwitchToPage ToolbarManager '
-              'TryGetDefinition VRage definitionBase id index item itemBuilder '
-              'itemDefinition toolbar toolbarItem\n')
-
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=4,
-         tokens=117,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'using VRage.Game;\n'
+              '\n'
               'namespace ToolbarManager.Logic\n'
               '{\n'
               '    public class Slot\n'
@@ -977,13 +763,35 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '            Index = index;\n')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=28,
+         lineno=1,
+         tokens=120,
+         depth=0,
+         parent_id=None,
+         category='summary',
+         summary=True,
+         name='',
+         body='CSharp: /ToolbarManager/Logic/Slot.cs\n'
+              '  Classes: Slot\n'
+              '  Methods: Activate Clear Get Merge Set Slot\n'
+              '  Usages: ActivateItemAtIndex Builder Clear CreateToolbarItem '
+              'CurrentPage Definitions Game GetId GetItemAtIndex '
+              'GetObjectBuilder Helpers Id Index IsEmpty Logic '
+              'MyDefinitionBase MyDefinitionId MyDefinitionManager '
+              'MyObjectBuilder_ToolbarItem MyToolbar MyToolbarItem '
+              'MyToolbarItemDefinition MyToolbarItemFactory Number '
+              'ObjectBuilderFromDefinition Page Sandbox Screens Set '
+              'SetItemAtIndex Static SwitchToPage ToolbarManager '
+              'TryGetDefinition VRage definitionBase id index item itemBuilder '
+              'itemDefinition toolbar toolbarItem\n')
+
+Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
+         id=29,
          lineno=7,
          tokens=448,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='Slot',
          body='public class Slot\n'
@@ -1095,13 +903,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '    }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=30,
          lineno=16,
          tokens=14,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Slot',
          body='public Slot(int index)\n'
@@ -1110,13 +917,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=31,
          lineno=21,
          tokens=56,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Slot',
          body='public Slot(int index, MyDefinitionId id)\n'
@@ -1133,13 +939,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=32,
          lineno=24,
-         tokens=58,
+         tokens=136,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -1154,16 +959,37 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '\n'
               '        public Slot(int index, MyToolbarItem item)\n'
               '        {\n'
+              '            Index = index;\n'
+              '\n'
+              '            if (item == null)\n'
+              '                return;\n'
+              '\n'
+              '            Builder = item.GetObjectBuilder();\n'
+              '        }\n'
+              '\n'
+              '        public Slot(int index, MyObjectBuilder_ToolbarItem '
+              'itemBuilder)\n'
+              '        {\n'
+              '            Index = index;\n'
+              '\n'
+              '            if (itemBuilder == null)\n'
+              '                return;\n'
+              '\n'
+              '            Builder = itemBuilder;\n'
+              '        }\n'
+              '\n'
+              '        public Slot(int index, MyToolbarItemDefinition '
+              'itemDefinition)\n'
+              '        {\n'
               '            Index = index;\n')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=33,
          lineno=31,
          tokens=36,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Slot',
          body='public Slot(int index, MyToolbarItem item)\n'
@@ -1177,35 +1003,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=34,
-         tokens=41,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '            if (item == null)\n'
-              '                return;\n'
-              '\n'
-              '            Builder = item.GetObjectBuilder();\n'
-              '        }\n'
-              '\n'
-              '        public Slot(int index, MyObjectBuilder_ToolbarItem '
-              'itemBuilder)\n'
-              '        {\n'
-              '            Index = index;\n')
-
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=34,
          lineno=41,
          tokens=38,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Slot',
          body='public Slot(int index, MyObjectBuilder_ToolbarItem '
@@ -1220,35 +1023,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=44,
-         tokens=39,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '            if (itemBuilder == null)\n'
-              '                return;\n'
-              '\n'
-              '            Builder = itemBuilder;\n'
-              '        }\n'
-              '\n'
-              '        public Slot(int index, MyToolbarItemDefinition '
-              'itemDefinition)\n'
-              '        {\n'
-              '            Index = index;\n')
-
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=35,
          lineno=51,
          tokens=40,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Slot',
          body='public Slot(int index, MyToolbarItemDefinition itemDefinition)\n'
@@ -1262,13 +1042,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=36,
          lineno=54,
-         tokens=56,
+         tokens=94,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -1285,16 +1064,26 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '\n'
               '        public void Get(MyToolbar toolbar)\n'
               '        {\n'
-              '            var toolbarItem = toolbar.GetItemAtIndex(Index);\n')
+              '            var toolbarItem = toolbar.GetItemAtIndex(Index);\n'
+              '            if (toolbarItem == null)\n'
+              '            {\n'
+              '                Clear();\n'
+              '                return;\n'
+              '            }\n'
+              '\n'
+              '            Builder = toolbarItem.GetObjectBuilder();\n'
+              '        }\n'
+              '\n'
+              '        public void Set(MyToolbar toolbar)\n'
+              '        {\n')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=37,
          lineno=61,
          tokens=13,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Clear',
          body='public void Clear()\n'
@@ -1303,13 +1092,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=38,
          lineno=66,
          tokens=47,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Get',
          body='public void Get(MyToolbar toolbar)\n'
@@ -1325,35 +1113,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=69,
-         tokens=38,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (toolbarItem == null)\n'
-              '            {\n'
-              '                Clear();\n'
-              '                return;\n'
-              '            }\n'
-              '\n'
-              '            Builder = toolbarItem.GetObjectBuilder();\n'
-              '        }\n'
-              '\n'
-              '        public void Set(MyToolbar toolbar)\n'
-              '        {\n')
-
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=39,
          lineno=78,
          tokens=57,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Set',
          body='public void Set(MyToolbar toolbar)\n'
@@ -1370,13 +1135,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=40,
          lineno=80,
-         tokens=58,
+         tokens=112,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (IsEmpty)\n'
@@ -1391,16 +1155,30 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }\n'
               '\n'
               '        public void Merge(MyToolbar toolbar)\n'
-              '        {\n')
+              '        {\n'
+              '            if (IsEmpty)\n'
+              '                return;\n'
+              '\n'
+              '            Set(toolbar);\n'
+              '        }\n'
+              '\n'
+              '        public void Activate(MyToolbar toolbar)\n'
+              '        {\n'
+              '            if (toolbar.CurrentPage != Page)\n'
+              '                toolbar.SwitchToPage(Page);\n'
+              '\n'
+              '            toolbar.ActivateItemAtIndex(Index);\n'
+              '        }\n'
+              '    }\n'
+              '}')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=41,
          lineno=90,
          tokens=23,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Merge',
          body='public void Merge(MyToolbar toolbar)\n'
@@ -1412,32 +1190,12 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '        }')
 
 Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=92,
-         tokens=24,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (IsEmpty)\n'
-              '                return;\n'
-              '\n'
-              '            Set(toolbar);\n'
-              '        }\n'
-              '\n'
-              '        public void Activate(MyToolbar toolbar)\n'
-              '        {\n')
-
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
+         id=42,
          lineno=98,
          tokens=36,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Activate',
          body='public void Activate(MyToolbar toolbar)\n'
@@ -1448,32 +1206,13 @@ Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c84
               '            toolbar.ActivateItemAtIndex(Index);\n'
               '        }')
 
-Fragment(document_cs='2dd90f059f1f475c3cc42b61cd6bd226d01990ded68481aee5b54f2c844c0dbf',
-         id=-1,
-         lineno=100,
-         tokens=30,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (toolbar.CurrentPage != Page)\n'
-              '                toolbar.SwitchToPage(Page);\n'
-              '\n'
-              '            toolbar.ActivateItemAtIndex(Index);\n'
-              '        }\n'
-              '    }\n'
-              '}')
-
 Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba4b7947',
-         id=-1,
+         id=43,
          lineno=1,
          tokens=113,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\ufeffusing System.Reflection;\n'
@@ -1498,13 +1237,12 @@ Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba
               '// to COM components.  If you need t')
 
 Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba4b7947',
-         id=-1,
+         id=44,
          lineno=1,
          tokens=38,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Properties/AssemblyInfo.cs\n'
@@ -1515,13 +1253,12 @@ Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba
               'InteropServices Reflection Runtime System\n')
 
 Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba4b7947',
-         id=-1,
+         id=45,
          lineno=17,
          tokens=88,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='o access a type in this assembly from \n'
@@ -1536,13 +1273,12 @@ Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba
               'following fou')
 
 Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba4b7947',
-         id=-1,
+         id=46,
          lineno=24,
          tokens=85,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='r values:\n'
@@ -1560,13 +1296,12 @@ Fragment(document_cs='2e6630aff2a2335427c2e57675b8bb3721172d61962a82312e01bd5bba
               '[assembly: AssemblyFileVersion("1.3.3.0")]')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=47,
          lineno=1,
          tokens=48,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System.Diagnostics.CodeAnalysis;\n'
@@ -1580,13 +1315,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               'using VRageMath;\n')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=48,
          lineno=1,
          tokens=244,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Gui/CustomToolbarConfigScreen.cs\n'
@@ -1614,13 +1348,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               'toolbarItemBuilder userData\n')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=49,
          lineno=10,
          tokens=106,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -1643,13 +1376,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '    ')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=50,
          lineno=13,
          tokens=638,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='CustomToolbarConfigScreen',
          body='[SuppressMessage("ReSharper", "UnusedMember.Global")]\n'
@@ -1769,38 +1501,35 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '    }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=51,
          lineno=16,
          tokens=12,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='CustomSearchCondition',
          body='CustomSearchCondition customSearchCondition = new '
               'CustomSearchCondition()')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=52,
          lineno=17,
          tokens=7,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlLabel',
          body='MyGuiControlLabel searchInfoLabel')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=53,
          lineno=19,
          tokens=42,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CustomToolbarConfigScreen',
          body='public CustomToolbarConfigScreen(int scrollOffset = 0, '
@@ -1810,13 +1539,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=54,
          lineno=23,
          tokens=103,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='    public CustomToolbarConfigScreen(int scrollOffset, '
@@ -1837,13 +1565,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        {\n')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=55,
          lineno=23,
          tokens=53,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CustomToolbarConfigScreen',
          body='public CustomToolbarConfigScreen(int scrollOffset, MyCubeBlock '
@@ -1854,13 +1581,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=56,
          lineno=27,
          tokens=31,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='SetSearchText',
          body='public void SetSearchText(string text)\n'
@@ -1870,13 +1596,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=57,
          lineno=33,
          tokens=68,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='AddToolsAndAnimations',
          body='protected override void '
@@ -1895,13 +1620,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=58,
          lineno=35,
-         tokens=71,
+         tokens=142,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (searchCondition == m_nameSearchCondition)\n'
@@ -1919,16 +1643,31 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        protected override void '
               'UpdateGridBlocksBySearchCondition(IMySearchCondition '
               'searchCondition)\n'
+              '        {\n'
+              '            if (searchCondition == m_nameSearchCondition)\n'
+              '            {\n'
+              '                customSearchCondition.SearchName = '
+              'm_searchBox.TextBox.Text;\n'
+              '                '
+              'base.UpdateGridBlocksBySearchCondition(customSearchCondition);\n'
+              '                return;\n'
+              '            }\n'
+              '\n'
+              '            '
+              'base.UpdateGridBlocksBySearchCondition(searchCondition);\n'
+              '        }\n'
+              '\n'
+              '        public override void HandleInput(bool '
+              'receivedFocusInThisUpdate)\n'
               '        {\n')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=59,
          lineno=45,
          tokens=74,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='UpdateGridBlocksBySearchCondition',
          body='protected override void '
@@ -1949,40 +1688,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
-         lineno=47,
-         tokens=71,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (searchCondition == m_nameSearchCondition)\n'
-              '            {\n'
-              '                customSearchCondition.SearchName = '
-              'm_searchBox.TextBox.Text;\n'
-              '                '
-              'base.UpdateGridBlocksBySearchCondition(customSearchCondition);\n'
-              '                return;\n'
-              '            }\n'
-              '\n'
-              '            '
-              'base.UpdateGridBlocksBySearchCondition(searchCondition);\n'
-              '        }\n'
-              '\n'
-              '        public override void HandleInput(bool '
-              'receivedFocusInThisUpdate)\n'
-              '        {\n')
-
-Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=60,
          lineno=57,
          tokens=51,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='HandleInput',
          body='public override void HandleInput(bool '
@@ -1998,13 +1709,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=61,
          lineno=59,
-         tokens=45,
+         tokens=135,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (MyInput.Static.IsNewKeyPressed(MyKeys.Enter))\n'
@@ -2017,16 +1727,31 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }\n'
               '\n'
               '        private void LoadSelectedItem()\n'
-              '        {\n')
+              '        {\n'
+              '            if (m_gridBlocks.SelectedIndex == null)\n'
+              '                return;\n'
+              '\n'
+              '            var selectedItem = '
+              'm_gridBlocks.GetItemAt(m_gridBlocks.SelectedIndex ?? 0);\n'
+              '            if (!(selectedItem?.UserData is GridItemUserData '
+              'userData))\n'
+              '                return;\n'
+              '\n'
+              '            var toolbarItemBuilder = userData.ItemData();\n'
+              '            if (toolbarItemBuilder is '
+              'MyObjectBuilder_ToolbarItemEmpty)\n'
+              '                return;\n'
+              '\n'
+              '            var toolbarItem = '
+              'MyToolbarItemFactory.CreateToolbarItem(userData.ItemData());\n')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=62,
          lineno=68,
          tokens=137,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='LoadSelectedItem',
          body='private void LoadSelectedItem()\n'
@@ -2057,62 +1782,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
-         lineno=70,
-         tokens=30,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (m_gridBlocks.SelectedIndex == null)\n'
-              '                return;\n'
-              '\n'
-              '            var selectedItem = '
-              'm_gridBlocks.GetItemAt(m_gridBlocks.SelectedIndex ?? 0);\n')
-
-Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
-         lineno=74,
-         tokens=26,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (!(selectedItem?.UserData is GridItemUserData '
-              'userData))\n'
-              '                return;\n'
-              '\n'
-              '            var toolbarItemBuilder = userData.ItemData();\n')
-
-Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
-         lineno=78,
-         tokens=34,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (toolbarItemBuilder is '
-              'MyObjectBuilder_ToolbarItemEmpty)\n'
-              '                return;\n'
-              '\n'
-              '            var toolbarItem = '
-              'MyToolbarItemFactory.CreateToolbarItem(userData.ItemData());\n')
-
-Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=63,
          lineno=82,
          tokens=71,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (toolbarItem is MyToolbarItemActions && '
@@ -2131,13 +1806,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '            searchInfoLabel = new MyGuiC')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=64,
          lineno=90,
          tokens=119,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='RecreateControls',
          body='public override void RecreateControls(bool contructor)\n'
@@ -2158,13 +1832,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '        }')
 
 Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034ae62da',
-         id=-1,
+         id=65,
          lineno=94,
          tokens=94,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='ontrolLabel(\n'
@@ -2183,13 +1856,12 @@ Fragment(document_cs='36e3b53b6c77ba7c265232e687496b2c095a1ae699ee781dd787ae3034
               '}')
 
 Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213bbd602',
-         id=-1,
+         id=66,
          lineno=1,
          tokens=117,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System.Text;\n'
@@ -2214,13 +1886,12 @@ Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213
               '}')
 
 Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213bbd602',
-         id=-1,
+         id=67,
          lineno=1,
          tokens=65,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Extensions/MyGuiSandboxExt.cs\n'
@@ -2232,13 +1903,12 @@ Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213
               'messageText text type\n')
 
 Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213bbd602',
-         id=-1,
+         id=68,
          lineno=6,
          tokens=100,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='MyGuiSandboxExt',
          body='public static class MyGuiSandboxExt\n'
@@ -2257,13 +1927,12 @@ Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213
               '    }')
 
 Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213bbd602',
-         id=-1,
+         id=69,
          lineno=8,
          tokens=49,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Show',
          body='public static void Show(StringBuilder text, StringBuilder '
@@ -2274,13 +1943,12 @@ Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213
               'messageText: text, messageCaption: caption));')
 
 Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213bbd602',
-         id=-1,
+         id=70,
          lineno=11,
          tokens=36,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Show',
          body='public static void Show(string text, string caption, '
@@ -2289,13 +1957,12 @@ Fragment(document_cs='3ac85280a77cc96cb32fae67d6c188ff6c718ad13f9c6bb8325b76d213
               'StringBuilder(caption), type);')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=71,
          lineno=1,
          tokens=67,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System;\n'
@@ -2315,13 +1982,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '// ReSharper disable VirtualMemberCallInConstructor\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=72,
          lineno=1,
          tokens=498,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Gui/ListDialog.cs\n'
@@ -2373,13 +2039,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               'usedSlotCounts visualStyle w x xmlPath xs y\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=73,
          lineno=16,
          tokens=109,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -2401,13 +2066,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        private readonly in')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=74,
          lineno=19,
          tokens=2601,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='ListDialog',
          body='public class ListDialog : MyGuiScreenDebugBase\n'
@@ -2847,85 +2511,78 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '    }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=75,
          lineno=21,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlTable',
          body='MyGuiControlTable toolbarTable')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=76,
          lineno=22,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton loadButton')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=77,
          lineno=23,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton mergeButton')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=78,
          lineno=24,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton renameButton')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=79,
          lineno=25,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton deleteButton')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=80,
          lineno=26,
          tokens=5,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton cancelButton')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=81,
          lineno=32,
          tokens=136,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='t[] usedSlotCounts = new int[9];\n'
@@ -2950,13 +2607,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            CanH')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=82,
          lineno=34,
          tokens=146,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='ListDialog',
          body='public ListDialog(\n'
@@ -2983,13 +2639,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=83,
          lineno=49,
          tokens=118,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='ideOthers = true;\n'
@@ -3019,13 +2674,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '                Position = ')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=84,
          lineno=55,
          tokens=56,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='RecreateControls',
          body='public override void RecreateControls(bool constructor)\n'
@@ -3040,13 +2694,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=85,
          lineno=67,
          tokens=251,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CreateListBox',
          body='private void CreateListBox()\n'
@@ -3082,13 +2735,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=86,
          lineno=71,
          tokens=85,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='new Vector2(0.001f, -0.5f * DialogSize.Y + 0.1f),\n'
@@ -3101,13 +2753,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '      ')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=87,
          lineno=76,
          tokens=83,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='      };\n'
@@ -3122,13 +2773,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               'CellTextComparison);\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=88,
          lineno=83,
          tokens=110,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            for (var i = 1; i < 10; i++)\n'
@@ -3152,13 +2802,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        {\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=89,
          lineno=91,
          tokens=33,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CellTextComparison',
          body='private int CellTextComparison(MyGuiControlTable.Cell x, '
@@ -3168,13 +2817,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=90,
          lineno=96,
          tokens=47,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='TextComparison',
          body='private int TextComparison(StringBuilder x, StringBuilder y)\n'
@@ -3186,13 +2834,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=91,
          lineno=98,
          tokens=142,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (x == null)\n'
@@ -3219,13 +2866,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '                text: new Strin')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=92,
          lineno=104,
          tokens=509,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CreateButtons',
          body='private void CreateButtons()\n'
@@ -3301,13 +2947,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=93,
          lineno=114,
          tokens=135,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='gBuilder("Merge"), onButtonClick: OnMerge);\n'
@@ -3332,13 +2977,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '                visualStyle: MyGuiC')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=94,
          lineno=127,
          tokens=91,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='ontrolButtonStyleEnum.Small,\n'
@@ -3352,13 +2996,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            loadButton.Position = new Vector2(-0.39')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=95,
          lineno=133,
          tokens=89,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='f * xs, y);\n'
@@ -3375,13 +3018,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               'replacing the c')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=96,
          lineno=139,
-         tokens=117,
+         tokens=137,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='urrent one");\n'
@@ -3405,16 +3047,20 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        {\n'
               '            foreach (var path in '
               'Directory.EnumerateFiles(dirPath))\n'
-              '            {\n')
+              '            {\n'
+              '                if (!path.EndsWith(".xml"))\n'
+              '                    continue;\n'
+              '\n'
+              '                AddRowForFile(path);\n'
+              '            }\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=97,
          lineno=152,
          tokens=66,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='ListFiles',
          body='private void ListFiles()\n'
@@ -3433,29 +3079,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=156,
-         tokens=20,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                if (!path.EndsWith(".xml"))\n'
-              '                    continue;\n'
-              '\n'
-              '                AddRowForFile(path);\n'
-              '            }\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=98,
          lineno=161,
          tokens=97,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -3476,13 +3105,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            row.AddCell(new MyGuiControlTable.Cell(name));\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=99,
          lineno=166,
          tokens=125,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='AddRowForFile',
          body='private void AddRowForFile(string path)\n'
@@ -3504,13 +3132,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=100,
          lineno=176,
          tokens=77,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            for (var i = 0; i < 9; i++)\n'
@@ -3525,43 +3152,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            var jsonPath = XmlToJsonPath(xmlPath);\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=101,
          lineno=181,
          tokens=99,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
-         summary=False,
-         name='ReadJson',
-         body='private static JsonData ReadJson(string xmlPath)\n'
-              '        {\n'
-              '            var jsonPath = XmlToJsonPath(xmlPath);\n'
-              '\n'
-              '            if (!File.Exists(jsonPath))\n'
-              '                return null;\n'
-              '\n'
-              '            try\n'
-              '            {\n'
-              '                var jsonText = File.ReadAllText(jsonPath);\n'
-              '                return JsonMapper.ToObject(jsonText);\n'
-              '            }\n'
-              '            catch (JsonException e)\n'
-              '            {\n'
-              '                MyLog.Default.Warning($"ToolbarManager: Failed '
-              'to load JSON toolbar file \\"{jsonPath}\\" ({e})");\n'
-              '                return null;\n'
-              '            }\n'
-              '        }')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=181,
-         tokens=99,
-         depth=4,
-         parent_id=None,
-         category='method',
-         definition=True,
          summary=False,
          name='JsonData',
          body='private static JsonData ReadJson(string xmlPath)\n'
@@ -3585,13 +3181,41 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=102,
+         lineno=181,
+         tokens=99,
+         depth=4,
+         parent_id=None,
+         category='method',
+         summary=False,
+         name='ReadJson',
+         body='private static JsonData ReadJson(string xmlPath)\n'
+              '        {\n'
+              '            var jsonPath = XmlToJsonPath(xmlPath);\n'
+              '\n'
+              '            if (!File.Exists(jsonPath))\n'
+              '                return null;\n'
+              '\n'
+              '            try\n'
+              '            {\n'
+              '                var jsonText = File.ReadAllText(jsonPath);\n'
+              '                return JsonMapper.ToObject(jsonText);\n'
+              '            }\n'
+              '            catch (JsonException e)\n'
+              '            {\n'
+              '                MyLog.Default.Warning($"ToolbarManager: Failed '
+              'to load JSON toolbar file \\"{jsonPath}\\" ({e})");\n'
+              '                return null;\n'
+              '            }\n'
+              '        }')
+
+Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
+         id=103,
          lineno=184,
          tokens=123,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -3621,13 +3245,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        {\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=104,
          lineno=200,
          tokens=33,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='XmlToJsonPath',
          body='private static string XmlToJsonPath(string xmlPath)\n'
@@ -3637,13 +3260,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=105,
          lineno=205,
          tokens=158,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CountUsedSlots',
          body='private void CountUsedSlots(JsonData json)\n'
@@ -3675,13 +3297,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=106,
          lineno=207,
-         tokens=57,
+         tokens=95,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            for (var i = 0; i < 9; i++)\n'
@@ -3693,43 +3314,20 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '                if (slots == null)\n'
               '                    return;\n'
               '\n'
-              '                var slotCount = slots.Count;\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=217,
-         tokens=27,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                for (var i = 0; i < slotCount; i++)\n'
+              '                var slotCount = slots.Count;\n'
+              '                for (var i = 0; i < slotCount; i++)\n'
               '                {\n'
-              '                    var page = i / 9;\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=220,
-         tokens=11,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                    if (page > 8)\n'
+              '                    var page = i / 9;\n'
+              '                    if (page > 8)\n'
               '                        break;\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=107,
          lineno=222,
          tokens=94,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                    if (!(bool)slots[i]["IsEmpty"])\n'
@@ -3754,13 +3352,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        {\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=108,
          lineno=232,
          tokens=27,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnItemDoubleClicked',
          body='private void OnItemDoubleClicked(MyGuiControlTable table, '
@@ -3770,13 +3367,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=109,
          lineno=237,
          tokens=31,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CallResultCallback',
          body='private void CallResultCallback(string text, bool merge)\n'
@@ -3788,13 +3384,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=110,
          lineno=239,
          tokens=70,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (text == null)\n'
@@ -3818,13 +3413,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        private string Sele')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=111,
          lineno=245,
          tokens=23,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='ReturnLoad',
          body='private void ReturnLoad()\n'
@@ -3834,13 +3428,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=112,
          lineno=251,
          tokens=23,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='ReturnMerge',
          body='private void ReturnMerge()\n'
@@ -3850,13 +3443,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=113,
          lineno=257,
          tokens=86,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='ctedName => '
@@ -3874,51 +3466,47 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            var oldName = SelectedName;\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=114,
          lineno=259,
          tokens=14,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnLoad',
          body='private void OnLoad(MyGuiControlButton button) => ReturnLoad();')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=115,
          lineno=260,
          tokens=14,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnMerge',
          body='private void OnMerge(MyGuiControlButton button) => '
               'ReturnMerge();')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=116,
          lineno=261,
          tokens=14,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnCancel',
          body='private void OnCancel(MyGuiControlButton button) => '
               'CloseScreen();')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=117,
          lineno=263,
          tokens=63,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnRename',
          body='private void OnRename(MyGuiControlButton _)\n'
@@ -3933,13 +3521,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=118,
          lineno=266,
          tokens=86,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (oldName == "")\n'
@@ -3959,13 +3546,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '$"{newName}.xml");\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=119,
          lineno=272,
          tokens=158,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnNewNameSpecified',
          body='private void OnNewNameSpecified(string oldName, string '
@@ -3997,13 +3583,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=120,
          lineno=277,
          tokens=141,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (File.Exists(newPath))\n'
@@ -4033,13 +3618,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        {\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=121,
          lineno=291,
          tokens=242,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnOverwriteForSure',
          body='private void '
@@ -4086,13 +3670,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=122,
          lineno=293,
-         tokens=71,
+         tokens=137,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (result != '
@@ -4105,91 +3688,35 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '$"{newName}.xml");\n'
               '\n'
               '            var oldJsonPath = XmlToJsonPath(oldPath);\n'
-              '            var newJsonPath = XmlToJsonPath(newPath);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=301,
-         tokens=15,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '            var newJsonPath = XmlToJsonPath(newPath);\n'
+              '\n'
               '            if (File.Exists(newPath))\n'
-              '                File.Delete(newPath);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=304,
-         tokens=17,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '                File.Delete(newPath);\n'
+              '\n'
               '            if (File.Exists(newJsonPath))\n'
-              '                File.Delete(newJsonPath);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=307,
-         tokens=17,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '                File.Delete(newJsonPath);\n'
+              '\n'
               '            if (File.Exists(oldPath))\n'
-              '                File.Move(oldPath, newPath);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=310,
-         tokens=21,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '                File.Move(oldPath, newPath);\n'
+              '\n'
               '            if (File.Exists(oldJsonPath))\n'
               '                File.Move(oldJsonPath, newJsonPath);\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=123,
          lineno=313,
-         tokens=30,
+         tokens=102,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
               '            if (TryFindListItem(newName, out var '
               'overwrittenItemIndex))\n'
               '                '
-              'toolbarTable.Remove(toolbarTable.GetRow(overwrittenItemIndex));\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=316,
-         tokens=73,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'toolbarTable.Remove(toolbarTable.GetRow(overwrittenItemIndex));\n'
+              '\n'
               '            if (TryFindListItem(oldName, out var '
               'renamedItemIndex))\n'
               '            {\n'
@@ -4205,13 +3732,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            var name = SelectedName;\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=124,
          lineno=325,
          tokens=100,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnDelete',
          body='private void OnDelete(MyGuiControlButton _)\n'
@@ -4232,13 +3758,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=125,
          lineno=328,
-         tokens=101,
+         tokens=141,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (name == "")\n'
@@ -4258,16 +3783,21 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        private void '
               'OnDeleteForSure(MyGuiScreenMessageBox.ResultEnum result, string '
               'name)\n'
-              '        {\n')
+              '        {\n'
+              '            if (result != '
+              'MyGuiScreenMessageBox.ResultEnum.YES)\n'
+              '                return;\n'
+              '\n'
+              '            var path = Path.Combine(dirPath, $"{name}.xml");\n'
+              '            var jsonPath = XmlToJsonPath(path);\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=126,
          lineno=338,
          tokens=107,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnDeleteForSure',
          body='private void OnDeleteForSure(MyGuiScreenMessageBox.ResultEnum '
@@ -4292,61 +3822,21 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=340,
-         tokens=40,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (result != '
-              'MyGuiScreenMessageBox.ResultEnum.YES)\n'
-              '                return;\n'
-              '\n'
-              '            var path = Path.Combine(dirPath, $"{name}.xml");\n'
-              '            var jsonPath = XmlToJsonPath(path);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=127,
          lineno=345,
-         tokens=13,
+         tokens=73,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
               '            if (File.Exists(path))\n'
-              '                File.Delete(path);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=348,
-         tokens=13,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '                File.Delete(path);\n'
+              '\n'
               '            if (File.Exists(jsonPath))\n'
-              '                File.Delete(jsonPath);\n')
-
-Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
-         lineno=351,
-         tokens=49,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              '                File.Delete(jsonPath);\n'
+              '\n'
               '            if (TryFindListItem(name, out var index))\n'
               '                '
               'toolbarTable.Remove(toolbarTable.GetRow(index));\n'
@@ -4358,13 +3848,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '            var count = toolbarTable.RowsCount;\n')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=128,
          lineno=356,
          tokens=77,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='TryFindListItem',
          body='private bool TryFindListItem(string name, out int index)\n'
@@ -4383,13 +3872,12 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '        }')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=129,
          lineno=359,
          tokens=70,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            for (index = 0; index < count; index++)\n'
@@ -4410,25 +3898,23 @@ Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402
               '}')
 
 Fragment(document_cs='4c18978cb4ca5e16031a68042e38fc63698d0bf547c28fbeb8bcb41402043e94',
-         id=-1,
+         id=130,
          lineno=369,
          tokens=12,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='GetFriendlyName',
          body='public override string GetFriendlyName() => "ListDialog";')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=131,
          lineno=1,
          tokens=51,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System.Collections.Generic;\n'
@@ -4443,13 +3929,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               'using VRage.Input;\n')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=132,
          lineno=1,
          tokens=152,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Patches/MyGuiScreenGamePlayPatch.cs\n'
@@ -4469,13 +3954,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               'VRage World c dialog key myInput name nameof searchText\n')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=133,
          lineno=11,
          tokens=129,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -4501,13 +3985,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '        {\n')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=134,
          lineno=14,
          tokens=454,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='MyGuiScreenGamePlayPatch',
          body='[HarmonyPatch(typeof(MyGuiScreenGamePlay))]\n'
@@ -4589,25 +4072,23 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '    }')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=135,
          lineno=21,
          tokens=7,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='StringBuilder',
          body='StringBuilder MatchingKeys = new StringBuilder()')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=136,
          lineno=24,
          tokens=186,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='HandleUnhandledInputPrefix',
          body='[HarmonyPrefix]\n'
@@ -4644,13 +4125,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '        }')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=137,
          lineno=28,
-         tokens=58,
+         tokens=122,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (MyGuiScreenGamePlay.ActiveGameplayScreen != '
@@ -4658,34 +4138,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '                return true;\n'
               '\n'
               '            /* Disabled due to Issue #12: Conflicting keys '
-              'Ctrl+Shift+C, Ctrl+Shift+X and Ctrl+Shift+B\n')
-
-Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
-         lineno=32,
-         tokens=23,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (myInput.IsAnyShiftKeyPressed() && '
+              'Ctrl+Shift+C, Ctrl+Shift+X and Ctrl+Shift+B\n'
+              '            if (myInput.IsAnyShiftKeyPressed() && '
               'myInput.IsAnyCtrlKeyPressed())\n'
               '            {\n'
-              '                GetPressedKeys();\n')
-
-Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
-         lineno=35,
-         tokens=41,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                if (MatchingKeys.Length != 0)\n'
+              '                GetPressedKeys();\n'
+              '                if (MatchingKeys.Length != 0)\n'
               '                {\n'
               '                    OpenCubeBuilder(MatchingKeys.ToString());\n'
               '                    return false;\n'
@@ -4696,13 +4154,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '            var myInput = MyInput.Static;\n')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=138,
          lineno=44,
          tokens=45,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (myInput.IsNewKeyPressed(MyKeys.OemPipe))\n'
@@ -4718,13 +4175,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '        {\n')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=139,
          lineno=53,
          tokens=76,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OpenCubeBuilder',
          body='private static void OpenCubeBuilder(string searchText)\n'
@@ -4741,13 +4197,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '        }')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=140,
          lineno=55,
-         tokens=121,
+         tokens=141,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if '
@@ -4769,16 +4224,19 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '            myInput.GetPressedKeys(PressedKeys);\n'
               '            foreach (var key in PressedKeys)\n'
               '            {\n'
-              '                var name = myInput.GetKeyName(key);\n')
+              '                var name = myInput.GetKeyName(key);\n'
+              '                if (name.Length != 1)\n'
+              '                    continue;\n'
+              '\n'
+              '                var c = name[0];\n')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=141,
          lineno=64,
          tokens=99,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='GetPressedKeys',
          body='private static void GetPressedKeys()\n'
@@ -4800,28 +4258,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '        }')
 
 Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
-         lineno=73,
-         tokens=20,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                if (name.Length != 1)\n'
-              '                    continue;\n'
-              '\n'
-              '                var c = name[0];\n')
-
-Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa298a984',
-         id=-1,
+         id=142,
          lineno=77,
          tokens=27,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body="                if (c >= 'A' && c <= 'Z')\n"
@@ -4832,13 +4274,12 @@ Fragment(document_cs='597e9cc6f3ac19b8c9f10945998533e8640c51b524f64ff772aceb1fa2
               '}')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=143,
          lineno=1,
-         tokens=51,
+         tokens=124,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System;\n'
@@ -4851,16 +4292,28 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               'using VRageMath;\n'
               '\n'
               '// ReSharper disable VirtualMemberCallInConstructor\n'
-              '#pragma warning disable 618\n')
+              '#pragma warning disable 618\n'
+              '\n'
+              'namespace ToolbarManager.Gui\n'
+              '{\n'
+              '    public class NameDialog : MyGuiScreenDebugBase\n'
+              '    {\n'
+              '        private MyGuiControlTextbox nameBox;\n'
+              '        private MyGuiControlButton okButton;\n'
+              '        private MyGuiControlButton cancelButton;\n'
+              '\n'
+              '        private readonly Action<string> callBack;\n'
+              '        private readonly string caption;\n'
+              '        private readonly string defaultName;\n'
+              '        private readonl')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=144,
          lineno=1,
          tokens=235,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Gui/NameDialog.cs\n'
@@ -4887,37 +4340,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               'onButtonClick originAlign text\n')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
-         lineno=12,
-         tokens=74,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              'namespace ToolbarManager.Gui\n'
-              '{\n'
-              '    public class NameDialog : MyGuiScreenDebugBase\n'
-              '    {\n'
-              '        private MyGuiControlTextbox nameBox;\n'
-              '        private MyGuiControlButton okButton;\n'
-              '        private MyGuiControlButton cancelButton;\n'
-              '\n'
-              '        private readonly Action<string> callBack;\n'
-              '        private readonly string caption;\n'
-              '        private readonly string defaultName;\n'
-              '        private readonl')
-
-Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=145,
          lineno=15,
          tokens=790,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='NameDialog',
          body='public class NameDialog : MyGuiScreenDebugBase\n'
@@ -5037,49 +4465,45 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '    }')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=146,
          lineno=17,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlTextbox',
          body='MyGuiControlTextbox nameBox')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=147,
          lineno=18,
          tokens=6,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton okButton')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=148,
          lineno=19,
          tokens=5,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyGuiControlButton',
          body='MyGuiControlButton cancelButton')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=149,
          lineno=24,
          tokens=95,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='y int maxLength;\n'
@@ -5097,13 +4521,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '            thi')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=150,
          lineno=26,
          tokens=146,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='NameDialog',
          body='public NameDialog(\n'
@@ -5130,13 +4553,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '        }')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=151,
          lineno=34,
          tokens=75,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='s.caption = caption;\n'
@@ -5157,13 +4579,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '        public override ')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=152,
          lineno=49,
          tokens=100,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='void RecreateControls(bool constructor)\n'
@@ -5180,13 +4601,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               'DialogSize.X * 0')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=153,
          lineno=49,
          tokens=453,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='RecreateControls',
          body='public override void RecreateControls(bool constructor)\n'
@@ -5243,13 +4663,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '        }')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=154,
          lineno=56,
          tokens=102,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='.78f);\n'
@@ -5266,13 +4685,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '-0.027')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=155,
          lineno=63,
          tokens=89,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='f), maxLength: maxLength)\n'
@@ -5289,13 +4707,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '       ')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=156,
          lineno=72,
          tokens=105,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='     cancelButton = new MyGuiControlButton(originAlign: '
@@ -5310,13 +4727,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '          ')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=157,
          lineno=78,
-         tokens=68,
+         tokens=92,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='  cancelButton.Position = okPosition + halfDistance;\n'
@@ -5331,16 +4747,23 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '        }\n'
               '\n'
               '        private void CallResultCallback(string text)\n'
+              '        {\n'
+              '            if (text == null)\n'
+              '                return;\n'
+              '\n'
+              '            callBack(text);\n'
+              '        }\n'
+              '\n'
+              '        private void ReturnOk()\n'
               '        {\n')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=158,
          lineno=87,
          tokens=26,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CallResultCallback',
          body='private void CallResultCallback(string text)\n'
@@ -5352,32 +4775,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '        }')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
-         lineno=89,
-         tokens=24,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (text == null)\n'
-              '                return;\n'
-              '\n'
-              '            callBack(text);\n'
-              '        }\n'
-              '\n'
-              '        private void ReturnOk()\n'
-              '        {\n')
-
-Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=159,
          lineno=95,
          tokens=36,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='ReturnOk',
          body='private void ReturnOk()\n'
@@ -5390,13 +4793,12 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '        }')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=160,
          lineno=97,
          tokens=75,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (nameBox.GetTextLength() <= 0)\n'
@@ -5417,277 +4819,109 @@ Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43
               '}')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=161,
          lineno=104,
          tokens=14,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnOk',
          body='private void OnOk(MyGuiControlButton button) => ReturnOk();')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=162,
          lineno=105,
          tokens=14,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnCancel',
          body='private void OnCancel(MyGuiControlButton button) => '
               'CloseScreen();')
 
 Fragment(document_cs='5bf5ce482ae97e8b154fd7ecd0429df820f3d3398cdb64d6ec2bee2e43174126',
-         id=-1,
+         id=163,
          lineno=107,
          tokens=12,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='GetFriendlyName',
          body='public override string GetFriendlyName() => "NameDialog";')
 
 Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
+         id=164,
          lineno=1,
-         tokens=1,
-         depth=2,
+         tokens=135,
+         depth=0,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\ufeff')
+         body='\ufeff\n'
+              'Microsoft Visual Studio Solution File, Format Version 12.00\n'
+              'Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = '
+              '"ToolbarManager", "ToolbarManager\\ToolbarManager.csproj", '
+              '"{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}"\n'
+              'EndProject\n'
+              'Global\n'
+              '\tGlobalSection(SolutionConfigurationPlatforms) = preSolution\n'
+              '\t\tDebug|Any CPU = Debug|Any CPU\n'
+              '\t\tRelease|Any CPU = Release|Any CPU\n'
+              '\tEndGlobalSection\n'
+              '\tGlobalSection(ProjectConfigurationPlatforms) = postSolution\n')
 
 Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=1,
-         tokens=13,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\nMicrosoft Visual Studio Solution File, Format Version 12.00')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
+         id=165,
          lineno=1,
          tokens=8,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='File: /ToolbarManager.sln\n')
 
 Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=2,
-         tokens=69,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              'Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = '
-              '"ToolbarManager", "ToolbarManager\\ToolbarManager.csproj", '
-              '"{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}"')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=3,
-         tokens=3,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\nEndProject')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=4,
-         tokens=2,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\nGlobal')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=5,
-         tokens=11,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n\tGlobalSection(SolutionConfigurationPlatforms) = preSolution')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=6,
-         tokens=11,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n\t\tDebug|Any CPU = Debug|Any CPU')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=7,
-         tokens=12,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n\t\tRelease|Any CPU = Release|Any CPU')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=8,
-         tokens=4,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n\tEndGlobalSection')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=9,
-         tokens=10,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n\tGlobalSection(ProjectConfigurationPlatforms) = postSolution')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=10,
-         tokens=41,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Debug|Any '
-              'CPU.ActiveCfg = Debug|Any CPU')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
+         id=166,
          lineno=11,
-         tokens=42,
-         depth=2,
+         tokens=124,
+         depth=3,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\n'
+         body='\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Debug|Any '
+              'CPU.ActiveCfg = Debug|Any CPU\n'
               '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Debug|Any '
-              'CPU.Build.0 = Debug|Any CPU')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=12,
-         tokens=41,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'CPU.Build.0 = Debug|Any CPU\n'
               '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Release|Any '
-              'CPU.ActiveCfg = Release|Any CPU')
+              'CPU.ActiveCfg = Release|Any CPU\n')
 
 Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=13,
-         tokens=42,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Release|Any '
-              'CPU.Build.0 = Release|Any CPU')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
+         id=167,
          lineno=14,
-         tokens=4,
-         depth=2,
+         tokens=49,
+         depth=3,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\n\tEndGlobalSection')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=15,
-         tokens=3,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\nEndGlobal')
-
-Fragment(document_cs='644588ef3fda4e1edfac1ad01235b686219c9db6142067de4471ec3df08b1505',
-         id=-1,
-         lineno=16,
-         tokens=1,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n')
+         body='\t\t{E79C2AFE-FC1F-4A5A-AB40-0AFED1E30570}.Release|Any '
+              'CPU.Build.0 = Release|Any CPU\n'
+              '\tEndGlobalSection\n'
+              'EndGlobal\n')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=168,
          lineno=1,
          tokens=138,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\ufeffusing System.Reflection;\n'
@@ -5727,13 +4961,12 @@ Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195
               '}')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=169,
          lineno=1,
          tokens=64,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Plugin.cs\n'
@@ -5746,13 +4979,12 @@ Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195
               'ToolbarManager VRage gameInstance harmony initialized storage\n')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=170,
          lineno=6,
          tokens=119,
          depth=0,
          parent_id=None,
          category='namespace',
-         definition=True,
          summary=False,
          name='ToolbarManager',
          body='namespace ToolbarManager\n'
@@ -5787,13 +5019,12 @@ Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195
               '}')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=171,
          lineno=10,
          tokens=93,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='Plugin',
          body='public class Plugin : IPlugin\n'
@@ -5823,37 +5054,34 @@ Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195
               '    }')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=172,
          lineno=13,
          tokens=2,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='Storage',
          body='Storage storage')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=173,
          lineno=15,
          tokens=8,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Dispose',
          body='public void Dispose()\n        {\n        }')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=174,
          lineno=19,
          tokens=32,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Init',
          body='public void Init(object gameInstance)\n'
@@ -5863,13 +5091,12 @@ Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195
               '        }')
 
 Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195a63d7d',
-         id=-1,
+         id=175,
          lineno=25,
          tokens=27,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Update',
          body='public void Update()\n'
@@ -5883,13 +5110,12 @@ Fragment(document_cs='857a761cfd03bb91723e35b9c9817791cb67019d4ce6c8f9e70f99f195
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=176,
          lineno=1,
          tokens=55,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System;\n'
@@ -5905,13 +5131,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               'using VRage.Utils;\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=177,
          lineno=1,
          tokens=206,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Logic/Storage.cs\n'
@@ -5937,13 +5162,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               'result sanitizedName toolbar\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=178,
          lineno=12,
          tokens=131,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -5971,13 +5195,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '   ')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=179,
          lineno=15,
          tokens=793,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='Storage',
          body='public class Storage\n'
@@ -6139,13 +5362,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '    }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=180,
          lineno=22,
          tokens=56,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Storage',
          body='public Storage()\n'
@@ -6160,13 +5382,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=181,
          lineno=28,
          tokens=114,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='     }\n'
@@ -6195,13 +5416,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               'MyToolbarComponent.CurrentToolbar;\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=182,
          lineno=30,
          tokens=51,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='FormatPath',
          body='private static string FormatPath(MyToolbar currentToolbar, '
@@ -6214,13 +5434,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=183,
          lineno=37,
          tokens=39,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='FormatDir',
          body='private static string FormatDir(MyToolbar currentToolbar)\n'
@@ -6232,13 +5451,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=184,
          lineno=44,
          tokens=73,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnSaveToolbar',
          body='private void OnSaveToolbar()\n'
@@ -6258,13 +5476,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=185,
          lineno=47,
-         tokens=77,
+         tokens=99,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (currentToolbar == null)\n'
@@ -6282,16 +5499,19 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        private void OnNameSpecified(string name)\n'
               '        {\n'
               '            var currentToolbar = '
-              'MyToolbarComponent.CurrentToolbar;\n')
+              'MyToolbarComponent.CurrentToolbar;\n'
+              '            if (currentToolbar == null)\n'
+              '                return;\n'
+              '\n'
+              '            var path = FormatPath(currentToolbar, name);\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=186,
          lineno=55,
          tokens=151,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnNameSpecified',
          body='private void OnNameSpecified(string name)\n'
@@ -6324,28 +5544,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
-         lineno=58,
-         tokens=22,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (currentToolbar == null)\n'
-              '                return;\n'
-              '\n'
-              '            var path = FormatPath(currentToolbar, name);\n')
-
-Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=187,
          lineno=62,
          tokens=129,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -6375,13 +5579,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        {\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=188,
          lineno=77,
          tokens=175,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnOverwriteForSure',
          body='private void '
@@ -6420,13 +5623,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=189,
          lineno=79,
          tokens=27,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (result != '
@@ -6437,13 +5639,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               'MyToolbarComponent.CurrentToolbar;\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=190,
          lineno=83,
          tokens=148,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (currentToolbar == null)\n'
@@ -6477,13 +5678,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               'MyToolbarComponent.CurrentToolbar;\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=191,
          lineno=103,
          tokens=76,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnLoadToolbar',
          body='private void OnLoadToolbar()\n'
@@ -6503,13 +5703,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=192,
          lineno=106,
-         tokens=81,
+         tokens=131,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (currentToolbar == null)\n'
@@ -6527,16 +5726,26 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        private void OnItemSelected(string name, bool merge)\n'
               '        {\n'
               '            var currentToolbar = '
-              'MyToolbarComponent.CurrentToolbar;\n')
+              'MyToolbarComponent.CurrentToolbar;\n'
+              '            if (currentToolbar == null)\n'
+              '                return;\n'
+              '\n'
+              '            latestNames[currentToolbar.ToolbarType.ToString()] '
+              '= name;\n'
+              '\n'
+              '            var path = FormatPath(currentToolbar, name);\n'
+              '\n'
+              '            var toolbar = Toolbar.Read(path);\n'
+              '\n'
+              '            toolbar.Associate(currentToolbar);\n')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=193,
          lineno=114,
          tokens=95,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='OnItemSelected',
          body='private void OnItemSelected(string name, bool merge)\n'
@@ -6562,35 +5771,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '        }')
 
 Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
-         lineno=117,
-         tokens=50,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (currentToolbar == null)\n'
-              '                return;\n'
-              '\n'
-              '            latestNames[currentToolbar.ToolbarType.ToString()] '
-              '= name;\n'
-              '\n'
-              '            var path = FormatPath(currentToolbar, name);\n'
-              '\n'
-              '            var toolbar = Toolbar.Read(path);\n'
-              '\n'
-              '            toolbar.Associate(currentToolbar);\n')
-
-Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e181fa5',
-         id=-1,
+         id=194,
          lineno=127,
          tokens=26,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -6603,13 +5789,12 @@ Fragment(document_cs='8dadd89c96cc476b12e6360fdda3edc843a5cf08c9c8402199b1fdff4e
               '}')
 
 Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7f67dde',
-         id=-1,
+         id=195,
          lineno=1,
          tokens=70,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='namespace ToolbarManager.Extensions\n'
@@ -6630,13 +5815,12 @@ Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7
               '}')
 
 Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7f67dde',
-         id=-1,
+         id=196,
          lineno=1,
          tokens=37,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Extensions/PathExt.cs\n'
@@ -6645,13 +5829,12 @@ Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7
               '  Usages: Extensions Replace ToolbarManager Trim name\n')
 
 Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7f67dde',
-         id=-1,
+         id=197,
          lineno=3,
          tokens=62,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='PathExt',
          body='public static class PathExt\n'
@@ -6669,13 +5852,12 @@ Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7
               '    }')
 
 Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7f67dde',
-         id=-1,
+         id=198,
          lineno=5,
          tokens=51,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='SanitizeFileName',
          body='public static string SanitizeFileName(string name)\n'
@@ -6690,13 +5872,12 @@ Fragment(document_cs='8faa0bd163ec3d4ab664ac961750de89fe8dae561b55fc166575ee62b7
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=199,
          lineno=1,
-         tokens=72,
+         tokens=133,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System;\n'
@@ -6712,16 +5893,29 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               'using Sandbox.Game.Screens.Helpers;\n'
               'using VRage.Game;\n'
               'using VRage.Game.Entity;\n'
-              'using VRage.ObjectBuilders;\n')
+              'using VRage.ObjectBuilders;\n'
+              '\n'
+              'namespace ToolbarManager.Logic\n'
+              '{\n'
+              '    public class Toolbar\n'
+              '    {\n'
+              '        private readonly MyToolbarType type;\n'
+              '        private readonly List<Slot> slots = new List<Slot>();\n'
+              '\n'
+              '        public Toolbar(MyToolbar toolbar)\n'
+              '        {\n'
+              '            if (toolbar == null)\n'
+              '                return;\n'
+              '\n'
+              '            type = toolbar.ToolbarType;\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=200,
          lineno=1,
          tokens=281,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: /ToolbarManager/Logic/Toolbar.cs\n'
@@ -6755,38 +5949,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               'terminalBlock toolbar toolbarBuilder type utf8 writer\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=15,
-         tokens=62,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              'namespace ToolbarManager.Logic\n'
-              '{\n'
-              '    public class Toolbar\n'
-              '    {\n'
-              '        private readonly MyToolbarType type;\n'
-              '        private readonly List<Slot> slots = new List<Slot>();\n'
-              '\n'
-              '        public Toolbar(MyToolbar toolbar)\n'
-              '        {\n'
-              '            if (toolbar == null)\n'
-              '                return;\n'
-              '\n'
-              '            type = toolbar.ToolbarType;\n')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=201,
          lineno=18,
          tokens=1357,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='Toolbar',
          body='public class Toolbar\n'
@@ -7065,25 +6233,23 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '    }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=202,
          lineno=20,
          tokens=4,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MyToolbarType',
          body='MyToolbarType type')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=203,
          lineno=23,
          tokens=56,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Toolbar',
          body='public Toolbar(MyToolbar toolbar)\n'
@@ -7100,13 +6266,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=204,
          lineno=29,
-         tokens=64,
+         tokens=127,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -7122,16 +6287,31 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '            if (toolbarBuilder == null)\n'
               '                return;\n'
               '\n'
-              '            type = toolbarBuilder.ToolbarType;\n')
+              '            type = toolbarBuilder.ToolbarType;\n'
+              '\n'
+              '            for (var index = 0; index < '
+              'toolbarBuilder.Slots.Count; index++)\n'
+              '            {\n'
+              '                slots.Add(new Slot(index, '
+              'toolbarBuilder.Slots[index].Data));\n'
+              '            }\n'
+              '        }\n'
+              '\n'
+              '        public void Clear()\n'
+              '        {\n'
+              '            slots.Clear();\n'
+              '        }\n'
+              '\n'
+              '        public static Toolbar Read(string path)\n'
+              '        {\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=205,
          lineno=34,
          tokens=71,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Toolbar',
          body='private Toolbar(MyObjectBuilder_Toolbar toolbarBuilder)\n'
@@ -7150,40 +6330,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=40,
-         tokens=64,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '            for (var index = 0; index < '
-              'toolbarBuilder.Slots.Count; index++)\n'
-              '            {\n'
-              '                slots.Add(new Slot(index, '
-              'toolbarBuilder.Slots[index].Data));\n'
-              '            }\n'
-              '        }\n'
-              '\n'
-              '        public void Clear()\n'
-              '        {\n'
-              '            slots.Clear();\n'
-              '        }\n'
-              '\n'
-              '        public static Toolbar Read(string path)\n'
-              '        {\n')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=206,
          lineno=47,
          tokens=12,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Clear',
          body='public void Clear()\n'
@@ -7192,13 +6344,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=207,
          lineno=52,
          tokens=26,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Toolbar',
          body='public static Toolbar Read(string path)\n'
@@ -7208,13 +6359,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=208,
          lineno=52,
          tokens=26,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Read',
          body='public static Toolbar Read(string path)\n'
@@ -7224,13 +6374,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=209,
          lineno=54,
          tokens=68,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            using (var stream = new StreamReader(path))\n'
@@ -7249,31 +6398,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        {\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=210,
          lineno=58,
          tokens=41,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
-         summary=False,
-         name='Toolbar',
-         body='private static Toolbar Read(StreamReader stream)\n'
-              '        {\n'
-              '            '
-              'MyObjectBuilderSerializer.DeserializeXML<MyObjectBuilder_Toolbar>(stream.BaseStream, '
-              'out var toolbarBuilder);\n'
-              '            return new Toolbar(toolbarBuilder);\n'
-              '        }')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=58,
-         tokens=41,
-         depth=4,
-         parent_id=None,
-         category='method',
-         definition=True,
          summary=False,
          name='Read',
          body='private static Toolbar Read(StreamReader stream)\n'
@@ -7285,13 +6415,29 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=211,
+         lineno=58,
+         tokens=41,
+         depth=4,
+         parent_id=None,
+         category='method',
+         summary=False,
+         name='Toolbar',
+         body='private static Toolbar Read(StreamReader stream)\n'
+              '        {\n'
+              '            '
+              'MyObjectBuilderSerializer.DeserializeXML<MyObjectBuilder_Toolbar>(stream.BaseStream, '
+              'out var toolbarBuilder);\n'
+              '            return new Toolbar(toolbarBuilder);\n'
+              '        }')
+
+Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
+         id=212,
          lineno=64,
          tokens=24,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Write',
          body='public void Write(string path)\n'
@@ -7301,13 +6447,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=213,
          lineno=66,
          tokens=114,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            using (var stream = new StreamWriter(path))\n'
@@ -7340,13 +6485,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        {\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=214,
          lineno=70,
          tokens=87,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Write',
          body='private void Write(StreamWriter stream)\n'
@@ -7372,13 +6516,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=215,
          lineno=89,
          tokens=26,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='WriteJson',
          body='public void WriteJson(string path)\n'
@@ -7388,13 +6531,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=216,
          lineno=91,
          tokens=125,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            using (var stream = new StreamWriter(path))\n'
@@ -7419,13 +6561,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '                s["IsEmpty"] = slot.IsEmpty;\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=217,
          lineno=95,
          tokens=325,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='WriteJson',
          body='private void WriteJson(StreamWriter stream)\n'
@@ -7496,13 +6637,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=218,
          lineno=111,
          tokens=118,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -7532,13 +6672,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=219,
          lineno=131,
          tokens=125,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                            if '
@@ -7573,13 +6712,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               'toolbar.ItemCount);\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=220,
          lineno=154,
          tokens=47,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Set',
          body='public void Set(MyToolbar toolbar)\n'
@@ -7591,13 +6729,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=221,
          lineno=157,
-         tokens=48,
+         tokens=148,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            for (var index = 0; index < count; index++)\n'
@@ -7607,16 +6744,32 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        public void Merge(MyToolbar toolbar)\n'
               '        {\n'
               '            var count = Math.Min(slots.Count, '
-              'toolbar.ItemCount);\n')
+              'toolbar.ItemCount);\n'
+              '            for (var index = 0; index < count; index++)\n'
+              '                slots[index].Merge(toolbar);\n'
+              '        }\n'
+              '\n'
+              '        public void Dissociate(MyToolbar currentToolbar)\n'
+              '        {\n'
+              '            if (!(currentToolbar.Owner is MyTerminalBlock))\n'
+              '                return;\n'
+              '\n'
+              '            var utf8 = Encoding.UTF8;\n'
+              '            var sha1 = SHA1.Create();\n'
+              '            foreach (var slot in slots)\n'
+              '            {\n'
+              '                switch (slot.Builder)\n'
+              '                {\n'
+              '                    case '
+              'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=222,
          lineno=161,
          tokens=47,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Merge',
          body='public void Merge(MyToolbar toolbar)\n'
@@ -7628,30 +6781,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=164,
-         tokens=37,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            for (var index = 0; index < count; index++)\n'
-              '                slots[index].Merge(toolbar);\n'
-              '        }\n'
-              '\n'
-              '        public void Dissociate(MyToolbar currentToolbar)\n'
-              '        {\n')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=223,
          lineno=168,
          tokens=148,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Dissociate',
          body='public void Dissociate(MyToolbar currentToolbar)\n'
@@ -7683,35 +6818,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=170,
-         tokens=63,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (!(currentToolbar.Owner is MyTerminalBlock))\n'
-              '                return;\n'
-              '\n'
-              '            var utf8 = Encoding.UTF8;\n'
-              '            var sha1 = SHA1.Create();\n'
-              '            foreach (var slot in slots)\n'
-              '            {\n'
-              '                switch (slot.Builder)\n'
-              '                {\n'
-              '                    case '
-              'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=224,
          lineno=180,
-         tokens=84,
+         tokens=121,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                        if '
@@ -7730,16 +6842,21 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }\n'
               '\n'
               '        public void Associate(MyToolbar currentToolbar)\n'
-              '        {\n')
+              '        {\n'
+              '            if (!(currentToolbar.Owner is MyTerminalBlock '
+              'terminalBlock))\n'
+              '                return;\n'
+              '\n'
+              '            var physicalGroup = '
+              'MyCubeGridGroups.Static.Physical.GetGroup(terminalBlock.CubeGrid);\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=225,
          lineno=191,
          tokens=335,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='Associate',
          body='public void Associate(MyToolbar currentToolbar)\n'
@@ -7807,30 +6924,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=193,
-         tokens=37,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='            if (!(currentToolbar.Owner is MyTerminalBlock '
-              'terminalBlock))\n'
-              '                return;\n'
-              '\n'
-              '            var physicalGroup = '
-              'MyCubeGridGroups.Static.Physical.GetGroup(terminalBlock.CubeGrid);\n')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=226,
          lineno=197,
          tokens=55,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='            if (physicalGroup == null)\n'
@@ -7846,13 +6945,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder:\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=227,
          lineno=206,
          tokens=125,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                        if '
@@ -7879,32 +6977,20 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               'CalculateDisplayNameTextChecksum(utf8, sha1, block);\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=228,
          lineno=222,
-         tokens=29,
+         tokens=75,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                    if (blockSlots.TryGetValue(checksum, out '
               'var blockSlotList))\n'
               '                    {\n'
               '                        foreach (var slot in blockSlotList)\n'
-              '                        {\n')
-
-Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
-         lineno=226,
-         tokens=46,
-         depth=0,
-         parent_id=None,
-         category='module',
-         definition=True,
-         summary=False,
-         name='',
-         body='                            if (slot.Builder is '
+              '                        {\n'
+              '                            if (slot.Builder is '
               'MyObjectBuilder_ToolbarItemTerminalBlock blockBuilder)\n'
               '                                blockBuilder.BlockEntityId = '
               'block.EntityId;\n'
@@ -7917,13 +7003,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '            {\n')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=229,
          lineno=235,
          tokens=105,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='                if (slot.Builder is '
@@ -7948,13 +7033,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '}')
 
 Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee9166a10da',
-         id=-1,
+         id=230,
          lineno=240,
          tokens=68,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='CalculateDisplayNameTextChecksum',
          body='[MethodImpl(MethodImplOptions.AggressiveInlining)]\n'
@@ -7970,13 +7054,12 @@ Fragment(document_cs='94bfd66a4b0d1ca3caa49f76d1347c3810b8dce718dd78033baf9ee916
               '        }')
 
 Fragment(document_cs='9e1554ffe12bc7517d277fbb77e889a175d5a083c3f8b237ae0649b7165c7c7a',
-         id=-1,
+         id=231,
          lineno=1,
          tokens=22,
          depth=0,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
          body='.idea\n'
@@ -7987,233 +7070,88 @@ Fragment(document_cs='9e1554ffe12bc7517d277fbb77e889a175d5a083c3f8b237ae0649b716
               '**/obj')
 
 Fragment(document_cs='9e1554ffe12bc7517d277fbb77e889a175d5a083c3f8b237ae0649b7165c7c7a',
-         id=-1,
+         id=232,
          lineno=1,
          tokens=6,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='File: /.gitignore\n')
 
 Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
+         id=233,
          lineno=1,
-         tokens=9,
-         depth=2,
+         tokens=117,
+         depth=0,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='<component name="ProjectRunConfigurationManager">')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=1,
-         tokens=26,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+         body='<component name="ProjectRunConfigurationManager">\n'
               '  <configuration default="false" name="Space Engineers" '
-              'type="RunExe" factoryName=".NET Executable">')
+              'type="RunExe" factoryName=".NET Executable">\n'
+              '    <option name="EXE_PATH" value="$PROJECT_DIR$/../../Program '
+              'Files '
+              '(x86)/Steam/steamapps/common/SpaceEngineers/Bin64/SpaceEngineers.exe" '
+              '/>\n'
+              '    <option name="PROGRAM_PARAMETERS" value="-skipintro -plugin '
+              '&quot;C:\\Users\\fviktor\\AppData\\Roaming\\SpaceEngineers\\Mods\\Plugin '
+              'Loader\\RunPluginLoader&quot;" />\n')
 
 Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
+         id=234,
          lineno=1,
          tokens=10,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='File: /.run/Space Engineers.run.xml\n')
 
 Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=2,
-         tokens=41,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '    <option name="EXE_PATH" value="$PROJECT_DIR$/../../Program '
-              'Files '
-              '(x86)/Steam/steamapps/common/SpaceEngineers/Bin64/SpaceEngineers.exe" '
-              '/>')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=3,
-         tokens=44,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '    <option name="PROGRAM_PARAMETERS" value="-skipintro -plugin '
-              '&quot;C:\\Users\\fviktor\\AppData\\Roaming\\SpaceEngineers\\Mods\\Plugin '
-              'Loader\\RunPluginLoader&quot;" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=4,
-         tokens=36,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '    <option name="WORKING_DIRECTORY" '
-              'value="$PROJECT_DIR$/../../Program Files '
-              '(x86)/Steam/steamapps/common/SpaceEngineers/Bin64" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
+         id=235,
          lineno=5,
-         tokens=16,
-         depth=2,
+         tokens=147,
+         depth=3,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\n    <option name="PASS_PARENT_ENVS" value="1" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=6,
-         tokens=15,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n    <option name="USE_EXTERNAL_CONSOLE" value="0" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=7,
-         tokens=15,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n    <option name="USE_MONO" value="0" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=8,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n    <option name="RUNTIME_ARGUMENTS" value="" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=9,
-         tokens=16,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n    <option name="RUNTIME_TYPE" value="netfw" />')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=10,
-         tokens=8,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n    <method v="2">')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=11,
-         tokens=35,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+         body='    <option name="WORKING_DIRECTORY" '
+              'value="$PROJECT_DIR$/../../Program Files '
+              '(x86)/Steam/steamapps/common/SpaceEngineers/Bin64" />\n'
+              '    <option name="PASS_PARENT_ENVS" value="1" />\n'
+              '    <option name="USE_EXTERNAL_CONSOLE" value="0" />\n'
+              '    <option name="USE_MONO" value="0" />\n'
+              '    <option name="RUNTIME_ARGUMENTS" value="" />\n'
+              '    <option name="RUNTIME_TYPE" value="netfw" />\n'
+              '    <method v="2">\n'
               '      <option name="Build" default="false" '
               'projectName="ToolbarManager" '
               'projectPath="file://$PROJECT_DIR$/ToolbarManager/ToolbarManager.csproj" '
-              '/>')
+              '/>\n')
 
 Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=12,
-         tokens=5,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n    </method>')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
+         id=236,
          lineno=13,
-         tokens=5,
-         depth=2,
+         tokens=11,
+         depth=3,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\n  </configuration>')
-
-Fragment(document_cs='be34887b8ab241d73be16523cd3af5a805580a90cd9216fe845fba0eb4468571',
-         id=-1,
-         lineno=14,
-         tokens=4,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n</component>')
+         body='    </method>\n  </configuration>\n</component>')
 
 Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e34701ad94f',
-         id=-1,
+         id=237,
          lineno=1,
          tokens=120,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System.Reflection;\n'
@@ -8238,13 +7176,12 @@ Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e3470
               '}')
 
 Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e34701ad94f',
-         id=-1,
+         id=238,
          lineno=1,
          tokens=88,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: '
@@ -8259,13 +7196,12 @@ Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e3470
               'toolbarItemBuilder\n')
 
 Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e34701ad94f',
-         id=-1,
+         id=239,
          lineno=8,
          tokens=93,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='MyGuiScreenToolbarConfigBaseExt',
          body='public static class MyGuiScreenToolbarConfigBaseExt\n'
@@ -8282,13 +7218,12 @@ Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e3470
               '    }')
 
 Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e34701ad94f',
-         id=-1,
+         id=240,
          lineno=10,
          tokens=28,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='MethodInfo',
          body='MethodInfo AddGridItemToToolbarMethodInfo = '
@@ -8296,13 +7231,12 @@ Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e3470
               '"AddGridItemToToolbar")')
 
 Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e34701ad94f',
-         id=-1,
+         id=241,
          lineno=11,
          tokens=45,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='AddGridItemToToolbar',
          body='public static void AddGridItemToToolbar(this '
@@ -8312,191 +7246,62 @@ Fragment(document_cs='c2336dddeefb94b4987ffd2321bc06eae24c27bb2c06a159d46b6e3470
               'toolbarItemBuilder });')
 
 Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
+         id=242,
          lineno=1,
-         tokens=8,
-         depth=1,
+         tokens=131,
+         depth=0,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='# These are supported funding model platforms\n')
+         body='# These are supported funding model platforms\n'
+              '\n'
+              'github: viktor-ferenczi\n'
+              'patreon: semods\n'
+              '#open_collective: # Replace with a single Open Collective '
+              'username\n'
+              '#ko_fi: # Replace with a single Ko-fi username\n'
+              '#tidelift: # Replace with a single Tidelift '
+              'platform-name/package-name e.g., npm/babel\n'
+              '#community_bridge: # Replace with a single Community Bridge '
+              'project-name e.g., cloud-foundry\n'
+              '#liberapay: # Replace with a single Liberapay username\n'
+              '#issuehunt: # Replace with a single IssueHunt username\n'
+              '#otechie: ')
 
 Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
+         id=243,
          lineno=1,
          tokens=9,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='File: /.github/FUNDING.yml\n')
 
 Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=2,
-         tokens=10,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\ngithub: viktor-ferenczi')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=3,
-         tokens=6,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\npatreon: semods')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=4,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '#open_collective: # Replace with a single Open Collective '
-              'username')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=5,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n#ko_fi: # Replace with a single Ko-fi username')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=6,
-         tokens=24,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '#tidelift: # Replace with a single Tidelift '
-              'platform-name/package-name e.g., npm/babel')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=7,
-         tokens=20,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
-              '#community_bridge: # Replace with a single Community Bridge '
-              'project-name e.g., cloud-foundry')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=8,
-         tokens=16,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n#liberapay: # Replace with a single Liberapay username')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=9,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n#issuehunt: # Replace with a single IssueHunt username')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=10,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n#otechie: # Replace with a single Otechie username')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
+         id=244,
          lineno=11,
-         tokens=25,
+         tokens=59,
          depth=2,
          parent_id=None,
          category='documentation',
-         definition=True,
          summary=False,
          name='',
-         body='\n'
+         body='# Replace with a single Otechie username\n'
               '#lfx_crowdfunding: # Replace with a single LFX Crowdfunding '
-              'project-name e.g., cloud-foundry')
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=12,
-         tokens=25,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n'
+              'project-name e.g., cloud-foundry\n'
               '#custom: # Replace with up to 4 custom sponsorship URLs e.g., '
-              "['link1', 'link2']")
-
-Fragment(document_cs='c8b8202e7022975f7cf5aebf3af31aaa452c701d903571f4568e435ba0e52d6a',
-         id=-1,
-         lineno=13,
-         tokens=1,
-         depth=2,
-         parent_id=None,
-         category='documentation',
-         definition=True,
-         summary=False,
-         name='',
-         body='\n')
+              "['link1', 'link2']\n")
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=245,
          lineno=1,
          tokens=56,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='using System;\n'
@@ -8514,13 +7319,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               '// ReSharper disable InconsistentNaming\n')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=246,
          lineno=1,
          tokens=143,
          depth=0,
          parent_id=None,
          category='summary',
-         definition=True,
          summary=True,
          name='',
          body='CSharp: '
@@ -8540,13 +7344,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               'nameof screen toolbarType\n')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=247,
          lineno=14,
          tokens=95,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='\n'
@@ -8567,13 +7370,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               ' ')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=248,
          lineno=17,
          tokens=351,
          depth=2,
          parent_id=None,
          category='class',
-         definition=True,
          summary=False,
          name='MyGuiScreenToolbarConfigBasePatch',
          body='[HarmonyPatch(typeof(MyGuiScreenToolbarConfigBase))]\n'
@@ -8636,37 +7438,34 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               '    }')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=249,
          lineno=20,
          tokens=4,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='Action',
          body='Action OnSaveToolbar')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=250,
          lineno=21,
          tokens=4,
          depth=5,
          parent_id=None,
          category='variable',
-         definition=True,
          summary=False,
          name='Action',
          body='Action OnLoadToolbar')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=251,
          lineno=23,
          tokens=94,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='RecreateControlsPostfix',
          body='[HarmonyPostfix]\n'
@@ -8686,13 +7485,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               '        }')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=252,
          lineno=26,
          tokens=85,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='       {\n'
@@ -8713,13 +7511,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               '         ')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=253,
          lineno=34,
          tokens=104,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='createSaveButton',
          body='private static void '
@@ -8741,13 +7538,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               '        }')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=254,
          lineno=37,
          tokens=91,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='   {\n'
@@ -8767,13 +7563,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               'createLoadButton(MyGuiScreenToolbarConfigBase screen, bo')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=255,
          lineno=48,
          tokens=93,
          depth=0,
          parent_id=None,
          category='module',
-         definition=True,
          summary=False,
          name='',
          body='ol enabled)\n'
@@ -8795,13 +7590,12 @@ Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a
               '}')
 
 Fragment(document_cs='da9f2e4df613027c35242f353652ead43c29d4bbe458f596e9448de92a6e3b67',
-         id=-1,
+         id=256,
          lineno=48,
          tokens=104,
          depth=4,
          parent_id=None,
          category='method',
-         definition=True,
          summary=False,
          name='createLoadButton',
          body='private static void '

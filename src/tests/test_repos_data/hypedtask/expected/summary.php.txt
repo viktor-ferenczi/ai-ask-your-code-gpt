@@ -6,9 +6,9 @@ PHP: /server.php
 
 Relevant subdirectories:
   app: 100%
-  resources: 39%
-  database: 33%
-  config: 14%
-  tests: 1%
+  resources: 45%
+  database: 37%
+  config: 16%
+  tests: 2%
   bootstrap: 1%
-  public: 0%
+  public: 1%

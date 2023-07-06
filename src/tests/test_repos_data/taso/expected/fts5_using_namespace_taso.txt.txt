@@ -1,116 +1,181 @@
-Hit(uuid='NORMALIZED-000000',
-    path='/src/cudnn/cuda_helper.cu',
-    lineno=1,
-    depth=1,
-    type='documentation',
+Hit(uuid='NORMALIZED',
+    path='/src/cudnn/squeeze_kernel.cu',
+    lineno=10,
+    depth=0,
+    type='module',
     name='',
-    text='#include "taso/cuda_helper.h"\nusing namespace taso;\n',
+    text='ibuted on an "AS IS" BASIS,\n'
+         ' * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or '
+         'implied.\n'
+         ' * See the License for the specific language governing permissions '
+         'and\n'
+         ' * limitations under the License.\n'
+         ' */\n'
+         '\n'
+         '#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n'
+         '\n'
+         'void Squeeze::map(void)\n'
+         '{\n'
+         '  // allocate tensors\n'
+         '  size_t outputSize = sizeof(DATATYPE);\n',
     score=1.0)
 
-Hit(uuid='NORMALIZED-000001',
-    path='/src/cudnn/activation_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
-    name='',
-    text='\n'
-         '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.9666666666666667)
+Hit(uuid='NORMALIZED',
+    path='/src/cudnn/squeeze_kernel.cu',
+    lineno=18,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    score=0.9946524064171123)
 
-Hit(uuid='NORMALIZED-000002',
-    path='/src/cudnn/batchnorm_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
+Hit(uuid='NORMALIZED',
+    path='/src/dnnl/merge_gconv_mkl.cc',
+    lineno=11,
+    depth=0,
+    type='module',
     name='',
-    text='\n'
+    text='ES OR CONDITIONS OF ANY KIND, either express or implied.\n'
+         ' * See the License for the specific language governing permissions '
+         'and\n'
+         ' * limitations under the License.\n'
+         ' */\n'
+         '\n'
          '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.9333333333333333)
+         '#include "taso/dnnl_helper.h"\n'
+         'using namespace taso;\n'
+         'using namespace dnnl;\n'
+         '\n'
+         'void merge_gconv_kernel(DATATYPE* dstPtr, const DATATYPE* srcPtr, '
+         'int volume,\n'
+         '    int cInHW, int cOut, int count) {\n'
+         '  assert(cOut % count == 0);\n'
+         '#pragma omp parallel for\n',
+    score=0.9893048128342246)
 
-Hit(uuid='NORMALIZED-000003',
-    path='/src/cudnn/broadcast_add_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
-    name='',
-    text='\n'
-         '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.9)
+Hit(uuid='NORMALIZED',
+    path='/src/dnnl/merge_gconv_mkl.cc',
+    lineno=18,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    score=0.983957219251337)
 
-Hit(uuid='NORMALIZED-000004',
-    path='/src/cudnn/cast_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
+Hit(uuid='NORMALIZED',
+    path='/src/cudnn/ops_cudnn.cu',
+    lineno=16,
+    depth=0,
+    type='module',
     name='',
-    text='\n'
-         '#include "taso/ops.h"\n'
+    text='#include "taso/ops.h"\n'
          '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.8666666666666667)
+         'using namespace taso;\n'
+         '\n'
+         'Model::Model()\n'
+         ': isTraining(false), print_cost(false)\n'
+         '{\n'
+         '  //int* a = (int*) malloc(sizeof(int) * 8);\n'
+         '  checkCUDA(cudaSetDevice(0));\n'
+         '  checkCUDNN(cudnnCreate(&dnn));\n'
+         '  checkCUDA(cublasCreate(&blas));\n'
+         '  workSpaceSize = WOR',
+    score=0.9786096256684492)
 
-Hit(uuid='NORMALIZED-000005',
-    path='/src/cudnn/concat_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
-    name='',
-    text='\n'
-         '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.8333333333333334)
+Hit(uuid='NORMALIZED',
+    path='/src/cudnn/ops_cudnn.cu',
+    lineno=18,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    score=0.9732620320855615)
 
-Hit(uuid='NORMALIZED-000006',
-    path='/src/cudnn/constant_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
+Hit(uuid='NORMALIZED',
+    path='/src/dnnl/cast_mkl.cc',
+    lineno=12,
+    depth=0,
+    type='module',
     name='',
-    text='\n'
+    text='c language governing permissions and\n'
+         ' * limitations under the License.\n'
+         ' */\n'
+         '\n'
          '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.8)
+         '#include "taso/dnnl_helper.h"\n'
+         'using namespace taso;\n'
+         'using namespace dnnl;\n'
+         '\n'
+         'void Cast::map(void)\n'
+         '{\n'
+         '  // allocate tensors\n'
+         '  size_t outputSize = sizeof(DATATYPE) * outputs[0].volume();\n'
+         '  CHECK_NE(nullptr, outputs[0].data_ptr = malloc(outputSize));\n'
+         '}\n'
+         '\n'
+         'void Cast::unmap(void)\n'
+         '{\n'
+         '  // clear primitives\n'
+         '  net.clear();\n'
+         '  // free tensors\n'
+         '  free(outputs[0].data_ptr);\n'
+         '  outputs[0].data_ptr = nullptr;\n'
+         '}\n'
+         '\n'
+         'void Cast::forward(bool block)\n'
+         '{\n',
+    score=0.9679144385026738)
 
-Hit(uuid='NORMALIZED-000007',
-    path='/src/cudnn/conv2d_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
-    name='',
-    text='\n'
-         '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.7666666666666666)
+Hit(uuid='NORMALIZED',
+    path='/src/dnnl/cast_mkl.cc',
+    lineno=18,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    score=0.9625668449197861)
 
-Hit(uuid='NORMALIZED-000008',
-    path='/src/cudnn/element_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
+Hit(uuid='NORMALIZED',
+    path='/src/dnnl/constant_mkl.cc',
+    lineno=12,
+    depth=0,
+    type='module',
     name='',
-    text='\n'
+    text='icense for the specific language governing permissions and\n'
+         ' * limitations under the License.\n'
+         ' */\n'
+         '\n'
          '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.7333333333333334)
+         '#include "taso/dnnl_helper.h"\n'
+         'using namespace taso;\n'
+         '\n'
+         'void Constant::map(void)\n'
+         '{\n'
+         '  // allocate tensors\n'
+         '  size_t outputSize = sizeof(DATATYPE) * outputs[0].volume();\n'
+         '  CHECK_NE(nullptr, outputs[0].data_ptr = malloc(outputSize));\n'
+         '}\n'
+         '\n'
+         'void Constant::unmap(void)\n'
+         '{\n'
+         '  // free tensors\n'
+         '  free(outputs[0].data_ptr);\n'
+         '  outputs[0].data_ptr = nullptr;\n'
+         '}\n'
+         '\n'
+         'void Constant::forward(bool block)\n'
+         '{\n'
+         '}\n'
+         '\n',
+    score=0.9572192513368984)
 
-Hit(uuid='NORMALIZED-000009',
-    path='/src/cudnn/elementwise_unary_kernel.cu',
-    lineno=15,
-    depth=1,
-    type='documentation',
-    name='',
-    text='\n'
-         '#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n',
-    score=0.7)
+Hit(uuid='NORMALIZED',
+    path='/src/dnnl/constant_mkl.cc',
+    lineno=18,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    score=0.9518716577540107)

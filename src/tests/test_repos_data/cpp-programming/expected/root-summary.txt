@@ -11,31 +11,31 @@ File extensions: .cmake .cpp .h .hpp .md .txt
 
 Relevant subdirectories:
   Labirint Game: 100%
-  E-Commerce App V3.0: 10%
   E-Commerce App V1.0: 9%
+  E-Commerce App V3.0: 9%
   E-Commerce App V2.0: 8%
-  Quiz Game: 6%
+  Quiz Game: 5%
   OOP2-FA: 4%
-  OOP1-Lab9: 3%
   New Year Congratulation: 3%
   OOP1-Lab6: 2%
-  Bank management system: 2%
   OOP2_Lab7: 2%
-  OOP2_Lab6: 2%
-  OOP2_Lab2: 2%
-  Snake Game: 1%
+  OOP1-Lab9: 2%
+  Bank management system: 2%
+  OOP2_Lab2: 1%
+  OOP2_Lab6: 1%
   OOP2_Lab7_Extra: 1%
+  Snake Game: 1%
   OOP1-Lab3: 1%
-  OOP1-Lab8: 1%
   OOP2_Lab10: 1%
   OOP2_Lab9: 1%
   OOP2_Lab3: 1%
   OOP2_Lab4: 1%
-  OOP1-Lab4: 1%
-  OOP1-Lab1: 1%
-  OOP1-Lab7: 1%
+  OOP1-Lab8: 1%
   OOP2_Lab8: 1%
+  OOP1-Lab1: 1%
   OOP1-Lab5: 1%
+  OOP1-Lab7: 1%
   OOP2_Lab1: 1%
-  OOP1-Lab2: 1%
+  OOP1-Lab2: 0%
+  OOP1-Lab4: 0%
   OOP2_Lab5: 0%

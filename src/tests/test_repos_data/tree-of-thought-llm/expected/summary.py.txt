@@ -12,4 +12,4 @@ Python: /run.py
 
 Relevant subdirectories:
   tasks: 100%
-  prompts: 36%
+  prompts: 46%

@@ -32,4 +32,6 @@ File extensions: .md
 ##### Error with `codesign` on macOS when running `yarn run dist`
 ## Related Repositories
 
-## Issue
+
+Relevant subdirectories:
+  .github: 100%

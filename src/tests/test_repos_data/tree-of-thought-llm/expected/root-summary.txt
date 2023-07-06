@@ -22,7 +22,7 @@ Python: /run.py
 
 Relevant subdirectories:
   tasks: 100%
-  scripts: 39%
-  data: 36%
-  prompts: 36%
-  logs: 1%
+  prompts: 46%
+  scripts: 44%
+  data: 22%
+  logs: 2%

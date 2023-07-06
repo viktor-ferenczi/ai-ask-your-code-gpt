@@ -2,4 +2,6 @@ File extensions: .txt
 
 File: /CMakeLists.txt
 
-File: /examples/enas_arcs.txt
+
+Relevant subdirectories:
+  examples: 100%
