@@ -8,6 +8,7 @@ import asyncpg
 from asyncpg import Pool
 
 from common.constants import C
+from storage import archives, documents, files, fragments, projects
 from storage.database import Database
 from storage.pubsub import PubSub
 from storage.scheduler import Scheduler
@@ -41,6 +42,13 @@ class BaseDatabaseTest(unittest.IsolatedAsyncioTestCase):
         if BaseDatabaseTest.first:
             await self.db.drop()
             BaseDatabaseTest.first = False
+        else:
+            async with self.db.connection() as conn:
+                await archives.truncate(conn)
+                await documents.truncate(conn)
+                await files.truncate(conn)
+                await fragments.truncate(conn)
+                await projects.truncate(conn)
 
         await self.db.migrate()
 
