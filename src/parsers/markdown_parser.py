@@ -2,7 +2,7 @@ import uuid
 from typing import Iterator
 
 from common.constants import C
-from common.text import decode_replace
+from common.text import decode_normalize
 from common.tools import tiktoken_len
 from model.fragment import Fragment
 from parsers.registrations import BaseParser
@@ -21,7 +21,7 @@ class MarkdownParser(BaseParser):
     )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        text_content = decode_normalize(content)
         if not text_content.strip():
             return
 

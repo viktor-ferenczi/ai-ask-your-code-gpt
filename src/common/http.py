@@ -6,7 +6,7 @@ from typing import Optional, List, Dict
 import aiohttp
 
 from common.constants import C
-from common.text import decode_replace
+from common.text import decode_normalize
 
 
 class DownloadError(Exception):
@@ -69,7 +69,7 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
 
                 if response.status < 200 or response.status >= 400:
                     body = await response.content.read(500)
-                    reason = decode_replace(body)
+                    reason = decode_normalize(body)
                     raise DownloadError(f'Failed to download {url!r} with HTTP {response.status}: {reason}')
 
                 while 1:

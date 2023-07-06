@@ -4,7 +4,7 @@ from typing import Tuple, Iterator, Dict, Optional, Set
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
-from common.text import decode_replace
+from common.text import decode_normalize, normalize
 from common.tools import new_uuid
 from common.tree import walk_nodes
 from model.fragment import Fragment
@@ -32,9 +32,9 @@ class TreeSitterParser(BaseParser):
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        text_content = decode_normalize(content)
         for sentence in self.splitter.split_text(text_content):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text.replace('\r\n', '\n').replace('\r', ''))
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', normalize(sentence.text))
 
         name_map: Dict[str, Set[Code]] = {name: set() for name in self.categories}
 
@@ -54,12 +54,12 @@ class TreeSitterParser(BaseParser):
                 assert isinstance(code, Code), repr(code)
 
                 if isinstance(code.name, bytes):
-                    code.name = decode_replace(code.name)
-                code.name = code.name.replace('\r\n', '\n').replace('\r', '').strip()
+                    code.name = decode_normalize(code.name)
+                code.name = normalize(code.name).strip()
 
                 if isinstance(code.definition, bytes):
-                    code.definition = decode_replace(code.definition)
-                code.definition = code.definition.replace('\r\n', '\n').replace('\r', '').strip()
+                    code.definition = decode_normalize(code.definition)
+                code.definition = normalize(code.definition).strip()
 
                 name_map[code.category].add(code)
 

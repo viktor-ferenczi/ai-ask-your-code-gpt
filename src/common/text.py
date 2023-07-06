@@ -1,8 +1,11 @@
-def decode_replace(content: bytes) -> str:
-    for encoding in ('utf-8', 'latin-1', 'latin-2'):
-        try:
-            return content.decode(encoding)
-        except UnicodeDecodeError:
-            pass
+def decode_normalize(content: bytes) -> str:
+    try:
+        decoded = content.decode('utf-8')
+    except UnicodeDecodeError:
+        decoded = content.decode('latin-1')
 
-    return content.decode('utf-8', errors='replace')
+    return normalize(decoded)
+
+
+def normalize(content: str) -> str:
+    return content.replace('\r\n', '\n').replace('\r', '').replace('\0', '\n')

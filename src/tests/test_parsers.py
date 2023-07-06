@@ -2,6 +2,7 @@ import os
 from pprint import pformat
 
 from base_test_case import BaseTestCase
+from common.text import normalize, decode_normalize
 from parsers.registrations import BaseParser, detect, detect_mime
 
 
@@ -27,8 +28,8 @@ class TestParsers(BaseTestCase):
 
             # In case of documentation joining the fragments must reproduce the original document
             if not parser.is_code:
-                joined_texts = ''.join(fragment.text for fragment in fragments if fragment.type == 'documentation').replace('\r\n', '\n').replace('\r', '')
-                original_text = content.decode('utf-8').replace('\r\n', '\n').replace('\r', '')
+                joined_texts = normalize(''.join(fragment.text for fragment in fragments if fragment.type == 'documentation'))
+                original_text = decode_normalize(content)
                 self.assertEqual(joined_texts, original_text)
 
             actual = f'from model.fragment import Fragment\n\n# Parser: {parser_cls.__name__}\n\n' + ''.join(

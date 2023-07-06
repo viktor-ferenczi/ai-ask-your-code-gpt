@@ -2,7 +2,7 @@ import json
 from typing import Iterator
 
 from common.constants import C
-from common.text import decode_replace
+from common.text import decode_normalize
 from common.tools import tiktoken_len, new_uuid
 from model.fragment import Fragment
 from splitters.text_splitter import TextSplitter
@@ -38,7 +38,7 @@ class PythonNotebookParser(PythonParser):
         if '/.ipynb_checkpoints' in path:
             return
 
-        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        text_content = decode_normalize(content)
 
         for sentence in self.splitter.split_text(text_content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text)

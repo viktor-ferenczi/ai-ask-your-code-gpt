@@ -146,14 +146,14 @@ f13 = Fragment(uuid='TEST-13',
          depth=1,
          type='function',
          name='md5_checksum',
-         text='def md5_checksum(file_path):\r\n'
-              '    hasher = hashlib.md5()\r\n'
-              "    with open(file_path, 'rb') as f:\r\n"
-              '        while True:\r\n'
-              '            data = f.read(CHUNK_SIZE)\r\n'
-              '            if not data:\r\n'
-              '                break\r\n'
-              '            hasher.update(data)\r\n'
+         text='def md5_checksum(file_path):\n'
+              '    hasher = hashlib.md5()\n'
+              "    with open(file_path, 'rb') as f:\n"
+              '        while True:\n'
+              '            data = f.read(CHUNK_SIZE)\n'
+              '            if not data:\n'
+              '                break\n'
+              '            hasher.update(data)\n'
               '    return hasher.hexdigest()')
 
 f14 = Fragment(uuid='TEST-14',
@@ -162,12 +162,12 @@ f14 = Fragment(uuid='TEST-14',
          depth=1,
          type='class',
          name='Duplicates',
-         text='class Duplicates:\r\n'
-              '\r\n'
-              '    def __init__(self, root_dir: str) -> None:\r\n'
-              '        super().__init__()\r\n'
-              '        self.root_dir = root_dir\r\n'
-              '        self.files = []\r\n')
+         text='class Duplicates:\n'
+              '\n'
+              '    def __init__(self, root_dir: str) -> None:\n'
+              '        super().__init__()\n'
+              '        self.root_dir = root_dir\n'
+              '        self.files = []\n')
 
 f15 = Fragment(uuid='TEST-15',
          path='find_duplicates.py',
@@ -175,22 +175,22 @@ f15 = Fragment(uuid='TEST-15',
          depth=1,
          type='class',
          name='Duplicates',
-         text='\r\n'
-              '    def collect(self):\r\n'
-              '        files_by_size = defaultdict(list)\r\n'
-              '        files_by_checksum = defaultdict(list)\r\n'
-              '\r\n'
-              '        # Group files by size\r\n'
-              '        for dirpath, _, filenames in os.walk(self.root_dir):\r\n'
-              '            for filename in filenames:\r\n'
-              '                file_path = os.path.join(dirpath, filename)\r\n'
-              '                file_size = os.path.getsize(file_path)\r\n'
-              '                files_by_size[file_size].append(file_path)\r\n'
-              '\r\n'
+         text='\n'
+              '    def collect(self):\n'
+              '        files_by_size = defaultdict(list)\n'
+              '        files_by_checksum = defaultdict(list)\n'
+              '\n'
+              '        # Group files by size\n'
+              '        for dirpath, _, filenames in os.walk(self.root_dir):\n'
+              '            for filename in filenames:\n'
+              '                file_path = os.path.join(dirpath, filename)\n'
+              '                file_size = os.path.getsize(file_path)\n'
+              '                files_by_size[file_size].append(file_path)\n'
+              '\n'
               '        total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() '
-              'if len(file_list) > 1)\r\n'
-              '\r\n'
-              '        # Calculate the hash only for groups with more than one file\r\n')
+              'if len(file_list) > 1)\n'
+              '\n'
+              '        # Calculate the hash only for groups with more than one file\n')
 
 f16 = Fragment(uuid='TEST-16',
          path='find_duplicates.py',
@@ -199,14 +199,14 @@ f16 = Fragment(uuid='TEST-16',
          type='class',
          name='Duplicates',
          text="        with ProcessPoolExecutor() as executor, tqdm(total=total_size, unit='B', unit_scale=True, "
-              'desc="Processing files") as pbar:\r\n'
-              '            for file_size, file_list in files_by_size.items():\r\n'
-              '                if len(file_list) > 1:\r\n'
-              '                    file_checksums = list(executor.map(md5_checksum, file_list))\r\n'
-              '                    for file_path, file_checksum in zip(file_list, file_checksums):\r\n'
-              '                        files_by_checksum[file_checksum].append(file_path)\r\n'
-              '                        pbar.update(file_size)\r\n'
-              '\r\n'
+              'desc="Processing files") as pbar:\n'
+              '            for file_size, file_list in files_by_size.items():\n'
+              '                if len(file_list) > 1:\n'
+              '                    file_checksums = list(executor.map(md5_checksum, file_list))\n'
+              '                    for file_path, file_checksum in zip(file_list, file_checksums):\n'
+              '                        files_by_checksum[file_checksum].append(file_path)\n'
+              '                        pbar.update(file_size)\n'
+              '\n'
               '        self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)')
 
 f17 = Fragment(uuid='TEST-17',
@@ -215,9 +215,9 @@ f17 = Fragment(uuid='TEST-17',
          depth=3,
          type='function',
          name='__init__',
-         text='def __init__(self, root_dir: str) -> None:\r\n'
-              '        super().__init__()\r\n'
-              '        self.root_dir = root_dir\r\n'
+         text='def __init__(self, root_dir: str) -> None:\n'
+              '        super().__init__()\n'
+              '        self.root_dir = root_dir\n'
               '        self.files = []')
 
 f18 = Fragment(uuid='TEST-18',
@@ -226,21 +226,21 @@ f18 = Fragment(uuid='TEST-18',
          depth=3,
          type='function',
          name='collect',
-         text='def collect(self):\r\n'
-              '        files_by_size = defaultdict(list)\r\n'
-              '        files_by_checksum = defaultdict(list)\r\n'
-              '\r\n'
-              '        # Group files by size\r\n'
-              '        for dirpath, _, filenames in os.walk(self.root_dir):\r\n'
-              '            for filename in filenames:\r\n'
-              '                file_path = os.path.join(dirpath, filename)\r\n'
-              '                file_size = os.path.getsize(file_path)\r\n'
-              '                files_by_size[file_size].append(file_path)\r\n'
-              '\r\n'
+         text='def collect(self):\n'
+              '        files_by_size = defaultdict(list)\n'
+              '        files_by_checksum = defaultdict(list)\n'
+              '\n'
+              '        # Group files by size\n'
+              '        for dirpath, _, filenames in os.walk(self.root_dir):\n'
+              '            for filename in filenames:\n'
+              '                file_path = os.path.join(dirpath, filename)\n'
+              '                file_size = os.path.getsize(file_path)\n'
+              '                files_by_size[file_size].append(file_path)\n'
+              '\n'
               '        total_size = sum(file_size * len(file_list) for file_size, file_list in files_by_size.items() '
-              'if len(file_list) > 1)\r\n'
-              '\r\n'
-              '        # Calculate the hash only for groups with more than one file\r\n')
+              'if len(file_list) > 1)\n'
+              '\n'
+              '        # Calculate the hash only for groups with more than one file\n')
 
 f19 = Fragment(uuid='TEST-19',
          path='find_duplicates.py',
@@ -249,14 +249,14 @@ f19 = Fragment(uuid='TEST-19',
          type='function',
          name='collect',
          text="        with ProcessPoolExecutor() as executor, tqdm(total=total_size, unit='B', unit_scale=True, "
-              'desc="Processing files") as pbar:\r\n'
-              '            for file_size, file_list in files_by_size.items():\r\n'
-              '                if len(file_list) > 1:\r\n'
-              '                    file_checksums = list(executor.map(md5_checksum, file_list))\r\n'
-              '                    for file_path, file_checksum in zip(file_list, file_checksums):\r\n'
-              '                        files_by_checksum[file_checksum].append(file_path)\r\n'
-              '                        pbar.update(file_size)\r\n'
-              '\r\n'
+              'desc="Processing files") as pbar:\n'
+              '            for file_size, file_list in files_by_size.items():\n'
+              '                if len(file_list) > 1:\n'
+              '                    file_checksums = list(executor.map(md5_checksum, file_list))\n'
+              '                    for file_path, file_checksum in zip(file_list, file_checksums):\n'
+              '                        files_by_checksum[file_checksum].append(file_path)\n'
+              '                        pbar.update(file_size)\n'
+              '\n'
               '        self.files.extend(file_list for file_list in files_by_checksum.values() if len(file_list) > 1)')
 
 f20 = Fragment(uuid='TEST-20',
@@ -265,7 +265,7 @@ f20 = Fragment(uuid='TEST-20',
          depth=4,
          type='documentation',
          name='',
-         text='# Group files by size\r')
+         text='# Group files by size')
 
 f21 = Fragment(uuid='TEST-21',
          path='find_duplicates.py',
@@ -273,7 +273,7 @@ f21 = Fragment(uuid='TEST-21',
          depth=4,
          type='documentation',
          name='',
-         text='# Calculate the hash only for groups with more than one file\r')
+         text='# Calculate the hash only for groups with more than one file')
 
 f22 = Fragment(uuid='TEST-22',
          path='find_duplicates.py',
@@ -281,25 +281,25 @@ f22 = Fragment(uuid='TEST-22',
          depth=1,
          type='function',
          name='main',
-         text='def main():\r\n'
-              '    root_dir = input("Enter the root directory to search for duplicate files: ")\r\n'
-              '\r\n'
-              '    if not os.path.isdir(root_dir):\r\n'
-              '        print("Invalid directory path. Please try again.")\r\n'
-              '        return\r\n'
-              '\r\n'
-              '    duplicates = Duplicates(root_dir)\r\n'
-              '    duplicates.collect()\r\n'
-              '    total_space_saved = 0\r\n'
-              '\r\n'
-              '    if not duplicates.files:\r\n'
-              '        print("No duplicate files found.")\r\n'
-              '        return\r\n'
-              '\r\n'
-              '    print("Duplicate files found:")\r\n'
-              '    for file_list in duplicates.files:\r\n'
-              '        print("Duplicate group:")\r\n'
-              '        first = True\r\n')
+         text='def main():\n'
+              '    root_dir = input("Enter the root directory to search for duplicate files: ")\n'
+              '\n'
+              '    if not os.path.isdir(root_dir):\n'
+              '        print("Invalid directory path. Please try again.")\n'
+              '        return\n'
+              '\n'
+              '    duplicates = Duplicates(root_dir)\n'
+              '    duplicates.collect()\n'
+              '    total_space_saved = 0\n'
+              '\n'
+              '    if not duplicates.files:\n'
+              '        print("No duplicate files found.")\n'
+              '        return\n'
+              '\n'
+              '    print("Duplicate files found:")\n'
+              '    for file_list in duplicates.files:\n'
+              '        print("Duplicate group:")\n'
+              '        first = True\n')
 
 f23 = Fragment(uuid='TEST-23',
          path='find_duplicates.py',
@@ -307,13 +307,13 @@ f23 = Fragment(uuid='TEST-23',
          depth=1,
          type='function',
          name='main',
-         text='        for file_path in file_list:\r\n'
-              '            if not first:\r\n'
-              '                total_space_saved += os.path.getsize(file_path)\r\n'
-              '            else:\r\n'
-              '                first = False\r\n'
-              '            print(f"\\t{file_path}")\r\n'
-              '\r\n'
+         text='        for file_path in file_list:\n'
+              '            if not first:\n'
+              '                total_space_saved += os.path.getsize(file_path)\n'
+              '            else:\n'
+              '                first = False\n'
+              '            print(f"\\t{file_path}")\n'
+              '\n'
               '    print(f"\\nTotal disk space that could be saved by deleting duplicates: {total_space_saved} bytes")')
 
 f24 = Fragment(uuid='TEST-24',

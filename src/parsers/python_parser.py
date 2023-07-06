@@ -4,7 +4,7 @@ from typing import Iterator, Set
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
-from common.text import decode_replace
+from common.text import decode_normalize
 from common.tools import tiktoken_len, new_uuid
 from common.tree import walk_children
 from model.fragment import Fragment
@@ -38,7 +38,7 @@ class PythonParser(BaseParser):
         )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        text_content = decode_normalize(content)
         for sentence in self.splitter.split_text(text_content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
@@ -59,40 +59,40 @@ class PythonParser(BaseParser):
         for child, depth in walk_children(cursor):
             node: Node = child.node
             if debug and not node.child_count:
-                print(f"@{depth}|{node.type}|{decode_replace(node.text)}|")
+                print(f"@{depth}|{node.type}|{decode_normalize(node.text)}|")
 
             lineno = 1 + node.start_point[0]
 
             if node.type == 'import' or node.type == 'from' and node.parent:
-                for sentence in self.splitter.split_text(decode_replace(node.text)):
+                for sentence in self.splitter.split_text(decode_normalize(node.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
                 continue
 
             if node.type == 'class' and node.next_sibling and node.parent:
-                name = decode_replace(node.next_sibling.text)
+                name = decode_normalize(node.next_sibling.text)
                 classes.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_normalize(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
                 continue
 
             if node.type == 'def' and node.next_sibling and node.parent:
-                name = decode_replace(node.next_sibling.text)
+                name = decode_normalize(node.next_sibling.text)
                 if depth > 1:
                     methods.add(name)
                 else:
                     functions.add(name)
-                for sentence in self.splitter.split_text(decode_replace(node.parent.text)):
+                for sentence in self.splitter.split_text(decode_normalize(node.parent.text)):
                     yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
                 continue
 
             if node.type == 'identifier':
-                name = decode_replace(node.text)
+                name = decode_normalize(node.text)
                 variables.add(name)
                 continue
 
             if node.type == 'string_content' or node.type == 'comment':
                 if node.text and len(node.text) >= 20:
-                    for sentence in self.splitter.split_text(decode_replace(node.text)):
+                    for sentence in self.splitter.split_text(decode_normalize(node.text)):
                         yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'documentation', '', sentence.text)
                     continue
 

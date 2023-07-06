@@ -5,7 +5,7 @@ from typing import Iterator, Set, List
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
-from common.text import decode_replace
+from common.text import decode_normalize
 from common.tools import tiktoken_len, new_uuid
 from common.tree import walk_children
 from model.fragment import Fragment
@@ -50,7 +50,7 @@ class HtmlParser(BaseParser):
         # tree: Tree = parser.parse(content)
         # cursor: TreeCursor = tree.walk()
 
-        text_content = decode_replace(content).replace('\r\n', '\n').replace('\r', '')
+        text_content = decode_normalize(content)
         for sentence in self.splitter.split_text(text_content):
             yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
