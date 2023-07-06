@@ -18,49 +18,49 @@ MODULE_DIR = os.path.dirname(__file__)
 
 REPOS = [
     # Markdown, Python
-    # ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
+    ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
-    # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
+    ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
 
     # Markdown, PHP, HTML, CSS, JavaScript
-    # ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+    ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
-    # ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
+    ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 
     # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
-    # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
+    ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 
     # C++, CMake
-    # ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
+    ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
-    # ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
+    ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
     # # Python, Shell, JSON, CSV, Python Notebook
-    # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
+    ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 
     # Python, Markdown
     ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
 
     # TypeScript
-    # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
+    ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
 
     # Python, C++, CUDA
-    # ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
+    ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
 
     # TypeScript, JavaScript, HTML
     # FIXME: Crashes tiktoken_len at a data.ts file:
     # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
-    # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
+    ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
 
     # Part of Unreal: C++, shader
     # http://rebecca.sh/PluginsShadersSourceTargets.zip
-    # ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
+    ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
 ]
 
 
@@ -95,11 +95,16 @@ class TestRepos(BaseBackendTest):
         await self.coordinate_test()
 
     async def actual_test(self):
+        self.failures = []
+
         for name, zip_url in REPOS:
-            self.failures = []
             await self.verify_repo(name, zip_url)
-            if self.failures:
-                self.fail(f'Indexing of project {name!r} produced unexpected output')
+
+        if self.failures:
+            print('Indexing produced unexpected outputs:')
+            for project_name, name in self.failures:
+                print(f'  {project_name}: {name}')
+            self.fail('Indexing produced unexpected outputs')
 
     async def verify_repo(self, zip_name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{zip_name}.zip')
@@ -219,9 +224,7 @@ class TestRepos(BaseBackendTest):
         expected_path = os.path.join(self.project_path, 'expected', f'{name}.txt')
 
         good = False
-        if not os.path.exists(expected_path):
-            expected = ''
-        else:
+        if os.path.exists(expected_path):
             with open(expected_path, 'rt', encoding='utf-8') as f:
                 expected = f.read()
             good = actual == expected
@@ -233,4 +236,4 @@ class TestRepos(BaseBackendTest):
             with open(actual_path, 'wb') as f:
                 f.write(actual.encode('utf-8', errors='replace'))
 
-            self.failures.append((self.project_name, name, expected, actual))
+            self.failures.append((self.project_name, name))
