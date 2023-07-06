@@ -1,5 +1,6 @@
 import hashlib
 import unittest
+from datetime import datetime, timedelta
 from pprint import pformat
 
 from base_database_test import BaseDatabaseTest
@@ -104,6 +105,11 @@ class TestStorage(BaseDatabaseTest):
 
             r = await projects.find_by_uid_and_name(conn, o.uid, o.name)
             self.assertEqual(repr(o), repr(r))
+
+            accessed_ts = datetime.utcnow() - timedelta(minutes=1)
+            await projects.update_accessed(conn, o.id, accessed_ts)
+            r = await projects.find(conn, o.id)
+            self.assertEqual(r.accessed, accessed_ts)
 
     async def test_properties(self) -> None:
         async with self.db.transaction() as conn:

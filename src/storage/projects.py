@@ -60,3 +60,7 @@ async def find_by_uid_and_name(conn: Connection, uid: str, name: str) -> Optiona
     if row is None:
         return None
     return Project.from_row(row)
+
+
+async def update_accessed(conn: Connection, id: int, accessed: datetime):
+    await conn.execute('UPDATE project SET accessed = $2 WHERE id = $1', id, accessed)

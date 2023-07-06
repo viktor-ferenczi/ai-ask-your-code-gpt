@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 from typing import List, Iterator, Dict, Any, Optional
 
 import numpy as np
@@ -92,6 +93,8 @@ class Backend:
         pass
 
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
+        await self.update_project_accessed()
+
         async with self.db.connection() as conn:
             if text:
                 pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
@@ -148,6 +151,8 @@ class Backend:
             return [str(row[0]) for row in await conn.fetch(sql, self.project.id, query, limit)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
+        await self.update_project_accessed()
+
         async with self.db.connection() as conn:
             pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
 
@@ -230,3 +235,9 @@ class Backend:
             for subdir, count in sorted(subdir_hit_counts.items(), reverse=True, key=lambda pair: pair[1]):
                 subdir_info.append(f"  {subdir}: {int(100.0 * count / max_count)}%\n")
             yield ''.join(subdir_info)
+
+    async def update_project_accessed(self):
+        now = datetime.utcnow()
+        if self.project.accessed < now - C.PROJECT_ACCESS_UPDATE_INTERVAL:
+            async with self.db.transaction() as conn:
+                await projects.update_accessed(conn, self.project.id, now)

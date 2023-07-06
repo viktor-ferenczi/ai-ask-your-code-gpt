@@ -1,6 +1,7 @@
 import os.path
 import re
 import sys
+from datetime import timedelta
 
 sys.setrecursionlimit(10000)
 
@@ -59,6 +60,9 @@ class C:
 
     # Summary generation
     MAX_SUMMARY_WIDTH = 80
+
+    # Project
+    PROJECT_ACCESS_UPDATE_INTERVAL = timedelta(minutes=30)
 
     # Cleanup
     FIRST_CLEANUP_DELAY: int = 77  # s
