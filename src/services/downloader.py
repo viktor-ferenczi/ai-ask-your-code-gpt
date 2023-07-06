@@ -126,7 +126,7 @@ async def download(db: Database, url: str, project_id: int) -> THandlerResult:
 
 
 async def worker():
-    async with Database.from_dsn(C.DSN) as db:
+    async with Database.from_dsn(C.DATABASE_DSN) as db:
         scheduler = Scheduler(db)
         await scheduler.listen(Operation.DownloadArchive, functools.partial(download, db))
 

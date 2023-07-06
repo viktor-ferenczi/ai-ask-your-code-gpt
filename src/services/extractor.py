@@ -88,7 +88,7 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
 
 
 async def worker():
-    async with Database.from_dsn(C.DSN) as db:
+    async with Database.from_dsn(C.DATABASE_DSN) as db:
         scheduler = Scheduler(db)
         await scheduler.listen(Operation.ExtractArchive, functools.partial(extract, db))
 

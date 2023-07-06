@@ -84,7 +84,7 @@ def index_document(document: Document, path: str) -> Iterable[DbFragment]:
 
 
 async def worker():
-    async with Database.from_dsn(C.DSN) as db:
+    async with Database.from_dsn(C.DATABASE_DSN) as db:
         scheduler = Scheduler(db)
         await scheduler.listen(Operation.IndexSource, functools.partial(index_batch, db))
 

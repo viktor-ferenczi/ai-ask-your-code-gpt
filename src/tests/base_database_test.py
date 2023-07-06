@@ -35,7 +35,7 @@ class BaseDatabaseTest(unittest.IsolatedAsyncioTestCase):
                 else:
                     break
 
-        self.pool: Pool = asyncpg.create_pool(C.DSN, command_timeout=60, min_size=1, max_size=10)
+        self.pool: Pool = asyncpg.create_pool(C.DATABASE_DSN, command_timeout=C.DATABASE_COMMAND_TIMEOUT, min_size=1, max_size=10)
         await self.pool._async__init__()
         self.db = Database(self.pool)
 

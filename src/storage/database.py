@@ -20,7 +20,7 @@ class Database:
     @classmethod
     @asynccontextmanager
     async def create_pool(cls, dsn: str):
-        async with asyncpg.create_pool(dsn, command_timeout=60) as pool:
+        async with asyncpg.create_pool(dsn, command_timeout=C.DATABASE_COMMAND_TIMEOUT) as pool:
             yield Database(pool)
 
     # Contexts
@@ -29,7 +29,7 @@ class Database:
     @classmethod
     @asynccontextmanager
     async def from_dsn(cls, dsn: str) -> AsyncContextManager["Database"]:
-        async with asyncpg.create_pool(dsn, command_timeout=60) as pool:
+        async with asyncpg.create_pool(dsn, command_timeout=C.DATABASE_COMMAND_TIMEOUT) as pool:
             yield cls(pool)
 
     @asynccontextmanager

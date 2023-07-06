@@ -32,12 +32,13 @@ class C:
 
     # Database
     # postgres://user:password@host:port/database
-    DEFAULT_DSN = {
+    DEFAULT_DATABASE_DSN = {
         PRODUCTION: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode',
         DEVELOPMENT: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode',
         TEST_SUITE: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test',
     }[ENVIRONMENT]
-    DSN = os.environ.get('DSN', DEFAULT_DSN)
+    DATABASE_DSN = os.environ.get('DATABASE_DSN', DEFAULT_DATABASE_DSN)
+    DATABASE_COMMAND_TIMEOUT = None
 
     # Limits
 

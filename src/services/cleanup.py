@@ -14,7 +14,7 @@ async def cleanup(db: Database):
 
 
 async def worker():
-    async with Database.from_dsn(C.DSN) as db:
+    async with Database.from_dsn(C.DATABASE_DSN) as db:
         await asyncio.sleep(C.FIRST_CLEANUP_DELAY)
         await cleanup(db)
         while 1:

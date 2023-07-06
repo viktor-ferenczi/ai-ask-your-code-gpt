@@ -122,9 +122,14 @@ async def get_all_fragments_in_project(conn: Connection, project_id: int) -> Lis
 
 
 async def search_in_project_by_path_tail_name(conn: Connection, project_id: int, path: str, tail: str, name: str, limit: int = 1) -> List[Tuple[str, Fragment]]:
+    if name:
+        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+    else:
+        order_by = 'f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+
     return [
         (row['path'], Fragment.from_row(row))
-        for row in await conn.fetch('''
+        for row in await conn.fetch(f'''
             SELECT f.path, c.* 
             FROM file AS f
             INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
@@ -132,16 +137,21 @@ async def search_in_project_by_path_tail_name(conn: Connection, project_id: int,
               AND f.path ILIKE $2 
               AND f.path ILIKE $3
               AND c.name ILIKE $4
-            ORDER BY f.depth, f.path, c.lineno, c.id, c.category, c.summary
+            ORDER BY {order_by}
             LIMIT $5
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}', limit)
     ]
 
 
 async def search_in_project_by_path_tail_name_unlimited(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Tuple[str, Fragment]]:
+    if name:
+        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+    else:
+        order_by = 'f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+
     return [
         (row['path'], Fragment.from_row(row))
-        for row in await conn.fetch('''
+        for row in await conn.fetch(f'''
             SELECT f.path, c.* 
             FROM file AS f
             INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
@@ -149,7 +159,7 @@ async def search_in_project_by_path_tail_name_unlimited(conn: Connection, projec
               AND f.path ILIKE $2
               AND f.path ILIKE $3
               AND c.name ILIKE $4
-            ORDER BY f.depth, f.path, c.lineno, c.id, c.category, c.summary
+            ORDER BY {order_by}
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
     ]
 
