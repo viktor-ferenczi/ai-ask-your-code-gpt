@@ -355,6 +355,7 @@ async def main():
     async with Database.create_pool(C.DATABASE_DSN) as db:
         DATABASE = db
         try:
+            await DATABASE.migrate()
             await run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT)
         finally:
             DATABASE = None
