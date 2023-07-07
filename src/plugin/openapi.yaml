@@ -167,9 +167,9 @@ components:
     searchResponse:
       type: object
       required:
-        - result
+        - results
       properties:
-        result:
+        results:
           type: string
           description: Code or documentation fragment from the project
         info:

@@ -14,6 +14,7 @@ from common.constants import C, RX
 from common.server import run_app
 from common.tools import tiktoken_len, new_uuid
 from plugin.backend import Backend, BackendError
+from storage import projects
 from storage.database import Database
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -82,7 +83,7 @@ async def create():
         url = response
 
     # Create project, download and verify archive, initiate indexing
-    print(f'Create project from {url!r}')
+    print(f'Created project from {url!r} for user {uid!r}')
 
     # noinspection PyBroadException
     try:
@@ -155,15 +156,23 @@ def validate_url(url: str) -> Union[str, Response]:
 
 @app.delete("/project/<string:project_name>")
 async def delete(project_name: str):
+    uid = ''
+
     project_name = project_name.lower()
     if not RX.GUID.match(project_name):
         return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
 
-    print(f'Delete project {project_name!r}')
+    async with DATABASE.connection() as conn:
+        project = await projects.find_by_uid_and_name(conn, uid, project_name)
+
+    if project is None:
+        return Response(response='No such project', status=404)
+
+    backend = Backend(DATABASE, project)
+    print(f'Deleted project {project_name!r} of user {uid!r}')
 
     # noinspection PyBroadException
     try:
-        backend = Backend(DATABASE, project_name)
         await backend.delete()
     except BackendError as e:
         print(f'Failed to delete project {project_name!r}: {e}')
@@ -178,6 +187,8 @@ async def delete(project_name: str):
 
 @app.get("/project/<string:project_name>/summarize")
 async def summarize(project_name: str):
+    uid = ''
+
     # noinspection DuplicatedCode
     project_name = project_name.lower()
     if not RX.GUID.match(project_name):
@@ -195,21 +206,13 @@ async def summarize(project_name: str):
     if not path.startswith('/'):
         path = f'/{path}'
 
-    backend = Backend(DATABASE, project_name)
-    if not backend.exists:
-        url = inventory.get_project_url(project_name)
-        if not url:
-            return Response(response='No such project', status=404)
-        await backend.create(url)
-        for _ in range(10):
-            await asyncio.sleep(1.0)
-            if await inventory.has_project_extracted(project_name):
-                break
+    async with DATABASE.connection() as conn:
+        project = await projects.find_by_uid_and_name(conn, uid, project_name)
 
-    if not backend.exists:
+    if project is None:
         return Response(response='No such project', status=404)
 
-    inventory.touch_project(project_name)
+    backend = Backend(DATABASE, project)
 
     # noinspection PyBroadException
     try:
@@ -257,6 +260,8 @@ High level documentation and code references in the project as a starting point:
 
 @app.get("/project/<string:project_name>/search")
 async def search(project_name: str):
+    uid = ''
+
     # noinspection DuplicatedCode
     project_name = project_name.lower()
     if not RX.GUID.match(project_name):
@@ -275,23 +280,15 @@ async def search(project_name: str):
     if not path.startswith('/'):
         path = f'/{path}'
 
-    backend = Backend(DATABASE, project_name)
-    if not backend.exists:
-        url = inventory.get_project_url(project_name)
-        if not url:
-            return Response(response='No such project', status=404)
-        await backend.create(url)
-        for _ in range(10):
-            await asyncio.sleep(1.0)
-            if await inventory.has_project_extracted(project_name):
-                break
+    limit = 50 if tail or name else 10
 
-    if not backend.exists:
+    async with DATABASE.connection() as conn:
+        project = await projects.find_by_uid_and_name(conn, uid, project_name)
+
+    if project is None:
         return Response(response='No such project', status=404)
 
-    inventory.touch_project(project_name)
-
-    limit = 50 if tail or name else 10
+    backend = Backend(DATABASE, project)
 
     # noinspection PyBroadException
     try:
