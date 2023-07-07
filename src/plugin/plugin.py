@@ -11,6 +11,7 @@ from aiodebug import log_slow_callbacks
 from quart import request, Response
 
 from common.constants import C, RX
+from common.http import check_url
 from common.server import run_app
 from common.tools import tiktoken_len, new_uuid
 from logic.backend import Backend, BackendError
@@ -120,13 +121,17 @@ def validate_url(url: str) -> Union[str, Response]:
         return Response(response='Do not use an example URL directly', status=404)
 
     # Translate GitHub repo to ZIP download of main branch
-    # FIXME: Auto-detect the default branch if possible
+    # FIXME: Auto-detect the default branch if possible (other than main and master)
     # FIXME: Detect private repos at the same time and direct the user to
     #        connect account to grant access or use another way to deliver
     #        the project files to the plugin (local agent)
     m = RX_GITHUB_REPO.match(url)
     if m is not None:
         url = f"{url.rstrip('/')}/archive/refs/heads/main.zip"
+        if not check_url(url):
+            url = f"{url.rstrip('/')}/archive/refs/heads/master.zip"
+            if not check_url(url):
+                return Response(response='Please point to the downloadable ZIP file of the repository branch you want to download', status=404)
 
     # Translate GitHub codeload URLs to normal ZIP download URLs. For example:
     # https://codeload.github.com/ShiZiqiang/dual-path-RNNs-DPRNNs-based-speech-separation/zip/refs/heads/master

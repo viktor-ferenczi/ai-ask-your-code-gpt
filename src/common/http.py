@@ -103,3 +103,12 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
     print(f'Downloaded {url!r}, {size / 1048576:.3f}MB in {duration:.3f}s ({speed / 1048576:.3})MB/s')
 
     return DownloadResult(url, response_etag, size, body, checksum, duration)
+
+
+async def check_url(url: str) -> bool:
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.head(url) as response:
+                return response.status == 200
+        except aiohttp.ClientError:
+            return False
