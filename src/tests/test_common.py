@@ -3,7 +3,7 @@ import unittest
 
 from base_test_case import BaseTestCase
 from common.doc import find_common_base_dir
-from common.http import download_into_memory, NotModified, DownloadError
+from common.http import download_into_memory, NotModified, DownloadError, check_url
 
 
 class TestCommonDoc(BaseTestCase):
@@ -54,3 +54,11 @@ class TestCommonHttp(unittest.IsolatedAsyncioTestCase):
             pass
         else:
             self.fail('DownloadError was not raised')
+
+    async def test_check_url(self):
+
+        result = await check_url('https://github.com/viktor-ferenczi/dblayer/archive/refs/heads/main.zip')
+        self.assertFalse(result)
+
+        result = await check_url('https://github.com/viktor-ferenczi/dblayer/archive/refs/heads/master.zip')
+        self.assertTrue(result)

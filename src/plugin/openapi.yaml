@@ -27,12 +27,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/createResponse'
-  /project/{project}:
     delete:
       operationId: delete
       summary: Forget about a project
       parameters:
-        - in: path
+        - in: query
           name: project
           schema:
             type: string
@@ -41,12 +40,12 @@ paths:
       responses:
         "200":
           description: OK
-  /project/{project}/summarize:
+  /summarize:
     get:
       operationId: summarize
       summary: Summarize the project, a directory, a file or a code construct (class, method, function, variable)
       parameters:
-        - in: path
+        - in: query
           name: project
           schema:
             type: string
@@ -85,12 +84,12 @@ paths:
             text/plain:
               schema:
                 type: string
-  /project/{project}/search:
+  /search:
     get:
       operationId: search
       summary: Searches for documentation or a code construct (class, method, function, variable)
       parameters:
-        - in: path
+        - in: query
           name: project
           schema:
             type: string

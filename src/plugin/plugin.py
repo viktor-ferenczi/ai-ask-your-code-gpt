@@ -10,7 +10,7 @@ import quart_cors
 from aiodebug import log_slow_callbacks
 from quart import request, Response
 
-from common.constants import C, RX
+from common.constants import C
 from common.http import check_url
 from common.server import run_app
 from common.tools import tiktoken_len, new_uuid
@@ -78,7 +78,7 @@ async def create():
 
     # Validate the URL and apply workarounds as needed
     if url:
-        response = validate_url(url)
+        response = await validate_url(url)
         if isinstance(response, Response):
             return response
         url = response
@@ -109,7 +109,9 @@ async def create():
 
 
 # noinspection HttpUrlsUsage
-def validate_url(url: str) -> Union[str, Response]:
+async def validate_url(url: str) -> Union[str, Response]:
+    original_url = url
+
     url = url.strip()
     if not (url.startswith('http://') or url.startswith('https://')):
         return Response(response='The URL must start with http:// or https://', status=400)
@@ -127,10 +129,10 @@ def validate_url(url: str) -> Union[str, Response]:
     #        the project files to the plugin (local agent)
     m = RX_GITHUB_REPO.match(url)
     if m is not None:
-        url = f"{url.rstrip('/')}/archive/refs/heads/main.zip"
-        if not check_url(url):
-            url = f"{url.rstrip('/')}/archive/refs/heads/master.zip"
-            if not check_url(url):
+        url = f"{original_url.rstrip('/')}/archive/refs/heads/main.zip"
+        if not await check_url(url):
+            url = f"{original_url.rstrip('/')}/archive/refs/heads/master.zip"
+            if not await check_url(url):
                 return Response(response='Please point to the downloadable ZIP file of the repository branch you want to download', status=404)
 
     # Translate GitHub codeload URLs to normal ZIP download URLs. For example:
@@ -159,13 +161,10 @@ def validate_url(url: str) -> Union[str, Response]:
     return url
 
 
-@app.delete("/project/<string:project_name>")
-async def delete(project_name: str):
+@app.delete("/project")
+async def delete():
     uid = ''
-
-    project_name = project_name.lower()
-    if not RX.GUID.match(project_name):
-        return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
+    project_name: str = request.args.get('project', '')
 
     async with DATABASE.connection() as conn:
         project = await projects.find_by_uid_and_name(conn, uid, project_name)
@@ -190,14 +189,10 @@ async def delete(project_name: str):
     return Response(status=200)
 
 
-@app.get("/project/<string:project_name>/summarize")
-async def summarize(project_name: str):
+@app.get("/summarize")
+async def summarize():
     uid = ''
-
-    # noinspection DuplicatedCode
-    project_name = project_name.lower()
-    if not RX.GUID.match(project_name):
-        return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
+    project_name: str = request.args.get('project', '')
 
     path: str = request.args.get('path', '')
     tail: str = request.args.get('tail', '')
@@ -263,14 +258,10 @@ High level documentation and code references in the project as a starting point:
     return Response(response=json.dumps(response, indent=2), status=200)
 
 
-@app.get("/project/<string:project_name>/search")
-async def search(project_name: str):
+@app.get("/search")
+async def search():
     uid = ''
-
-    # noinspection DuplicatedCode
-    project_name = project_name.lower()
-    if not RX.GUID.match(project_name):
-        return Response(response='Invalid project_id, it must be a GUID. For more information: askyourcode.ai', status=400)
+    project_name: str = request.args.get('project', '')
 
     path: str = request.args.get('path', '')
     tail: str = request.args.get('tail', '')

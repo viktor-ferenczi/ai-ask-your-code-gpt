@@ -106,9 +106,9 @@ async def download_into_memory(url: str, *, headers: Optional[List[Dict[str, str
 
 
 async def check_url(url: str) -> bool:
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(headers=C.FAKE_BROWSER_HEADERS) as session:
         try:
-            async with session.head(url) as response:
+            async with session.get(url) as response:
                 return response.status == 200
         except aiohttp.ClientError:
             return False
