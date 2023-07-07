@@ -11,7 +11,7 @@ from common.http import download_into_memory
 from model.fragment import Fragment
 from model.hit import Hit
 from parsers.registrations import PARSERS_BY_EXTENSION
-from plugin.backend import Backend, TInfo, BackendError
+from logic.backend import Backend, TInfo, BackendError
 from storage.fragments import get_all_fragments_in_project, Fragment as DbFragment
 
 MODULE_DIR = os.path.dirname(__file__)

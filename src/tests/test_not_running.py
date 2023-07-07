@@ -1,5 +1,5 @@
 from base_database_test import BaseDatabaseTest
-from plugin.backend import Backend, TInfo
+from logic.backend import Backend, TInfo
 
 
 # class TestDownloadServerNotRunning(BaseDatabaseTest):

@@ -13,7 +13,7 @@ from quart import request, Response
 from common.constants import C, RX
 from common.server import run_app
 from common.tools import tiktoken_len, new_uuid
-from plugin.backend import Backend, BackendError
+from logic.backend import Backend, BackendError
 from storage import projects
 from storage.database import Database
 

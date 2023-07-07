@@ -7,7 +7,7 @@ from typing import List
 from base_backend_test import BaseBackendTest
 from common.constants import C
 from model.hit import Hit
-from plugin.backend import Backend, TInfo
+from logic.backend import Backend, TInfo
 from services.cleanup import cleanup
 from storage import projects
 
