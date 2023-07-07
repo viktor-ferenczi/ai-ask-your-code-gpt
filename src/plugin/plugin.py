@@ -92,7 +92,7 @@ async def create():
             project_name = new_uuid()
 
         backend = await Backend.ensure_project(DATABASE, uid, project_name)
-        info = backend.download(url) if url else dict(status='Created an empty project')
+        info = await backend.download(url) if url else dict(status='Created an empty project')
     except BackendError as e:
         return Response(response=f'{e}; Please find the FAQ, HowTo and bug-reports at askyourcode.ai', status=400)
     except Exception:
