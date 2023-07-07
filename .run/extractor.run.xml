@@ -8,7 +8,7 @@
       <env name="ENVIRONMENT" value="DEVELOPMENT" />
     </envs>
     <option name="SDK_HOME" value="" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/loader" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/services" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
