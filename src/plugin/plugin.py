@@ -22,14 +22,14 @@ MODULE_DIR = os.path.dirname(__file__)
 AI_PLUGIN_PATH = os.path.join(MODULE_DIR, 'ai-plugin.json')
 OPENAPI_YAML_PATH = os.path.join(MODULE_DIR, 'openapi.yaml')
 
-DEVELOPMENT_HTTP_PORT = 5555
 
+def modify_description_for_environment(text):
+    if C.IS_PRODUCTION:
+        return text
 
-def html_prod_to_dev(text):
-    text = text.replace('"AskYourCode"', '"AskYourCodeDev"')
-    text = text.replace('"askyourcode"', '"askyourcodedev"')
-    text = text.replace('https://askyourcode.ai/', f'http://localhost:{DEVELOPMENT_HTTP_PORT}/')
-    text = text.replace('https://plugin.askyourcode.ai', f'http://localhost:{DEVELOPMENT_HTTP_PORT}')
+    text = text.replace('"AskYourCode"', f'"{C.PLUGIN_NAME}"')
+    text = text.replace('"askyourcode"', f'"{C.PLUGIN_ID}"')
+    text = text.replace('https://plugin.askyourcode.ai', C.PLUGIN_URL)
     return text
 
 
@@ -52,8 +52,7 @@ async def logo():
 async def plugin_manifest():
     with open(AI_PLUGIN_PATH, 'rt') as f:
         text = f.read()
-    if C.DEVELOPMENT:
-        text = html_prod_to_dev(text)
+    text = modify_description_for_environment(text)
     return Response(text, mimetype="text/json", status=200)
 
 
@@ -61,8 +60,7 @@ async def plugin_manifest():
 async def openapi_spec():
     with open(OPENAPI_YAML_PATH, 'rt') as f:
         text = f.read()
-    if C.DEVELOPMENT:
-        text = html_prod_to_dev(text)
+    text = modify_description_for_environment(text)
     return Response(text, mimetype="text/yaml", status=200)
 
 
@@ -352,7 +350,7 @@ async def main():
         DATABASE = db
         try:
             await DATABASE.migrate()
-            await run_app(app, debug=C.DEVELOPMENT, host="localhost", port=DEVELOPMENT_HTTP_PORT)
+            await run_app(app, debug=C.DEVELOPMENT, host="localhost", port=C.PLUGIN_HTTP_PORT)
         finally:
             DATABASE = None
 

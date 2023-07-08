@@ -10,6 +10,12 @@ EXTRA_KILL="from multiprocessing"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME"
 
+if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
+  export HTTP_PORT=443
+else
+  export HTTP_PORT=5555
+fi
+
 CANARY="http"
 CANARY_URL="https://plugin.askyourcode.ai/"
 CANARY_TIMEOUT=10

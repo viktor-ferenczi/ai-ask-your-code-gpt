@@ -10,7 +10,11 @@ COMMAND_LINE="python -O -u downloader.py -$INSTANCE_INDEX-"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 
-export HTTP_PORT=$((41000 + INSTANCE_INDEX))
+if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
+  export HTTP_PORT=$((41000 + INSTANCE_INDEX))
+else
+  export HTTP_PORT=$((41500 + INSTANCE_INDEX))
+fi
 
 CANARY="http"
 CANARY_URL="http://127.0.0.1:$HTTP_PORT"

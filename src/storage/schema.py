@@ -1,3 +1,4 @@
+import re
 from typing import Dict
 
 VERSION = 1
@@ -204,6 +205,9 @@ create index file_path_index
 ''' + f'''
 insert into public.property (name, number) values ('Version', {VERSION});
 '''
+
+RX_ALTER_OWNER = re.compile(r'alter ([a-z]+) .*?owner to .*?;', re.IGNORECASE | re.DOTALL)
+CREATE = RX_ALTER_OWNER.subn('', CREATE)[0]
 
 MIGRATIONS: Dict[int, str] = {
     0: CREATE,

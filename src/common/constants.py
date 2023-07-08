@@ -13,11 +13,13 @@ class RX:
 class C:
     # Environments
     PRODUCTION = 'PRODUCTION'
+    STAGING = 'STAGING'
     DEVELOPMENT = 'DEVELOPMENT'
     TEST_SUITE = 'TEST_SUITE'
 
     ENVIRONMENTS = (
         PRODUCTION,
+        STAGING,
         DEVELOPMENT,
         TEST_SUITE,
     )
@@ -28,18 +30,49 @@ class C:
 
     # Environment flags
     IS_PRODUCTION = ENVIRONMENT == PRODUCTION
+    IS_STAGING = ENVIRONMENT == STAGING
     IS_DEVELOPMENT = ENVIRONMENT == DEVELOPMENT
     IS_TEST_SUITE = ENVIRONMENT == TEST_SUITE
 
     # Database
     # postgres://user:password@host:port/database
     DEFAULT_DATABASE_DSN = {
-        PRODUCTION: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode',
-        DEVELOPMENT: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode',
-        TEST_SUITE: 'postgres://askyourcode:askyourcode@127.0.0.1:5432/askyourcode_test',
+        PRODUCTION: 'postgres://askyourcode_prd:askyourcode_prd@127.0.0.1:5432/askyourcode_prd',
+        STAGING: 'postgres://askyourcode_stg:askyourcode_stg@127.0.0.1:5432/askyourcode_stg',
+        DEVELOPMENT: 'postgres://askyourcode_dev:askyourcode_dev@127.0.0.1:5432/askyourcode_dev',
+        TEST_SUITE: 'postgres://askyourcode_tst:askyourcode_tst@127.0.0.1:5432/askyourcode_tst',
     }[ENVIRONMENT]
     DATABASE_DSN = os.environ.get('DATABASE_DSN', DEFAULT_DATABASE_DSN)
     DATABASE_COMMAND_TIMEOUT = None
+
+    # Plugin
+    PLUGIN_NAME = {
+        PRODUCTION: 'AskYourCode',
+        STAGING: 'AskYourCodeStg',
+        DEVELOPMENT: 'AskYourCodeDev',
+        TEST_SUITE: 'AskYourCodeTst',
+    }[ENVIRONMENT]
+
+    PLUGIN_ID = {
+        PRODUCTION: 'askyourcode',
+        STAGING: 'askyourcodestg',
+        DEVELOPMENT: 'askyourcodedev',
+        TEST_SUITE: 'askyourcodetst',
+    }[ENVIRONMENT]
+
+    PLUGIN_URL = {
+        PRODUCTION: 'https://plugin.askyourcode.ai',
+        STAGING: 'https://plugin.askyourcode.ai',
+        DEVELOPMENT: 'http://localhost:5555',
+        TEST_SUITE: 'http://localhost:5555',
+    }[ENVIRONMENT]
+
+    PLUGIN_HTTP_PORT = {
+        PRODUCTION: 443,
+        STAGING: 5555,
+        DEVELOPMENT: 5555,
+        TEST_SUITE: 5555,
+    }[ENVIRONMENT]
 
     # Limits
 

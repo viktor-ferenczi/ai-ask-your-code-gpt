@@ -3,7 +3,11 @@
 export PYTHONPATH=$HOME/src
 export PYTHONUNBUFFERED=1
 
-export PRODUCTION=1
+if [ "$USERNAME" == "plugin" ]; then
+  export ENVIRONMENT='PRODUCTION'
+else
+  export ENVIRONMENT='STAGING'
+fi
 
 export QUERY_EMBEDDERS="http://127.0.0.1:40100"
 export STORE_EMBEDDERS="http://127.0.0.1:40200 http://127.0.0.1:40201 http://127.0.0.1:40202"
