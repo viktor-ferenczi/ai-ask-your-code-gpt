@@ -5,9 +5,11 @@ import re
 from traceback import print_exc
 from typing import Dict, Optional, Union
 
+import asyncpg
 import quart
 import quart_cors
 from aiodebug import log_slow_callbacks
+from asyncpg import Pool
 from quart import request, Response
 
 from common.constants import C
@@ -70,6 +72,8 @@ RX_GITHUB_CODELOAD = re.compile(r'https://codeload\.github\.com/(.+?)/(.+?)/zip/
 
 @app.post("/project")
 async def create():
+    await ensure_database()
+
     body: Dict[str, str] = await quart.request.get_json(force=True)
     uid: str = ''  # FIXME: Get it from PluginLab
     url: str = body.get('url', '')
@@ -161,6 +165,8 @@ async def validate_url(url: str) -> Union[str, Response]:
 
 @app.delete("/project")
 async def delete():
+    await ensure_database()
+
     uid = ''
     project_name: str = request.args.get('project', '')
 
@@ -189,6 +195,8 @@ async def delete():
 
 @app.get("/summarize")
 async def summarize():
+    await ensure_database()
+
     uid = ''
     project_name: str = request.args.get('project', '')
 
@@ -258,6 +266,8 @@ High level documentation and code references in the project as a starting point:
 
 @app.get("/search")
 async def search():
+    await ensure_database()
+
     uid = ''
     project_name: str = request.args.get('project', '')
 
@@ -342,6 +352,18 @@ async def search():
         response['info'] = info
 
     return Response(response=json.dumps(response, indent=2), status=200)
+
+
+async def ensure_database():
+    global DATABASE
+    if DATABASE is not None:
+        return
+
+    # This happens only if run by hypercorn on server
+    pool: Pool = asyncpg.create_pool(C.DATABASE_DSN, command_timeout=C.DATABASE_COMMAND_TIMEOUT, min_size=1, max_size=20)
+    await pool._async__init__()
+    DATABASE = Database(pool)
+    # No cleanup is required, the process will just be terminated
 
 
 async def main():
