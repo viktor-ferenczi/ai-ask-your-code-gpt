@@ -15,8 +15,6 @@ PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/u
 # Cleanup
 # mm hh         dom mon dow command
 07 07            *   *   *  /bin/bash $HOME/bin/cleanup_logs.sh >>$HOME/log/cleanup_logs.log 2>&1
-# FIXME: Call database garbage collection, also remove cached archives when deleted from DB
-#12  *            *   *   *  /bin/bash $HOME/bin/cleanup_projects.sh >>$HOME/log/cleanup_projects.log 2>&1
 
 # Backup
 # mm hh         dom mon dow command
