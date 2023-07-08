@@ -5,8 +5,8 @@ TITLE="Downloader-$INSTANCE_INDEX"
 
 INSTANCE_COUNT=4
 
-WORKING_DIR="$HOME/src/downloader"
-COMMAND_LINE="python -O -u downloader.py -$INSTANCE_INDEX-"
+WORKING_DIR="$HOME/src/services"
+COMMAND_LINE="/usr/bin/python -O -u downloader.py -$INSTANCE_INDEX-"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 

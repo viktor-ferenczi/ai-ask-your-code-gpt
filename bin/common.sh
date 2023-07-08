@@ -3,7 +3,7 @@
 export PYTHONPATH=$HOME/src
 export PYTHONUNBUFFERED=1
 
-if [ "$USERNAME" == "plugin" ]; then
+if [ "$USER" == "plugin" ]; then
   export ENVIRONMENT="PRODUCTION"
 else
   export ENVIRONMENT="STAGING"

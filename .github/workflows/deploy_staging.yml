@@ -1,0 +1,52 @@
+name: Deployment to staging
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add remote SSH server to known hosts
+        run: |
+          echo "|1|80IiOCI3xLHTRJJq2kg+sIG89rI=|U7Td2SptKuTM3zPCTf+S6IbSXig= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF+h6VgQQ0gm4sTpTWaln2SJhKXCAu9mgHUqAVVeRrz2rVLA35j7286e16/RTtsa5VMjSvIHkl8jTuDYiEUGqaM=" >> ~/.ssh/known_hosts
+
+      - name: Disable crontab
+        run: |
+          ssh staging@plugin.askyourcode.ai "crontab -r || true"
+
+      - name: Stop server
+        run: |
+          ssh staging@plugin.askyourcode.ai "bash ~/bin/stop.sh"
+
+      - name: Deploy scripts and code
+        run: |
+          ssh staging@plugin.askyourcode.ai "mkdir -p ~/bin ~/src"
+          rsync -av --delete-after bin/ staging@plugin.askyourcode.ai:~/bin/
+          rsync -av --delete-after src/ staging@plugin.askyourcode.ai:~/src/
+
+      - name: Create log folder, fix access rights
+        run: |
+          ssh staging@plugin.askyourcode.ai "mkdir -p ~/log; chmod +x ~/bin/*.sh"
+
+      - name: Migrate database
+        run: |
+          ssh staging@plugin.askyourcode.ai "bash ~/bin/migrate.sh"
+
+      - name: Start server
+        run: |
+          ssh staging@plugin.askyourcode.ai "bash ~/bin/start.sh"
+
+      - name: Enable crontab
+        run: |
+          ssh staging@plugin.askyourcode.ai "crontab ~/bin/crontab"

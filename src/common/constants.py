@@ -62,7 +62,7 @@ class C:
 
     PLUGIN_URL = {
         PRODUCTION: 'https://plugin.askyourcode.ai',
-        STAGING: 'https://plugin.askyourcode.ai',
+        STAGING: 'http://localhost:55555',
         DEVELOPMENT: 'http://localhost:5555',
         TEST_SUITE: 'http://localhost:5555',
     }[ENVIRONMENT]
@@ -101,13 +101,14 @@ class C:
     # Cleanup
     FIRST_CLEANUP_DELAY: int = 77  # s
     CLEANUP_PERIOD: int = 777  # s
-    CLEANUP_MAX_PROJECTS = 100  # maximum number of projects to cleanup per iteration
+    CLEANUP_MAX_PROJECTS = 100  # maximum number of projects to clean up per iteration
 
     # Dirs
     SRC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     DATA_DIR = os.path.normpath(os.environ.get('DATA_DIR', os.path.expanduser('~/.askyourcode')))
     ARCHIVE_SUBDIR_NAME = {
         PRODUCTION: 'archive',
+        STAGING: 'archive-stg',
         DEVELOPMENT: 'archive-dev',
         TEST_SUITE: 'archive-test',
     }[ENVIRONMENT]

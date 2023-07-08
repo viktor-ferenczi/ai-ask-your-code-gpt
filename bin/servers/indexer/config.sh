@@ -5,8 +5,8 @@ TITLE="Indexer-$INSTANCE_INDEX"
 
 INSTANCE_COUNT=16
 
-WORKING_DIR="$HOME/src/indexer"
-COMMAND_LINE="python -O -u indexer.py -$INSTANCE_INDEX-"
+WORKING_DIR="$HOME/src/services"
+COMMAND_LINE="/usr/bin/python -O -u indexer.py -$INSTANCE_INDEX-"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 

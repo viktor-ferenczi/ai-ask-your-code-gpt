@@ -19,7 +19,7 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
   . $CONFIG_DIR/config.sh
 
   if ! check_process "$COMMAND_LINE"; then
-    echo "$TITLE: Not running"
+    echo "$TITLE: Already stopped"
     continue
   fi
 

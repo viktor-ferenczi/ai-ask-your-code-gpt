@@ -3,10 +3,10 @@
 NAME="cleanup-$INSTANCE_INDEX"
 TITLE="Cleanup-$INSTANCE_INDEX"
 
-INSTANCE_COUNT=16
+INSTANCE_COUNT=1
 
-WORKING_DIR="$HOME/src/cleanup"
-COMMAND_LINE="python -O -u cleanup.py -$INSTANCE_INDEX-"
+WORKING_DIR="$HOME/src/services"
+COMMAND_LINE="/usr/bin/python -O -u cleanup.py -$INSTANCE_INDEX-"
 
 LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
 

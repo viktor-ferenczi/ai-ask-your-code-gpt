@@ -21,7 +21,7 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
   if check_process "$COMMAND_LINE"; then
     echo "$TITLE: Running"
   else
-    echo "$TITLE: Not running"
+    echo "$TITLE: Stopped"
   fi
 
 done
