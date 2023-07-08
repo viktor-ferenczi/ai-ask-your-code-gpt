@@ -24,5 +24,5 @@ def timer(prefix='', *, count: int = None, unit: str = None, stats: Dict[str, an
         if frequency is not None:
             stats['frequency'] = frequency
 
-    if minimum is None or duration >= minimum:
+    if show and (minimum is None or duration >= minimum):
         print(f'{prefix} in {duration:.3f}s{frequency_text}')
