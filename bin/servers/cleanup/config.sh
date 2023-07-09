@@ -8,8 +8,6 @@ INSTANCE_COUNT=1
 WORKING_DIR="$HOME/src/services"
 COMMAND_LINE="/usr/bin/python -O -u cleanup.py -$INSTANCE_INDEX-"
 
-LOG_PATH_BASENAME="$HOME/log/$NAME-$INSTANCE_INDEX"
-
 if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
   export HTTP_PORT=$((44000 + INSTANCE_INDEX))
 else

@@ -24,7 +24,7 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
   fi
 
   TODAY=$(date -I)
-  LOG_PATH="${LOG_PATH_BASENAME}.${TODAY}.log"
+  LOG_PATH="${HOME}/log/${NAME}.${TODAY}.log"
 
   cd "$WORKING_DIR"
   if ($WRAPPER nohup $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &); then
