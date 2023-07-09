@@ -27,7 +27,7 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
   fi
 
   if [ -n "$EXTRA_KILL" ]; then
-      pkill -9 -u $UID -f "$EXTRA_KILL"
+      pkill -9 -u $UID -f "$EXTRA_KILL" || true
   fi
 
 done

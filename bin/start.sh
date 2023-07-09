@@ -27,8 +27,8 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
   LOG_PATH="${HOME}/log/${NAME}.${TODAY}.log"
 
   cd "$WORKING_DIR"
-  if ($WRAPPER nohup $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &); then
-    echo "$TITLE: Started"
+  if ($WRAPPER nohup $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &) then
+    echo "$TITLE: Started [$HTTP_PORT]"
   else
     echo "$TITLE: Failed to start"
     exit 1
