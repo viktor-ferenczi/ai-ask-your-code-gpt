@@ -5,8 +5,10 @@ export PYTHONUNBUFFERED=1
 
 if [ "$USER" == "plugin" ]; then
   export ENVIRONMENT="PRODUCTION"
+  export HTTP_PORT_OFFSET=0
 else
   export ENVIRONMENT="STAGING"
+  export HTTP_PORT_OFFSET=500
 fi
 
 if [ -f ~/.askyourcode/config.sh ]; then

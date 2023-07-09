@@ -8,11 +8,7 @@ INSTANCE_COUNT=4
 WORKING_DIR="$HOME/src/services"
 COMMAND_LINE="/usr/bin/python -O -u extractor.py -$INSTANCE_INDEX-"
 
-if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
-  export HTTP_PORT=$((42000 + INSTANCE_INDEX))
-else
-  export HTTP_PORT=$((42500 + INSTANCE_INDEX))
-fi
+export HTTP_PORT=$((42000 + HTTP_PORT_OFFSET + INSTANCE_INDEX))
 
 CANARY="http"
 CANARY_URL="http://127.0.0.1:$HTTP_PORT"
