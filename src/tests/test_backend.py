@@ -42,8 +42,8 @@ class TestBackend(BaseBackendTest):
 
     async def actual_test(self):
         await self.download_error()
-        await self.small_project()
-        await self.small_project()
+        await self.small_project('small_project_1')
+        await self.small_project('small_project_2')
         await self.medium_project()
         await self.cleanup_projects()
 
@@ -55,8 +55,8 @@ class TestBackend(BaseBackendTest):
         self.assertTrue('hint' in info)
         await self.scheduler.delete_all_tasks()
 
-    async def small_project(self):
-        backend = await Backend.ensure_project(self.db, 'tester', 'small_project')
+    async def small_project(self, project_name):
+        backend = await Backend.ensure_project(self.db, 'tester', project_name)
         info: TInfo = await backend.download('http://127.0.0.1:49000/test.zip', timeout=2.0)
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])

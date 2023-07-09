@@ -123,9 +123,9 @@ async def get_all_fragments_in_project(conn: Connection, project_id: int) -> Lis
 
 async def search_in_project_by_path_tail_name(conn: Connection, project_id: int, path: str, tail: str, name: str, limit: int = 1) -> List[Tuple[str, Fragment]]:
     if name:
-        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
     else:
-        order_by = 'f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+        order_by = 'f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
 
     return [
         (row['path'], Fragment.from_row(row))
@@ -145,9 +145,9 @@ async def search_in_project_by_path_tail_name(conn: Connection, project_id: int,
 
 async def search_in_project_by_path_tail_name_unlimited(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Tuple[str, Fragment]]:
     if name:
-        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
     else:
-        order_by = 'f.depth, f.path, c.lineno, c.id, c.category, c.summary'
+        order_by = 'f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
 
     return [
         (row['path'], Fragment.from_row(row))
@@ -168,7 +168,7 @@ async def list_project_fragments_by_id(conn: Connection, project_id: int, ids: L
     if not ids:
         return []
 
-    placeholders = ','.join(f'${1 + i}' for i in range(len(ids)))
+    placeholders = ','.join(f'${2 + i}' for i in range(len(ids)))
     fragments = [
         (row['path'], Fragment.from_row(row))
         for row in await conn.fetch(f'''
