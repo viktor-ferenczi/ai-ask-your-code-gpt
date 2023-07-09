@@ -8,11 +8,7 @@ INSTANCE_COUNT=1
 WORKING_DIR="$HOME/src/services"
 COMMAND_LINE="/usr/bin/python -O -u cleanup.py -$INSTANCE_INDEX-"
 
-if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
-  export HTTP_PORT=$((44000 + INSTANCE_INDEX))
-else
-  export HTTP_PORT=$((44500 + INSTANCE_INDEX))
-fi
+export HTTP_PORT=$((44000 + HTTP_PORT_OFFSET + INSTANCE_INDEX))
 
 CANARY="http"
 CANARY_URL="http://127.0.0.1:$HTTP_PORT"
