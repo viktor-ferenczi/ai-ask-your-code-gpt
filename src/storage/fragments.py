@@ -188,3 +188,11 @@ async def list_all_fragments(conn: Connection) -> List[Fragment]:
         for row in await conn.fetch(f'''SELECT * FROM fragment ORDER BY id''')
     ]
     return fragments
+
+
+def delete_by_document_cs(conn, checksum):
+    conn.execute('''
+        DELETE FROM fragment 
+        WHERE partition_key = $1 
+          AND document_cs = $2
+    ''', checksum[:2], checksum)

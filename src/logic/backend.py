@@ -210,7 +210,7 @@ class Backend:
         if not fragments:
             return
 
-        fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno))
+        fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno, fragment.depth))
 
         min_slash_count = path_query.rstrip('/').count('/')
 
