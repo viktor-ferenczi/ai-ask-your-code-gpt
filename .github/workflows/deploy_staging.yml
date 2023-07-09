@@ -27,7 +27,7 @@ jobs:
 
       - name: Stop server
         run: |
-          ssh staging@plugin.askyourcode.ai "bash ~/bin/stop.sh"
+          ssh staging@plugin.askyourcode.ai "bash ~/bin/stop.sh || true"
 
       - name: Deploy scripts and code
         run: |
