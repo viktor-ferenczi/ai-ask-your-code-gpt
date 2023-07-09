@@ -8,8 +8,6 @@ COMMAND_LINE="$HOME/.local/bin/hypercorn --config hypercorn.toml plugin:app"
 WRAPPER="/usr/bin/authbind --deep"
 EXTRA_KILL="from multiprocessing"
 
-LOG_PATH_BASENAME="$HOME/log/$NAME"
-
 if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
   export HTTP_PORT=443
   cp "$HOME/src/plugin/hypercorn.prd.toml" "$HOME/src/plugin/hypercorn.toml"
