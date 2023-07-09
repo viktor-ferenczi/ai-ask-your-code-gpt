@@ -6,48 +6,77 @@ from quart import Quart
 
 from common.constants import C
 from common.server import run_app
+from storage import files, documents, fragments
 from storage.database import Database
 
 
 async def cleanup(db: Database):
-    async with db.transaction() as conn:
-        for row in await conn.fetch("""
-                SELECT id
-                FROM project
-                WHERE accessed < $1
-                ORDER BY accessed
-                LIMIT $2
-                FOR UPDATE SKIP LOCKED
-            """, datetime.utcnow() - C.PROJECT_EXPIRATION_INTERVAL, C.CLEANUP_MAX_PROJECTS):
-            project_id = row['id']
+    print(f'{datetime.utcnow().isoformat()}: Cleanup')
 
+    async with db.transaction() as conn:
+        project_ids = [
+            row['id']
+            for row in await conn.fetch("""
+                    SELECT id
+                    FROM project
+                    WHERE accessed < $1
+                    ORDER BY accessed
+                    LIMIT $2
+                    FOR UPDATE SKIP LOCKED
+                """, datetime.utcnow() - C.PROJECT_EXPIRATION_INTERVAL, C.CLEANUP_MAX_PROJECTS)
+        ]
+
+        for project_id in project_ids:
             await conn.execute("""
-                DELETE FROM project
-                WHERE id = $1
-            """, project_id)
+                    DELETE FROM project
+                    WHERE id = $1
+                """, project_id)
+
+    if project_ids:
+        print(f'Deleted {len(project_ids)} projects')
 
     async with db.transaction() as conn:
-        await conn.execute("""
-            DELETE FROM file
-            WHERE project_id NOT IN (SELECT DISTINCT id FROM project);
-        """)
+        file_count = await files.count(conn)
+        document_count = await documents.count(conn)
+        fragment_count = await fragments.count(conn)
 
         await conn.execute("""
-            DELETE FROM document
-            WHERE checksum NOT IN (SELECT DISTINCT document_cs FROM file);
-        """)
+                DELETE FROM file
+                WHERE project_id NOT IN (SELECT DISTINCT id FROM project);
+            """)
 
         await conn.execute("""
-            DELETE FROM fragment
-            WHERE document_cs NOT IN (SELECT checksum FROM document);
-        """)
+                DELETE FROM document
+                WHERE checksum NOT IN (SELECT DISTINCT document_cs FROM file);
+            """)
+
+        await conn.execute("""
+                DELETE FROM fragment
+                WHERE document_cs NOT IN (SELECT checksum FROM document);
+            """)
+
+        deleted_file_count = await files.count(conn) - file_count
+        deleted_document_count = await documents.count(conn) - document_count
+        deleted_fragment_count = await fragments.count(conn) - fragment_count
+
+    if deleted_file_count or deleted_document_count or deleted_fragment_count:
+        print(f'Deleted {deleted_file_count} files, {deleted_document_count} documents, {deleted_fragment_count} fragments')
 
     async with db.transaction() as conn:
+        task_count = await conn.fetchval('SELECT COUNT(*) FROM task')
+
         await conn.execute("""
-            DELETE FROM task
-            WHERE state = 'completed'
-              AND finished < $1;
-        """, datetime.utcnow() - timedelta(days=3))
+                DELETE FROM task
+                WHERE state = 'completed'
+                  AND finished < $1;
+            """, datetime.utcnow() - timedelta(days=3))
+
+        deleted_task_count = await conn.fetchval('SELECT COUNT(*) FROM task') - task_count
+
+    if deleted_task_count:
+        print(f'Deleted {deleted_task_count} tasks')
+
+    print()
 
 
 async def worker():
