@@ -99,7 +99,7 @@ class C:
     PROJECT_EXPIRATION_INTERVAL = timedelta(days=1) + PROJECT_ACCESS_UPDATE_INTERVAL
 
     # Cleanup
-    FIRST_CLEANUP_DELAY: int = 77  # s
+    FIRST_CLEANUP_DELAY: int = 17  # s
     CLEANUP_PERIOD: int = 777  # s
     CLEANUP_MAX_PROJECTS = 100  # maximum number of projects to clean up per iteration
 

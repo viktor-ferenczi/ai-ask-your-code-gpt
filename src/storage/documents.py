@@ -78,3 +78,7 @@ async def find_many_by_checksums(conn: Connection, checksums: List[str]) -> List
             partition_keys, checksums
         )
     ]
+
+
+async def count(conn: Connection) -> int:
+    return await conn.fetchval('SELECT COUNT(*) FROM document')

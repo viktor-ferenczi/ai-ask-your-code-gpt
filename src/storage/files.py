@@ -47,3 +47,7 @@ async def find(conn: Connection, id: int) -> Optional[File]:
     if row is None:
         return None
     return File.from_row(row)
+
+
+async def count(conn: Connection) -> int:
+    return await conn.fetchval('''SELECT COUNT(*) FROM file''')
