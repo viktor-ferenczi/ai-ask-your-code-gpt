@@ -180,7 +180,7 @@ class TestRepos(BaseBackendTest):
 
         async with self.db.connection() as conn:
             fragments: List[DbFragment] = await get_all_fragments_in_project(conn, backend.project.id)
-        fragments.sort(key=lambda f: (f.document_cs, f.lineno, f.id, f.category, f.summary))
+        fragments.sort(key=lambda f: (f.document_cs, f.lineno, f.id, f.category, f.summary, f.depth))
         normalize_fragments(fragments)
         actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
         self.verify('all-fragments', actual)

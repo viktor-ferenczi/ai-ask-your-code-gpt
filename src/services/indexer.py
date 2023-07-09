@@ -42,9 +42,13 @@ async def index_batch(db: Database, checksums: List[str], paths: List[str]) -> T
             frags.extend(index_document(document, path_map[document.checksum]))
             await asyncio.sleep(0)
 
-    with timer(f'Stored {len(frags)} fragments of {len(docs)} documents'):
-        async with db.transaction() as conn:
-            await fragments.insert_many(conn, frags)
+    if frags:
+        with timer(f'Stored {len(frags)} fragments of {len(docs)} documents'):
+            async with db.transaction() as conn:
+                # FIXME: Delete with a single query
+                for checksum in checksums:
+                    fragments.delete_by_document_cs(conn, checksum)
+                await fragments.insert_many(conn, frags)
 
     return None
 
