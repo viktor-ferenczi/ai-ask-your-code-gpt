@@ -11,20 +11,20 @@ File extensions: .md
 
 Relevant subdirectories:
   OOP2_Lab6: 100%
-  OOP1-Lab4: 94%
-  OOP1-Lab9: 82%
-  OOP1-Lab3: 76%
-  OOP1-Lab8: 70%
-  OOP2_Lab2: 47%
-  OOP2_Lab3: 41%
-  OOP2_Lab1: 35%
-  OOP2_Lab4: 35%
-  OOP2_Lab8: 35%
-  OOP2_Lab9: 29%
-  OOP2_Lab5: 23%
-  OOP1-Lab1: 11%
-  OOP1-Lab2: 11%
-  OOP1-Lab5: 11%
-  OOP1-Lab6: 11%
-  OOP1-Lab7: 11%
-  OOP2_Lab10: 11%
+  OOP2_Lab2: 71%
+  OOP2_Lab1: 57%
+  OOP2_Lab3: 57%
+  OOP2_Lab4: 57%
+  OOP2_Lab8: 57%
+  OOP1-Lab3: 42%
+  OOP1-Lab4: 42%
+  OOP1-Lab8: 42%
+  OOP1-Lab9: 42%
+  OOP2_Lab5: 42%
+  OOP2_Lab9: 42%
+  OOP1-Lab1: 28%
+  OOP1-Lab2: 28%
+  OOP1-Lab5: 28%
+  OOP1-Lab6: 28%
+  OOP1-Lab7: 28%
+  OOP2_Lab10: 28%

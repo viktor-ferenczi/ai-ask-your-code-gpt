@@ -1574,6 +1574,17 @@ Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429
 Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
          id=71,
          lineno=21,
+         tokens=14,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='squeeze',
+         body='squeeze(Graph* graph, const TensorHandle input, int outChannels)')
+
+Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
+         id=72,
+         lineno=21,
          tokens=70,
          depth=1,
          parent_id=None,
@@ -1589,30 +1600,7 @@ Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429
               '}')
 
 Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
-         id=72,
-         lineno=21,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='squeeze',
-         body='squeeze(Graph* graph, const TensorHandle input, int outChannels)')
-
-Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
          id=73,
-         lineno=26,
-         tokens=15,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='fit',
-         body='fit(Graph* graph, const TensorHandle current, const '
-              'TensorHandle input)')
-
-Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
-         id=74,
          lineno=26,
          tokens=106,
          depth=1,
@@ -1630,6 +1618,18 @@ Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429
               '  return graph->conv2d(input, weight, 2, 2, PD_MODE_SAME, '
               'AC_MODE_RELU);\n'
               '}')
+
+Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
+         id=74,
+         lineno=26,
+         tokens=15,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='fit',
+         body='fit(Graph* graph, const TensorHandle current, const '
+              'TensorHandle input)')
 
 Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
          id=75,
@@ -1657,20 +1657,6 @@ Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429
 Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
          id=76,
          lineno=34,
-         tokens=47,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='separable_conv',
-         body='separable_conv(Graph* graph, const TensorHandle input, int '
-              'outChannels,\n'
-              '    int kernelH, int kernelW, int strideH, int strideW,\n'
-              '    PaddingMode padding, ActiMode activation = AC_MODE_NONE)')
-
-Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
-         id=77,
-         lineno=34,
          tokens=169,
          depth=1,
          parent_id=None,
@@ -1690,6 +1676,20 @@ Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429
               '1, 1 });\n'
               '  return graph->conv2d(t, w2, 1, 1, PD_MODE_SAME, activation);\n'
               '}')
+
+Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
+         id=77,
+         lineno=34,
+         tokens=47,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='separable_conv',
+         body='separable_conv(Graph* graph, const TensorHandle input, int '
+              'outChannels,\n'
+              '    int kernelH, int kernelW, int strideH, int strideW,\n'
+              '    PaddingMode padding, ActiMode activation = AC_MODE_NONE)')
 
 Fragment(document_cs='0774fb4202d0689f9f6cb82503eb2105ee2d2d4ff02595d97b778c4429dcfb53',
          id=78,
@@ -3476,6 +3476,18 @@ Fragment(document_cs='092990d6852c84f7ccfe18ea34ad1e5504907b8c2a91053ed1c308acf5
 Fragment(document_cs='092990d6852c84f7ccfe18ea34ad1e5504907b8c2a91053ed1c308acf55e2c45',
          id=164,
          lineno=287,
+         tokens=21,
+         depth=6,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='Tensor',
+         body='Tensor(int ndim, const int* dims, size_t guid, DATATYPE* data = '
+              'NULL)')
+
+Fragment(document_cs='092990d6852c84f7ccfe18ea34ad1e5504907b8c2a91053ed1c308acf55e2c45',
+         id=165,
+         lineno=287,
          tokens=120,
          depth=5,
          parent_id=None,
@@ -3495,18 +3507,6 @@ Fragment(document_cs='092990d6852c84f7ccfe18ea34ad1e5504907b8c2a91053ed1c308acf5
               '      split[i]  = SplitInfo::NO_SPLIT;\n'
               '    }\n'
               '  }')
-
-Fragment(document_cs='092990d6852c84f7ccfe18ea34ad1e5504907b8c2a91053ed1c308acf55e2c45',
-         id=165,
-         lineno=287,
-         tokens=21,
-         depth=6,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='Tensor',
-         body='Tensor(int ndim, const int* dims, size_t guid, DATATYPE* data = '
-              'NULL)')
 
 Fragment(document_cs='092990d6852c84f7ccfe18ea34ad1e5504907b8c2a91053ed1c308acf55e2c45',
          id=166,
@@ -13751,17 +13751,6 @@ Fragment(document_cs='22aed641dba4058e8ce057c1f071f21c88d5e9e3cb08c3cf3608c97902
 Fragment(document_cs='22aed641dba4058e8ce057c1f071f21c88d5e9e3cb08c3cf3608c97902e0b6d6',
          id=746,
          lineno=7,
-         tokens=18,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='CUDA_KERNEL_LOOP',
-         body='CUDA_KERNEL_LOOP(i, size)\n  {\n    ptr[i] = value;\n  }')
-
-Fragment(document_cs='22aed641dba4058e8ce057c1f071f21c88d5e9e3cb08c3cf3608c97902e0b6d6',
-         id=747,
-         lineno=7,
          tokens=7,
          depth=3,
          parent_id=None,
@@ -13769,6 +13758,17 @@ Fragment(document_cs='22aed641dba4058e8ce057c1f071f21c88d5e9e3cb08c3cf3608c97902
          summary=False,
          name='CUDA_KERNEL_LOOP',
          body='CUDA_KERNEL_LOOP(i, size)')
+
+Fragment(document_cs='22aed641dba4058e8ce057c1f071f21c88d5e9e3cb08c3cf3608c97902e0b6d6',
+         id=747,
+         lineno=7,
+         tokens=18,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='CUDA_KERNEL_LOOP',
+         body='CUDA_KERNEL_LOOP(i, size)\n  {\n    ptr[i] = value;\n  }')
 
 Fragment(document_cs='22aed641dba4058e8ce057c1f071f21c88d5e9e3cb08c3cf3608c97902e0b6d6',
          id=748,
@@ -14820,20 +14820,6 @@ Fragment(document_cs='25df49717512646b9b1cb5fb49dc96c2f89734d382309150e46474bc58
 Fragment(document_cs='25df49717512646b9b1cb5fb49dc96c2f89734d382309150e46474bc5809b5f6',
          id=802,
          lineno=75,
-         tokens=46,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='create_net',
-         body='create_net(ElementWiseUnary* unary, DNNLNet& net, engine& eng, '
-              'stream& strm,\n'
-              '    memory& inputMem, memory& outputMem,\n'
-              '    void* inputPtr, void* outputPtr)')
-
-Fragment(document_cs='25df49717512646b9b1cb5fb49dc96c2f89734d382309150e46474bc5809b5f6',
-         id=803,
-         lineno=75,
          tokens=374,
          depth=0,
          parent_id=None,
@@ -14885,6 +14871,20 @@ Fragment(document_cs='25df49717512646b9b1cb5fb49dc96c2f89734d382309150e46474bc58
               '    // No preprocessing for our customized kernel\n'
               '  }\n'
               '}')
+
+Fragment(document_cs='25df49717512646b9b1cb5fb49dc96c2f89734d382309150e46474bc5809b5f6',
+         id=803,
+         lineno=75,
+         tokens=46,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='create_net',
+         body='create_net(ElementWiseUnary* unary, DNNLNet& net, engine& eng, '
+              'stream& strm,\n'
+              '    memory& inputMem, memory& outputMem,\n'
+              '    void* inputPtr, void* outputPtr)')
 
 Fragment(document_cs='25df49717512646b9b1cb5fb49dc96c2f89734d382309150e46474bc5809b5f6',
          id=804,
@@ -28810,17 +28810,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1515,
          lineno=29,
-         tokens=5,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='relu_function',
-         body='relu_function(TYPE input)')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1516,
-         lineno=29,
          tokens=22,
          depth=0,
          parent_id=None,
@@ -28831,6 +28820,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '{\n'
               '  return input * (input + 1) + 1;\n'
               '}')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1516,
+         lineno=29,
+         tokens=5,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='relu_function',
+         body='relu_function(TYPE input)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1517,
@@ -29863,17 +29863,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1559,
          lineno=278,
-         tokens=5,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='ScalarMulTemp',
-         body='ScalarMulTemp(void)')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1560,
-         lineno=278,
          tokens=20,
          depth=2,
          parent_id=None,
@@ -29881,6 +29870,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
          summary=False,
          name='ScalarMulTemp',
          body='ScalarMulTemp(void)\n  : OpTemp(2, 1, OP_MUL)\n  {}')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1560,
+         lineno=278,
+         tokens=5,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='ScalarMulTemp',
+         body='ScalarMulTemp(void)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1561,
@@ -30341,6 +30341,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1581,
          lineno=397,
+         tokens=13,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='ConstantPoolTemp',
+         body='ConstantPoolTemp(int _ndim, const int* dims)')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1582,
+         lineno=397,
          tokens=40,
          depth=2,
          parent_id=None,
@@ -30352,17 +30363,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '  {\n'
               '    assert(_ndim == 4);\n'
               '  }')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1582,
-         lineno=397,
-         tokens=13,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='ConstantPoolTemp',
-         body='ConstantPoolTemp(int _ndim, const int* dims)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1583,
@@ -30606,6 +30606,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1593,
          lineno=459,
+         tokens=14,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='ConstantIMMTemp',
+         body='ConstantIMMTemp(int _ndim, const int* dims)')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1594,
+         lineno=459,
          tokens=53,
          depth=2,
          parent_id=None,
@@ -30618,17 +30629,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '    assert(_ndim == 2);\n'
               '    assert(dims[0] == dims[1]);\n'
               '  }')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1594,
-         lineno=459,
-         tokens=14,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='ConstantIMMTemp',
-         body='ConstantIMMTemp(int _ndim, const int* dims)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1595,
@@ -30730,6 +30730,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1599,
          lineno=488,
+         tokens=13,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='ConstantOneTemp',
+         body='ConstantOneTemp(int _ndim, const int* dims)')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1600,
+         lineno=488,
          tokens=40,
          depth=2,
          parent_id=None,
@@ -30741,17 +30752,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '  {\n'
               '    assert(_ndim == 4);\n'
               '  }')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1600,
-         lineno=488,
-         tokens=13,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='ConstantOneTemp',
-         body='ConstantOneTemp(int _ndim, const int* dims)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1601,
@@ -30931,6 +30931,19 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1605,
          lineno=515,
+         tokens=35,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='Conv2DTemp',
+         body='Conv2DTemp(int _kernelH, int _kernelW,\n'
+              '             int _strideH, int _strideW,\n'
+              '             bool _samePad, bool _relu)')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1606,
+         lineno=515,
          tokens=87,
          depth=2,
          parent_id=None,
@@ -30945,19 +30958,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '    strideH(_strideH), strideW(_strideW), samePad(_samePad), '
               'relu(_relu)\n'
               '  {}')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1606,
-         lineno=515,
-         tokens=35,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='Conv2DTemp',
-         body='Conv2DTemp(int _kernelH, int _kernelW,\n'
-              '             int _strideH, int _strideW,\n'
-              '             bool _samePad, bool _relu)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1607,
@@ -32712,17 +32712,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1679,
          lineno=961,
-         tokens=14,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='ConcatTemp',
-         body='ConcatTemp(int n, int _numDim, int _axis)')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1680,
-         lineno=961,
          tokens=40,
          depth=2,
          parent_id=None,
@@ -32732,6 +32721,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
          body='ConcatTemp(int n, int _numDim, int _axis)\n'
               '  : OpTemp(n, 1, OP_CONCAT), myNumDim(_numDim), axis(_axis)\n'
               '  {}')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1680,
+         lineno=961,
+         tokens=14,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='ConcatTemp',
+         body='ConcatTemp(int n, int _numDim, int _axis)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1681,
@@ -34521,6 +34521,18 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1756,
          lineno=1505,
+         tokens=46,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='init_tensor_temp',
+         body='init_tensor_temp(TensorTemp& tt, std::string name, int opIdx, '
+              'int tsIdx, int n = 0, int c = 0, int h = 0, int w = 0)')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1757,
+         lineno=1505,
          tokens=331,
          depth=0,
          parent_id=None,
@@ -34553,18 +34565,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '    //tt.data[i] = (std::rand() % 2000 - 1000);\n'
               '    tt.data[i] = std::rand() - RAND_MAX / 2;\n'
               '}')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1757,
-         lineno=1505,
-         tokens=46,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='init_tensor_temp',
-         body='init_tensor_temp(TensorTemp& tt, std::string name, int opIdx, '
-              'int tsIdx, int n = 0, int c = 0, int h = 0, int w = 0)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1758,
@@ -34626,6 +34626,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1761,
          lineno=1527,
+         tokens=8,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='init_graph_temp',
+         body='init_graph_temp(GraphTemp& graph)')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1762,
+         lineno=1527,
          tokens=19,
          depth=0,
          parent_id=None,
@@ -34638,30 +34649,7 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '}')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1762,
-         lineno=1527,
-         tokens=8,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='init_graph_temp',
-         body='init_graph_temp(GraphTemp& graph)')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1763,
-         lineno=1532,
-         tokens=19,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='pb_fill_parameter',
-         body='pb_fill_parameter(int key, int value,\n'
-              '                       GraphSubst::Operator* pbOp)')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1764,
          lineno=1532,
          tokens=51,
          depth=0,
@@ -34676,6 +34664,18 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '  para->set_key(key);\n'
               '  para->set_value(value);\n'
               '}')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1764,
+         lineno=1532,
+         tokens=19,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='pb_fill_parameter',
+         body='pb_fill_parameter(int key, int value,\n'
+              '                       GraphSubst::Operator* pbOp)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1765,
@@ -35174,17 +35174,6 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1783,
          lineno=1676,
-         tokens=8,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='main',
-         body='main(int argc, char **argv)')
-
-Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
-         id=1784,
-         lineno=1676,
          tokens=3055,
          depth=0,
          parent_id=None,
@@ -35434,6 +35423,17 @@ Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb8
               '=====================\\n", count);\n'
               '  return 0;\n'
               '}')
+
+Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
+         id=1784,
+         lineno=1676,
+         tokens=8,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='main',
+         body='main(int argc, char **argv)')
 
 Fragment(document_cs='4654187488dd3d6dcc6118c9543ab8bd53f0aac6a680373d1d71564bb81ae569',
          id=1785,
@@ -36467,19 +36467,6 @@ Fragment(document_cs='4a91da6b2f602ead41bbc5858c0c11102cce56efde93c8ef4a3e4f20d9
 Fragment(document_cs='4a91da6b2f602ead41bbc5858c0c11102cce56efde93c8ef4a3e4f20d9e754b2',
          id=1843,
          lineno=21,
-         tokens=34,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='merge_gconv_kernel',
-         body='merge_gconv_kernel(DATATYPE* dstPtr, const DATATYPE* srcPtr, '
-              'int volume,\n'
-              '    int cInHW, int cOut, int count)')
-
-Fragment(document_cs='4a91da6b2f602ead41bbc5858c0c11102cce56efde93c8ef4a3e4f20d9e754b2',
-         id=1844,
-         lineno=21,
          tokens=133,
          depth=0,
          parent_id=None,
@@ -36499,6 +36486,19 @@ Fragment(document_cs='4a91da6b2f602ead41bbc5858c0c11102cce56efde93c8ef4a3e4f20d9
               '    dstPtr[dstIdx] = srcPtr[srcIdx];\n'
               '  }\n'
               '}')
+
+Fragment(document_cs='4a91da6b2f602ead41bbc5858c0c11102cce56efde93c8ef4a3e4f20d9e754b2',
+         id=1844,
+         lineno=21,
+         tokens=34,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='merge_gconv_kernel',
+         body='merge_gconv_kernel(DATATYPE* dstPtr, const DATATYPE* srcPtr, '
+              'int volume,\n'
+              '    int cInHW, int cOut, int count)')
 
 Fragment(document_cs='4a91da6b2f602ead41bbc5858c0c11102cce56efde93c8ef4a3e4f20d9e754b2',
          id=1845,
@@ -38081,19 +38081,6 @@ Fragment(document_cs='51244657b439cf5d31c90799e2627176d1fdc452a8d400aeedbd5e21d3
 Fragment(document_cs='51244657b439cf5d31c90799e2627176d1fdc452a8d400aeedbd5e21d3ee1220',
          id=1918,
          lineno=21,
-         tokens=43,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='fuse_conv_batchnorm_alpha_var_kernel',
-         body='fuse_conv_batchnorm_alpha_var_kernel(int c_out, int c_in_h_w,\n'
-              '    DATATYPE* dst_ptr, const DATATYPE* conv_w, const DATATYPE* '
-              'scale, const DATATYPE* var)')
-
-Fragment(document_cs='51244657b439cf5d31c90799e2627176d1fdc452a8d400aeedbd5e21d3ee1220',
-         id=1919,
-         lineno=21,
          tokens=128,
          depth=0,
          parent_id=None,
@@ -38112,6 +38099,19 @@ Fragment(document_cs='51244657b439cf5d31c90799e2627176d1fdc452a8d400aeedbd5e21d3
               'std::sqrt(std::abs(var[c_out_idx]) + BN_MIN_EPSILON);\n'
               '  }\n'
               '}')
+
+Fragment(document_cs='51244657b439cf5d31c90799e2627176d1fdc452a8d400aeedbd5e21d3ee1220',
+         id=1919,
+         lineno=21,
+         tokens=43,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='fuse_conv_batchnorm_alpha_var_kernel',
+         body='fuse_conv_batchnorm_alpha_var_kernel(int c_out, int c_in_h_w,\n'
+              '    DATATYPE* dst_ptr, const DATATYPE* conv_w, const DATATYPE* '
+              'scale, const DATATYPE* var)')
 
 Fragment(document_cs='51244657b439cf5d31c90799e2627176d1fdc452a8d400aeedbd5e21d3ee1220',
          id=1920,
@@ -40195,17 +40195,6 @@ Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fb
 Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
          id=2028,
          lineno=120,
-         tokens=4,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='InitDefaultsRule',
-         body='InitDefaultsRule()')
-
-Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
-         id=2029,
-         lineno=120,
          tokens=73,
          depth=2,
          parent_id=None,
@@ -40223,6 +40212,17 @@ Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fb
               '  }\n'
               '  ::GraphSubst::Rule::InitAsDefaultInstance();\n'
               '}')
+
+Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
+         id=2029,
+         lineno=120,
+         tokens=4,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='InitDefaultsRule',
+         body='InitDefaultsRule()')
 
 Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
          id=2030,
@@ -40251,17 +40251,6 @@ Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fb
 Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
          id=2031,
          lineno=136,
-         tokens=5,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='InitDefaultsRuleCollection',
-         body='InitDefaultsRuleCollection()')
-
-Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
-         id=2032,
-         lineno=136,
          tokens=77,
          depth=2,
          parent_id=None,
@@ -40280,6 +40269,17 @@ Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fb
               '  }\n'
               '  ::GraphSubst::RuleCollection::InitAsDefaultInstance();\n'
               '}')
+
+Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
+         id=2032,
+         lineno=136,
+         tokens=5,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='InitDefaultsRuleCollection',
+         body='InitDefaultsRuleCollection()')
 
 Fragment(document_cs='53a2ad107b2470665f5e3b0978f25e37096a53cebecd0fa4bf570753fbc8f1d1',
          id=2033,
@@ -60413,6 +60413,19 @@ Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee4
 Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
          id=2989,
          lineno=221,
+         tokens=24,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='get_parameter_from_pb',
+         body='get_parameter_from_pb(const GraphSubst::Operator& pbOp,\n'
+              '                           PMParameter pm,\n'
+              '                           int &value)')
+
+Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
+         id=2990,
+         lineno=221,
          tokens=83,
          depth=0,
          parent_id=None,
@@ -60430,19 +60443,6 @@ Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee4
               '    }\n'
               '  return false;  \n'
               '}')
-
-Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
-         id=2990,
-         lineno=221,
-         tokens=24,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='get_parameter_from_pb',
-         body='get_parameter_from_pb(const GraphSubst::Operator& pbOp,\n'
-              '                           PMParameter pm,\n'
-              '                           int &value)')
 
 Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
          id=2991,
@@ -61117,6 +61117,17 @@ Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee4
 Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
          id=3017,
          lineno=399,
+         tokens=11,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='to_tn_parameter',
+         body='to_tn_parameter(bool isInput, int n)')
+
+Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
+         id=3018,
+         lineno=399,
          tokens=136,
          depth=0,
          parent_id=None,
@@ -61137,17 +61148,6 @@ Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee4
               '  }\n'
               '  assert(false);\n'
               '}')
-
-Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
-         id=3018,
-         lineno=399,
-         tokens=11,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='to_tn_parameter',
-         body='to_tn_parameter(bool isInput, int n)')
 
 Fragment(document_cs='60f4f3d14de370b7b5b8298e0d145722c2f80687c543eb0e2b8c8efee47ad738',
          id=3019,
@@ -65773,6 +65773,17 @@ Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274
 Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
          id=3217,
          lineno=11,
+         tokens=14,
+         depth=4,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='SplitPlugin',
+         body='SplitPlugin(int nOuts, int *channels_, int axis)')
+
+Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
+         id=3218,
+         lineno=11,
          tokens=67,
          depth=3,
          parent_id=None,
@@ -65786,17 +65797,6 @@ Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274
               '      channels[i] = channels_[i];\n'
               '    }\n'
               '  }')
-
-Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
-         id=3218,
-         lineno=11,
-         tokens=14,
-         depth=4,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='SplitPlugin',
-         body='SplitPlugin(int nOuts, int *channels_, int axis)')
 
 Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
          id=3219,
@@ -65987,17 +65987,6 @@ Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274
 Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
          id=3227,
          lineno=73,
-         tokens=10,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='Logger',
-         body='Logger(): Logger(Severity::kWARNING) {}')
-
-Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
-         id=3228,
-         lineno=73,
          tokens=2,
          depth=4,
          parent_id=None,
@@ -66005,6 +65994,17 @@ Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274
          summary=False,
          name='Logger',
          body='Logger()')
+
+Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
+         id=3228,
+         lineno=73,
+         tokens=10,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='Logger',
+         body='Logger(): Logger(Severity::kWARNING) {}')
 
 Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
          id=3229,
@@ -67145,6 +67145,17 @@ Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274
 Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
          id=3275,
          lineno=365,
+         tokens=8,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='runGraphTRT',
+         body='runGraphTRT(Graph *graph)')
+
+Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
+         id=3276,
+         lineno=365,
          tokens=451,
          depth=1,
          parent_id=None,
@@ -67209,17 +67220,6 @@ Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274
               '  engine->destroy();\n'
               '  gProfiler.printLayerTimes();\n'
               '}')
-
-Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
-         id=3276,
-         lineno=365,
-         tokens=8,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='runGraphTRT',
-         body='runGraphTRT(Graph *graph)')
 
 Fragment(document_cs='6ccb18782cb99ec82bcdfe6a11154e710746ab9250985874ef77ca4274c40d3a',
          id=3277,
@@ -72179,6 +72179,20 @@ Fragment(document_cs='8faf2f28c86759877691170d2676984b843e48cb54a4566e82e33fd538
 Fragment(document_cs='8faf2f28c86759877691170d2676984b843e48cb54a4566e82e33fd538e1a7be',
          id=3526,
          lineno=22,
+         tokens=53,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='create_net',
+         body='create_net(Concat* concat, DNNLNet& net, engine& eng, stream& '
+              'strm,\n'
+              '    std::vector<memory>& inputMems, memory& outputMem,\n'
+              '    std::vector<void*> inputPtrs, void* outputPtr)')
+
+Fragment(document_cs='8faf2f28c86759877691170d2676984b843e48cb54a4566e82e33fd538e1a7be',
+         id=3527,
+         lineno=22,
          tokens=353,
          depth=0,
          parent_id=None,
@@ -72217,20 +72231,6 @@ Fragment(document_cs='8faf2f28c86759877691170d2676984b843e48cb54a4566e82e33fd538
               '  args[DNNL_ARG_DST] = outputMem;\n'
               '  net.push_back({::dnnl::concat(concatPrimDesc), args});\n'
               '}')
-
-Fragment(document_cs='8faf2f28c86759877691170d2676984b843e48cb54a4566e82e33fd538e1a7be',
-         id=3527,
-         lineno=22,
-         tokens=53,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='create_net',
-         body='create_net(Concat* concat, DNNLNet& net, engine& eng, stream& '
-              'strm,\n'
-              '    std::vector<memory>& inputMems, memory& outputMem,\n'
-              '    std::vector<void*> inputPtrs, void* outputPtr)')
 
 Fragment(document_cs='8faf2f28c86759877691170d2676984b843e48cb54a4566e82e33fd538e1a7be',
          id=3528,
@@ -73602,17 +73602,6 @@ Fragment(document_cs='9c649407dd8b1adf67d3fe05f8aafb95aeffde75cbf0ad898e98767305
 Fragment(document_cs='9c649407dd8b1adf67d3fe05f8aafb95aeffde75cbf0ad898e9876730594cad6',
          id=3596,
          lineno=29,
-         tokens=7,
-         depth=3,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='CUDA_KERNEL_LOOP',
-         body='CUDA_KERNEL_LOOP(i, volume)')
-
-Fragment(document_cs='9c649407dd8b1adf67d3fe05f8aafb95aeffde75cbf0ad898e9876730594cad6',
-         id=3597,
-         lineno=29,
          tokens=58,
          depth=2,
          parent_id=None,
@@ -73625,6 +73614,17 @@ Fragment(document_cs='9c649407dd8b1adf67d3fe05f8aafb95aeffde75cbf0ad898e98767305
               '    dst_ptr[i] = scale[c_out_idx] * conv_w[i] / '
               'sqrt(abs(var[c_out_idx]) + CUDNN_BN_MIN_EPSILON);\n'
               '  }')
+
+Fragment(document_cs='9c649407dd8b1adf67d3fe05f8aafb95aeffde75cbf0ad898e9876730594cad6',
+         id=3597,
+         lineno=29,
+         tokens=7,
+         depth=3,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='CUDA_KERNEL_LOOP',
+         body='CUDA_KERNEL_LOOP(i, volume)')
 
 Fragment(document_cs='9c649407dd8b1adf67d3fe05f8aafb95aeffde75cbf0ad898e9876730594cad6',
          id=3598,
@@ -82847,17 +82847,6 @@ Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce481
 Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
          id=4126,
          lineno=127,
-         tokens=9,
-         depth=7,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='swap',
-         body='swap(Parameter& a, Parameter& b)')
-
-Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
-         id=4127,
-         lineno=127,
          tokens=20,
          depth=6,
          parent_id=None,
@@ -82865,6 +82854,17 @@ Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce481
          summary=False,
          name='swap',
          body='void swap(Parameter& a, Parameter& b) {\n    a.Swap(&b);\n  }')
+
+Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
+         id=4127,
+         lineno=127,
+         tokens=9,
+         depth=7,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='swap',
+         body='swap(Parameter& a, Parameter& b)')
 
 Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
          id=4128,
@@ -83402,17 +83402,6 @@ Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce481
 Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
          id=4150,
          lineno=254,
-         tokens=10,
-         depth=7,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='swap',
-         body='swap(Tensor& a, Tensor& b)')
-
-Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
-         id=4151,
-         lineno=254,
          tokens=21,
          depth=6,
          parent_id=None,
@@ -83420,6 +83409,17 @@ Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce481
          summary=False,
          name='swap',
          body='void swap(Tensor& a, Tensor& b) {\n    a.Swap(&b);\n  }')
+
+Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
+         id=4151,
+         lineno=254,
+         tokens=10,
+         depth=7,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='swap',
+         body='swap(Tensor& a, Tensor& b)')
 
 Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
          id=4152,
@@ -83883,17 +83883,6 @@ Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce481
 Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
          id=4169,
          lineno=348,
-         tokens=7,
-         depth=7,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='Operator',
-         body='Operator(Operator&& from) noexcept')
-
-Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
-         id=4170,
-         lineno=348,
          tokens=25,
          depth=6,
          parent_id=None,
@@ -83904,6 +83893,17 @@ Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce481
               '    : Operator() {\n'
               '    *this = ::std::move(from);\n'
               '  }')
+
+Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
+         id=4170,
+         lineno=348,
+         tokens=7,
+         depth=7,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='Operator',
+         body='Operator(Operator&& from) noexcept')
 
 Fragment(document_cs='aa4c40361c2896de439e9801ab3d898f42e69db4dd45a083732dcce4815374c0',
          id=4171,
@@ -87983,20 +87983,6 @@ Fragment(document_cs='abdb6cb484622f37f989f1637b1032a9fc15e68810729013f3eee5d273
 Fragment(document_cs='abdb6cb484622f37f989f1637b1032a9fc15e68810729013f3eee5d273c8c578',
          id=4374,
          lineno=21,
-         tokens=46,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='create_net',
-         body='create_net(Pool2D* pool, DNNLNet& net, engine& eng, stream& '
-              'strm,\n'
-              '    memory& inputMem, memory& outputMem,\n'
-              '    void* inputPtr, void* outputPtr)')
-
-Fragment(document_cs='abdb6cb484622f37f989f1637b1032a9fc15e68810729013f3eee5d273c8c578',
-         id=4375,
-         lineno=21,
          tokens=435,
          depth=0,
          parent_id=None,
@@ -88052,6 +88038,20 @@ Fragment(document_cs='abdb6cb484622f37f989f1637b1032a9fc15e68810729013f3eee5d273
               '      {{DNNL_ARG_SRC, inputMem},\n'
               '      {DNNL_ARG_DST, outputMem}}});\n'
               '}')
+
+Fragment(document_cs='abdb6cb484622f37f989f1637b1032a9fc15e68810729013f3eee5d273c8c578',
+         id=4375,
+         lineno=21,
+         tokens=46,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='create_net',
+         body='create_net(Pool2D* pool, DNNLNet& net, engine& eng, stream& '
+              'strm,\n'
+              '    memory& inputMem, memory& outputMem,\n'
+              '    void* inputPtr, void* outputPtr)')
 
 Fragment(document_cs='abdb6cb484622f37f989f1637b1032a9fc15e68810729013f3eee5d273c8c578',
          id=4376,
@@ -89163,23 +89163,6 @@ Fragment(document_cs='ade62d5fa83d2a317504568c52b39f0319751c3bb21f331968d7dd73cd
 Fragment(document_cs='ade62d5fa83d2a317504568c52b39f0319751c3bb21f331968d7dd73cdf2de4c',
          id=4430,
          lineno=21,
-         tokens=77,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='create_net',
-         body='create_net(Matmul* mm, DNNLNet& net, engine& eng, stream& '
-              'strm,\n'
-              '#ifdef DNNL_NO_MATMUL\n'
-              '    Matmul::BLASGEMMParams& params,\n'
-              '#endif\n'
-              '    memory& aMem, memory& bMem, memory& cMem, void* aPtr, void* '
-              'bPtr, void* cPtr)')
-
-Fragment(document_cs='ade62d5fa83d2a317504568c52b39f0319751c3bb21f331968d7dd73cdf2de4c',
-         id=4431,
-         lineno=21,
          tokens=1186,
          depth=0,
          parent_id=None,
@@ -89298,6 +89281,23 @@ Fragment(document_cs='ade62d5fa83d2a317504568c52b39f0319751c3bb21f331968d7dd73cd
               '  }\n'
               '#endif  // DNNL_NO_MATMUL\n'
               '}')
+
+Fragment(document_cs='ade62d5fa83d2a317504568c52b39f0319751c3bb21f331968d7dd73cdf2de4c',
+         id=4431,
+         lineno=21,
+         tokens=77,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='create_net',
+         body='create_net(Matmul* mm, DNNLNet& net, engine& eng, stream& '
+              'strm,\n'
+              '#ifdef DNNL_NO_MATMUL\n'
+              '    Matmul::BLASGEMMParams& params,\n'
+              '#endif\n'
+              '    memory& aMem, memory& bMem, memory& cMem, void* aPtr, void* '
+              'bPtr, void* cPtr)')
 
 Fragment(document_cs='ade62d5fa83d2a317504568c52b39f0319751c3bb21f331968d7dd73cdf2de4c',
          id=4432,
@@ -91998,17 +91998,6 @@ Fragment(document_cs='b2bc93e0485fb6ac59d54d76a886111feea4ac3196be44bd77868f2f4d
 Fragment(document_cs='b2bc93e0485fb6ac59d54d76a886111feea4ac3196be44bd77868f2f4d894489',
          id=4568,
          lineno=19,
-         tokens=12,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='permutation_to_index',
-         body='permutation_to_index(const std::vector<int>& perm)')
-
-Fragment(document_cs='b2bc93e0485fb6ac59d54d76a886111feea4ac3196be44bd77868f2f4d894489',
-         id=4569,
-         lineno=19,
          tokens=128,
          depth=0,
          parent_id=None,
@@ -92028,6 +92017,17 @@ Fragment(document_cs='b2bc93e0485fb6ac59d54d76a886111feea4ac3196be44bd77868f2f4d
               '    idx = idx * perm.size() + perm[i];\n'
               '  return idx;\n'
               '}')
+
+Fragment(document_cs='b2bc93e0485fb6ac59d54d76a886111feea4ac3196be44bd77868f2f4d894489',
+         id=4569,
+         lineno=19,
+         tokens=12,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='permutation_to_index',
+         body='permutation_to_index(const std::vector<int>& perm)')
 
 Fragment(document_cs='b2bc93e0485fb6ac59d54d76a886111feea4ac3196be44bd77868f2f4d894489',
          id=4570,
@@ -93625,17 +93625,6 @@ Fragment(document_cs='b9dd555bdca73f1b06c11c81fbf65909f4e0bdf4633bf06b5e4ca13d17
 Fragment(document_cs='b9dd555bdca73f1b06c11c81fbf65909f4e0bdf4633bf06b5e4ca13d1790f26f',
          id=4655,
          lineno=54,
-         tokens=21,
-         depth=5,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='TensorX',
-         body='TensorX(OpX* _op, int _idx): op(_op), idx(_idx) {}')
-
-Fragment(document_cs='b9dd555bdca73f1b06c11c81fbf65909f4e0bdf4633bf06b5e4ca13d1790f26f',
-         id=4656,
-         lineno=54,
          tokens=12,
          depth=6,
          parent_id=None,
@@ -93643,6 +93632,17 @@ Fragment(document_cs='b9dd555bdca73f1b06c11c81fbf65909f4e0bdf4633bf06b5e4ca13d17
          summary=False,
          name='TensorX',
          body='TensorX(OpX* _op, int _idx)')
+
+Fragment(document_cs='b9dd555bdca73f1b06c11c81fbf65909f4e0bdf4633bf06b5e4ca13d1790f26f',
+         id=4656,
+         lineno=54,
+         tokens=21,
+         depth=5,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='TensorX',
+         body='TensorX(OpX* _op, int _idx): op(_op), idx(_idx) {}')
 
 Fragment(document_cs='b9dd555bdca73f1b06c11c81fbf65909f4e0bdf4633bf06b5e4ca13d1790f26f',
          id=4657,
@@ -98814,6 +98814,17 @@ Fragment(document_cs='c9e0c08fade72ae524f7b6d358e57c309632e71c46472c2d153aa67cf6
 Fragment(document_cs='c9e0c08fade72ae524f7b6d358e57c309632e71c46472c2d153aa67cf6eb12e5',
          id=4919,
          lineno=44,
+         tokens=14,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='new_input',
+         body='new_input(Graph* graph, const std::vector<int>& dims)')
+
+Fragment(document_cs='c9e0c08fade72ae524f7b6d358e57c309632e71c46472c2d153aa67cf6eb12e5',
+         id=4920,
+         lineno=44,
          tokens=32,
          depth=1,
          parent_id=None,
@@ -98824,17 +98835,6 @@ Fragment(document_cs='c9e0c08fade72ae524f7b6d358e57c309632e71c46472c2d153aa67cf6
               'std::vector<int>& dims) {\n'
               '  return graph->new_input(dims.size(), dims.data());\n'
               '}')
-
-Fragment(document_cs='c9e0c08fade72ae524f7b6d358e57c309632e71c46472c2d153aa67cf6eb12e5',
-         id=4920,
-         lineno=44,
-         tokens=14,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='new_input',
-         body='new_input(Graph* graph, const std::vector<int>& dims)')
 
 Fragment(document_cs='c9e0c08fade72ae524f7b6d358e57c309632e71c46472c2d153aa67cf6eb12e5',
          id=4921,
@@ -100061,6 +100061,17 @@ Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d832
 Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
          id=4989,
          lineno=19,
+         tokens=15,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='assign_kernel',
+         body='assign_kernel(DATATYPE* ptr, int size, DATATYPE value)')
+
+Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
+         id=4990,
+         lineno=19,
          tokens=44,
          depth=0,
          parent_id=None,
@@ -100071,17 +100082,6 @@ Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d832
               '#pragma omp parallel for\n'
               '  for (int i = 0; i < size; i++) ptr[i] = value;\n'
               '}')
-
-Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
-         id=4990,
-         lineno=19,
-         tokens=15,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='assign_kernel',
-         body='assign_kernel(DATATYPE* ptr, int size, DATATYPE value)')
 
 Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
          id=4991,
@@ -100136,6 +100136,17 @@ Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d832
 Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
          id=4994,
          lineno=29,
+         tokens=9,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='get_activation_attr',
+         body='get_activation_attr(ActiMode activation)')
+
+Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
+         id=4995,
+         lineno=29,
          tokens=217,
          depth=0,
          parent_id=None,
@@ -100169,17 +100180,6 @@ Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d832
               '  attr.set_post_ops(ops);\n'
               '  return attr;\n'
               '}')
-
-Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
-         id=4995,
-         lineno=29,
-         tokens=9,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='get_activation_attr',
-         body='get_activation_attr(ActiMode activation)')
 
 Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
          id=4996,
@@ -100236,17 +100236,6 @@ Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d832
 Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
          id=4999,
          lineno=54,
-         tokens=12,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='get_memory_desc',
-         body='get_memory_desc(const Tensor& t, int numDim)')
-
-Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
-         id=5000,
-         lineno=54,
          tokens=195,
          depth=0,
          parent_id=None,
@@ -100272,6 +100261,17 @@ Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d832
               '  assert(stride.size() == (size_t)numDim);\n'
               '  return dnnl::memory::desc(size, DNNL_DEF_DTYPE, stride);\n'
               '}')
+
+Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
+         id=5000,
+         lineno=54,
+         tokens=12,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='get_memory_desc',
+         body='get_memory_desc(const Tensor& t, int numDim)')
 
 Fragment(document_cs='cf6571ddedee458def98399d9672e84782e8c71cf08191b2667b48d83277e326',
          id=5001,
@@ -102387,6 +102387,20 @@ Fragment(document_cs='dd4da97101406d9ad0a9ecc3620ac20d23803bd73c1d578979b4412338
 Fragment(document_cs='dd4da97101406d9ad0a9ecc3620ac20d23803bd73c1d578979b4412338b49692',
          id=5105,
          lineno=21,
+         tokens=44,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='create_net',
+         body='create_net(Activation* act, DNNLNet& net, engine& eng, stream& '
+              'strm,\n'
+              '    memory& inputMem, memory& outputMem,\n'
+              '    void* inputPtr, void* outputPtr)')
+
+Fragment(document_cs='dd4da97101406d9ad0a9ecc3620ac20d23803bd73c1d578979b4412338b49692',
+         id=5106,
+         lineno=21,
          tokens=402,
          depth=0,
          parent_id=None,
@@ -102439,20 +102453,6 @@ Fragment(document_cs='dd4da97101406d9ad0a9ecc3620ac20d23803bd73c1d578979b4412338
               '      {{DNNL_ARG_SRC, inputMem},\n'
               '      {DNNL_ARG_DST, outputMem}}});\n'
               '}')
-
-Fragment(document_cs='dd4da97101406d9ad0a9ecc3620ac20d23803bd73c1d578979b4412338b49692',
-         id=5106,
-         lineno=21,
-         tokens=44,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='create_net',
-         body='create_net(Activation* act, DNNLNet& net, engine& eng, stream& '
-              'strm,\n'
-              '    memory& inputMem, memory& outputMem,\n'
-              '    void* inputPtr, void* outputPtr)')
 
 Fragment(document_cs='dd4da97101406d9ad0a9ecc3620ac20d23803bd73c1d578979b4412338b49692',
          id=5107,
@@ -102863,6 +102863,19 @@ Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e9
 Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
          id=5126,
          lineno=21,
+         tokens=44,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='elementwise_kernel',
+         body='elementwise_kernel(int volume, OpType type,\n'
+              '    const Tensor& tx, const Tensor& ty, const Tensor& tz,\n'
+              '    const DATATYPE* x, const DATATYPE* y, DATATYPE* z)')
+
+Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
+         id=5127,
+         lineno=21,
          tokens=561,
          depth=0,
          parent_id=None,
@@ -102929,19 +102942,6 @@ Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e9
               '    }\n'
               '  }\n'
               '}')
-
-Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
-         id=5127,
-         lineno=21,
-         tokens=44,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='elementwise_kernel',
-         body='elementwise_kernel(int volume, OpType type,\n'
-              '    const Tensor& tx, const Tensor& ty, const Tensor& tz,\n'
-              '    const DATATYPE* x, const DATATYPE* y, DATATYPE* z)')
 
 Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
          id=5128,
@@ -103115,21 +103115,6 @@ Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e9
 Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
          id=5135,
          lineno=98,
-         tokens=59,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='create_net',
-         body='create_net(Element* ele, DNNLNet& net, engine& eng, stream& '
-              'strm,\n'
-              '    memory& in0Mem, memory& in1Mem, memory& outputMem,\n'
-              '    void* in0Ptr, void* in1Ptr, void* outputPtr\n'
-              '    )')
-
-Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
-         id=5136,
-         lineno=98,
          tokens=408,
          depth=0,
          parent_id=None,
@@ -103173,6 +103158,21 @@ Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e9
               '    // No preprocessing for our customized kernel\n'
               '  }\n'
               '}')
+
+Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
+         id=5136,
+         lineno=98,
+         tokens=59,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='create_net',
+         body='create_net(Element* ele, DNNLNet& net, engine& eng, stream& '
+              'strm,\n'
+              '    memory& in0Mem, memory& in1Mem, memory& outputMem,\n'
+              '    void* in0Ptr, void* in1Ptr, void* outputPtr\n'
+              '    )')
 
 Fragment(document_cs='dea2abc68bb665dfa523bee940f2c5a8c1ce5a2e3e3ce88671dc78e2e91a0ce6',
          id=5137,
@@ -105939,6 +105939,18 @@ Fragment(document_cs='f23dc460eb49c3ecc0297f92154c0a3bf75e3ad45ebba36781c6b2ed34
 Fragment(document_cs='f23dc460eb49c3ecc0297f92154c0a3bf75e3ad45ebba36781c6b2ed34b30d52',
          id=5285,
          lineno=19,
+         tokens=27,
+         depth=2,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='resnext_block',
+         body='resnext_block(Graph* graph, const TensorHandle input, int '
+              'strideH, int strideW, int outChannels, int groups)')
+
+Fragment(document_cs='f23dc460eb49c3ecc0297f92154c0a3bf75e3ad45ebba36781c6b2ed34b30d52',
+         id=5286,
+         lineno=19,
          tokens=310,
          depth=1,
          parent_id=None,
@@ -105968,18 +105980,6 @@ Fragment(document_cs='f23dc460eb49c3ecc0297f92154c0a3bf75e3ad45ebba36781c6b2ed34
               '  }\n'
               '  return graph->relu(graph->element(OP_EW_ADD, inp, t));\n'
               '}')
-
-Fragment(document_cs='f23dc460eb49c3ecc0297f92154c0a3bf75e3ad45ebba36781c6b2ed34b30d52',
-         id=5286,
-         lineno=19,
-         tokens=27,
-         depth=2,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='resnext_block',
-         body='resnext_block(Graph* graph, const TensorHandle input, int '
-              'strideH, int strideW, int outChannels, int groups)')
 
 Fragment(document_cs='f23dc460eb49c3ecc0297f92154c0a3bf75e3ad45ebba36781c6b2ed34b30d52',
          id=5287,
@@ -107558,6 +107558,17 @@ Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e
 Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
          id=5357,
          lineno=36,
+         tokens=8,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='name2model',
+         body='name2model(std::string name)')
+
+Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
+         id=5358,
+         lineno=36,
          tokens=89,
          depth=0,
          parent_id=None,
@@ -107572,17 +107583,6 @@ Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e
               '  if (name == "resnext50") return Resnext50;\n'
               '  return None;\n'
               '}')
-
-Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
-         id=5358,
-         lineno=36,
-         tokens=8,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='name2model',
-         body='name2model(std::string name)')
 
 Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
          id=5359,
@@ -107613,6 +107613,21 @@ Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e
 
 Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
          id=5360,
+         lineno=45,
+         tokens=36,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='parse_args',
+         body='parse_args(float& alpha,\n'
+              '                int& budget,\n'
+              '                std::string& exportFileName,\n'
+              '                DNNModel& dnnModel,\n'
+              '                int argc, char **argv)')
+
+Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
+         id=5361,
          lineno=45,
          tokens=230,
          depth=0,
@@ -107652,21 +107667,6 @@ Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e
               '  if (dnnModel == None) fprintf(stderr, "Must specify a DNN '
               'model!\\n");\n'
               '}')
-
-Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
-         id=5361,
-         lineno=45,
-         tokens=36,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='parse_args',
-         body='parse_args(float& alpha,\n'
-              '                int& budget,\n'
-              '                std::string& exportFileName,\n'
-              '                DNNModel& dnnModel,\n'
-              '                int argc, char **argv)')
 
 Fragment(document_cs='f812e2adc794bb827f91eda4404522223e8f4befa5a43b7ce802d3bf5e18c78a',
          id=5362,
@@ -108426,19 +108426,6 @@ Fragment(document_cs='feabc389be71b9dc72683a902a43fec97321c91ac341081bdbb87802c4
 Fragment(document_cs='feabc389be71b9dc72683a902a43fec97321c91ac341081bdbb87802c4458534',
          id=5406,
          lineno=21,
-         tokens=35,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='broadcast_add_kernel',
-         body='broadcast_add_kernel(int batch, int channel, int h_w_size,\n'
-              '    DATATYPE* dst_ptr, const DATATYPE* _data, const DATATYPE* '
-              '_bias)')
-
-Fragment(document_cs='feabc389be71b9dc72683a902a43fec97321c91ac341081bdbb87802c4458534',
-         id=5407,
-         lineno=21,
          tokens=100,
          depth=0,
          parent_id=None,
@@ -108456,6 +108443,19 @@ Fragment(document_cs='feabc389be71b9dc72683a902a43fec97321c91ac341081bdbb87802c4
               '    dst_ptr[i] = _data[i] + _bias[channel_idx];\n'
               '  }\n'
               '}')
+
+Fragment(document_cs='feabc389be71b9dc72683a902a43fec97321c91ac341081bdbb87802c4458534',
+         id=5407,
+         lineno=21,
+         tokens=35,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='broadcast_add_kernel',
+         body='broadcast_add_kernel(int batch, int channel, int h_w_size,\n'
+              '    DATATYPE* dst_ptr, const DATATYPE* _data, const DATATYPE* '
+              '_bias)')
 
 Fragment(document_cs='feabc389be71b9dc72683a902a43fec97321c91ac341081bdbb87802c4458534',
          id=5408,

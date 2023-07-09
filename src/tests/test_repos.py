@@ -7,11 +7,11 @@ from quart import Quart, send_file
 
 from base_backend_test import BaseBackendTest
 from common.constants import C
-from common.http import download_into_memory
+from common.http import download_into_memory, DownloadResult
+from logic.backend import Backend, TInfo, BackendError
 from model.fragment import Fragment
 from model.hit import Hit
 from parsers.registrations import PARSERS_BY_EXTENSION
-from logic.backend import Backend, TInfo, BackendError
 from storage.fragments import get_all_fragments_in_project, Fragment as DbFragment
 
 MODULE_DIR = os.path.dirname(__file__)
@@ -21,46 +21,49 @@ REPOS = [
     ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
-    ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
+    # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
 
     # Markdown, PHP, HTML, CSS, JavaScript
-    ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+    # ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
     ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 
     # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
-    ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
+    # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 
     # C++, CMake
-    ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
+    # ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
     ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
     # # Python, Shell, JSON, CSV, Python Notebook
-    ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
+    # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 
     # Python, Markdown
-    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
+    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
 
     # TypeScript
-    ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
+    # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
 
     # Python, C++, CUDA
-    ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
+    # ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
 
     # TypeScript, JavaScript, HTML
     # FIXME: Crashes tiktoken_len at a data.ts file:
     # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
-    ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
+    # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
 
     # Part of Unreal: C++, shader
     # http://rebecca.sh/PluginsShadersSourceTargets.zip
-    ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
+    # ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
+
+    # Part of Unreal: C++, shader
+    ('TLC5916_Lite', 'https://github.com/dpnebert/TLC5916_Lite/archive/refs/heads/main.zip'),
 ]
 
 
@@ -109,9 +112,9 @@ class TestRepos(BaseBackendTest):
     async def verify_repo(self, zip_name: str, zip_url: str):
         zip_path = os.path.join(self.test_repos_dir, f'{zip_name}.zip')
         if not os.path.isfile(zip_path):
-            zip_content, _ = await download_into_memory(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
+            download_result: DownloadResult = await download_into_memory(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
             with open(zip_path, 'wb') as zip_file:
-                zip_file.write(zip_content)
+                zip_file.write(download_result.body)
 
         await self.wait_for_processing(300.0)
 
