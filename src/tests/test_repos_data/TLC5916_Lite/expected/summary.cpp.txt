@@ -1,0 +1,6 @@
+File extensions: .cpp
+
+C++: /TCL5916_Lite.cpp
+  Methods: TLC5916_Lite::TLC5916_Lite TLC5916_Lite::allOff TLC5916_Lite::allOn TLC5916_Lite::disableOutput TLC5916_Lite::enableOutput TLC5916_Lite::generateErrorCodeStatus TLC5916_Lite::latchHigh TLC5916_Lite::latchLow TLC5916_Lite::pulseLatch TLC5916_Lite::readErrorCodeStatus TLC5916_Lite::sendBits TLC5916_Lite::switchToNormalMode TLC5916_Lite::switchToSpecialMode TLC5916_Lite::transmit TLC5916_Lite::writeConfiguration
+  Usages: TLC5916_Lite allOff allOn disableOutput enableOutput generateErrorCodeStatus latchHigh latchLow pulseLatch readErrorCodeStatus sendBits switchToNormalMode switchToSpecialMode transmit writeConfiguration
+
