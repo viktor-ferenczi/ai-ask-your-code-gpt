@@ -18,15 +18,12 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
 
   . $CONFIG_DIR/config.sh
 
-  if ! check_process "$COMMAND_LINE"; then
-    echo "$TITLE: Already stopped"
-    continue
-  fi
-
-  if pkill -9 -u $UID -f "$COMMAND_LINE"; then
+  PID=$(pgrep -u $UID -f "$COMMAND_LINE" | head -n 1)
+  if [ -n "$PID" ]; then
+    kill -9 $PID || true
     echo "$TITLE: Stopped"
   else
-    echo "$TITLE: Failed to stop"
+    echo "$TITLE: Already stopped"
   fi
 
   if [ -n "$EXTRA_KILL" ]; then

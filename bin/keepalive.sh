@@ -12,7 +12,6 @@ set -euo pipefail
 CONFIG_DIR="$HOME/bin/servers/$1"
 . $CONFIG_DIR/config.sh
 
-
 function check_canary {
   case $CANARY in
   http)
@@ -26,9 +25,9 @@ function check_canary {
   esac
 }
 
-
 INSTANCE_MAX=$((INSTANCE_COUNT - 1))
 
+GOOD=true
 for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
 
   . $CONFIG_DIR/config.sh
@@ -49,15 +48,15 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
       continue
     fi
 
-    echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
-    bash ~/bin/restart.sh "$NAME"
-    continue
+    GOOD=false
+    break
   fi
 
-  # Process is missing
-  echo "$(date -Is): $TITLE is not running. Starting it now."
-  bash ~/bin/start.sh "$NAME"
-
 done
+
+if ! $GOOD; then
+  echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
+  bash ~/bin/restart.sh $1
+fi
 
 exit 0

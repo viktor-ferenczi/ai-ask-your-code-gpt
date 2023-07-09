@@ -11,5 +11,10 @@ fi
 set -euo pipefail
 
 bash ~/bin/stop.sh "$@"
-sleep 1
+
+if [ "$RESTART_WAIT" -gt 0 ]; then
+  echo "$(date -Is): Waiting $RESTART_WAIT seconds before starting it again"
+  sleep $RESTART_WAIT
+fi
+
 bash ~/bin/start.sh "$@"
