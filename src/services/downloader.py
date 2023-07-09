@@ -31,7 +31,7 @@ class Downloader:
             archive = await archives.find_by_url(conn, self.url)
             cached_etag = archive.etag if archive is not None else None
             try:
-                d = await download_into_memory(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached_etag=cached_etag)
+                download_result = await download_into_memory(self.url, max_size=C.MAX_ARCHIVE_SIZE, cached_etag=cached_etag)
             except NotModified:
                 print(f'Not modified, skipping download: {self.url!r}')
                 assert archive is not None
@@ -41,12 +41,12 @@ class Downloader:
                 raise DownloadError(f'Failed to download archive: {e}')
 
             # Different (modified) archive from the same URL?
-            if archive is not None and archive.checksum != d.checksum:
+            if archive is not None and archive.checksum != download_result.checksum:
                 archive = None
 
             # Try to find existing archive by checksum
             if archive is None:
-                archive = await archives.find_by_checksum(conn, d.checksum)
+                archive = await archives.find_by_checksum(conn, download_result.checksum)
 
             # Use the existing archive
             if archive is not None:
@@ -54,19 +54,19 @@ class Downloader:
 
             # New archive, store and request extracting it
             out_count = [0]
-            paths = list(self.__verify(d.body, out_count))
+            paths = list(self.__verify(download_result.body, out_count))
             common_base_dir: str = find_common_base_dir(paths)
             print(f'Common base dir: {common_base_dir!r}')
             doc_count = out_count[0]
 
-            archive = await archives.create(conn, d.checksum, d.size, doc_count, self.url[:400], d.etag[:160], common_base_dir[:400])
+            archive = await archives.create(conn, download_result.checksum, download_result.size, doc_count, self.url[:400], download_result.etag[:160], common_base_dir[:400])
 
             path = archive.path
             dirname = os.path.dirname(path)
             os.makedirs(dirname, exist_ok=True)
 
             with open(path, 'wb') as f:
-                f.write(d.body)
+                f.write(download_result.body)
 
             return True, archive
 

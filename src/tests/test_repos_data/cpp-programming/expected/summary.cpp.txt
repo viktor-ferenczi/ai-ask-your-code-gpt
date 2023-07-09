@@ -1,32 +1,32 @@
 File extensions: .cpp
 
 Relevant subdirectories:
-  E-Commerce App V3.0: 100%
-  E-Commerce App V1.0: 96%
-  Quiz Game: 96%
-  E-Commerce App V2.0: 92%
-  OOP2-FA: 71%
-  New Year Congratulation: 58%
-  OOP1-Lab9: 54%
+  E-Commerce App V1.0: 100%
+  E-Commerce App V2.0: 97%
+  Quiz Game: 92%
+  E-Commerce App V3.0: 86%
+  OOP2-FA: 69%
+  New Year Congratulation: 60%
   OOP1-Lab6: 42%
-  OOP2_Lab7: 40%
-  Snake Game: 30%
+  OOP2_Lab7: 42%
+  OOP1-Lab9: 40%
+  OOP2_Lab7_Extra: 29%
   OOP2_Lab2: 28%
-  OOP2_Lab7_Extra: 28%
-  OOP2_Lab6: 26%
-  Labirint Game: 25%
-  OOP2_Lab10: 24%
-  OOP1-Lab3: 21%
-  OOP1-Lab8: 21%
-  OOP1-Lab1: 18%
-  OOP2_Lab3: 18%
+  Snake Game: 28%
+  OOP2_Lab6: 27%
+  Labirint Game: 23%
+  OOP1-Lab3: 23%
+  OOP2_Lab10: 23%
+  OOP2_Lab3: 19%
+  OOP1-Lab8: 18%
   OOP2_Lab4: 18%
-  OOP1-Lab7: 17%
+  OOP1-Lab1: 17%
+  OOP1-Lab5: 17%
+  OOP2_Lab8: 17%
   OOP2_Lab9: 16%
-  OOP1-Lab5: 16%
-  OOP2_Lab8: 16%
-  OOP1-Lab2: 15%
-  OOP2_Lab1: 13%
-  OOP1-Lab4: 13%
+  OOP1-Lab7: 16%
+  OOP1-Lab2: 14%
+  OOP2_Lab1: 14%
+  OOP1-Lab4: 12%
   OOP2_Lab5: 11%
   Bank management system: 7%

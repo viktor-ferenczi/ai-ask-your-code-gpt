@@ -2,6 +2,6 @@ File extensions: .h
 
 Relevant subdirectories:
   E-Commerce App V3.0: 100%
-  E-Commerce App V1.0: 91%
-  E-Commerce App V2.0: 71%
-  Bank management system: 51%
+  E-Commerce App V1.0: 90%
+  E-Commerce App V2.0: 69%
+  Bank management system: 48%

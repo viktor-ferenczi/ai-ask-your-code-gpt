@@ -1,4 +1,24 @@
 Hit(uuid='NORMALIZED',
+    path='/src/cudnn/ops_cudnn.cu',
+    lineno=16,
+    depth=0,
+    type='module',
+    name='',
+    text='#include "taso/ops.h"\n'
+         '#include "taso/cuda_helper.h"\n'
+         'using namespace taso;\n'
+         '\n'
+         'Model::Model()\n'
+         ': isTraining(false), print_cost(false)\n'
+         '{\n'
+         '  //int* a = (int*) malloc(sizeof(int) * 8);\n'
+         '  checkCUDA(cudaSetDevice(0));\n'
+         '  checkCUDNN(cudnnCreate(&dnn));\n'
+         '  checkCUDA(cublasCreate(&blas));\n'
+         '  workSpaceSize = WOR',
+    score=1.0)
+
+Hit(uuid='NORMALIZED',
     path='/src/cudnn/squeeze_kernel.cu',
     lineno=10,
     depth=0,
@@ -20,7 +40,7 @@ Hit(uuid='NORMALIZED',
          '{\n'
          '  // allocate tensors\n'
          '  size_t outputSize = sizeof(DATATYPE);\n',
-    score=1.0)
+    score=0.9946524064171123)
 
 Hit(uuid='NORMALIZED',
     path='/src/cudnn/squeeze_kernel.cu',
@@ -29,7 +49,7 @@ Hit(uuid='NORMALIZED',
     type='using',
     name='taso',
     text='using namespace taso;',
-    score=0.9946524064171123)
+    score=0.9893048128342246)
 
 Hit(uuid='NORMALIZED',
     path='/src/dnnl/merge_gconv_mkl.cc',
@@ -53,39 +73,19 @@ Hit(uuid='NORMALIZED',
          '    int cInHW, int cOut, int count) {\n'
          '  assert(cOut % count == 0);\n'
          '#pragma omp parallel for\n',
-    score=0.9893048128342246)
+    score=0.983957219251337)
 
 Hit(uuid='NORMALIZED',
-    path='/src/dnnl/merge_gconv_mkl.cc',
+    path='/src/cudnn/ops_cudnn.cu',
     lineno=18,
     depth=0,
     type='using',
     name='taso',
     text='using namespace taso;',
-    score=0.983957219251337)
-
-Hit(uuid='NORMALIZED',
-    path='/src/cudnn/ops_cudnn.cu',
-    lineno=16,
-    depth=0,
-    type='module',
-    name='',
-    text='#include "taso/ops.h"\n'
-         '#include "taso/cuda_helper.h"\n'
-         'using namespace taso;\n'
-         '\n'
-         'Model::Model()\n'
-         ': isTraining(false), print_cost(false)\n'
-         '{\n'
-         '  //int* a = (int*) malloc(sizeof(int) * 8);\n'
-         '  checkCUDA(cudaSetDevice(0));\n'
-         '  checkCUDNN(cudnnCreate(&dnn));\n'
-         '  checkCUDA(cublasCreate(&blas));\n'
-         '  workSpaceSize = WOR',
     score=0.9786096256684492)
 
 Hit(uuid='NORMALIZED',
-    path='/src/cudnn/ops_cudnn.cu',
+    path='/src/dnnl/merge_gconv_mkl.cc',
     lineno=18,
     depth=0,
     type='using',

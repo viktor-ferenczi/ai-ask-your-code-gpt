@@ -36,20 +36,20 @@ class TestCommonHttp(unittest.IsolatedAsyncioTestCase):
     async def test_download_file(self):
         url = 'https://github.com/viktor-ferenczi/dblayer/archive/refs/heads/master.zip'
 
-        df = await download_into_memory(url)
-        self.assertTrue(bool(df.size))
-        self.assertEqual(len(df.body), df.size)
-        self.assertEqual(len(df.checksum), 64)
+        download_result = await download_into_memory(url)
+        self.assertTrue(bool(download_result.size))
+        self.assertEqual(len(download_result.body), download_result.size)
+        self.assertEqual(len(download_result.checksum), 64)
 
         try:
-            await download_into_memory(url, cached_etag=df.etag)
+            await download_into_memory(url, cached_etag=download_result.etag)
         except NotModified:
             pass
         else:
             self.fail('NotModified was not raised')
 
         try:
-            await download_into_memory(url, max_size=df.size - 1)
+            await download_into_memory(url, max_size=download_result.size - 1)
         except DownloadError:
             pass
         else:
