@@ -23,30 +23,30 @@ jobs:
 
       - name: Disable crontab
         run: |
-          ssh staging@plugin.askyourcode.ai "crontab -r || true"
+          ssh staging@plugin.askyourcode.ai 'crontab -r || true'
 
       - name: Stop server
         run: |
-          ssh staging@plugin.askyourcode.ai "bash ~/bin/stop.sh || true"
+          ssh staging@plugin.askyourcode.ai 'bash ~/bin/stop.sh || true'
 
       - name: Deploy scripts and code
         run: |
-          ssh staging@plugin.askyourcode.ai "mkdir -p ~/bin ~/src"
+          ssh staging@plugin.askyourcode.ai 'mkdir -p ~/bin ~/src'
           rsync -av --delete-after bin/ staging@plugin.askyourcode.ai:~/bin/
           rsync -av --delete-after src/ staging@plugin.askyourcode.ai:~/src/
 
       - name: Create log folder, fix access rights
         run: |
-          ssh staging@plugin.askyourcode.ai "mkdir -p ~/log; chmod +x ~/bin/*.sh"
+          ssh staging@plugin.askyourcode.ai 'mkdir -p ~/log; chmod +x ~/bin/*.sh'
 
       - name: Migrate database
         run: |
-          ssh staging@plugin.askyourcode.ai "bash ~/bin/migrate.sh"
+          ssh staging@plugin.askyourcode.ai 'bash ~/bin/migrate.sh'
 
       - name: Start server
         run: |
-          ssh staging@plugin.askyourcode.ai "bash ~/bin/start.sh"
+          ssh staging@plugin.askyourcode.ai 'bash ~/bin/start.sh'
 
       - name: Enable crontab
         run: |
-          ssh staging@plugin.askyourcode.ai "crontab ~/bin/crontab"
+          ssh staging@plugin.askyourcode.ai 'crontab ~/bin/crontab'

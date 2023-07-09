@@ -27,6 +27,8 @@ INSTANCE_COUNT=1
 WRAPPER=""
 EXTRA_KILL=""
 
+RESTART_WAIT=1
+
 run_for_all() {
   for DN in $(ls -1 $SERVERS_DIR); do
     if [ -f $SERVERS_DIR/$DN/config.sh ]; then

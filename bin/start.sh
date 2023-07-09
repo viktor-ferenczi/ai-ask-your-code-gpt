@@ -27,8 +27,12 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
   LOG_PATH="${LOG_PATH_BASENAME}.${TODAY}.log"
 
   cd "$WORKING_DIR"
-  nohup $WRAPPER $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &
-  echo "$TITLE: Started"
+  if ($WRAPPER nohup $COMMAND_LINE >>"${LOG_PATH}" 2>&1 &); then
+    echo "$TITLE: Started"
+  else
+    echo "$TITLE: Failed to start"
+    exit 1
+  fi
 
 done
 
