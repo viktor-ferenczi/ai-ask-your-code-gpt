@@ -66,9 +66,12 @@ async def openapi_spec():
     return Response(text, mimetype="text/yaml", status=200)
 
 
-RX_GITHUB_REPO = re.compile(r'https://github\.com/(.+?)/(.+?)/?', re.I)
-RX_GITHUB_CODELOAD = re.compile(r'https://codeload\.github\.com/(.+?)/(.+?)/zip/refs/heads/(.+)', re.I)
+RX_GITHUB_REPO = re.compile(r'^https://github\.com/([^/]+)/([^/]+)/?$', re.I)
+RX_GITHUB_CODELOAD = re.compile(r'^https://codeload\.github\.com/(.+?)/(.+?)/zip/refs/heads/(.+)$', re.I)
 
+assert RX_GITHUB_REPO.match('https://github.com/Rapptz/discord.py/archive/refs/heads/master.zip') is None
+assert RX_GITHUB_REPO.match('https://github.com/Rapptz/discord.py/').group(0) == 'https://github.com/Rapptz/discord.py/'
+assert RX_GITHUB_REPO.match('https://github.com/Rapptz/discord.py').group(0) == 'https://github.com/Rapptz/discord.py'
 
 @app.post("/project")
 async def create():
