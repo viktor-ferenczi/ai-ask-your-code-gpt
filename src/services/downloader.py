@@ -112,16 +112,15 @@ async def download(db: Database, url: str, project_id: int) -> THandlerResult:
             message += '; Test your URL in a private browser tab without authentication. Private repositories will work at a later time. Authentication is currently not supported by AskYourCode.'
         raise TaskFailed(message)
 
-    followup: Task = None
     if new:
         print(f'Downloaded new archive {archive.checksum!r} for project {project_id!r}, requesting extraction')
-        followup = Task.create_pending(Operation.ExtractArchive, archive_cs=archive.checksum, project_id=project_id)
     else:
         print(f'Reusing existing archive {archive.checksum!r} for project {project_id!r}, already extracted')
 
     pubsub = PubSub(db)
     await pubsub.send(ChannelName.DownloadCompleted.name, url=url)
 
+    followup = Task.create_pending(Operation.ExtractArchive, archive_cs=archive.checksum, project_id=project_id)
     return followup
 
 
