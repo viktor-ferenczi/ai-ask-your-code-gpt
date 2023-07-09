@@ -1,6 +1,6 @@
 import asyncio
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from quart import Quart
 
@@ -10,38 +10,27 @@ from storage.database import Database
 
 
 async def cleanup(db: Database):
-    removed: bool = False
-    for _ in range(C.CLEANUP_MAX_PROJECTS):
-
-        async with db.transaction() as conn:
-
-            project_id = await conn.fetchval("""
+    async with db.transaction() as conn:
+        for row in await conn.fetch("""
                 SELECT id
                 FROM project
                 WHERE accessed < $1
-                LIMIT 1
+                ORDER BY accessed
+                LIMIT $2
                 FOR UPDATE SKIP LOCKED
-            """, datetime.utcnow() - C.PROJECT_EXPIRATION_INTERVAL)
-
-            if project_id is None:
-                break
-
-            await conn.execute("""
-                DELETE FROM file
-                WHERE project_id = $1
-            """, project_id)
+            """, datetime.utcnow() - C.PROJECT_EXPIRATION_INTERVAL, C.CLEANUP_MAX_PROJECTS):
+            project_id = row['id']
 
             await conn.execute("""
                 DELETE FROM project
                 WHERE id = $1
             """, project_id)
 
-            removed = True
-
-    if not removed:
-        return
-
     async with db.transaction() as conn:
+        await conn.execute("""
+            DELETE FROM file
+            WHERE project_id NOT IN (SELECT DISTINCT id FROM project);
+        """)
 
         await conn.execute("""
             DELETE FROM document
@@ -52,6 +41,13 @@ async def cleanup(db: Database):
             DELETE FROM fragment
             WHERE document_cs NOT IN (SELECT checksum FROM document);
         """)
+
+    async with db.transaction() as conn:
+        await conn.execute("""
+            DELETE FROM task
+            WHERE state = 'completed'
+              AND finished < $1;
+        """, datetime.utcnow() - timedelta(days=3))
 
 
 async def worker():
