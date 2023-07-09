@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All servers" type="CompoundRunConfigurationType">
+    <toRun name="cleanup" type="PythonConfigurationType" />
     <toRun name="downloader" type="PythonConfigurationType" />
     <toRun name="extractor" type="PythonConfigurationType" />
     <toRun name="indexer" type="PythonConfigurationType" />
@@ -8,6 +9,8 @@
     <toRun name="indexer-3" type="PythonConfigurationType" />
     <toRun name="indexer-4" type="PythonConfigurationType" />
     <toRun name="indexer-5" type="PythonConfigurationType" />
+    <toRun name="indexer-6" type="PythonConfigurationType" />
+    <toRun name="indexer-7" type="PythonConfigurationType" />
     <toRun name="plugin" type="PythonConfigurationType" />
     <method v="2" />
   </configuration>
