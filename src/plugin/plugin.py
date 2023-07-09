@@ -88,15 +88,15 @@ async def create():
             return response
         url = response
 
+    project_name = url.split('?')[0]
+    if len(project_name) > 60:
+        project_name = new_uuid()
+
     # Create project, download and verify archive, initiate indexing
-    print(f'Created project from {url!r} for user {uid!r}')
+    print(f'Created project {project_name!r} from {url!r} for user {uid!r}')
 
     # noinspection PyBroadException
     try:
-        project_name = url.split('?')[0]
-        if len(project_name) > 60:
-            project_name = new_uuid()
-
         backend = await Backend.ensure_project(DATABASE, uid, project_name)
         info = await backend.download(url) if url else dict(status='Created an empty project')
     except BackendError as e:
