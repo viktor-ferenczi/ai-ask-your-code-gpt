@@ -68,7 +68,7 @@ class Backend:
         if task.state == TaskState.failed:
             return dict(
                 status=f'Failed to download archive: {task.message}',
-                hint='Try the download URL in a private browser. Does it work?',
+                hint='Try the download URL in a private browser. Does it work? Try to strip down the archive to be smaller and contain less files.',
                 support='https://askyourcode.ai',
             )
 
