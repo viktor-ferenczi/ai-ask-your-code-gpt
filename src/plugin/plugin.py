@@ -73,6 +73,7 @@ assert RX_GITHUB_REPO.match('https://github.com/Rapptz/discord.py/archive/refs/h
 assert RX_GITHUB_REPO.match('https://github.com/Rapptz/discord.py/').group(0) == 'https://github.com/Rapptz/discord.py/'
 assert RX_GITHUB_REPO.match('https://github.com/Rapptz/discord.py').group(0) == 'https://github.com/Rapptz/discord.py'
 
+
 @app.post("/project")
 async def create():
     await ensure_database()
@@ -279,6 +280,12 @@ async def search():
     name: str = request.args.get('name', '')
     text: str = request.args.get('text', '')
 
+    limit: int = 1
+    try:
+        limit: int = int(request.args.get('limit', '1'))
+    except ValueError:
+        pass
+
     print(f'Search project {project_name!r}: path={path!r}, tail={tail!r}, name={name!r}, text={text!r}')
 
     if path == '.':
@@ -286,8 +293,6 @@ async def search():
 
     if not path.startswith('/'):
         path = f'/{path}'
-
-    limit = 50 if tail or name else 10
 
     async with DATABASE.connection() as conn:
         project = await projects.find_by_uid_and_name(conn, uid, project_name)
@@ -327,30 +332,27 @@ async def search():
     if not hits:
         return Response(response='No match found', status=204)
 
-    path = hits[0].path
+    # Shorten hits if needed
+    max_tokens_per_hit = 2000 // limit
+    for hit in hits:
+        tokens = tiktoken_len(hit.text)
+        if tiktoken_len(hit.text) > max_tokens_per_hit:
+            hit.text = hit.text[:len(hit.text) * max_tokens_per_hit // tokens] + '...'
 
-    if text:
-        hits = hits[:1]
-    else:
-        hits = [hit for hit in hits if hit.path == path]
-        hits.sort(key=lambda hit: hit.lineno)
+    results = [
+        dict(
+            path=hit.path,
+            text=hit.text,
+        )
+        for hit in hits
+    ]
 
-        tokens = tiktoken_len(hits[0].text)
-        i = 1
-        while i < len(hits):
-            tokens += tiktoken_len(hits[i].text)
-            if tokens > 2000:
-                break
-            i += 1
+    # FIXME: Return information on indexing progress
+    info = {}
+    if not hits:
+        info['hint'] = 'Try again with a more relaxed search condition'
 
-        hits = hits[:i]
-
-    results = '\n'.join(hit.text for hit in hits)
-
-    # FIXME: Return information on indexing progress or hints if the search did not give any result
-    info = None
-
-    response = dict(results=results, path=path)
+    response = dict(results=results)
     if info:
         response['info'] = info
 

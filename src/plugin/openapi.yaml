@@ -121,6 +121,15 @@ paths:
             type: string
           required: false
           description: Free text search expression
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+            maximum: 10
+          required: false
+          description: Maximum number of search results to return
       responses:
         "200":
           description: Found
@@ -169,8 +178,11 @@ components:
         - results
       properties:
         results:
-          type: string
-          description: Code or documentation fragment from the project
+          type: array
+          items:
+            type:
+              object
+          description: Matching code or documentation fragment(s) from the project
         info:
           type: object
           description: Additional information
