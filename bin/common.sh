@@ -1,5 +1,3 @@
-#!/bin/sh
-
 export PYTHONPATH=$HOME/src
 export PYTHONUNBUFFERED=1
 
@@ -9,10 +7,6 @@ if [ "$USER" == "plugin" ]; then
 else
   export ENVIRONMENT="STAGING"
   export HTTP_PORT_OFFSET=500
-fi
-
-if [ -f ~/.askyourcode/config.sh ]; then
-  . ~/.askyourcode/config.sh
 fi
 
 export SERVERS_DIR="$HOME/bin/servers"
