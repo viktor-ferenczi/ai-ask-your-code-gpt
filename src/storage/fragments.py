@@ -143,6 +143,29 @@ async def search_in_project_by_path_tail_name(conn: Connection, project_id: int,
     ]
 
 
+async def search_in_project_by_path_tail_name_excluding_summaries(conn: Connection, project_id: int, path: str, tail: str, name: str, limit: int = 1) -> List[Tuple[str, Fragment]]:
+    if name:
+        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
+    else:
+        order_by = 'f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
+
+    return [
+        (row['path'], Fragment.from_row(row))
+        for row in await conn.fetch(f'''
+            SELECT f.path, c.* 
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1 
+              AND f.path ILIKE $2 
+              AND f.path ILIKE $3
+              AND c.name ILIKE $4
+              AND NOT c.summary
+            ORDER BY {order_by}
+            LIMIT $5
+        ''', project_id, f'{path}%', f'%{tail}', f'%{name}', limit)
+    ]
+
+
 async def search_in_project_by_path_tail_name_unlimited(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Tuple[str, Fragment]]:
     if name:
         order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
@@ -159,6 +182,28 @@ async def search_in_project_by_path_tail_name_unlimited(conn: Connection, projec
               AND f.path ILIKE $2
               AND f.path ILIKE $3
               AND c.name ILIKE $4
+            ORDER BY {order_by}
+        ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
+    ]
+
+
+async def search_in_project_by_path_tail_name_unlimited_excluding_summaries(conn: Connection, project_id: int, path: str, tail: str, name: str) -> List[Tuple[str, Fragment]]:
+    if name:
+        order_by = 'LENGTH(c.name), f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
+    else:
+        order_by = 'f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id'
+
+    return [
+        (row['path'], Fragment.from_row(row))
+        for row in await conn.fetch(f'''
+            SELECT f.path, c.* 
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1 
+              AND f.path ILIKE $2
+              AND f.path ILIKE $3
+              AND c.name ILIKE $4
+              AND NOT c.summary
             ORDER BY {order_by}
         ''', project_id, f'{path}%', f'%{tail}', f'%{name}')
     ]

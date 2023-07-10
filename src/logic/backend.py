@@ -1,6 +1,6 @@
 import asyncio
 from datetime import datetime
-from typing import List, Iterator, Dict, Any, Optional
+from typing import List, Iterator, Dict, Any, Optional, Tuple
 
 import numpy as np
 
@@ -10,7 +10,7 @@ from model.fragment import Fragment
 from model.hit import Hit
 from storage import projects
 from storage.database import Database
-from storage.fragments import search_in_project_by_path_tail_name_unlimited, search_in_project_by_path_tail_name, list_project_fragments_by_id, Fragment as DbFragment
+from storage.fragments import search_in_project_by_path_tail_name_unlimited, Fragment as DbFragment, search_in_project_by_path_tail_name_unlimited_excluding_summaries, search_in_project_by_path_tail_name_excluding_summaries
 from storage.projects import Project
 from storage.pubsub import PubSub, ChannelName
 from storage.scheduler import Scheduler, Task, Operation, TaskState
@@ -95,60 +95,46 @@ class Backend:
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         await self.update_project_accessed()
 
-        async with self.db.connection() as conn:
+        path_name_search = (path and path != '/') or tail or name
+        if path_name_search:
+            async with self.db.connection() as conn:
+                if text:
+                    triplets = await search_in_project_by_path_tail_name_unlimited_excluding_summaries(conn, self.project.id, path, tail, name)
+                else:
+                    triplets = await search_in_project_by_path_tail_name_excluding_summaries(conn, self.project.id, path, tail, name, limit)
+
+            fragments = [fragment_from_db_fragment(*pair) for pair in triplets]
+
+            # Text based search if specified
             if text:
-                pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
-            else:
-                pairs = await search_in_project_by_path_tail_name(conn, self.project.id, path, tail, name, limit)
+                words = set(w for w in text.split() if w)
+                fragments = [fragment for fragment in fragments if all((word in fragment.text) for word in words)]
 
-        fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
-
-        # FIXME: Integrate this into the query
-        fragments = [fragment for fragment in fragments if fragment.type != 'summary']
-
-        if not text:
             # Ordering and limit was already applied in SQL
             count = len(fragments)
             return [Hit.from_fragment(1.0 - i / count, fragment)
                     for i, fragment in enumerate(fragments)]
 
-        # Full text search
-        fts_ids = await self.free_text_search(text, 1000 + limit if fragments else limit)
-        if not fts_ids:
-            return []
-
-        if fragments:
-            # Consider only the fragments selected by name, tail or path
-            fragment_map = {fragment.uuid: fragment for fragment in fragments}
-            fts_ids = [uuid for uuid in fts_ids if uuid in fragment_map]
-        else:
-            # Pull the fragments referenced from the full text search uuids
-            async with self.db.connection() as conn:
-                pairs = await list_project_fragments_by_id(conn, self.project.id, list(map(int, fts_ids)))
-
-            fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
-            fragment_map = {fragment.uuid: fragment for fragment in fragments}
-
-        # Combine into hits, preserve full text search fts_uuids sort order
-        count = len(fts_ids)
-        hits = [Hit.from_fragment(1.0 - i / count, fragment_map[uuid]) for i, uuid in enumerate(fts_ids[:limit])]
+        # Full text search in database
+        triplets = await self.free_text_search_excluding_summaries(text, limit)
+        hits = [Hit.from_fragment(rank, fragment_from_db_fragment(path, fragment)) for rank, path, fragment in triplets]
         return hits
 
-    async def free_text_search(self, query: str, limit: int) -> List[str]:
+    async def free_text_search_excluding_summaries(self, query: str, limit: int) -> List[Tuple[float, str, DbFragment]]:
         sql = '''
-            SELECT s.id, ts_rank_cd(to_tsvector(s.body), query) AS rank
+            SELECT ts_rank_cd(to_tsvector(s.body), query) AS rank, s.*
             FROM (
-                SELECT c.id, c.body
+                SELECT f.path, c.*
                 FROM file AS f
                 INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
-                WHERE f.project_id = $1
+                WHERE f.project_id = $1 AND NOT c.summary
             ) AS s, phraseto_tsquery($2) query 
             WHERE s.body @@ query
             ORDER BY rank DESC
             LIMIT $3
         '''
         async with self.db.connection() as conn:
-            return [str(row[0]) for row in await conn.fetch(sql, self.project.id, query, limit)]
+            return [(row['rank'], row['path'], DbFragment.from_row(row)) for row in await conn.fetch(sql, self.project.id, query, limit)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         await self.update_project_accessed()
