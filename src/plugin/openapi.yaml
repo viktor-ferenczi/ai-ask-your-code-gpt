@@ -27,19 +27,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/createResponse'
-    delete:
-      operationId: delete
-      summary: Forget about a project
-      parameters:
-        - in: query
-          name: project
-          schema:
-            type: string
-          required: true
-          description: Project identifier
-      responses:
-        "200":
-          description: OK
   /summarize:
     get:
       operationId: summarize
