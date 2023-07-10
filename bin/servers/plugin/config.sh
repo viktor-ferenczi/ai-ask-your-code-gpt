@@ -10,7 +10,7 @@ if [ "$ENVIRONMENT" == "PRODUCTION" ]; then
   export HTTP_PORT=443
   cp "$HOME/src/plugin/hypercorn.prd.toml" "$HOME/src/plugin/hypercorn.toml"
 else
-  export HTTP_PORT=5555
+  export HTTP_PORT=55555
   cp "$HOME/src/plugin/hypercorn.stg.toml" "$HOME/src/plugin/hypercorn.toml"
 fi
 

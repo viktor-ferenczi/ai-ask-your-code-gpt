@@ -69,7 +69,7 @@ class C:
 
     PLUGIN_HTTP_PORT = {
         PRODUCTION: 443,
-        STAGING: 5555,
+        STAGING: 55555,
         DEVELOPMENT: 5555,
         TEST_SUITE: 5555,
     }[ENVIRONMENT]

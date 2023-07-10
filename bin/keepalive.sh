@@ -1,4 +1,9 @@
-#!/bin/bash -l
+#!/bin/bash
+
+if [ -z "$USER" ]; then
+  echo "USER environment variable is not set"
+  exit 1
+fi
 
 . ~/bin/common.sh
 
