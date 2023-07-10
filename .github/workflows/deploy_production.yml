@@ -37,7 +37,7 @@ jobs:
 
       - name: Create log folder, fix access rights
         run: |
-          ssh plugin@plugin.askyourcode.ai 'mkdir -p ~/log; chmod +x ~/bin/*.sh'
+          ssh plugin@plugin.askyourcode.ai 'mkdir -p ~/log && chmod +x ~/bin/*.sh'
 
       - name: Migrate database
         run: |
@@ -49,4 +49,4 @@ jobs:
 
       - name: Enable crontab
         run: |
-          ssh plugin@plugin.askyourcode.ai 'mv -f ~/bin/crontab.prd.txt ~/bin/crontab.txt; rm -f ~/bin/crontab.*.txt; crontab ~/bin/crontab.txt'
+          ssh plugin@plugin.askyourcode.ai 'mv -f ~/bin/crontab.prd.txt ~/bin/crontab.txt && rm -f ~/bin/crontab.*.txt && crontab ~/bin/crontab.txt'
