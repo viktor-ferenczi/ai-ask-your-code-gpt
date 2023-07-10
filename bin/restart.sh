@@ -8,8 +8,9 @@ fi
 . ~/bin/common.sh
 
 if [ -z "$1" ]; then
-  date -Is
+  echo "$(date -Is): Restarting all services"
   run_for_all $0
+  echo "$(date -Is): Done"
   exit 0
 fi
 
@@ -23,3 +24,5 @@ if [ "$RESTART_WAIT" -gt 0 ]; then
 fi
 
 bash ~/bin/start.sh "$@"
+
+exit 0
