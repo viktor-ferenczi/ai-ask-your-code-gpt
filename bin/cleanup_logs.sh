@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "$(date -Is): Log cleanup"
 
 if [ -z "$USER" ]; then
   echo "USER environment variable is not set"
@@ -19,3 +20,6 @@ for FN in $(find . -type f -mtime +90 | grep '.20' | egrep '.log.gz$'); do
     echo "Deleted: $FN"
     rm -f $FN
 done
+
+echo "$(date -Is): Done"
+exit 0

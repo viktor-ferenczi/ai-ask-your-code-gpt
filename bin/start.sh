@@ -8,7 +8,9 @@ fi
 . ~/bin/common.sh
 
 if [ -z "$1" ]; then
+  echo "$(date -Is): Starting all services"
   run_for_all $0
+  echo "$(date -Is): Done"
   exit 0
 fi
 

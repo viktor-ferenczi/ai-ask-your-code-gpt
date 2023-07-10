@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "$(date -Is): Keepalive check"
 
 if [ -z "$USER" ]; then
   echo "USER environment variable is not set"
@@ -64,4 +65,5 @@ if ! $GOOD; then
   bash ~/bin/restart.sh $1
 fi
 
+echo "$(date -Is): Done"
 exit 0
