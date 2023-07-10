@@ -33,7 +33,9 @@ function check_canary {
 
 INSTANCE_MAX=$((INSTANCE_COUNT - 1))
 
-GOOD=true
+STOPPED_SERVICES=false
+FROZEN_SERVICES=false
+
 for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
 
   . $CONFIG_DIR/config.sh
@@ -54,15 +56,21 @@ for INSTANCE_INDEX in $(seq 0 $INSTANCE_MAX); do
       continue
     fi
 
-    GOOD=false
+    FROZEN_SERVICES=true
     break
+  else
+    STOPPED_SERVICES=true
   fi
-
 done
 
-if ! $GOOD; then
+if $FROZEN_SERVICES; then
   echo "$(date -Is): $TITLE is running, but it does not respond. Restarting..."
   bash ~/bin/restart.sh $1
+else
+  if $STOPPED_SERVICES; then
+    echo "$(date -Is): $TITLE is not running. Starting..."
+    bash ~/bin/start.sh $1
+  fi
 fi
 
 echo "$(date -Is): Done $0"
