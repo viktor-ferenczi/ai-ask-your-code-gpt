@@ -3,19 +3,15 @@ USER="plugin"
 HOME="/home/plugin"
 PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-@reboot /bin/bash -l $HOME/bin/start.sh >>$HOME/log/boot.log 2>&1
+@reboot /bin/bash -l $HOME/bin/ayc --ignore-pid-files start >>$HOME/log/boot.log 2>&1
 
 # Keepalive
 # mm hh         dom mon dow command
-*/5 *            *   *   *  /bin/bash -l $HOME/bin/keepalive.sh >>$HOME/log/keepalive.log 2>&1
+*/5 *            *   *   *  /bin/bash -l $HOME/bin/ayc keepalive >>$HOME/log/keepalive.log 2>&1
 
 # Restarts
 # mm hh         dom mon dow command
-02 */8           *   *   *  /bin/bash -l $HOME/bin/restart.sh >>$HOME/log/restart.log 2>&1
-
-# Cleanup logs
-# mm hh         dom mon dow command
-07 07            *   *   *  /bin/bash -l $HOME/bin/cleanup_logs.sh >>$HOME/log/cleanup_logs.log 2>&1
+02 */8           *   *   *  /bin/bash -l $HOME/bin/ayc restart >>$HOME/log/restart.log 2>&1
 
 # Backup
 # mm hh         dom mon dow command

@@ -21,32 +21,35 @@ jobs:
         run: |
           echo "|1|80IiOCI3xLHTRJJq2kg+sIG89rI=|U7Td2SptKuTM3zPCTf+S6IbSXig= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF+h6VgQQ0gm4sTpTWaln2SJhKXCAu9mgHUqAVVeRrz2rVLA35j7286e16/RTtsa5VMjSvIHkl8jTuDYiEUGqaM=" >> ~/.ssh/known_hosts
 
-      - name: Disable crontab
+      - name: Clear crontab
         run: |
           ssh plugin@plugin.askyourcode.ai 'crontab -r || true'
 
       - name: Stop server
         run: |
-          ssh plugin@plugin.askyourcode.ai 'bash ~/bin/stop.sh || true'
+          ssh plugin@plugin.askyourcode.ai '/bin/bash -l ~/bin/ayc stop'
 
       - name: Deploy scripts and code
         run: |
           ssh plugin@plugin.askyourcode.ai 'mkdir -p ~/bin ~/src'
           rsync -av --delete-after bin/ plugin@plugin.askyourcode.ai:~/bin/
           rsync -av --delete-after src/ plugin@plugin.askyourcode.ai:~/src/
+          ssh plugin@plugin.askyourcode.ai 'mv -f ~/bin/services.prd.yaml ~/bin/services.yaml && rm -f ~/bin/services.*.yaml'
+          ssh plugin@plugin.askyourcode.ai 'mv -f ~/bin/crontab.prd.txt ~/bin/crontab.txt && rm -f ~/bin/crontab.*.txt'
+          ssh plugin@plugin.askyourcode.ai 'mv -f ~/src/plugin/hypercorn.prd.toml ~/src/plugin/hypercorn.toml && rm -f ~/src/plugin/hypercorn.*.toml'
 
       - name: Create log folder, fix access rights
         run: |
-          ssh plugin@plugin.askyourcode.ai 'mkdir -p ~/log && chmod +x ~/bin/*.sh'
+          ssh plugin@plugin.askyourcode.ai 'mkdir -p ~/log && chmod +x ~/bin/ayc'
 
       - name: Migrate database
         run: |
-          ssh plugin@plugin.askyourcode.ai 'bash ~/bin/migrate.sh'
+          ssh plugin@plugin.askyourcode.ai '/bin/bash -l ~/bin/migrate.sh'
 
-      - name: Start server
+      - name: Start all services
         run: |
-          ssh plugin@plugin.askyourcode.ai 'bash ~/bin/start.sh'
+          ssh plugin@plugin.askyourcode.ai '/bin/bash -l ~/bin/ayc start'
 
-      - name: Enable crontab
+      - name: Configure crontab
         run: |
-          ssh plugin@plugin.askyourcode.ai 'mv -f ~/bin/crontab.prd.txt ~/bin/crontab.txt && rm -f ~/bin/crontab.*.txt && crontab ~/bin/crontab.txt'
+          ssh plugin@plugin.askyourcode.ai 'crontab ~/bin/crontab.txt'
