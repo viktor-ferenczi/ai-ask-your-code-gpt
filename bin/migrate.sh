@@ -13,5 +13,5 @@ set -euo pipefail
 cd $HOME/src
 python -O -u migrate_database.py
 
-echo "$(date -Is): Done"
+echo "$(date -Is): Done $0"
 exit 0

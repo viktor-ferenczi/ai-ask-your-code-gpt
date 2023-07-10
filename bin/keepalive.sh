@@ -65,5 +65,5 @@ if ! $GOOD; then
   bash ~/bin/restart.sh $1
 fi
 
-echo "$(date -Is): Done"
+echo "$(date -Is): Done $0"
 exit 0
