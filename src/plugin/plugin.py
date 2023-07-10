@@ -167,36 +167,6 @@ async def validate_url(url: str) -> Union[str, Response]:
     return url
 
 
-@app.delete("/project")
-async def delete():
-    await ensure_database()
-
-    uid = ''
-    project_name: str = request.args.get('project', '')
-
-    async with DATABASE.connection() as conn:
-        project = await projects.find_by_uid_and_name(conn, uid, project_name)
-
-    if project is None:
-        return Response(response='No such project', status=404)
-
-    backend = Backend(DATABASE, project)
-    print(f'Deleted project {project_name!r} of user {uid!r}')
-
-    # noinspection PyBroadException
-    try:
-        await backend.delete()
-    except BackendError as e:
-        print(f'Failed to delete project {project_name!r}: {e}')
-        return Response(response=str(e), status=400)
-    except Exception:
-        print(f'ERROR: Failed to delete project {project_name!r}')
-        print_exc()
-        return Response(response='Failed to delete project, please try again later', status=500)
-
-    return Response(status=200)
-
-
 @app.get("/summarize")
 async def summarize():
     await ensure_database()

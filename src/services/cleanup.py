@@ -55,9 +55,9 @@ async def cleanup(db: Database):
                 WHERE document_cs NOT IN (SELECT checksum FROM document);
             """)
 
-        deleted_file_count = await files.count(conn) - file_count
-        deleted_document_count = await documents.count(conn) - document_count
-        deleted_fragment_count = await fragments.count(conn) - fragment_count
+        deleted_file_count = file_count - await files.count(conn)
+        deleted_document_count = document_count - await documents.count(conn)
+        deleted_fragment_count = fragment_count - await fragments.count(conn)
 
     if deleted_file_count or deleted_document_count or deleted_fragment_count:
         print(f'Deleted {deleted_file_count} files, {deleted_document_count} documents, {deleted_fragment_count} fragments')

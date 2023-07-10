@@ -54,7 +54,7 @@ async def index_batch(db: Database, checksums: List[str], paths: List[str]) -> T
 
 
 def index_document(document: Document, path: str) -> Iterable[DbFragment]:
-    with timer(f'Indexed: {document.checksum} {path}', show=C.DEVELOPMENT):
+    with timer(f'Indexed: {document.checksum} {path}', show=C.IS_DEVELOPMENT):
         parser_cls = PARSERS_BY_NAME.get(document.doc_type)
         if parser_cls is None:
             print(f'WARNING: Cannot find parser class by name {document.doc_type}, document: {document.checksum}')

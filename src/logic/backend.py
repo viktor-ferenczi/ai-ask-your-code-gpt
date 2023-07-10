@@ -89,9 +89,6 @@ class Backend:
         assert task.state == TaskState.completed
         return dict(status='Archive downloaded')
 
-    async def delete(self):
-        pass
-
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         await self.update_project_accessed()
 
