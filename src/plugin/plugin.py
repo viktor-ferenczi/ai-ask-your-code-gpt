@@ -319,6 +319,7 @@ async def search():
         print(f'- tail={tail!r}')
         print(f'- name={name!r}')
         print(f'- text={text!r}')
+        print(f'- limit={limit!r}')
         return Response(response=str(e), status=400)
     except Exception:
         print(f'ERROR: Failed to search project {project_name!r}')
@@ -326,6 +327,7 @@ async def search():
         print(f'- tail={tail!r}')
         print(f'- name={name!r}')
         print(f'- text={text!r}')
+        print(f'- limit={limit!r}')
         print_exc()
         return Response(response='Failed to search the project contents. Please try again later.', status=500)
 

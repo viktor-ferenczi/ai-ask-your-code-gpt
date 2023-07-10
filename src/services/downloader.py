@@ -83,15 +83,12 @@ class Downloader:
                 yield zip_doc.path.lstrip('/')
         except BadZipFile:
             print(f'Not a ZIP file: {self.url!r}')
-            print_exc()
             raise DownloadError(f'Not a ZIP file: {self.url!r}')
         except LargeZipFile:
             print(f'ZIP file is too large: {self.url!r}')
-            print_exc()
             raise DownloadError(f'ZIP file is too large: {self.url!r}')
         except ArchiveTooLargeError as e:
             print(f'{e}: {self.url!r}')
-            print_exc()
             raise DownloadError(f'{e}: {self.url!r}')
         except Exception:
             print(f'Failed to verify source archive {self.url!r}')
