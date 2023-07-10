@@ -1,5 +1,3 @@
-#!/bin/sh
-
 NAME="plugin"
 TITLE="Plugin"
 

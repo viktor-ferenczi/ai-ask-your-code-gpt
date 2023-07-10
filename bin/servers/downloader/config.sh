@@ -1,5 +1,3 @@
-#!/bin/sh
-
 NAME="downloader-$INSTANCE_INDEX"
 TITLE="Downloader-$INSTANCE_INDEX"
 

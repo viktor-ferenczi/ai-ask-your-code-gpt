@@ -1,5 +1,3 @@
-#!/bin/sh
-
 NAME="indexer-$INSTANCE_INDEX"
 TITLE="Indexer-$INSTANCE_INDEX"
 

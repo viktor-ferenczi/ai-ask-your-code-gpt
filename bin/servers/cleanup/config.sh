@@ -1,5 +1,3 @@
-#!/bin/sh
-
 NAME="cleanup-$INSTANCE_INDEX"
 TITLE="Cleanup-$INSTANCE_INDEX"
 

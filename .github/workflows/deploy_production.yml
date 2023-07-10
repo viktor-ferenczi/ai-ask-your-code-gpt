@@ -49,4 +49,4 @@ jobs:
 
       - name: Enable crontab
         run: |
-          ssh plugin@plugin.askyourcode.ai 'crontab ~/bin/crontab'
+          ssh plugin@plugin.askyourcode.ai 'mv -f ~/bin/crontab.prd.txt ~/bin/crontab.txt; rm -f ~/bin/crontab.*.txt; crontab ~/bin/crontab.txt'

@@ -1,5 +1,3 @@
-#!/bin/sh
-
 NAME="extractor-$INSTANCE_INDEX"
 TITLE="Extractor-$INSTANCE_INDEX"
 

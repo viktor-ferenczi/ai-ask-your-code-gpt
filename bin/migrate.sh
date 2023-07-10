@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 set -euo pipefail
 
 . $HOME/bin/common.sh
