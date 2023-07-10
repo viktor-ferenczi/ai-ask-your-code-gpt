@@ -1,17 +1,8 @@
-#!/bin/bash
-echo "$(date -Is): Database migration"
-
-if [ -z "$USER" ]; then
-  echo "USER environment variable is not set"
-  exit 1
-fi
-
+#!/bin/bash -l
 set -euo pipefail
 
-. $HOME/bin/common.sh
+test -n "$USER"
+test -n "$ENVIRONMENT"
 
-cd $HOME/src
-python -O -u migrate_database.py
-
-echo "$(date -Is): Done $0"
-exit 0
+export PYTHONPATH=$HOME/src
+/usr/bin/python3 ~/src/migrate_database.py

@@ -1,0 +1,25 @@
+- name: downloader
+  command: [ '/usr/bin/python3', '-O', '-u', 'downloader.py' ]
+  work_dir: ~/src/services
+  base_port: 41500
+  instances: 4
+- name: extractor
+  command: [ '/usr/bin/python3', '-O', '-u', 'extractor.py' ]
+  work_dir: ~/src/services
+  base_port: 42500
+  instances: 4
+- name: indexer
+  command: [ '/usr/bin/python3', '-O', '-u', 'indexer.py' ]
+  work_dir: ~/src/services
+  base_port: 43500
+  instances: 16
+- name: cleanup
+  command: [ '/usr/bin/python3', '-O', '-u', 'cleanup.py' ]
+  work_dir: ~/src/services
+  base_port: 44500
+  instances: 1
+- name: plugin
+  command: [ '/usr/bin/authbind', '--deep', '~/.local/bin/hypercorn', '--config', '~/src/plugin/hypercorn.toml', 'plugin:app' ]
+  work_dir: ~/src/plugin
+  base_port: 55555
+  instances: 1

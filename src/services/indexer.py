@@ -48,6 +48,7 @@ async def index_batch(db: Database, checksums: List[str], paths: List[str]) -> T
                 # FIXME: Delete with a single query
                 for checksum in checksums:
                     await fragments.delete_by_document_cs(conn, checksum)
+                await asyncio.sleep(0)
                 await fragments.insert_many(conn, frags)
 
     return None

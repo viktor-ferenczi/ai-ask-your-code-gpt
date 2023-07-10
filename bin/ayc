@@ -1,0 +1,17 @@
+#!/bin/bash -l
+set -euo pipefail
+
+if [ -z "$USER" ] || [ -z "$HOME" ]; then
+  echo "User environment is not loaded, refusing to execute"
+  exit 1
+fi
+
+if [ -z "$ENVIRONMENT" ]; then
+  echo "ENVIRONMENT is not set, refusing to execute"
+  exit 1
+fi
+
+export PYTHONPATH=$HOME/src
+export PYTHONUNBUFFERED=1
+
+/usr/bin/python $HOME/bin/ayc.py "$@"
