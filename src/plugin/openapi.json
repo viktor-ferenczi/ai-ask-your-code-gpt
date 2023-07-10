@@ -1,269 +1,284 @@
 {
-   "openapi": "3.0.1",
-   "info": {
-      "title": "AskYourCode",
-      "description": "Provides summarization and search capability over the source code and documentation of a software project. Facilitates discovering the project gradually, retrieving only the parts relevant for reasoning about the task at hand.",
-      "contact": {
-         "name": "AskYourCode Support",
-         "url": "https://askyourcode.ai",
-         "email": "info@askyourcode.ai"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "AskYourCode",
+    "description": "Provides summarization and search capability over the source code and documentation of a software project. Facilitates discovering the project gradually, retrieving only the parts relevant for reasoning about the task at hand.",
+    "contact": {
+      "name": "AskYourCode Support",
+      "url": "https://askyourcode.ai",
+      "email": "info@askyourcode.ai"
+    },
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://plugin.askyourcode.ai"
+    }
+  ],
+  "paths": {
+    "/project": {
+      "post": {
+        "operationId": "create",
+        "summary": "Start working on a new project",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Project created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createResponse"
+                }
+              }
+            }
+          }
+        }
       },
-      "version": "v2"
-   },
-   "servers": [
-      {
-         "url": "https://plugin.askyourcode.ai"
-      }
-   ],
-   "paths": {
-      "/project": {
-         "post": {
-            "operationId": "create",
-            "summary": "Start working on a new project",
-            "requestBody": {
-               "required": true,
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "$ref": "#/components/schemas/createRequest"
-                     }
-                  }
-               }
+      "delete": {
+        "operationId": "delete",
+        "summary": "Forget about a project",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "project",
+            "schema": {
+              "type": "string"
             },
-            "responses": {
-               "200": {
-                  "description": "Project created",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/createResponse"
-                        }
-                     }
-                  }
-               }
-            }
-         },
-         "delete": {
-            "operationId": "delete",
-            "summary": "Forget about a project",
-            "parameters": [
-               {
-                  "in": "query",
-                  "name": "project",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": true,
-                  "description": "Project identifier"
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "OK"
-               }
-            }
-         }
-      },
-      "/summarize": {
-         "get": {
-            "operationId": "summarize",
-            "summary": "Summarize the project, a directory, a file or a code construct (class, method, function, variable)",
-            "parameters": [
-               {
-                  "in": "query",
-                  "name": "project",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": true,
-                  "description": "Project identifier"
-               },
-               {
-                  "in": "query",
-                  "name": "path",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Path to a specific folder or file",
-                  "example": "/README.md"
-               },
-               {
-                  "in": "query",
-                  "name": "tail",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Tail of the file path",
-                  "example": ".md"
-               },
-               {
-                  "in": "query",
-                  "name": "name",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Simple or fully qualified name of a code construct"
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "Summary",
-                  "content": {
-                     "text/plain": {
-                        "schema": {
-                           "type": "string"
-                        }
-                     }
-                  }
-               },
-               "204": {
-                  "description": "No match found",
-                  "content": {
-                     "text/plain": {
-                        "schema": {
-                           "type": "string"
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      },
-      "/search": {
-         "get": {
-            "operationId": "search",
-            "summary": "Searches for documentation or a code construct (class, method, function, variable)",
-            "parameters": [
-               {
-                  "in": "query",
-                  "name": "project",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": true,
-                  "description": "Project identifier"
-               },
-               {
-                  "in": "query",
-                  "name": "path",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Matches the head of the file or folder path (whole project if missing)",
-                  "example": "README.md"
-               },
-               {
-                  "in": "query",
-                  "name": "tail",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Matches the tail of the file path, for example \".extension\" or \"filename.extension\"",
-                  "example": ".md"
-               },
-               {
-                  "in": "query",
-                  "name": "name",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Fully qualified or simple name of the code construct"
-               },
-               {
-                  "in": "query",
-                  "name": "text",
-                  "schema": {
-                     "type": "string"
-                  },
-                  "required": false,
-                  "description": "Free text search expression"
-               }
-            ],
-            "responses": {
-               "200": {
-                  "description": "Found",
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "$ref": "#/components/schemas/searchResponse"
-                        }
-                     }
-                  }
-               },
-               "204": {
-                  "description": "No match found"
-               }
-            }
-         }
+            "required": true,
+            "description": "Project identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
-   },
-   "components": {
-      "schemas": {
-         "createRequest": {
-            "type": "object",
-            "properties": {
-               "url": {
-                  "type": "string",
-                  "description": "Project contents to download, link to a GitHub repository or a zip/tar.gz archive"
-               }
+    },
+    "/summarize": {
+      "get": {
+        "operationId": "summarize",
+        "summary": "Summarize the project, a directory, a file or a code construct (class, method, function, variable)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "project",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project identifier"
+          },
+          {
+            "in": "query",
+            "name": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Path to a specific folder or file",
+            "example": "/README.md"
+          },
+          {
+            "in": "query",
+            "name": "tail",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Tail of the file path",
+            "example": ".md"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Simple or fully qualified name of a code construct"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
-         },
-         "createResponse": {
-            "type": "object",
-            "required": [
-               "project"
-            ],
-            "properties": {
-               "project": {
-                  "type": "string",
-                  "description": "Project identifier",
-                  "required": true
-               },
-               "info": {
-                  "type": "object",
-                  "description": "Additional information"
-               }
+          },
+          "204": {
+            "description": "No match found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
-         },
-         "summarizeResponse": {
-            "type": "object",
-            "required": [
-               "summary"
-            ],
-            "properties": {
-               "summary": {
-                  "type": "string",
-                  "description": "Summary",
-                  "required": true
-               },
-               "info": {
-                  "type": "object",
-                  "description": "Additional information"
-               }
-            }
-         },
-         "searchResponse": {
-            "type": "object",
-            "required": [
-               "results"
-            ],
-            "properties": {
-               "results": {
-                  "type": "string",
-                  "description": "Code or documentation fragment from the project"
-               },
-               "info": {
-                  "type": "object",
-                  "description": "Additional information"
-               }
-            }
-         }
+          }
+        }
       }
-   }
+    },
+    "/search": {
+      "get": {
+        "operationId": "search",
+        "summary": "Searches for documentation or a code construct (class, method, function, variable)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "project",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project identifier"
+          },
+          {
+            "in": "query",
+            "name": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Matches the head of the file or folder path (whole project if missing)",
+            "example": "README.md"
+          },
+          {
+            "in": "query",
+            "name": "tail",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Matches the tail of the file path, for example \".extension\" or \"filename.extension\"",
+            "example": ".md"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Fully qualified or simple name of the code construct"
+          },
+          {
+            "in": "query",
+            "name": "text",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Free text search expression"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 10
+            },
+            "required": false,
+            "description": "Maximum number of search results to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/searchResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No match found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Project contents to download, link to a GitHub repository or a zip/tar.gz archive"
+          }
+        }
+      },
+      "createResponse": {
+        "type": "object",
+        "required": [
+          "project"
+        ],
+        "properties": {
+          "project": {
+            "type": "string",
+            "description": "Project identifier",
+            "required": true
+          },
+          "info": {
+            "type": "object",
+            "description": "Additional information"
+          }
+        }
+      },
+      "summarizeResponse": {
+        "type": "object",
+        "required": [
+          "summary"
+        ],
+        "properties": {
+          "summary": {
+            "type": "string",
+            "description": "Summary",
+            "required": true
+          },
+          "info": {
+            "type": "object",
+            "description": "Additional information"
+          }
+        }
+      },
+      "searchResponse": {
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Matching code or documentation fragment(s) from the project"
+          },
+          "info": {
+            "type": "object",
+            "description": "Additional information"
+          }
+        }
+      }
+    }
+  }
 }
