@@ -121,20 +121,35 @@ class Backend:
         return hits
 
     async def free_text_search_excluding_summaries(self, query: str, limit: int) -> List[Tuple[float, str, DbFragment]]:
+        # Free text search does not work for all text bodies
+        # sql = '''
+        #     SELECT ts_rank_cd(to_tsvector(s.body), query) AS rank, s.*
+        #     FROM (
+        #         SELECT f.path, c.*
+        #         FROM file AS f
+        #         INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+        #         WHERE f.project_id = $1 AND NOT c.summary
+        #     ) AS s, phraseto_tsquery($2) query
+        #     WHERE s.body @@ query
+        #     ORDER BY rank DESC
+        #     LIMIT $3
+        # '''
+
+        # Workaround:
         sql = '''
-            SELECT ts_rank_cd(to_tsvector(s.body), query) AS rank, s.*
-            FROM (
-                SELECT f.path, c.*
-                FROM file AS f
-                INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
-                WHERE f.project_id = $1 AND NOT c.summary
-            ) AS s, phraseto_tsquery($2) query 
-            WHERE s.body @@ query
-            ORDER BY rank DESC
+            SELECT f.path, c.*
+            FROM file AS f
+            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
+            WHERE f.project_id = $1
+              AND NOT c.summary
+              AND c.body ILIKE $2
+            ORDER BY f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id
             LIMIT $3
         '''
+        like_pattern = f"%{query.replace(' ', '%')}%"
         async with self.db.connection() as conn:
-            return [(row['rank'], row['path'], DbFragment.from_row(row)) for row in await conn.fetch(sql, self.project.id, query, limit)]
+            rows = await conn.fetch(sql, self.project.id, like_pattern, limit)
+            return [(1.0 - i / len(rows), row['path'], DbFragment.from_row(row)) for i, row in enumerate(rows)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         await self.update_project_accessed()
