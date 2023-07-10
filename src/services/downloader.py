@@ -12,7 +12,7 @@ from common.doc import find_common_base_dir
 from common.http import download_into_memory, DownloadError, NotModified
 from common.server import run_app
 from common.timer import timer
-from common.zip_support import extract_verify_documents
+from common.zip_support import extract_verify_documents, ArchiveTooLargeError
 from storage import archives
 from storage.archives import Archive
 from storage.database import Database
@@ -89,6 +89,10 @@ class Downloader:
             print(f'ZIP file is too large: {self.url!r}')
             print_exc()
             raise DownloadError(f'ZIP file is too large: {self.url!r}')
+        except ArchiveTooLargeError as e:
+            print(f'{e}: {self.url!r}')
+            print_exc()
+            raise DownloadError(f'{e}: {self.url!r}')
         except Exception:
             print(f'Failed to verify source archive {self.url!r}')
             print_exc()
