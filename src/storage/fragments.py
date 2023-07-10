@@ -235,8 +235,8 @@ async def list_all_fragments(conn: Connection) -> List[Fragment]:
     return fragments
 
 
-def delete_by_document_cs(conn: Connection, checksum):
-    conn.execute('''
+async def delete_by_document_cs(conn: Connection, checksum):
+    await conn.execute('''
         DELETE FROM fragment 
         WHERE partition_key = $1 
           AND document_cs = $2
