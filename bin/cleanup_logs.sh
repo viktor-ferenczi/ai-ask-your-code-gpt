@@ -21,5 +21,5 @@ for FN in $(find . -type f -mtime +90 | grep '.20' | egrep '.log.gz$'); do
     rm -f $FN
 done
 
-echo "$(date -Is): Done"
+echo "$(date -Is): Done $0"
 exit 0

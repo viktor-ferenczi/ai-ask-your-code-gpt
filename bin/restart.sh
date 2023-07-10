@@ -10,7 +10,7 @@ fi
 if [ -z "$1" ]; then
   echo "$(date -Is): Restarting all services"
   run_for_all $0
-  echo "$(date -Is): Done"
+  echo "$(date -Is): Done $0"
   exit 0
 fi
 
