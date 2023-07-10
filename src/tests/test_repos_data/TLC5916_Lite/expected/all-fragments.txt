@@ -656,6 +656,17 @@ Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfa
 Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfaeb7d4a',
          id=36,
          lineno=26,
+         tokens=2,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='setup',
+         body='setup()')
+
+Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfaeb7d4a',
+         id=37,
+         lineno=26,
          tokens=40,
          depth=0,
          parent_id=None,
@@ -673,18 +684,18 @@ Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfa
               '}')
 
 Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfaeb7d4a',
-         id=37,
-         lineno=26,
+         id=38,
+         lineno=36,
          tokens=2,
          depth=1,
          parent_id=None,
          category='function',
          summary=False,
-         name='setup',
-         body='setup()')
+         name='loop',
+         body='loop()')
 
 Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfaeb7d4a',
-         id=38,
+         id=39,
          lineno=36,
          tokens=22,
          depth=0,
@@ -696,17 +707,6 @@ Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfa
               '  tlc.transmit(count++, 8, true);\n'
               '  delay(500);\n'
               '}')
-
-Fragment(document_cs='2273e1af9c071aa2d65c3e8d7fb24a47defe11b026b588a1849889bcfaeb7d4a',
-         id=39,
-         lineno=36,
-         tokens=2,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='loop',
-         body='loop()')
 
 Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
          id=40,
@@ -851,17 +851,6 @@ Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a61313
 Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
          id=49,
          lineno=21,
-         tokens=2,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='setup',
-         body='setup()')
-
-Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
-         id=50,
-         lineno=21,
          tokens=11,
          depth=0,
          parent_id=None,
@@ -871,7 +860,29 @@ Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a61313
          body='void setup() {\n  brightness = 255;\n}')
 
 Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
+         id=50,
+         lineno=21,
+         tokens=2,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='setup',
+         body='setup()')
+
+Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
          id=51,
+         lineno=25,
+         tokens=2,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='loop',
+         body='loop()')
+
+Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
+         id=52,
          lineno=25,
          tokens=76,
          depth=0,
@@ -892,17 +903,6 @@ Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a61313
               '  tlc.enableOutput();\n'
               '  delay(1000);\n'
               '}')
-
-Fragment(document_cs='38b0047186510690f2a7eb163e2d67129e6eb41a6cd6b65d44a4a613134ee20f',
-         id=52,
-         lineno=25,
-         tokens=2,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='loop',
-         body='loop()')
 
 Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb1f8f22',
          id=53,
@@ -1035,17 +1035,6 @@ Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb
 Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb1f8f22',
          id=61,
          lineno=21,
-         tokens=2,
-         depth=1,
-         parent_id=None,
-         category='function',
-         summary=False,
-         name='setup',
-         body='setup()')
-
-Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb1f8f22',
-         id=62,
-         lineno=21,
          tokens=17,
          depth=0,
          parent_id=None,
@@ -1055,18 +1044,18 @@ Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb
          body='void setup() {\n  Serial.begin(115200);\n  while(!Serial);\n}')
 
 Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb1f8f22',
-         id=63,
-         lineno=26,
+         id=62,
+         lineno=21,
          tokens=2,
          depth=1,
          parent_id=None,
          category='function',
          summary=False,
-         name='loop',
-         body='loop()')
+         name='setup',
+         body='setup()')
 
 Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb1f8f22',
-         id=64,
+         id=63,
          lineno=26,
          tokens=60,
          depth=0,
@@ -1086,6 +1075,17 @@ Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb
               '  \n'
               '  delay(10);\n'
               '}')
+
+Fragment(document_cs='4491fafd913deca663e0273f99a953ebff86034e43155e75d8e701f6bb1f8f22',
+         id=64,
+         lineno=26,
+         tokens=2,
+         depth=1,
+         parent_id=None,
+         category='function',
+         summary=False,
+         name='loop',
+         body='loop()')
 
 Fragment(document_cs='6febd96f3ffe447c306d03e10ed9217b4ffc50640146a72785f71543fd73a1e6',
          id=65,
