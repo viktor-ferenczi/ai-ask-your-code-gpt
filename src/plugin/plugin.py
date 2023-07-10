@@ -350,7 +350,7 @@ async def search():
     # FIXME: Return information on indexing progress or hints if the search did not give any result
     info = None
 
-    response = dict(results=results)
+    response = dict(results=results, path=path)
     if info:
         response['info'] = info
 
