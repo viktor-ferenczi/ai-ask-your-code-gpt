@@ -1,4 +1,0 @@
-File extensions: .txt
-
-Relevant subdirectories:
-  data: 100%

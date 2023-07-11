@@ -1,6 +1,0 @@
-File extensions: .h
-
-Relevant subdirectories:
-  include: 100%
-  src: 50%
-  cpp_examples: 17%

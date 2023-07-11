@@ -1,6 +1,0 @@
-File extensions: .py
-
-Relevant subdirectories:
-  langchain: 100%
-  tests: 25%
-  docs: 0%

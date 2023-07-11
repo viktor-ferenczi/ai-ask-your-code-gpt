@@ -1,5 +1,4 @@
 import os
-import shutil
 from pprint import pformat
 from typing import List
 
@@ -14,75 +13,77 @@ from model.hit import Hit
 from parsers.registrations import PARSERS_BY_EXTENSION
 from storage.fragments import get_all_fragments_in_project, Fragment as DbFragment
 
-MODULE_DIR = os.path.dirname(__file__)
-
 REPOS = [
     # Markdown, Python
     ('dblayer', 'https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip'),
 
     # Markdown, Python, GitHub Workflow, YAML
-    # ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
+    ('sentient-sims', 'https://github.com/matthewhand/sentient-sims/archive/refs/heads/main.zip'),
 
     # Markdown, PHP, HTML, CSS, JavaScript
-    # ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
+    ('hypedtask', 'https://github.com/thebestbradley/hypedtask/archive/refs/heads/master.zip'),
 
     # Dropbox, SOL files
     ('redcoin', 'https://www.dropbox.com/s/uw99c6wa2ao1r4b/redcoin.zip?dl=1'),
 
     # Vim, C, Lua, CMake - THIS IS TOO LONG RIGHT NOW, MAYBE FREEZING
-    # ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
+    ('neovim', 'https://github.com/neovim/neovim/archive/refs/heads/master.zip'),
 
     # C++, CMake
-    # ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
+    ('cpp-programming', 'https://github.com/Rustam-Z/cpp-programming/archive/refs/heads/main.zip'),
 
     # C#, Batch
-    # ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
+    ('toolbar-manager', 'https://github.com/viktor-ferenczi/toolbar-manager/archive/refs/heads/main.zip'),
 
     # Java
     ('Game-of-Life', 'https://github.com/wrthmn/Hyperskill-Game-of-Life/archive/refs/heads/master.zip'),
 
     # # Python, Shell, JSON, CSV, Python Notebook
-    # ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
+    ('tree-of-thought-llm', 'https://github.com/princeton-nlp/tree-of-thought-llm/archive/refs/tags/publish.zip'),
 
     # Python, Markdown
-    # ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
+    ('langchain', 'https://github.com/hwchase17/langchain/archive/refs/heads/master.zip'),
 
     # TypeScript
-    # ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
+    ('hyper', 'https://github.com/vercel/hyper/archive/refs/heads/canary.zip'),
 
     # Python, C++, CUDA
-    # ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
+    ('taso', 'https://github.com/jiazhihao/TASO/archive/refs/heads/master.zip'),
 
     # TypeScript, JavaScript, HTML
     # FIXME: Crashes tiktoken_len at a data.ts file:
     # \sanity-next\packages\sanity\src\core\form\__workshop__\_common\data.ts
-    # ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
+    ('sanity', 'https://github.com/sanity-io/sanity/archive/refs/heads/next.zip'),
 
     # Part of Unreal: C++, shader
     # http://rebecca.sh/PluginsShadersSourceTargets.zip
-    # ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
+    ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
 
     # Part of Unreal: C++, shader
-    # ('TLC5916_Lite', 'https://github.com/dpnebert/TLC5916_Lite/archive/refs/heads/main.zip'),
+    ('TLC5916_Lite', 'https://github.com/dpnebert/TLC5916_Lite/archive/refs/heads/main.zip'),
 
     # TypeScript (.js, .ts, .tsx, .json)
     ('MI_AI_Revised', 'https://github.com/TheGameVIX/MI-AI_Revised/archive/refs/heads/main.zip'),
 ]
 
 
-def normalize_fragments(fragments: List[Fragment]):
+def normalize_fragments(fragments: List[Fragment]) -> None:
     for i, fragment in enumerate(fragments):
         fragment.id = 1 + i
 
 
-def normalize_hits(fragments: List[Hit]):
-    for i, fragment in enumerate(fragments):
-        fragment.uuid = f'NORMALIZED'
+def normalize_hits(hits: List[Hit]) -> None:
+    for i, hit in enumerate(hits):
+        hit.uuid = str(i)
 
 
 class TestRepos(BaseBackendTest):
-    test_repos_dir = os.path.join(MODULE_DIR, 'test_repos_data')
+    test_script = __file__
     use_multiprocessing = True
+
+    @property
+    def test_repos_dir(self):
+        return os.path.join(self.data_dir, '_repos')
 
     async def serve_zip(self):
         self.app = Quart('test_zip_server')
@@ -101,18 +102,14 @@ class TestRepos(BaseBackendTest):
         await self.coordinate_test()
 
     async def actual_test(self):
-        self.failures = []
-
         for name, zip_url in REPOS:
             await self.verify_repo(name, zip_url)
 
-        if self.failures:
-            print('Indexing produced unexpected outputs:')
-            for project_name, name in self.failures:
-                print(f'  {project_name}: {name}')
-            self.fail('Indexing produced unexpected outputs')
+        self.assertAllSucceeded()
 
     async def verify_repo(self, zip_name: str, zip_url: str):
+        self.set_data_subdir(zip_name)
+
         zip_path = os.path.join(self.test_repos_dir, f'{zip_name}.zip')
         if not os.path.isfile(zip_path):
             download_result: DownloadResult = await download_into_memory(zip_url, max_size=C.MAX_ARCHIVE_SIZE)
@@ -120,10 +117,6 @@ class TestRepos(BaseBackendTest):
                 zip_file.write(download_result.body)
 
         await self.wait_for_processing(300.0)
-
-        self.project_name = zip_name
-        self.project_path = os.path.join(self.test_repos_dir, zip_name)
-        self.prepare_test_output_dirs()
 
         backend = await Backend.ensure_project(self.db, 'tester', zip_name)
         local_zip_url = f'http://127.0.0.1:49000/{zip_name}.zip'
@@ -133,24 +126,29 @@ class TestRepos(BaseBackendTest):
 
         await self.wait_for_processing(600.0)
 
-        actual = ''.join(hit.text for hit in await backend.search(path='/readme.md', limit=100))
-        self.verify(f'README.md', actual)
+        hits = await backend.search(path='/readme.md', limit=100)
+        normalize_hits(hits)
+        self.verify(f'README.md', hits)
 
         if zip_name == 'dblayer':
             actual = await backend.summarize(path='/lib/dblayer/model', tail='.py', token_limit=999999999)
             self.verify(f'summary-lib-dblayer-model.py', actual)
 
         if zip_name == 'hypedtask':
-            actual = '\n'.join(hit.text for hit in await backend.search(name='Kernel', limit=50))
-            self.verify(f'name-Kernel', actual)
+            hits = await backend.search(name='Kernel', limit=50)
+            normalize_hits(hits)
+            self.verify(f'name-Kernel', hits)
+
             actual = await backend.summarize(path='/public/assets/js', tail='.js', token_limit=999999999)
             self.verify(f'summary-public-assets-js.js', actual)
+
             actual = await backend.summarize(path='/app', tail='.php', token_limit=999999999)
             self.verify(f'summary-app.php', actual)
 
         if zip_name == 'langchain':
-            actual = '\n'.join(hit.text for hit in await backend.search(name='PromptTemplate', limit=50))
-            self.verify(f'name-PromptTemplate', actual)
+            hits = await backend.search(name='PromptTemplate', limit=50)
+            normalize_hits(hits)
+            self.verify(f'name-PromptTemplate', hits)
 
         actual = await backend.summarize(token_limit=999999999)
         self.verify(f'root-summary', actual)
@@ -177,7 +175,7 @@ class TestRepos(BaseBackendTest):
             self.verify(f'summary-src-nvim.h', actual)
 
         if zip_name == 'MI_AI_Revised':
-            actual = pformat(await backend.search(text='ProjectManagerView'))
+            actual = await backend.search(text='ProjectManagerView')
             self.verify(f'search-ProjectManagerView.tsx', actual)
             actual = await backend.summarize(path='/src/pages/index.tsx', token_limit=999999999)
             self.verify(f'summary-index.tsx', actual)
@@ -189,10 +187,9 @@ class TestRepos(BaseBackendTest):
 
         async with self.db.connection() as conn:
             fragments: List[DbFragment] = await get_all_fragments_in_project(conn, backend.project.id)
-        fragments.sort(key=lambda f: (f.document_cs, f.lineno, f.id, f.category, f.summary, f.depth))
+        fragments.sort(key=lambda f: (f.document_cs, f.summary, f.category, f.lineno, f.id))
         normalize_fragments(fragments)
-        actual = '\n\n'.join(pformat(fragment) for fragment in fragments)
-        self.verify('all-fragments', actual)
+        self.verify('all-fragments', fragments)
 
         if zip_name == 'taso':
             try:
@@ -208,44 +205,3 @@ class TestRepos(BaseBackendTest):
         if zip_name == 'unreal':
             actual = await backend.summarize(path='/Plugins/FX/Niagara', tail='.h')
             self.verify('unreal_niagara_headers.txt', actual)
-
-    def prepare_test_output_dirs(self):
-        self.actual_dir = os.path.join(self.project_path, 'actual')
-        self.expected_dir = os.path.join(self.project_path, 'expected')
-
-        if os.path.isdir(self.actual_dir):
-            shutil.rmtree(self.actual_dir)
-
-        os.makedirs(self.actual_dir)
-        os.makedirs(self.expected_dir, exist_ok=True)
-
-    # FIXME: Redundant, reuse BaseTestCase (make an async version or separate helpers to higher base class)
-    def verify(self, name: str, actual: str):
-        if len(actual) >= 20_000_000:
-
-            half = len(actual) // 2
-            while actual[half] != '\n':
-                half += 1
-            half += 1
-
-            self.verify(f'{name}-1', actual[:half])
-            self.verify(f'{name}-2', actual[half:])
-            return
-
-        actual_path = os.path.join(self.project_path, 'actual', f'{name}.txt')
-        expected_path = os.path.join(self.project_path, 'expected', f'{name}.txt')
-
-        good = False
-        if os.path.exists(expected_path):
-            with open(expected_path, 'rt', encoding='utf-8') as f:
-                expected = f.read()
-            good = actual == expected
-
-        if good:
-            if os.path.exists(actual_path):
-                os.remove(actual_path)
-        else:
-            with open(actual_path, 'wb') as f:
-                f.write(actual.encode('utf-8', errors='replace'))
-
-            self.failures.append((self.project_name, name))

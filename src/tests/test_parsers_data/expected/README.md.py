@@ -5,7 +5,7 @@ from model.fragment import Fragment
 f0 = Fragment(uuid='TEST-00',
          path='README.md',
          lineno=1,
-         depth=1,
+         depth=0,
          type='documentation',
          name='',
          text='# Test project\n'
@@ -34,36 +34,28 @@ f0 = Fragment(uuid='TEST-00',
               '- SQL\n'
               '- CSS\n'
               '- HTML\n'
-              '\n')
-
-f1 = Fragment(uuid='TEST-01',
-         path='README.md',
-         lineno=28,
-         depth=2,
-         type='documentation',
-         name='',
-         text='### Some long section\n'
+              '\n'
+              '### Some long section\n'
               '\n'
               'Einstein eventually identified the property of spacetime\n'
               'which is responsible for gravity as its curvature. Space\n'
               "and time in Einstein's universe are no longer flat\n"
               '(as implicitly assumed by Newton) but can pushed and pulled,\n'
               'stretched and warped by matter.\n'
-              '\n')
+              '\n'
+              '## Summary\n'
+              '\n'
+              'This has been a test document for the Markdown parser.\n'
+              '\n'
+              'End of test doc.',
+         tokens=182)
 
-f2 = Fragment(uuid='TEST-02',
-         path='README.md',
-         lineno=36,
-         depth=1,
-         type='documentation',
-         name='',
-         text='## Summary\n\nThis has been a test document for the Markdown parser.\n\nEnd of test doc.')
-
-f3 = Fragment(uuid='TEST-03',
+f1 = Fragment(uuid='TEST-01',
          path='README.md',
          lineno=1,
          depth=0,
          type='summary',
          name='',
-         text='# Test project\n## Rationale\n### Doc types and languages\n### Some long section\n## Summary\n')
+         text='# Test project\n## Rationale\n### Doc types and languages\n### Some long section\n## Summary\n',
+         tokens=22)
 

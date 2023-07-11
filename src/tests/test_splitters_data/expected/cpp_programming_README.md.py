@@ -64,7 +64,7 @@
                'Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo)\n',
           start=1511),
  Sentence(lineno=32,
-          length=42,
+          length=41,
           depth=15,
           text='- [Computer Science for '
                'Everyone](https://www.youtube.com/playlist?list=PLrC-HcVNfULbGKkhJSgfqvqmaFAZvfHes) \n'
@@ -82,7 +82,7 @@
                'Cherno](https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb)\n',
           start=1955),
  Sentence(lineno=38,
-          length=139,
+          length=138,
           depth=15,
           text='- EN [C++ by '
                'freeCodeCamp.org](https://www.youtube.com/watch?v=vLnPwxZdW4Y)\n'

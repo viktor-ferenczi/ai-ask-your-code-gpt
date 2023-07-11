@@ -41,7 +41,7 @@ class PythonNotebookParser(PythonParser):
         text_content = decode_normalize(content)
 
         for sentence in self.splitter.split_text(text_content):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'notebook', '', sentence.text, tiktoken_len(sentence.text))
 
         try:
             data = json.loads(text_content)
@@ -54,10 +54,10 @@ class PythonNotebookParser(PythonParser):
         del data
 
         for sentence in self.splitter.split_text(source):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'python', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'python', '', sentence.text, tiktoken_len(sentence.text))
 
         for sentence in self.splitter.split_text(markdown):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'documentation', '', sentence.text)
+            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'documentation', '', sentence.text, tiktoken_len(sentence.text))
         del markdown
 
         yield from self.iter_python_fragments(path, source.encode('utf-8'))

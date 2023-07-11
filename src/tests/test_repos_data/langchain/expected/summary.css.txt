@@ -1,4 +1,0 @@
-File extensions: .css
-
-Relevant subdirectories:
-  docs: 100%

@@ -1,4 +1,0 @@
-File extensions: .hpp
-
-Relevant subdirectories:
-  Labirint Game: 100%

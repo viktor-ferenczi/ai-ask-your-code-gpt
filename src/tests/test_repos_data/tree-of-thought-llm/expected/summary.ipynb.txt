@@ -1,4 +1,0 @@
-File extensions: .ipynb
-
-Relevant subdirectories:
-  scripts: 100%

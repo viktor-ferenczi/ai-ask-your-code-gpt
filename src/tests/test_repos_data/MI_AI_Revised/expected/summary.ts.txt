@@ -1,0 +1,5 @@
+Summary of file(s): *.ts
+File extensions: .ts
+
+Relevant subdirectories:
+  src: 100%

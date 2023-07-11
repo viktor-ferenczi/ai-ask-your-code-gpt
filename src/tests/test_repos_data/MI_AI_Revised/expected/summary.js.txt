@@ -1,0 +1,16 @@
+Summary of file(s): *.js
+File extensions: .js
+
+/next.config.js:
+  Variables: nextConfig
+  Usages: module
+
+
+/postcss.config.js:
+  Usages: module
+
+
+/tailwind.config.js:
+  Usages: module require
+
+

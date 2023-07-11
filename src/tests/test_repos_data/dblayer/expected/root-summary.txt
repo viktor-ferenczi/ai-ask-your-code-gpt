@@ -1,7 +1,10 @@
+Summary of path: /
 File extensions: .cfg .in .md .py .tpl
 
-File: /.gitignore
+/.gitignore:
 
+
+/README.md:
 # Database Abstraction Layer Generator
 # Installation
 # How it works

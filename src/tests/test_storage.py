@@ -11,6 +11,7 @@ from storage.schema import VERSION
 
 
 class TestStorage(BaseDatabaseTest):
+    test_script = __file__
 
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()

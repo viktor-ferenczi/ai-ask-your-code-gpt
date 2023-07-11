@@ -3,6 +3,7 @@ from logic.backend import Backend, TInfo
 
 
 # class TestDownloadServerNotRunning(BaseDatabaseTest):
+#     test_script = __file__
 #
 #     async def test_download_server_not_running(self):
 #         backend = await Backend.ensure_project(self.db, 'tester', 'test_download_server_not_running')

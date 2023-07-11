@@ -1,4 +1,0 @@
-File extensions: .js
-
-Relevant subdirectories:
-  docs: 100%

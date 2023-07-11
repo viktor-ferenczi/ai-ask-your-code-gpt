@@ -1,40 +1,60 @@
+Summary of path: /
 File extensions: .sol
 
-File: /Clones.sol
+/Clones.sol:
 
-File: /Context.sol
 
-File: /DividendPayingToken.sol
+/Context.sol:
 
-File: /DividendPayingTokenInterface.sol
 
-File: /DividendPayingTokenOptionalInterface.sol
+/DividendPayingToken.sol:
 
-File: /ERC20.sol
 
-File: /ERC20Upgradeable.sol
+/DividendPayingTokenInterface.sol:
 
-File: /IERC20.sol
 
-File: /IERC20Metadata.sol
+/DividendPayingTokenOptionalInterface.sol:
 
-File: /IUniswapV2Factory.sol
 
-File: /IUniswapV2Pair.sol
+/ERC20.sol:
 
-File: /IUniswapV2Router.sol
 
-File: /IterableMapping.sol
+/ERC20Upgradeable.sol:
 
-File: /Ownable.sol
 
-File: /REDTOKENDividendTracker.sol
+/IERC20.sol:
 
-File: /SafeMath.sol
 
-File: /SafeMathInt.sol
+/IERC20Metadata.sol:
 
-File: /SafeMathUint.sol
 
-File: /token.sol
+/IterableMapping.sol:
+
+
+/IUniswapV2Factory.sol:
+
+
+/IUniswapV2Pair.sol:
+
+
+/IUniswapV2Router.sol:
+
+
+/Ownable.sol:
+
+
+/REDTOKENDividendTracker.sol:
+
+
+/SafeMath.sol:
+
+
+/SafeMathInt.sol:
+
+
+/SafeMathUint.sol:
+
+
+/token.sol:
+
 

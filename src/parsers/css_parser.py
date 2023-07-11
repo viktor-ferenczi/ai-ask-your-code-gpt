@@ -35,9 +35,6 @@ class CssParser(BaseParser):
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        for sentence in self.splitter.split_text(decode_normalize(content)):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
-
         classes: List[str] = []
         class_set: Set[str] = set()
 
@@ -53,14 +50,11 @@ class CssParser(BaseParser):
                     classes.append(name)
                     class_set.add(name)
                 for sentence in self.splitter.split_text(decode_normalize(node.parent.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text, tiktoken_len(sentence.text))
 
-        if not classes:
-            return
+        summary = []
+        if classes:
+            summary.append("  Classes: {' '.join(classes)}")
 
-        summary = [
-            f'{self.name}: {path}',
-        ]
-        summary.append(f"  Classes: {' '.join(classes)}")
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, tiktoken_len(summary))

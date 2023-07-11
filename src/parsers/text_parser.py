@@ -39,7 +39,11 @@ class TextParser(BaseParser):
                         type='documentation',
                         name='',
                         text=sentence.text,
+                        tokens=tiktoken_len(sentence.text),
                     )
+
+        # TODO: Generate a summary using an LLM
+        summary = ''
 
         yield Fragment(
             uuid=str(uuid.uuid4()),
@@ -48,5 +52,6 @@ class TextParser(BaseParser):
             depth=0,
             type='summary',
             name='',
-            text=f'File: {path}\n',
+            text=summary,
+            tokens=tiktoken_len(summary),
         )

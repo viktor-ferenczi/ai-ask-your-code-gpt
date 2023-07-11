@@ -1,4 +1,0 @@
-File extensions: .tsx
-
-Relevant subdirectories:
-  lib: 100%

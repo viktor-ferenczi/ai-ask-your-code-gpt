@@ -51,8 +51,6 @@ class HtmlParser(BaseParser):
         # cursor: TreeCursor = tree.walk()
 
         text_content = decode_normalize(content)
-        for sentence in self.splitter.split_text(text_content):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
 
         headers: List[str] = []
         rx = re.compile(r"<h([1-9])>(.*?)</h\1>")
@@ -67,12 +65,12 @@ class HtmlParser(BaseParser):
         #     continue # TODO: Complete it
         #     if node.type == 'import_statement' or node.type == 'import_from_statement':
         #         for sentence in self.splitter.split_text(decode_replace(node.text)):
-        #             yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
+        #             yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text, tiktoken_len(sentence.text))
         #     elif node.type == 'class_definition':
         #         name = decode_replace(node.child_by_field_name('name').text)
         #         classes.add(name)
         #         for sentence in self.splitter.split_text(decode_replace(node.text)):
-        #             yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
+        #             yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text, tiktoken_len(sentence.text))
         #     elif node.type == 'function_definition':
         #         name = decode_replace(node.child_by_field_name('name').text)
         #         if depth:
@@ -80,21 +78,21 @@ class HtmlParser(BaseParser):
         #         else:
         #             functions.add(name)
         #         for sentence in self.splitter.split_text(decode_replace(node.text)):
-        #             yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
+        #             yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text, tiktoken_len(sentence.text))
         #     elif node.type == 'expression_statement':
         #         if node.child_count > 0 and node.child_count and node.children[0].type == 'assignment':
         #             text = decode_replace(node.text)
         #             name = (text.split('=', 1)[0] if '=' in text else text).split()[0].strip()
         #             variables.add(name)
         #             for sentence in self.splitter.split_text(decode_replace(node.text)):
-        #                 yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
+        #                 yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text, tiktoken_len(sentence.text))
         #     elif node.type == 'identifier':
         #         name = decode_replace(node.text)
         #         usages.add(name)
 
-        if not headers:
-            return
+        summary = []
+        if headers:
+            summary.extend(headers)
 
-        summary = [f'{self.name}: {path}'] + headers
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, tiktoken_len(summary))

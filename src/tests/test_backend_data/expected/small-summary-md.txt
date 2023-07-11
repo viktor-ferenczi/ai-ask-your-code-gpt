@@ -1,0 +1,37 @@
+Summary of file(s): *.md
+File extensions: .md
+
+/Example.md:
+# Markdown Syntax Examples
+## Headings
+# Heading 1
+## Heading 2
+### Heading 3
+## Emphasis
+## Lists
+### Ordered List
+### Unordered List
+## Links
+## Images
+## Blockquotes
+## Code
+
+
+/README.md:
+# Test project
+## Rationale
+### Doc types and languages
+### Some long section
+## Summary
+
+
+/README2.md:
+# C++ Programming
+## Contents
+## Keep These Tips in Mind While Learning Programming
+## Computer Science Basics
+## Learning Resources
+## Problem Solving
+## Projects Ideas
+
+
