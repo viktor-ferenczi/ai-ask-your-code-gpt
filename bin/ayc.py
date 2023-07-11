@@ -120,10 +120,16 @@ class Manager:
         return self.check_pid_exists(pid)
 
     def is_healthy(self, service, instance):
+        url = f"http://127.0.0.1:{service['base_port'] + instance}"
+
         try:
-            response = requests.get(f"http://127.0.0.1:{service['base_port'] + instance}", timeout=30.0)
+            response = requests.get(url, timeout=30.0)
         except requests.RequestException:
-            response = None
+            try:
+                response = requests.get(url, timeout=60.0)
+            except requests.RequestException:
+                response = None
+
         return response is not None and response.status_code == 200
 
     def keepalive(self, service, instance):

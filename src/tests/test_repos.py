@@ -63,7 +63,10 @@ REPOS = [
     # ('unreal', 'http://askyourcode.ai/tests/unreal-xsj037hfd.zip'),
 
     # Part of Unreal: C++, shader
-    ('TLC5916_Lite', 'https://github.com/dpnebert/TLC5916_Lite/archive/refs/heads/main.zip'),
+    # ('TLC5916_Lite', 'https://github.com/dpnebert/TLC5916_Lite/archive/refs/heads/main.zip'),
+
+    # TypeScript (.js, .ts, .tsx, .json)
+    ('MI_AI_Revised', 'https://github.com/TheGameVIX/MI-AI_Revised/archive/refs/heads/main.zip'),
 ]
 
 
@@ -172,6 +175,12 @@ class TestRepos(BaseBackendTest):
             self.verify(f'summary-src-nvim.c', actual)
             actual = await backend.summarize(path='/src/nvim', tail='.h', token_limit=999999999)
             self.verify(f'summary-src-nvim.h', actual)
+
+        if zip_name == 'MI_AI_Revised':
+            actual = pformat(await backend.search(text='ProjectManagerView'))
+            self.verify(f'search-ProjectManagerView.tsx', actual)
+            actual = await backend.summarize(path='/src/pages/index.tsx', token_limit=999999999)
+            self.verify(f'summary-index.tsx', actual)
 
         for extension in PARSERS_BY_EXTENSION:
             actual = await backend.summarize(tail=f'.{extension}', token_limit=999999999)
