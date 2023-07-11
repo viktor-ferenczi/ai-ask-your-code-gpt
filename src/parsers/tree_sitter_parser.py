@@ -1,11 +1,11 @@
 import os.path
-from typing import Tuple, Iterator, Dict, Optional, Set
+from typing import Tuple, Iterator, Dict, Optional, Set, List
 
 from tree_sitter import Parser, Tree, TreeCursor, Node
 
 from common.constants import C
 from common.text import decode_normalize, normalize
-from common.tools import new_uuid
+from common.tools import new_uuid, tiktoken_len
 from common.tree import walk_nodes
 from model.fragment import Fragment
 from parsers.model import Code
@@ -31,10 +31,6 @@ class TreeSitterParser(BaseParser):
         parser.set_language(self.tree_sitter_language)
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
-
-        text_content = decode_normalize(content)
-        for sentence in self.splitter.split_text(text_content):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', normalize(sentence.text))
 
         name_map: Dict[str, Set[Code]] = {name: set() for name in self.categories}
 
@@ -79,30 +75,32 @@ class TreeSitterParser(BaseParser):
             usages.update(non_definitions)
             name_map[key] -= non_definitions
 
-        summary = [
-            f'{self.name}: {path}\n',
-        ]
+        summary = []
 
         for key, codes in name_map.items():
             assert key in self.categories, key
             if not codes:
                 continue
 
-            codes = [code for code in codes if len(code.name) >= 3 or code.name[:1].isupper()]
+            codes: List[Code] = [code for code in codes if len(code.name) >= 3 or code.name[:1].isupper()]
             if not codes:
                 continue
 
             for code in codes:
                 if code.definition:
-                    yield Fragment(
-                        uuid=new_uuid(),
-                        path=path,
-                        lineno=code.lineno,
-                        depth=code.depth,
-                        type=code.category,
-                        name=code.name,
-                        text=code.definition,
-                    )
+                    lineno = code.lineno
+                    for segment in self.splitter.split_text(code.definition):
+                        yield Fragment(
+                            uuid=new_uuid(),
+                            path=path,
+                            lineno=lineno,
+                            depth=code.depth,
+                            type=code.category,
+                            name=code.name,
+                            text=segment.text,
+                            tokens=tiktoken_len(segment.text),
+                        )
+                        lineno += segment.text.count('\n')
 
             label = self.categories[key]
             summary.append(f"  {label}: {' '.join(sorted({name.name for name in codes}))}\n")
@@ -111,7 +109,7 @@ class TreeSitterParser(BaseParser):
             summary.append(f"  Usages: {' '.join(sorted({name.name for name in usages}))}\n")
 
         summary = ''.join(summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, tiktoken_len(summary))
 
     def collect_names(self, nodes: Iterator[Tuple[Node, int, int]]) -> Iterator[Code]:
         raise NotImplementedError()

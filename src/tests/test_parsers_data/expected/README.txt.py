@@ -36,15 +36,8 @@ f0 = Fragment(uuid='TEST-00',
               '- CSS\n'
               '- HTML\n'
               '\n'
-              '== Some long section ==\n')
-
-f1 = Fragment(uuid='TEST-01',
-         path='README.txt',
-         lineno=30,
-         depth=1,
-         type='documentation',
-         name='',
-         text='\n'
+              '== Some long section ==\n'
+              '\n'
               'Einstein eventually identified the property of spacetime\n'
               'which is responsible for gravity as its curvature. Space\n'
               "and time in Einstein's universe are no longer flat\n"
@@ -55,7 +48,8 @@ f1 = Fragment(uuid='TEST-01',
               '\n'
               'This has been a test document for the Markdown parser.\n'
               '\n'
-              'End of test doc.')
+              'End of test doc.',
+         tokens=186)
 
-f2 = Fragment(uuid='TEST-02', path='README.txt', lineno=1, depth=0, type='summary', name='', text='File: README.txt\n')
+f1 = Fragment(uuid='TEST-01', path='README.txt', lineno=1, depth=0, type='summary', name='', text='', tokens=0)
 

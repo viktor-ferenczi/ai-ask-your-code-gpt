@@ -1,7 +1,9 @@
+Summary of file(s): *.java
 File extensions: .java
 
-Java: /GameOfLife.java
+/GameOfLife.java:
   Classes: Evolution GameOfLife PauseListener RestartListener Universe UniversePanel
   Methods: actionPerformed create evolve getSize main paintComponent print setGenerations setSize
   Usages: BorderFactory Thread add addActionListener alive aliveLabel controlPanel create createEtchedBorder createLineBorder drawLine e evolution evolve fillRect g generationLabel generations getSize i infoPanel inheritIO j n neighbours nextBoolean paintComponent pauseButton print printStackTrace println repaint restart restartButton s setBorder setBounds setDefaultCloseOperation setGenerations setLayout setLocationRelativeTo setName setSize setText setVisible size sleep start universe universePanel w waitFor
+
 

@@ -1,4 +1,7 @@
+Summary of file(s): *.md
 File extensions: .md
 
+/README.md:
 # Game of Life
+
 

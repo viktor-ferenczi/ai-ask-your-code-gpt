@@ -1,4 +1,0 @@
-File extensions: .html
-
-Relevant subdirectories:
-  app: 100%

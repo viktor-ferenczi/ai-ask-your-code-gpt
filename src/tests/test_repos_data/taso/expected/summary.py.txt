@@ -1,7 +1,0 @@
-File extensions: .py
-
-Relevant subdirectories:
-  verify: 100%
-  python: 81%
-  examples: 57%
-  tensorflow_py: 35%

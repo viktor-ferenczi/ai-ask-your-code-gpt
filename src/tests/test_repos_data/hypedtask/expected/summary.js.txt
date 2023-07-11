@@ -1,9 +1,0 @@
-File extensions: .js
-
-JavaScript: /gulpfile.js
-  Variables: elixir
-  Usages: mix require
-
-
-Relevant subdirectories:
-  public: 100%

@@ -38,10 +38,6 @@ class PythonParser(BaseParser):
         )
 
     def parse(self, path: str, content: bytes) -> Iterator[Fragment]:
-        text_content = decode_normalize(content)
-        for sentence in self.splitter.split_text(text_content):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
-
         yield from self.iter_python_fragments(path, content)
 
     def iter_python_fragments(self, path: str, content: bytes) -> Iterator[Fragment]:
@@ -64,15 +60,15 @@ class PythonParser(BaseParser):
             lineno = 1 + node.start_point[0]
 
             if node.type == 'import' or node.type == 'from' and node.parent:
-                for sentence in self.splitter.split_text(decode_normalize(node.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
+                for sentence in self.splitter.split_text(decode_normalize(node.parent.text)):
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text, tiktoken_len(sentence.text))
                 continue
 
             if node.type == 'class' and node.next_sibling and node.parent:
                 name = decode_normalize(node.next_sibling.text)
                 classes.add(name)
                 for sentence in self.splitter.split_text(decode_normalize(node.parent.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'class', name, sentence.text, tiktoken_len(sentence.text))
                 continue
 
             if node.type == 'def' and node.next_sibling and node.parent:
@@ -82,7 +78,7 @@ class PythonParser(BaseParser):
                 else:
                     functions.add(name)
                 for sentence in self.splitter.split_text(decode_normalize(node.parent.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text, tiktoken_len(sentence.text))
                 continue
 
             if node.type == 'identifier':
@@ -93,7 +89,7 @@ class PythonParser(BaseParser):
             if node.type == 'string_content' or node.type == 'comment':
                 if node.text and len(node.text) >= 20:
                     for sentence in self.splitter.split_text(decode_normalize(node.text)):
-                        yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'documentation', '', sentence.text)
+                        yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'documentation', '', sentence.text, tiktoken_len(sentence.text))
                     continue
 
         variables -= classes
@@ -102,12 +98,7 @@ class PythonParser(BaseParser):
         variables -= {'self', 'set', 'dict', 'list', 'bool', 'int', 'float', 'dir', 'zip', 'isinstance', 'issubclass', 'is', 'super'}
         variables = {v for v in variables if not v.startswith('__') and (len(v) > 3 or v[:1].isupper())}
 
-        if not functions and not classes and not methods and not variables:
-            return
-
-        summary = [
-            f'{self.name}: {path}',
-        ]
+        summary = []
         if functions:
             summary.append(f"  Functions: {' '.join(sorted(functions))}")
         if classes:
@@ -118,4 +109,4 @@ class PythonParser(BaseParser):
             summary.append(f"  Variables and usages: {' '.join(sorted(variables))}")
 
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, tiktoken_len(summary))

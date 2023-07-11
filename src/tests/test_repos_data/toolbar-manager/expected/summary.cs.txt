@@ -1,4 +1,0 @@
-File extensions: .cs
-
-Relevant subdirectories:
-  ToolbarManager: 100%

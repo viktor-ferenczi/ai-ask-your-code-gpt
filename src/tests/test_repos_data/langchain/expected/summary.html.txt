@@ -1,5 +1,0 @@
-File extensions: .html
-
-Relevant subdirectories:
-  tests: 100%
-  docs: 18%

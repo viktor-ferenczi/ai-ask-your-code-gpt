@@ -9,6 +9,7 @@ from storage.scheduler import Scheduler, Operation, Task, THandlerResult, TaskSt
 
 
 class TestScheduler(BaseDatabaseTest):
+    test_script = __file__
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 

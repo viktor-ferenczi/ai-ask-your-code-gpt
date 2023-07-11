@@ -86,13 +86,17 @@ class C:
     TASK_TIMEOUT = 300  # s
 
     # Splitter
-    MAX_TOKENS_PER_FRAGMENT = 150
+    MAX_TOKENS_PER_FRAGMENT = 250
 
     # Parser
     MAX_FRAGMENTS_PER_DOCUMENT = 1_000_000
 
-    # Summary generation
+    # Summary
     MAX_SUMMARY_WIDTH = 80
+
+    # Search
+    MAX_TOKENS_PER_SEARCH_RESULT = 2000
+    MAX_TOKENS_PER_SEARCH_RESPONSE = 2000
 
     # Project
     PROJECT_ACCESS_UPDATE_INTERVAL = timedelta(minutes=30)

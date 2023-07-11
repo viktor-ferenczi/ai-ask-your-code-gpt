@@ -1,6 +1,0 @@
-File extensions: .txt
-
-Relevant subdirectories:
-  docs: 100%
-  tests: 5%
-  langchain: 3%

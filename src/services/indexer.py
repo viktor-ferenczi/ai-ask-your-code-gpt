@@ -9,6 +9,7 @@ from common.constants import C
 from common.server import run_app
 from common.timer import timer
 from common.tools import tiktoken_len
+from logic.backend import combine_fragments
 from model.fragment import Fragment
 from parsers.registrations import PARSERS_BY_NAME
 from storage import documents, fragments
@@ -62,7 +63,7 @@ def index_document(document: Document, path: str) -> Iterable[DbFragment]:
             return
 
         parser = parser_cls()
-        for fragment in parser.parse(path, document.body):
+        for fragment in combine_fragments(parser.parse(path, document.body), C.MAX_TOKENS_PER_FRAGMENT):
             assert isinstance(fragment, Fragment)
 
             if len(fragment.type) > 24:

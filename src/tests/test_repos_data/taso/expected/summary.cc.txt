@@ -1,5 +1,0 @@
-File extensions: .cc
-
-Relevant subdirectories:
-  src: 100%
-  cpp_examples: 0%

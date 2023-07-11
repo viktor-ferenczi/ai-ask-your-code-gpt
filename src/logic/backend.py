@@ -1,6 +1,6 @@
 import asyncio
 from datetime import datetime
-from typing import List, Iterator, Dict, Any, Optional, Tuple
+from typing import List, Iterator, Dict, Any, Optional, Iterable
 
 import numpy as np
 
@@ -10,7 +10,7 @@ from model.fragment import Fragment
 from model.hit import Hit
 from storage import projects
 from storage.database import Database
-from storage.fragments import search_in_project_by_path_tail_name_unlimited, Fragment as DbFragment, search_in_project_by_path_tail_name_unlimited_excluding_summaries, search_in_project_by_path_tail_name_excluding_summaries
+from storage.fragments import Fragment as DbFragment, search_in_project
 from storage.projects import Project
 from storage.pubsub import PubSub, ChannelName
 from storage.scheduler import Scheduler, Task, Operation, TaskState
@@ -32,7 +32,38 @@ def fragment_from_db_fragment(path: str, dbf: DbFragment) -> Fragment:
         type=dbf.category,
         name=dbf.name,
         text=dbf.body,
+        tokens=dbf.tokens,
     )
+
+
+def combine_fragments(fragments: Iterable[Fragment], max_tokens: Optional[int] = None) -> Iterator[Fragment]:
+    combined: Optional[Fragment] = None
+    combined_texts = []
+    for fragment in fragments:
+        if combined is None:
+            combined = fragment
+            combined_texts.append(fragment.text)
+            continue
+
+        if (fragment.path == combined.path and
+                fragment.type == combined.type and
+                fragment.name == combined.name and
+                combined.lineno <= fragment.lineno and
+                combined.tokens + fragment.tokens <= max_tokens):
+            combined_texts.append(fragment.text)
+            combined.tokens += fragment.tokens
+            continue
+
+        combined.text = ''.join(combined_texts)
+        yield combined
+
+        combined = fragment
+        combined_texts.clear()
+        combined_texts.append(fragment.text)
+
+    if combined is not None:
+        combined.text = ''.join(combined_texts)
+        yield combined
 
 
 class Backend:
@@ -92,90 +123,60 @@ class Backend:
     async def search(self, *, path: str = '', tail: str = '', name: str = '', text: str = '', limit: int = 1) -> List[Hit]:
         await self.update_project_accessed()
 
-        path_name_search = (path and path != '/') or tail or name
-        if path_name_search:
-            async with self.db.connection() as conn:
-                if text:
-                    triplets = await search_in_project_by_path_tail_name_unlimited_excluding_summaries(conn, self.project.id, path, tail, name)
-                else:
-                    triplets = await search_in_project_by_path_tail_name_excluding_summaries(conn, self.project.id, path, tail, name, limit)
-
-            fragments = [fragment_from_db_fragment(*pair) for pair in triplets]
-
-            # Text based search if specified
-            if text:
-                words = set(w for w in text.split() if w)
-                fragments = [fragment for fragment in fragments if all((word in fragment.text) for word in words)]
-
-            # Ordering and limit was already applied in SQL
-            count = len(fragments)
-            return [Hit.from_fragment(1.0 - i / count, fragment)
-                    for i, fragment in enumerate(fragments)]
-
-        # Full text search in database
-        triplets = await self.free_text_search_excluding_summaries(text, limit)
-        hits = [Hit.from_fragment(rank, fragment_from_db_fragment(path, fragment)) for rank, path, fragment in triplets]
-        return hits
-
-    async def free_text_search_excluding_summaries(self, query: str, limit: int) -> List[Tuple[float, str, DbFragment]]:
-        # Free text search does not work for all text bodies
-        # sql = '''
-        #     SELECT ts_rank_cd(to_tsvector(s.body), query) AS rank, s.*
-        #     FROM (
-        #         SELECT f.path, c.*
-        #         FROM file AS f
-        #         INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
-        #         WHERE f.project_id = $1 AND NOT c.summary
-        #     ) AS s, phraseto_tsquery($2) query
-        #     WHERE s.body @@ query
-        #     ORDER BY rank DESC
-        #     LIMIT $3
-        # '''
-
-        # Workaround:
-        sql = '''
-            SELECT f.path, c.*
-            FROM file AS f
-            INNER JOIN fragment AS c ON c.partition_key = left(f.document_cs, 2) AND c.document_cs = f.document_cs
-            WHERE f.project_id = $1
-              AND NOT c.summary
-              AND c.body ILIKE $2
-            ORDER BY f.depth, f.path, c.lineno, c.depth, c.category, c.summary, c.id
-            LIMIT $3
-        '''
-        like_pattern = f"%{query.replace(' ', '%')}%"
         async with self.db.connection() as conn:
-            rows = await conn.fetch(sql, self.project.id, like_pattern, limit)
-            return [(1.0 - i / len(rows), row['path'], DbFragment.from_row(row)) for i, row in enumerate(rows)]
+            triplets = await search_in_project(conn, self.project.id, path, tail, name, text, False, limit)
+
+        if not triplets:
+            return []
+
+        fragments = list(combine_fragments((fragment_from_db_fragment(*pair) for pair in triplets), max_tokens=C.MAX_TOKENS_PER_SEARCH_RESULT))
+
+        hit_tokens = np.array([fragment.tokens for fragment in fragments])
+        cum_tokens = np.cumsum(hit_tokens)
+        keep = np.sum(cum_tokens <= C.MAX_TOKENS_PER_SEARCH_RESPONSE)
+        assert keep
+
+        fragments = fragments[:keep]
+
+        count = len(fragments)
+        return [Hit.from_fragment(1.0 - i / count, fragment)
+                for i, fragment in enumerate(fragments)]
 
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         await self.update_project_accessed()
 
         async with self.db.connection() as conn:
-            pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, path, tail, name)
+            pairs = await search_in_project(conn, self.project.id, path, tail, name, '', True, 10_000)
 
-        fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
+        fragments: List[Fragment] = [fragment_from_db_fragment(*pair) for pair in pairs]
 
         if fragments:
-            summary = '\n'.join(self.summarize_fragments(path, fragments))
+            summary = ''.join(self.merge_summaries(path, fragments))
         else:
             if tail or name:
                 return ''
             async with self.db.connection() as conn:
-                pairs = await search_in_project_by_path_tail_name_unlimited(conn, self.project.id, '/', '', '')
+                pairs = await search_in_project(conn, self.project.id, '/', '', '', '', True, 10_000)
                 fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             if not fragments:
                 return ''
-            return 'No file matched the summary query. Discover the directory structure of the project by summarizing path=/\n'
+            return 'No file matched the query. Explore the project by summarizing path=/\n'
 
         summary = summary.split('\n')
+
+        summary.insert(0, '')
 
         extensions = ' '.join(sorted(set('.' + fragment.path.rsplit('.', 1)[-1] for fragment in fragments if fragment.path and '.' in fragment.path.replace('/.', '/'))))
         if extensions:
             if len(extensions) > 1:
-                summary.insert(0, f'File extensions: {extensions}\n')
+                summary.insert(0, f'File extensions: {extensions}')
             else:
-                summary.insert(0, f'File extension: {extensions}\n')
+                summary.insert(0, f'File extension: {extensions}')
+
+        if tail:
+            summary.insert(0, f"Summary of file(s): {path}*{tail}")
+        else:
+            summary.insert(0, f"Summary of path: {path or '/'}")
 
         if not token_limit:
             token_limit = 2000
@@ -204,11 +205,9 @@ class Backend:
 
         return '\n'.join(summary)
 
-    def summarize_fragments(self, path_query: str, fragments: List[Fragment]) -> Iterator[str]:
+    def merge_summaries(self, path_query: str, fragments: List[Fragment]) -> Iterator[str]:
         if not fragments:
             return
-
-        fragments.sort(key=lambda fragment: (fragment.path.count('/'), fragment.path, fragment.lineno, fragment.depth))
 
         min_slash_count = path_query.rstrip('/').count('/')
 
@@ -220,9 +219,7 @@ class Backend:
                 subdir_name = fragment.path.split('/')[min_slash_count + 1]
                 subdir_hit_counts[subdir_name] = subdir_hit_counts.get(subdir_name, 0) + 1
                 continue
-            if fragment.type == 'summary':
-                strip_text = fragment.text.strip('\n')
-                file_summaries.append(f'{strip_text}\n\n')
+            file_summaries.append(f'{fragment.path}:\n{fragment.text}\n\n')
 
         if file_summaries:
             yield ''.join(file_summaries)

@@ -1,12 +1,11 @@
 import os.path
-import unittest
 
-from base_test_case import BaseTestCase
+from base_test_case import BaseSyncTestCase, BaseAsyncTestCase
 from common.doc import find_common_base_dir
 from common.http import download_into_memory, NotModified, DownloadError, check_url
 
 
-class TestCommonDoc(BaseTestCase):
+class TestCommonDoc(BaseSyncTestCase):
     test_script = __file__
 
     def test_find_common_base_dir(self):
@@ -31,7 +30,8 @@ class TestCommonDoc(BaseTestCase):
         self.assertEqual(common_base_dir, 'langchain-master')
 
 
-class TestCommonHttp(unittest.IsolatedAsyncioTestCase):
+class TestCommonHttp(BaseAsyncTestCase):
+    test_script = __file__
 
     async def test_download_file(self):
         url = 'https://github.com/viktor-ferenczi/dblayer/archive/refs/heads/master.zip'

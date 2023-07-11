@@ -1,0 +1,37 @@
+Summary of path: /
+File extensions: .css .js .json .lock .ts .tsx
+
+/.eslintrc.json:
+
+
+/.gitignore:
+
+
+/next.config.js:
+  Variables: nextConfig
+  Usages: module
+
+
+/package-lock.json:
+
+
+/package.json:
+
+
+/postcss.config.js:
+  Usages: module
+
+
+/tailwind.config.js:
+  Usages: module require
+
+
+/tsconfig.json:
+
+
+/yarn.lock:
+
+
+Relevant subdirectories:
+  src: 100%
+  .vscode: 1%

@@ -40,10 +40,6 @@ class JavaScriptParser(BaseParser):
         tree: Tree = parser.parse(content)
         cursor: TreeCursor = tree.walk()
 
-        text_content = decode_normalize(content)
-        for sentence in self.splitter.split_text(text_content):
-            yield Fragment(new_uuid(), path, sentence.lineno, 0, 'module', '', sentence.text)
-
         functions: Set[str] = set()
         variables: Set[str] = set()
         usages: Set[str] = set()
@@ -56,14 +52,14 @@ class JavaScriptParser(BaseParser):
             lineno = 1 + node.start_point[0]
             if node.type == 'import_statement':
                 for sentence in self.splitter.split_text(decode_normalize(node.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'dependency', '', sentence.text, tiktoken_len(sentence.text))
             elif (node.type == 'function' and
                   node.next_sibling is not None and
                   node.next_sibling.type == 'identifier'):
                 name = decode_normalize(node.next_sibling.text)
                 functions.add(name)
                 for sentence in self.splitter.split_text(decode_normalize(node.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text, tiktoken_len(sentence.text))
             elif (node.type == 'identifier' and
                   node.next_sibling is not None and
                   node.next_sibling.type == '=' and
@@ -72,7 +68,7 @@ class JavaScriptParser(BaseParser):
                 name = decode_normalize(node.text)
                 functions.add(name)
                 for sentence in self.splitter.split_text(decode_normalize(node.text)):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'function', name, sentence.text, tiktoken_len(sentence.text))
             elif (node.type == 'variable_declarator' and
                   node.child_count and
                   node.children[0].type == 'identifier'):
@@ -80,7 +76,7 @@ class JavaScriptParser(BaseParser):
                 name = decode_normalize(node.children[0].text)
                 variables.add(name)
                 for sentence in self.splitter.split_text(text):
-                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text)
+                    yield Fragment(new_uuid(), path, lineno + sentence.lineno - 1, depth, 'variable', name, sentence.text, tiktoken_len(sentence.text))
             elif node.type == 'identifier':
                 name = decode_normalize(node.text)
                 usages.add(name)
@@ -92,12 +88,7 @@ class JavaScriptParser(BaseParser):
         variables -= {v for v in variables if len(v) < 3 and not v[:1].isupper()}
         usages -= {v for v in usages if len(v) < 3 and not v[:1].isupper()}
 
-        if not functions and not variables and not usages:
-            return
-
-        summary = [
-            f'{self.name}: {path}',
-        ]
+        summary = []
         if functions:
             summary.append(f"  Functions: {' '.join(sorted(functions))}")
         if variables:
@@ -106,4 +97,4 @@ class JavaScriptParser(BaseParser):
             summary.append(f"  Usages: {' '.join(sorted(usages))}")
 
         summary = ''.join(f'{line}\n' for line in summary)
-        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary)
+        yield Fragment(new_uuid(), path, 1, 0, 'summary', '', summary, tiktoken_len(summary))

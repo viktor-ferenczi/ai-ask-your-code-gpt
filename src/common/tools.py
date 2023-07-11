@@ -16,11 +16,15 @@ def find(lst: List[object], predicate: Callable[[object], bool]):
     return -1
 
 
-def tiktoken_len(text):
-    tokens = ENCODING.encode(
+def tiktoken_len(text: str) -> int:
+    if not text.strip():
+        return 0
+
+    tokens: List[int] = ENCODING.encode(
         text,
         disallowed_special=()
     )
+
     return len(tokens)
 
 

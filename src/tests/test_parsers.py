@@ -1,12 +1,12 @@
 import os
 from pprint import pformat
 
-from base_test_case import BaseTestCase
+from base_test_case import BaseSyncTestCase
 from common.text import normalize, decode_normalize
 from parsers.registrations import BaseParser, detect, detect_mime
 
 
-class TestParsers(BaseTestCase):
+class TestParsers(BaseSyncTestCase):
     test_script = __file__
 
     def test_parsers(self):
@@ -37,7 +37,6 @@ class TestParsers(BaseTestCase):
                 for i, fragment in enumerate(fragments)
             )
 
-            self.verify(filename, actual)
-            self.assertAllSucceeded()
+            self.verify(filename, actual, 'py')
 
         self.assertAllSucceeded()

@@ -1,12 +1,11 @@
 import asyncio
 import os
 import shutil
-import unittest
-from typing import Any
 
 import asyncpg
 from asyncpg import Pool
 
+from base_test_case import BaseAsyncTestCase
 from common.constants import C
 from storage import archives, documents, files, fragments, projects
 from storage.database import Database
@@ -14,7 +13,7 @@ from storage.pubsub import PubSub
 from storage.scheduler import Scheduler
 
 
-class BaseDatabaseTest(unittest.IsolatedAsyncioTestCase):
+class BaseDatabaseTest(BaseAsyncTestCase):
     first = True
 
     async def asyncSetUp(self) -> None:
@@ -69,9 +68,3 @@ class BaseDatabaseTest(unittest.IsolatedAsyncioTestCase):
         await asyncio.sleep(0.01)
 
         await super().asyncTearDown()
-
-    def assertEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
-        super().assertEqual(second, first, msg)
-
-    def assertNotEqual(self, first: Any, second: Any, msg: Any = ...) -> None:
-        super().assertNotEqual(second, first, msg)

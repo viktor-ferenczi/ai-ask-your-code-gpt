@@ -36,6 +36,7 @@ class MarkdownParser(BaseParser):
                 type='documentation',
                 name='',
                 text=sentence.text,
+                tokens=tiktoken_len(sentence.text),
             )
 
             for line in sentence.text.split('\n'):
@@ -44,8 +45,9 @@ class MarkdownParser(BaseParser):
 
         if not summary:
             # TODO: Generate a summary using an LLM
-            return
+            pass
 
+        summary = ''.join(summary)
         yield Fragment(
             uuid=str(uuid.uuid4()),
             path=path,
@@ -54,4 +56,5 @@ class MarkdownParser(BaseParser):
             type='summary',
             name='',
             text=''.join(summary),
+            tokens=tiktoken_len(summary),
         )

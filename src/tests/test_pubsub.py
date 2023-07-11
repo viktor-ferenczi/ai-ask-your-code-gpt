@@ -6,6 +6,7 @@ from storage.pubsub import PubSub
 
 
 class TestPubSub(BaseDatabaseTest):
+    test_script = __file__
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
         self.pubsub = PubSub(self.db)

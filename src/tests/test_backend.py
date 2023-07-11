@@ -6,15 +6,21 @@ from typing import List
 
 from base_backend_test import BaseBackendTest
 from common.constants import C
-from model.hit import Hit
 from logic.backend import Backend, TInfo
+from model.hit import Hit
 from services.cleanup import cleanup
 from storage import projects
 
 MODULE_DIR = os.path.dirname(__file__)
 
 
+def normalize_hits(hits: List[Hit]) -> None:
+    for i, hit in enumerate(hits):
+        hit.uuid = str(i)
+
+
 class TestBackend(BaseBackendTest):
+    test_script = __file__
     test_project_dir = os.path.join(MODULE_DIR, 'test_parsers_data', 'input')
     zip_path = os.path.join(MODULE_DIR, 'TestProject.zip')
 
@@ -45,6 +51,9 @@ class TestBackend(BaseBackendTest):
         await self.small_project('small_project_1')
         await self.small_project('small_project_2')
         await self.medium_project()
+
+        self.assertAllSucceeded()
+
         await self.cleanup_projects()
 
     async def download_error(self):
@@ -64,72 +73,34 @@ class TestBackend(BaseBackendTest):
         await self.wait_for_processing(10.0)
 
         hits = await backend.search(tail='.py', name='Duplicates')
-        self.verify_hits(hits, 1, contains=['class Duplicates'])
+        normalize_hits(hits)
+        self.verify('small-tail-py-name', hits)
 
         hits = await backend.search(path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 29, path='/find_duplicates.py')
+        normalize_hits(hits)
+        self.verify('small-path-find_duplicates.py', hits)
 
         hits = await backend.search(tail='.py', path='/find_duplicates.py', limit=100)
-        self.verify_hits(hits, 29, path='/find_duplicates.py')
+        normalize_hits(hits)
+        self.verify('small-path-tail-py', hits)
 
         hits = await backend.search(path='/README.md', limit=100)
-        self.verify_hits(hits, 3, path='/README.md')
+        normalize_hits(hits)
+        self.verify('small-path-README.md', hits)
 
         hits = await backend.search(tail='.md', text='standard set of source code files', limit=1)
-        self.verify_hits(hits, 1, path='/README.md', contains=['standard set of source code files'])
+        normalize_hits(hits)
+        self.verify('small-tail-md-text', hits)
 
         hits = await backend.search(text='class Duplicates', limit=10)
-        self.verify_hits(hits, 2, path='/find_duplicates.py', contains=['class Duplicates:'])
-        self.assertEqual(len([hit for hit in hits if hit.type == 'module']), 1)
-        self.assertEqual(len([hit for hit in hits if hit.type == 'class']), 1)
-        self.verify_hits(hits[:1], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
-        self.verify_hits(hits[1:], 1, path='/find_duplicates.py', contains=['class Duplicates:'])
+        normalize_hits(hits)
+        self.verify('small-text', hits)
 
         summary = await backend.summarize(tail='.md')
-        self.assertEqual(summary, '''\
-File extensions: .md
-
-# Markdown Syntax Examples
-## Headings
-# Heading 1
-## Heading 2
-### Heading 3
-## Emphasis
-## Lists
-### Ordered List
-### Unordered List
-## Links
-## Images
-## Blockquotes
-## Code
-
-# Test project
-## Rationale
-### Doc types and languages
-### Some long section
-## Summary
-
-# C++ Programming
-## Contents
-## Keep These Tips in Mind While Learning Programming
-## Computer Science Basics
-## Learning Resources
-## Problem Solving
-## Projects Ideas
-
-''')
+        self.verify('small-summary-md', summary)
 
         summary = await backend.summarize(tail='.py')
-        self.assertEqual(summary, '''\
-File extensions: .py
-
-Python: /find_duplicates.py
-  Functions: main md5_checksum
-  Classes: Duplicates
-  Methods: __init__ collect
-  Variables and usages: CHUNK_SIZE ProcessPoolExecutor append collections concurrent data defaultdict desc dirpath duplicates executor extend file_checksum file_checksums file_list file_path file_size filename filenames files files_by_checksum files_by_size first futures getsize hasher hashlib hexdigest input isdir items join open path pbar print read root_dir total total_size total_space_saved tqdm unit unit_scale update values walk
-
-''')
+        self.verify('small-summary-py', summary)
 
     async def medium_project(self):
         backend = await Backend.ensure_project(self.db, 'tester', 'medium_project')
@@ -140,74 +111,18 @@ Python: /find_duplicates.py
         await self.wait_for_processing(30.0)
 
         hits = await backend.search(path='/README.md', limit=100)
-        self.verify_hits(hits, 6, path='/README.md')
+        normalize_hits(hits)
+        self.verify('medium-path-README.md', hits)
 
         hits = await backend.search(tail='.py', name='Query', limit=100)
-        self.verify_hits(hits, 22, contains=['class Query'])
+        normalize_hits(hits)
+        self.verify('medium-tail-py-name', hits)
 
         summary = await backend.summarize(tail='.md')
-        self.assertEqual(summary, '''\
-File extensions: .md
-
-# Database Abstraction Layer Generator
-# Installation
-# How it works
-## Abstraction layer
-## Lightweight usage
-## Features
-# Remarks
-## Performance
-## Limitations
-
-''')
+        self.verify('medium-tail-md', summary)
 
         summary = await backend.summarize(path='/lib/dblayer', tail='.py')
-        self.assertEqual(summary, '''\
-File extensions: .py
-
-Python: /lib/dblayer/constants.py
-  Classes: NA
-  Methods: __repr__
-  Variables and usages: CURSOR_ARRAYSIZE DATABASE_ID_RANGE DEBUG ENCODING GENERATOR_TEMPLATE_DIRECTORY_PATH INNER_JOIN JOIN_TYPES LEFT_JOIN LOG_SQL_ANALYSIS LOG_SQL_RESULT_ROWS LOG_SQL_STATEMENTS MAX_INSERT_RETRY_COUNT PROFILE_QUERIES dirname environ join path
-
-Python: /lib/dblayer/util.py
-  Functions: get_next_definition_serial get_random_id log
-  Variables and usages: DATABASE_ID_RANGE SystemRandom args constants count datetime dblayer isoformat iterator itertools next print random randrange
-
-
-Relevant subdirectories:
-  backend: 100%
-  model: 88%
-  test: 39%
-  generator: 2%
-  graph: 1%
-''')
-
-    def verify_hits(self, hits: List[Hit], count: int, *, path: str = None, contains: List[str] = None):
-        print(f'verify_hits(count={count!r}, path={path!r}, contains={contains!r})')
-
-        try:
-            self.assertEqual(count, len(hits))
-            self.assertEqual(count, len(set(hit.uuid for hit in hits)))
-
-            if path:
-                for hit in hits:
-                    self.assertEqual(path, hit.path)
-
-                self.assertEqual(sorted(hits, key=lambda hit: (-hit.score, hit.path, hit.lineno)), hits)
-
-            else:
-                self.assertEqual(sorted(hits, key=lambda hit: (-hit.score, hit.uuid)), hits)
-
-            if contains:
-                for text in contains:
-                    self.assertTrue(any((text in hit.text) for hit in hits))
-        except AssertionError:
-            print()
-            print('hits = ')
-            pprint.pprint(hits, width=120)
-            print()
-            raise
+        self.verify('medium-path-tail-py', summary)
 
     async def cleanup_projects(self):
         async with self.db.connection() as conn:

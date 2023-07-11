@@ -10,4 +10,4 @@ class Fragment:
     type: str  # Type of the code construct, for example: function, class, interface, method, field, variable, macro
     name: str  # Name of the code construct
     text: str  # Definition of the code construct in case of definitions, empty string in case of usage
-
+    tokens: int  # Number of tokens in the text

@@ -24,21 +24,15 @@ f0 = Fragment(uuid='TEST-00',
               '1. Learn and code every day, consistency is important.\n'
               '2. Write it down - plan your code before you start coding and understand the input to your program and '
               'the output from your code.\n'
-              '3. Learn to debug your code - look at the code line by line to see how it works.\n')
-
-f1 = Fragment(uuid='TEST-01',
-         path='README2.md',
-         lineno=17,
-         depth=10,
-         type='documentation',
-         name='',
-         text='4. Surround yourself with other people who are learning. Teach each other.\n'
+              '3. Learn to debug your code - look at the code line by line to see how it works.\n'
+              '4. Surround yourself with other people who are learning. Teach each other.\n'
               '5. Learn taking notes.\n'
               '6. Build something, anything. For example, simple calculator, or program to save and read data from TXT '
               'files.\n'
-              '7. Focus on 1 thing! Take small steps, but every day, consistency is very important again.\n')
+              '7. Focus on 1 thing! Take small steps, but every day, consistency is very important again.\n',
+         tokens=208)
 
-f2 = Fragment(uuid='TEST-02',
+f1 = Fragment(uuid='TEST-01',
          path='README2.md',
          lineno=21,
          depth=10,
@@ -54,9 +48,10 @@ f2 = Fragment(uuid='TEST-02',
               'recreate the problem.\n'
               '```\n'
               '\n'
-              '\n')
+              '\n',
+         tokens=140)
 
-f3 = Fragment(uuid='TEST-03',
+f2 = Fragment(uuid='TEST-02',
          path='README2.md',
          lineno=29,
          depth=1,
@@ -66,46 +61,34 @@ f3 = Fragment(uuid='TEST-03',
               '- [Harvard CS50](https://youtube.com/playlist?list=PLhQjrBD2T383f9scHRNYJkior2VvYjpSL) - Scratch, C, '
               'Arrays, Algorithms, Memory, Data structures, Python, SQL, HTML, CSS, JavaScript, Flask\n'
               '- `Optional` [Crash Course Computer '
-              'Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo)\n')
-
-f4 = Fragment(uuid='TEST-04',
-         path='README2.md',
-         lineno=32,
-         depth=15,
-         type='documentation',
-         name='',
-         text='- [Computer Science for '
+              'Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo)\n'
+              '- [Computer Science for '
               'Everyone](https://www.youtube.com/playlist?list=PLrC-HcVNfULbGKkhJSgfqvqmaFAZvfHes) \n'
-              '\n')
-
-f5 = Fragment(uuid='TEST-05',
-         path='README2.md',
-         lineno=34,
-         depth=1,
-         type='documentation',
-         name='',
-         text='## Learning Resources\n'
+              '\n'
+              '## Learning Resources\n'
               '- EN [C++ for beginners — '
               'CodeBeauty](https://www.youtube.com/playlist?list=PL43pGnjiVwgQHLPnuH9ch-LhZdwckM8Tq)\n'
               '- EN [C++ Programming Tutorial — '
-              'thenewboston](https://www.youtube.com/playlist?list=PLAE85DE8440AA6B83)\n'
-              '- EN [C++ by The '
-              'Cherno](https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb)\n')
+              'thenewboston](https://www.youtube.com/playlist?list=PLAE85DE8440AA6B83)\n',
+         tokens=243)
 
-f6 = Fragment(uuid='TEST-06',
+f3 = Fragment(uuid='TEST-03',
          path='README2.md',
-         lineno=38,
+         lineno=37,
          depth=15,
          type='documentation',
          name='',
-         text='- EN [C++ by freeCodeCamp.org](https://www.youtube.com/watch?v=vLnPwxZdW4Y)\n'
+         text='- EN [C++ by The '
+              'Cherno](https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb)\n'
+              '- EN [C++ by freeCodeCamp.org](https://www.youtube.com/watch?v=vLnPwxZdW4Y)\n'
               '- RU [C++ by Denis Markov](https://www.youtube.com/playlist?list=PLbmlzoDQrXVFC13GjpPrJxl6mzTiX65gs)\n'
               '- RU [C++ Уроки - Гоша '
               'Дударь](https://www.youtube.com/watch?v=qSHP98i9mDU&list=PL0lO_mIqDDFXNfqIL9PHQM7Wg_kOtDZsW)\n'
               '- To read:\n'
-              '  ')
+              '  ',
+         tokens=192)
 
-f7 = Fragment(uuid='TEST-07',
+f4 = Fragment(uuid='TEST-04',
          path='README2.md',
          lineno=42,
          depth=14,
@@ -115,9 +98,10 @@ f7 = Fragment(uuid='TEST-07',
               '  - [w3schools.com](https://www.w3schools.com/cpp/default.asp) \n'
               '  - [tutorialspoint.com](https://www.tutorialspoint.com/cplusplus/index.htm)\n'
               '  - [GeegsForGeeks.org](https://www.geeksforgeeks.org/c-plus-plus/):\n'
-              '\n')
+              '\n',
+         tokens=77)
 
-f8 = Fragment(uuid='TEST-08',
+f5 = Fragment(uuid='TEST-05',
          path='README2.md',
          lineno=47,
          depth=1,
@@ -134,33 +118,27 @@ f8 = Fragment(uuid='TEST-08',
               '7. C++ Program to Find the Size of int, float, double and char\n'
               '8. C++ Program to Demonstrate the Working of Keyword long\n'
               '9. C++ Program to Swap Two Numbers\n'
-              '10. C++ Program to Check Whether a Number is Even or Odd\n')
-
-f9 = Fragment(uuid='TEST-09',
-         path='README2.md',
-         lineno=59,
-         depth=10,
-         type='documentation',
-         name='',
-         text='11. C++ Program to Check Whether a Character is Vowel or Consonant\n'
+              '10. C++ Program to Check Whether a Number is Even or Odd\n'
+              '11. C++ Program to Check Whether a Character is Vowel or Consonant\n'
               '12. C++ Program to Find the Largest Number Among Three Numbers\n'
               '13. C++ Program to Find all Roots of a Quadratic equation\n'
               '14. C++ Program to Check Leap Year\n'
               '15. C++ Program to Check Whether a Number is Positive or Negative\n'
               '16. C++ Program to Check Whether a Character is an Alphabet or not\n'
-              '17. C++ Program to Calculate the Sum of Natural Numbers\n'
-              '18. C++ Program to Find Factorial of a Number\n'
-              '19. C++ Program to Generate Multiplication Table\n'
-              '20. C++ Program to Display Fibonacci Sequence\n'
-              '21. C++ Program to Find GCD of two Numbers\n')
+              '17. C++ Program to Calculate the Sum of Natural Numbers\n',
+         tokens=242)
 
-f10 = Fragment(uuid='TEST-10',
+f6 = Fragment(uuid='TEST-06',
          path='README2.md',
-         lineno=70,
+         lineno=66,
          depth=10,
          type='documentation',
          name='',
-         text='22. C++ Program to Find LCM of two Numbers\n'
+         text='18. C++ Program to Find Factorial of a Number\n'
+              '19. C++ Program to Generate Multiplication Table\n'
+              '20. C++ Program to Display Fibonacci Sequence\n'
+              '21. C++ Program to Find GCD of two Numbers\n'
+              '22. C++ Program to Find LCM of two Numbers\n'
               '23. C++ Program to Display Characters from A to Z Using Loop\n'
               '24. C++ Program to Count Number of Digits in an Integer\n'
               '25. C++ Program to Reverse a Number\n'
@@ -170,31 +148,25 @@ f10 = Fragment(uuid='TEST-10',
               '29. C++ Program to Display Prime Numbers Between Two Intervals\n'
               '30. C++ Program to Check Armstrong Number\n'
               '31. C++ Program to Display Armstrong Number Between Two Intervals\n'
-              '32. C++ Program to Display Factors of a Number\n')
+              '32. C++ Program to Display Factors of a Number\n'
+              '33. C++ Programming Code To Create Pyramid and Structure\n'
+              '34. C++ Program to Make a Simple Calculator Using switch...case\n'
+              '35. C++ Program to Display Prime Numbers Between Intervals Using Function\n',
+         tokens=236)
 
-f11 = Fragment(uuid='TEST-11',
+f7 = Fragment(uuid='TEST-07',
          path='README2.md',
-         lineno=81,
+         lineno=84,
          depth=10,
          type='documentation',
          name='',
-         text='33. C++ Programming Code To Create Pyramid and Structure\n'
-              '34. C++ Program to Make a Simple Calculator Using switch...case\n'
-              '35. C++ Program to Display Prime Numbers Between Intervals Using Function\n'
-              '36. C++ Program to Check Prime or Armstrong Number Using User-defined Function\n'
+         text='36. C++ Program to Check Prime or Armstrong Number Using User-defined Function\n'
               '37. C++ Program to Check Whether a Number can be Expressed as Sum of Two Prime Numbers\n'
               '38. C++ Program to Find the Sum of Natural Numbers using Recursion\n'
               '39. C++ Program to Find Factorial of a Number Using Recursion\n'
               '40. C++ Program to Find G.C.D Using Recursion\n'
-              '41. C++ Program to Convert Binary Number to Decimal and vice-versa\n')
-
-f12 = Fragment(uuid='TEST-12',
-         path='README2.md',
-         lineno=90,
-         depth=10,
-         type='documentation',
-         name='',
-         text='42. C++ Program to Convert Octal Number to Decimal and vice-versa\n'
+              '41. C++ Program to Convert Binary Number to Decimal and vice-versa\n'
+              '42. C++ Program to Convert Octal Number to Decimal and vice-versa\n'
               '43. C++ Program to Convert Binary Number to Octal and vice-versa\n'
               '44. C++ Program to Reverse a Sentence Using Recursion\n'
               '45. C++ Program to calculate the power using recursion\n'
@@ -203,9 +175,10 @@ f12 = Fragment(uuid='TEST-12',
               '48. C++ Program to Calculate Standard Deviation\n'
               '49. C++ Program to Add Two Matrix Using Multi-dimensional Arrays\n'
               '50. C++ Program to Multiply to Matrix Using Multi-dimensional Arrays\n'
-              '51. C++ Program to Find Transpose of a Matrix\n')
+              '51. C++ Program to Find Transpose of a Matrix\n',
+         tokens=234)
 
-f13 = Fragment(uuid='TEST-13',
+f8 = Fragment(uuid='TEST-08',
          path='README2.md',
          lineno=100,
          depth=10,
@@ -220,36 +193,31 @@ f13 = Fragment(uuid='TEST-13',
               '58. C++ Program to Remove all Characters in a String Except Alphabet\n'
               '59. C++ Program to Find the Length of a String\n'
               '60. C++ Program to Concatenate Two Strings\n'
-              '61. C++ Program to Copy String Without Using strcpy()\n')
-
-f14 = Fragment(uuid='TEST-14',
-         path='README2.md',
-         lineno=110,
-         depth=10,
-         type='documentation',
-         name='',
-         text='62. C++ Program to Sort Elements in Lexicographical Order (Dictionary Order)\n'
+              '61. C++ Program to Copy String Without Using strcpy()\n'
+              '62. C++ Program to Sort Elements in Lexicographical Order (Dictionary Order)\n'
               '63. C++ Program to Store Information(name, roll and marks) of a Student Using Structure\n'
               '64. C++ Program to Add Two Distances (in inch-feet) System Using Structures\n'
               '65. C++ Program to Add Two Complex Numbers by Passing Structure to a Function\n'
               '66. C++ Program to Calculate Difference Between Two Time Periods\n'
-              '67. C++ Program to Store Information of Students Using Structure\n'
-              '68. C++ Program to Store Information Using Structures with Dynamically Memory Allocation\n'
-              '69. C++ Program to Write a Sentence to a File\n'
-              '70. C++ Program to Read a Line From a File and Display it\n')
+              '67. C++ Program to Store Information of Students Using Structure\n',
+         tokens=246)
 
-f15 = Fragment(uuid='TEST-15',
+f9 = Fragment(uuid='TEST-09',
          path='README2.md',
-         lineno=119,
+         lineno=116,
          depth=10,
          type='documentation',
          name='',
-         text='71. C++ Program to Display its own Source Code as Output\n'
+         text='68. C++ Program to Store Information Using Structures with Dynamically Memory Allocation\n'
+              '69. C++ Program to Write a Sentence to a File\n'
+              '70. C++ Program to Read a Line From a File and Display it\n'
+              '71. C++ Program to Display its own Source Code as Output\n'
               '72. C++ Programming Code To Create Pyramid and Pattern\n'
               '```\n'
-              '\n')
+              '\n',
+         tokens=73)
 
-f16 = Fragment(uuid='TEST-16',
+f10 = Fragment(uuid='TEST-10',
          path='README2.md',
          lineno=123,
          depth=1,
@@ -265,35 +233,29 @@ f16 = Fragment(uuid='TEST-16',
               'of amount after cancellation, showing  availability of all flights, showing flights timings for all 7 '
               'days of a week, seats availability, seat selection for travelers by giving the complete layout of the '
               'seating arrangement inside the flights, food availability/non-availability inside the flights, change '
-              'of travel dates and amount charged.)\n')
-
-f17 = Fragment(uuid='TEST-17',
-         path='README2.md',
-         lineno=127,
-         depth=10,
-         type='documentation',
-         name='',
-         text='3. Taxi/cab sharing\n'
+              'of travel dates and amount charged.)\n'
+              '3. Taxi/cab sharing\n'
               '4. University education portal (providing all information about under-graduate, post graduate and '
               'doctoral programs offered, facilities available, location & map, fee structure in all the '
               'universities)\n'
               '5. Online exam management system (with total security of identifying the students during exam, '
               'monitoring the students’ activities during the exam, selection of different questions for each student, '
               'development of a large question bank containing hundreds of questions in each subject considering all '
-              'courses taught at the university)\n'
-              '6. Library management system\n'
-              '7. E-content management system \n'
-              '8. Plagiarism checker & file management system\n'
-              '9. Hotel reservation & management portal\n'
-              '10. Restaurant management\n')
+              'courses taught at the university)\n',
+         tokens=247)
 
-f18 = Fragment(uuid='TEST-18',
+f11 = Fragment(uuid='TEST-11',
          path='README2.md',
-         lineno=135,
+         lineno=130,
          depth=10,
          type='documentation',
          name='',
-         text='11. Healthcare consulting system (doctors with different specializations for consultation, hospitals '
+         text='6. Library management system\n'
+              '7. E-content management system \n'
+              '8. Plagiarism checker & file management system\n'
+              '9. Hotel reservation & management portal\n'
+              '10. Restaurant management\n'
+              '11. Healthcare consulting system (doctors with different specializations for consultation, hospitals '
               'with all facilities for treating different diseases & abroad - one stop portal for all consultations '
               'and treatments)\n'
               '12. Electronic health record management system with builtin security \n'
@@ -309,20 +271,21 @@ f18 = Fragment(uuid='TEST-18',
               '22. Attendance monitoring system with fingerprints verification\n'
               '23. Face recognition - based attendance checking system\n'
               '24. Aircraft communication and monitoring system\n'
-              '25. Ticket booking management system for concert ceremonies\n')
-
-f19 = Fragment(uuid='TEST-19',
-         path='README2.md',
-         lineno=150,
-         depth=10,
-         type='documentation',
-         name='',
-         text='26. All store stock management (inventory control)\n'
+              '25. Ticket booking management system for concert ceremonies\n'
+              '26. All store stock management (inventory control)\n'
               '27. Multiplayer gaming applications\n'
               '28. City traffic monitoring and control system\n'
               '29. Police traffic violation reporting & control system\n'
-              '30. The marriage function hall booking & food/music arrangement system\n'
-              '31. Any vehicle (car, bus, heavy vehicles for parties, functions, family picnics, long distance travel) '
+              '30. The marriage function hall booking & food/music arrangement system\n',
+         tokens=234)
+
+f12 = Fragment(uuid='TEST-12',
+         path='README2.md',
+         lineno=155,
+         depth=10,
+         type='documentation',
+         name='',
+         text='31. Any vehicle (car, bus, heavy vehicles for parties, functions, family picnics, long distance travel) '
               'booking portal\n'
               '32. Teacher assisted program writing environment for students\n'
               '33. Doctors reservation system for patients\n'
@@ -330,15 +293,8 @@ f19 = Fragment(uuid='TEST-19',
               '35. Railway booking and train tracking system\n'
               '36. Warehouse management system\n'
               '37. Courier tracking, cargo and freight transportation\n'
-              '38. Online code testing system\n')
-
-f20 = Fragment(uuid='TEST-20',
-         path='README2.md',
-         lineno=163,
-         depth=10,
-         type='documentation',
-         name='',
-         text='39. Online quiz system (with total security of identifying the students during the quiz, monitoring the '
+              '38. Online code testing system\n'
+              '39. Online quiz system (with total security of identifying the students during the quiz, monitoring the '
               'students’ activities during the quiz, selection of different quiz questions for each student, '
               'development of a large quiz question bank containing hundreds of quiz questions in each subject '
               'considering all courses taught at the university)\n'
@@ -348,19 +304,13 @@ f20 = Fragment(uuid='TEST-20',
               '43. Covid-19 tracking, testing, treatment & hospital management system\n'
               '44. Cryptocurrency trading portal (exchange) allowing trading of all crypto coins using security, '
               'confidentiality and authentication\n'
-              '45. Parking management system\n')
-
-f21 = Fragment(uuid='TEST-21',
-         path='README2.md',
-         lineno=170,
-         depth=10,
-         type='documentation',
-         name='',
-         text='46. Online food delivery system (linked to all restaurants in different districts in different regions '
+              '45. Parking management system\n'
+              '46. Online food delivery system (linked to all restaurants in different districts in different regions '
               'in some country)\n'
-              '```\n')
+              '```\n',
+         tokens=244)
 
-f22 = Fragment(uuid='TEST-22',
+f13 = Fragment(uuid='TEST-13',
          path='README2.md',
          lineno=1,
          depth=0,
@@ -372,5 +322,6 @@ f22 = Fragment(uuid='TEST-22',
               '## Computer Science Basics\n'
               '## Learning Resources\n'
               '## Problem Solving\n'
-              '## Projects Ideas\n')
+              '## Projects Ideas\n',
+         tokens=36)
 
