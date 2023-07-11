@@ -35,8 +35,8 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
         total = 0
         doc_count = 0
 
-        max_bytes_per_batch = min(2_000_000, max(100_000, archive.size // os.cpu_count()))
-        max_files_per_batch = min(200, max(10, archive.count // (2 * os.cpu_count())))
+        max_bytes_per_batch = 100_000  # min(200_000, max(50_000, archive.size // os.cpu_count()))
+        max_files_per_batch = 20  # min(20, max(10, archive.count // (2 * os.cpu_count())))
 
         def add(size: int, document_cs: str, path: str) -> None:
             nonlocal docs, paths, total
