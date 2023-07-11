@@ -94,7 +94,7 @@ workers = [worker]
 
 @app.get('/')
 async def canary():
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0)
     return 'OK', 200
 
 

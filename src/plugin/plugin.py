@@ -42,12 +42,8 @@ DATABASE: Optional[Database] = None
 
 @app.get("/")
 async def index():
-    return await quart.send_file('index.html', mimetype='text/html')
-
-
-@app.get("/logo.png")
-async def logo():
-    return await quart.send_file('logo.png', mimetype='image/png')
+    await asyncio.sleep(0)
+    return 'OK', 200
 
 
 @app.get("/.well-known/ai-plugin.json")
