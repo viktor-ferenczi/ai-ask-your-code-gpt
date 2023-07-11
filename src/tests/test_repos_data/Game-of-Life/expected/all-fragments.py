@@ -817,7 +817,7 @@
  Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
           id=24,
           lineno=334,
-          tokens=40,
+          tokens=21,
           depth=2,
           parent_id=None,
           category='method',
@@ -827,13 +827,23 @@
                '\n'
                '        GameOfLife.paused = !GameOfLife.paused;\n'
                '\n'
-               '    }public void actionPerformed(ActionEvent e) {\n'
+               '    }'),
+ Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
+          id=25,
+          lineno=343,
+          tokens=19,
+          depth=2,
+          parent_id=None,
+          category='method',
+          summary=False,
+          name='actionPerformed',
+          body='public void actionPerformed(ActionEvent e) {\n'
                '\n'
                '        GameOfLife.evolution.restart = true;\n'
                '\n'
                '    }'),
  Fragment(document_cs='0f962b05cc6d5707ce2b748eabbb84570dd8d9040dbbcf15e81e29d500235b04',
-          id=25,
+          id=26,
           lineno=1,
           tokens=114,
           depth=0,
@@ -855,7 +865,7 @@
                'setLayout setLocationRelativeTo setName setSize setText '
                'setVisible size sleep start universe universePanel w waitFor\n'),
  Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d67ddb14',
-          id=26,
+          id=27,
           lineno=1,
           tokens=66,
           depth=0,
@@ -876,7 +886,7 @@
                '- generation number and alive cells counters;\n'
                '- pause and restart buttons.\n'),
  Fragment(document_cs='77a7ebad8ad0f0fa90514c0a5f5f1db1357be1de6c589411b5d1a204d67ddb14',
-          id=27,
+          id=28,
           lineno=1,
           tokens=5,
           depth=0,

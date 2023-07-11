@@ -1,0 +1,11 @@
+Summary of file(s): *.py
+File extensions: .py
+
+/ci_compile.py:
+  Functions: compile_py start_compile
+  Variables and usages: Path PyZipFile ZIP_STORED compile compile_pyc desc_path dest dirs filename files filter fnmatch pathlib prepare_directory print py_compile relative_path relative_to replace root src_py string utils walk zipfile
+
+
+Relevant subdirectories:
+  sentient_sims: 100%
+  utils: 60%

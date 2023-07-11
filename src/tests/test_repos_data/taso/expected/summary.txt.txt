@@ -1,0 +1,8 @@
+Summary of file(s): *.txt
+File extensions: .txt
+
+/CMakeLists.txt:
+
+
+Relevant subdirectories:
+  examples: 100%

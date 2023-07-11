@@ -1,0 +1,112 @@
+Summary of path: /
+File extensions: .html .js .json .lock .md .nsh .ts .tsx .yml
+
+/.editorconfig:
+
+
+/.eslintignore:
+
+
+/.eslintrc.json:
+
+
+/.gitattributes:
+
+
+/.gitignore:
+
+
+/.yarnrc:
+
+
+/ava-e2e.config.js:
+  Usages: module
+
+
+/ava.config.js:
+  Usages: module
+
+
+/babel.config.json:
+
+
+/electron-builder-linux-ci.json:
+
+
+/electron-builder.json:
+
+
+/LICENSE:
+
+
+/package.json:
+
+
+/PLUGINS.md:
+# Plugin development
+## Workflow
+### Run Hyper in dev mode
+### Create a dev config file
+### Setup your plugin
+### Running your plugin
+## Recipes
+### Components
+### Keymaps
+#### Declare your key bindings
+#### Register a handler for your commands
+##### Renderer/Window
+##### Main process
+### Menu
+### Cursor
+### Require Electron
+## Hyper v2 breaking changes
+
+
+/README.md:
+## Project goals
+## Usage
+### Linux
+#### Arch and derivatives
+#### NixOS
+### macOS
+### Windows
+## Contribute
+#### Known issues that can happen during development
+##### Error building `node-pty`
+##### Error with `C++` on macOS when running `yarn`
+##### Error with `codesign` on macOS when running `yarn run dist`
+## Related Repositories
+
+
+/release.js:
+  Variables: answers
+  Usages: console intro markdown module process prompt require
+
+
+/tsconfig.base.json:
+
+
+/tsconfig.eslint.json:
+
+
+/tsconfig.json:
+
+
+/webpack.config.ts:
+  Variables: config isProd nodeEnv
+  Usages: Configuration Copy JSON TerserPlugin __dirname path process webpack
+
+
+/yarn.lock:
+
+
+Relevant subdirectories:
+  lib: 100%
+  app: 82%
+  .github: 12%
+  bin: 10%
+  test: 8%
+  cli: 3%
+  .husky: 1%
+  .vscode: 1%
+  build: 1%

@@ -1,0 +1,54 @@
+Summary of path: /
+File extensions: .css .example .html .js .json .map .md .php .scss .txt .yml
+
+/.env.example:
+
+
+/.gitattributes:
+
+
+/.gitignore:
+
+
+/artisan:
+
+
+/composer.json:
+
+
+/gulpfile.js:
+  Variables: elixir
+  Usages: mix require
+
+
+/index.html:
+# AskYourCode
+### The intelligent rubber ducky!
+
+
+/package.json:
+
+
+/phpspec.yml:
+
+
+/readme.md:
+# Ribbbon
+# Features
+# Get involved
+# Installation
+
+
+/server.php:
+  Usages: _SERVER uri
+
+
+Relevant subdirectories:
+  app: 100%
+  resources: 86%
+  database: 70%
+  public: 40%
+  config: 32%
+  storage: 16%
+  bootstrap: 8%
+  tests: 5%

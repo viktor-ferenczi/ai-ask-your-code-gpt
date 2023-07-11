@@ -1,0 +1,5 @@
+Summary of file(s): *.hpp
+File extensions: .hpp
+
+Relevant subdirectories:
+  Labirint Game: 100%

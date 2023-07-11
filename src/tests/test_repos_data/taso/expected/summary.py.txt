@@ -1,0 +1,8 @@
+Summary of file(s): *.py
+File extensions: .py
+
+Relevant subdirectories:
+  examples: 100%
+  tensorflow_py: 54%
+  python: 27%
+  verify: 27%

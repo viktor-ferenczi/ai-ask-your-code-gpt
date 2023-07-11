@@ -1,0 +1,34 @@
+Summary of path: /
+File extensions: .csv .ipynb .json .md .py .sh .txt
+
+/.gitignore:
+
+
+/LICENSE:
+
+
+/models.py:
+  Functions: chatgpt gpt gpt_usage
+  Methods: completions_with_backoff
+  Variables and usages: ChatCompletion OpenAIError api_base api_key backend backoff choice completion_tokens cost create error expo extend format getenv kwargs max_tokens messages model on_exception openai outputs print prompt prompt_tokens stop temperature
+
+
+/readme.md:
+# Offical Repo of Tree of Thoughts (ToT)
+## Setup
+## Experiments
+## Trajectories
+## Questions
+
+
+/run.py:
+  Functions: get_proposals get_samples get_value get_values get_votes naive_solve parse_args run solve
+  Variables and usages: ArgumentParser ValueError accs action add_argument append argparse args array backend cache_value chain choice choices cnt_any cnt_avg cot_prompt_wrap default dirname dump exist_ok file functools get_input get_task gpt_usage indent info infos itertools json local_value_cache logs makedirs method_evaluate method_generate method_select model models n_evaluate_sample n_generate_sample n_select_sample naive_run new_ys numpy open partial path print prompt prompt_sample proposals propose_prompt propose_prompt_wrap random range required reverse samples select_id select_ids select_new_ys size sorted sorted_new_ys sorted_values split standard_prompt_wrap step steps stop stops task task_end_index task_file_path task_start_index tasks temperature test_output to_print tolist type update value value_cache value_outputs value_outputs_unwrap value_prompt value_prompt_wrap values vote_outputs vote_outputs_unwrap vote_prompt vote_prompt_wrap
+
+
+Relevant subdirectories:
+  logs: 100%
+  scripts: 75%
+  tasks: 41%
+  data: 33%
+  prompts: 25%

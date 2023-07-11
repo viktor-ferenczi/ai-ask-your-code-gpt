@@ -1,0 +1,10 @@
+Summary of file(s): *.js
+File extensions: .js
+
+/gulpfile.js:
+  Variables: elixir
+  Usages: mix require
+
+
+Relevant subdirectories:
+  public: 100%

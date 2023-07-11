@@ -1,0 +1,23 @@
+Summary of file(s): /sentient_sims*.py
+File extensions: .py
+
+/sentient_sims/career_descriptions.py:
+  Variables and usages: career_descriptions
+
+
+/sentient_sims/interaction_descriptions.py:
+  Variables and usages: interaction_descriptions num_keys print
+
+
+/sentient_sims/sim_descriptions.py:
+  Variables and usages: sim_descriptions
+
+
+/sentient_sims/trait_descriptions.py:
+  Variables and usages: trait_descriptions
+
+
+/sentient_sims/zone_descriptions.py:
+  Variables and usages: join zone_descriptions
+
+
