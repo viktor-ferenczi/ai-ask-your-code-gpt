@@ -114,7 +114,8 @@ class Manager:
         return self.check_pid_exists(pid)
 
     def is_healthy(self, service, instance):
-        url = f"http://127.0.0.1:{service['base_port'] + instance}"
+        http_url = f"http://127.0.0.1:{service['base_port'] + instance}"
+        url = service.get('canary', http_url)
 
         try:
             response = requests.get(url, timeout=30.0)

@@ -22,4 +22,5 @@
   command: [ '/usr/bin/authbind', '--deep', '~/.local/bin/hypercorn', '--config', '~/src/plugin/hypercorn.toml', 'plugin:app' ]
   work_dir: ~/src/plugin
   base_port: 443
+  canary: https://plugin.askyourcode.ai
   instances: 1
