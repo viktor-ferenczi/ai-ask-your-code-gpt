@@ -98,13 +98,7 @@ class Manager:
 
     def check_pid_exists(self, pid: int) -> bool:
         """Check whether pid exists in the current process table."""
-        try:
-            os.kill(pid, signal.SIG_DFL)
-        except ProcessLookupError:
-            return False
-        except PermissionError:
-            return True
-        return True
+        return os.path.isdir(f"/proc/{pid}")
 
     def is_running(self, service, instance):
         pid_file = PID_DIR / f"{service['name']}-{instance:02d}.pid"
