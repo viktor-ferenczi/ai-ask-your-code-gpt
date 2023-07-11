@@ -124,12 +124,13 @@ class Backend:
         await self.update_project_accessed()
 
         async with self.db.connection() as conn:
-            triplets = await search_in_project(conn, self.project.id, path, tail, name, text, False, limit)
+            triplets = await search_in_project(conn, self.project.id, path, tail, name, text, False, limit * 20)
 
         if not triplets:
             return []
 
         fragments = list(combine_fragments((fragment_from_db_fragment(*pair) for pair in triplets), max_tokens=C.MAX_TOKENS_PER_SEARCH_RESULT))
+        fragments = fragments[:limit]
 
         hit_tokens = np.array([fragment.tokens for fragment in fragments])
         cum_tokens = np.cumsum(hit_tokens)
