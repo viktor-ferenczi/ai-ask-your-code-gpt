@@ -1,0 +1,6 @@
+Summary of file(s): *.cc
+File extensions: .cc
+
+Relevant subdirectories:
+  src: 100%
+  cpp_examples: 1%

@@ -1,0 +1,48 @@
+Summary of path: /
+File extensions: .ambr .bib .cff .conllu .css .csv .eml .example .html .ipynb .js .json .lock .md .py .rst .toml .txt .xml .yaml .yml
+
+/.dockerignore:
+
+
+/.flake8:
+
+
+/.gitignore:
+
+
+/.readthedocs.yaml:
+
+
+/CITATION.cff:
+
+
+/Dockerfile:
+
+
+/LICENSE:
+
+
+/poetry.lock:
+
+
+/poetry.toml:
+
+
+/pyproject.toml:
+
+
+/README.md:
+# 🦜️🔗 LangChain
+## Quick Install
+## 🤔 What is this?
+## 📖 Documentation
+## 🚀 What can this help with?
+## 💁 Contributing
+
+
+Relevant subdirectories:
+  langchain: 100%
+  docs: 92%
+  tests: 50%
+  .github: 1%
+  .devcontainer: 0%

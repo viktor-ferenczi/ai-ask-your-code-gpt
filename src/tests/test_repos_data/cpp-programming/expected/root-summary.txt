@@ -1,0 +1,43 @@
+Summary of path: /
+File extensions: .cmake .cpp .h .hpp .md .txt
+
+/README.md:
+# C++ Programming
+## Contents
+## Keep These Tips in Mind While Learning Programming
+## Computer Science Basics
+## Learning Resources
+## Problem Solving
+## Projects Ideas
+
+
+Relevant subdirectories:
+  Labirint Game: 100%
+  OOP1-Lab3: 8%
+  E-Commerce App V3.0: 6%
+  OOP1-Lab1: 6%
+  OOP2_Lab9: 6%
+  E-Commerce App V1.0: 5%
+  E-Commerce App V2.0: 5%
+  OOP1-Lab2: 5%
+  OOP1-Lab4: 5%
+  OOP1-Lab8: 5%
+  OOP1-Lab5: 4%
+  OOP1-Lab7: 4%
+  OOP1-Lab9: 4%
+  Bank management system: 1%
+  New Year Congratulation: 1%
+  OOP1-Lab6: 1%
+  OOP2-FA: 1%
+  OOP2_Lab1: 1%
+  OOP2_Lab10: 1%
+  OOP2_Lab2: 1%
+  OOP2_Lab3: 1%
+  OOP2_Lab4: 1%
+  OOP2_Lab5: 1%
+  OOP2_Lab6: 1%
+  OOP2_Lab8: 1%
+  Quiz Game: 1%
+  OOP2_Lab7: 0%
+  OOP2_Lab7_Extra: 0%
+  Snake Game: 0%

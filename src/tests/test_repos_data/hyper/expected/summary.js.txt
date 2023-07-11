@@ -1,0 +1,18 @@
+Summary of file(s): *.js
+File extensions: .js
+
+/ava-e2e.config.js:
+  Usages: module
+
+
+/ava.config.js:
+  Usages: module
+
+
+/release.js:
+  Variables: answers
+  Usages: console intro markdown module process prompt require
+
+
+Relevant subdirectories:
+  bin: 100%

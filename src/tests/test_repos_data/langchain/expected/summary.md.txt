@@ -1,0 +1,16 @@
+Summary of file(s): *.md
+File extensions: .md
+
+/README.md:
+# 🦜️🔗 LangChain
+## Quick Install
+## 🤔 What is this?
+## 📖 Documentation
+## 🚀 What can this help with?
+## 💁 Contributing
+
+
+Relevant subdirectories:
+  docs: 100%
+  .github: 1%
+  tests: 0%

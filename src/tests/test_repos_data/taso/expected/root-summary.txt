@@ -1,0 +1,43 @@
+Summary of path: /
+File extensions: .cc .cmake .cu .h .md .proto .pxd .py .pyx .txt
+
+/CMakeLists.txt:
+
+
+/config.cmake:
+
+
+/INSTALL.md:
+# TASO Installation
+## Install from Source
+### Prerequisties
+### Build TASO Runtime
+## Docker Images
+
+
+/LICENSE:
+
+
+/README.md:
+# TASO: The Tensor Algebra SuperOptimizer for Deep Learning
+## Install TASO
+## Use TASO
+### Optimize ONNX Models
+### Optimize TensorFlow Models
+### Optimize PyTorch Models
+### Optimize Arbitrary DNN Models using the Python Interface
+#Build DNN model
+#Optimize DNN model
+## Publication
+
+
+Relevant subdirectories:
+  src: 100%
+  examples: 12%
+  cpp_examples: 7%
+  tensorflow_py: 6%
+  python: 5%
+  include: 4%
+  verify: 3%
+  cmake: 1%
+  docker: 1%

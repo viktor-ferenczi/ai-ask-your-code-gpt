@@ -1,0 +1,32 @@
+Summary of path: /
+File extensions: .cs .md .sln .xml .yml
+
+/.gitignore:
+
+
+/LICENSE:
+
+
+/README.md:
+# Toolbar Manager
+## Features
+### Toolbars
+### Quick block selection
+### Planned features
+## Installation
+## Want to know more?
+## Credits
+### Patreon Supporters
+#### Admiral level
+#### Captain level
+#### Testers
+### Creators
+
+
+/ToolbarManager.sln:
+
+
+Relevant subdirectories:
+  ToolbarManager: 100%
+  .github: 7%
+  .run: 7%

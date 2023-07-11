@@ -1,0 +1,99 @@
+Hit(uuid='0',
+    path='/cpp_examples/dnn.cc',
+    lineno=25,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=1.0)
+
+Hit(uuid='1',
+    path='/cpp_examples/example_utils.h',
+    lineno=26,
+    depth=1,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.9)
+
+Hit(uuid='2',
+    path='/src/core/activation.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.8)
+
+Hit(uuid='3',
+    path='/src/core/batchnorm.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.7)
+
+Hit(uuid='4',
+    path='/src/core/broadcast_add.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.6)
+
+Hit(uuid='5',
+    path='/src/core/cast.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.5)
+
+Hit(uuid='6',
+    path='/src/core/concat.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.4)
+
+Hit(uuid='7',
+    path='/src/core/constant.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.30000000000000004)
+
+Hit(uuid='8',
+    path='/src/core/conv2d.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.19999999999999996)
+
+Hit(uuid='9',
+    path='/src/core/element.cc',
+    lineno=17,
+    depth=0,
+    type='using',
+    name='taso',
+    text='using namespace taso;',
+    tokens=5,
+    score=0.09999999999999998)

@@ -1,0 +1,13 @@
+Summary of file(s): *.ts
+File extensions: .ts
+
+/webpack.config.ts:
+  Variables: config isProd nodeEnv
+  Usages: Configuration Copy JSON TerserPlugin __dirname path process webpack
+
+
+Relevant subdirectories:
+  lib: 100%
+  app: 84%
+  test: 11%
+  cli: 4%

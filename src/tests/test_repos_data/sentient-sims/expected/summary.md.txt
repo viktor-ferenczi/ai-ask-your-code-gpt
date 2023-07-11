@@ -1,0 +1,40 @@
+Summary of file(s): *.md
+File extensions: .md
+
+/FAQ.md:
+# Sentient Sims FAQ
+## What is Sentient Sims?
+## What are the features of Sentient Sims?
+## Which interactions are supported?
+## Where can I download Sentient Sims?
+## What is Open AI API and the API key used for?
+## How can I get support or report issues?
+## Is Sentient Sims compatible with other mods?
+## How do I make my interactions from my mod generate dialogue?
+## What is the Sentient Sims Companion App?
+
+
+/HOW-TO-INSTALL.md:
+# How to install Sentient Sims
+## Download and install the Sentient Sims Companion App
+### Windows
+## Click Update to Install The Mod
+## Open AI API Key
+## Playing the Mod
+## Do Something
+## Edit Location and Sim Description
+
+
+/README.md:
+# Sentient Sims Mod
+## Description
+## Contributing
+## Testing Locally
+## Supporting Interactions from Other Mods
+## Opening Issues
+
+
+/TODO.md:
+# TODO
+
+

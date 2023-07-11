@@ -1,0 +1,7 @@
+Summary of file(s): *.txt
+File extensions: .txt
+
+Relevant subdirectories:
+  OOP2_Lab9: 100%
+  E-Commerce App V2.0: 20%
+  E-Commerce App V3.0: 20%

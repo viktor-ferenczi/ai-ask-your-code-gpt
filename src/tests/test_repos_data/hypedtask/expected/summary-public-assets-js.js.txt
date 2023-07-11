@@ -1,0 +1,20 @@
+Summary of file(s): /public/assets/js*.js
+File extensions: .js
+
+/public/assets/js/laravel.js:
+
+
+/public/assets/js/main.js:
+  Functions: closeModule openModule
+  Variables: closeModule module moduleForm openModule top
+  Usages: document
+
+
+/public/assets/js/ui.js:
+  Functions: closePrompt makePrompt megaMenuInit showSheet
+  Variables: newMarginTop
+  Usages: cancelTxt confirmTxt document event msg title
+
+
+Relevant subdirectories:
+  controllers: 100%

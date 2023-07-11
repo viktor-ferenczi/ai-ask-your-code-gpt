@@ -1,0 +1,15 @@
+Summary of file(s): *.php
+File extensions: .php
+
+/server.php:
+  Usages: _SERVER uri
+
+
+Relevant subdirectories:
+  app: 100%
+  resources: 83%
+  database: 67%
+  config: 32%
+  bootstrap: 5%
+  tests: 5%
+  public: 2%
