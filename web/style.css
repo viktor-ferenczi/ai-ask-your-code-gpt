@@ -1,4 +1,19 @@
 body {
-    background-color: #ccc;
-    text-align: center;
+}
+
+.jumbotron {
+  padding: 3rem 1.5rem;
+  margin-bottom: 2rem;
+  background-color: #e9ecef;
+  border-radius: 0.3rem;
+}
+
+.container {
+  max-width: 960px;
+}
+
+.footer {
+  padding: 1rem 1.5rem;
+  background-color: #f9f9f9;
+  border-top: 0.05rem solid #e5e5e5;
 }
