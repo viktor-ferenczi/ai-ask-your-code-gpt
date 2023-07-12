@@ -84,6 +84,9 @@ class TestBackend(BaseBackendTest):
         normalize_hits(hits)
         self.verify('small-path-tail-py', hits)
 
+        summary = await backend.summarize(path='/find_duplicates.py')
+        self.verify('small-summary-find_duplicates_py', summary)
+
         hits = await backend.search(path='/README.md', limit=100)
         normalize_hits(hits)
         self.verify('small-path-README.md', hits)
