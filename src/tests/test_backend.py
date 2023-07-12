@@ -1,5 +1,4 @@
 import os
-import pprint
 import zipfile
 from datetime import datetime, timedelta
 from typing import List
@@ -85,7 +84,16 @@ class TestBackend(BaseBackendTest):
         self.verify('small-path-tail-py', hits)
 
         summary = await backend.summarize(path='/find_duplicates.py')
-        self.verify('small-summary-find_duplicates_py', summary)
+        self.verify('small-summary-path-find_duplicates_py', summary)
+
+        summary = await backend.summarize(path='/find_duplicates.py', name='Duplicates')
+        self.verify('small-summary-path-name-find_duplicates_py', summary)
+
+        hits = await backend.search(path='/find_duplicates.py', name='Duplicates')
+        self.verify('small-search-path-name-find_duplicates_py', hits)
+
+        hits = await backend.search(name='Duplicates')
+        self.verify('small-search-name-find_duplicates_py', hits)
 
         hits = await backend.search(path='/README.md', limit=100)
         normalize_hits(hits)
