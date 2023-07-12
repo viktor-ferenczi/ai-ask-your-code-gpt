@@ -5,11 +5,13 @@ from typing import List, Iterator, Dict, Any, Optional, Iterable
 import numpy as np
 
 from common.constants import C
+from common.text import decode_normalize
 from common.tools import tiktoken_len
 from model.fragment import Fragment
 from model.hit import Hit
-from storage import projects
+from storage import projects, documents
 from storage.database import Database
+from storage.documents import Document
 from storage.fragments import Fragment as DbFragment, search_in_project
 from storage.projects import Project
 from storage.pubsub import PubSub, ChannelName
@@ -149,6 +151,23 @@ class Backend:
         async with self.db.connection() as conn:
             pairs = await search_in_project(conn, self.project.id, path, tail, name, '', True, 10_000)
 
+        for f_path, sum_frag in pairs:
+            if f_path == path:
+                async with self.db.connection() as conn:
+                    document: Document = await documents.find_by_checksum(conn, sum_frag.document_cs)
+                if document is not None:
+                    text = decode_normalize(document.body)
+                    text = f'Summary:\n{sum_frag.body}\nFile contents:\n\n{text}'
+                    tokens = tiktoken_len(text)
+                    if tokens > C.MAX_TOKENS_PER_SEARCH_RESPONSE:
+                        split_text = text.split('\n')
+                        keep = len(split_text) * C.MAX_TOKENS_PER_SEARCH_RESPONSE / tokens
+                        if keep:
+                            text = '\n'.join(split_text[:]) + '\n...'
+                        else:
+                            text = text[len(text) * C.MAX_TOKENS_PER_SEARCH_RESPONSE / tokens] + '...'
+                    return text
+
         fragments: List[Fragment] = [fragment_from_db_fragment(*pair) for pair in pairs]
 
         if fragments:
@@ -180,7 +199,7 @@ class Backend:
             summary.insert(0, f"Summary of path: {path or '/'}")
 
         if not token_limit:
-            token_limit = 2000
+            token_limit = C.MAX_TOKENS_PER_SEARCH_RESPONSE
 
         summary = np.array(summary, dtype=object)
         line_lengths = np.array([tiktoken_len(line) for line in summary], dtype=np.int32)
