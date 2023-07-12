@@ -148,8 +148,14 @@ class Backend:
     async def summarize(self, *, path: str = '', tail: str = '', name: str = '', token_limit: int = 0) -> str:
         await self.update_project_accessed()
 
+        text = ''
+
         async with self.db.connection() as conn:
             pairs = await search_in_project(conn, self.project.id, path, tail, name, '', True, 10_000)
+            if not pairs:
+                pairs = await search_in_project(conn, self.project.id, path, tail, name, '', False, 20)
+                text = '\n\n'.join(frag.body for path, frag in pairs)
+                pairs.clear()
 
         for f_path, sum_frag in pairs:
             if f_path == path:
@@ -158,15 +164,17 @@ class Backend:
                 if document is not None:
                     text = decode_normalize(document.body)
                     text = f'Summary:\n{sum_frag.body}\nFile contents:\n\n{text}'
-                    tokens = tiktoken_len(text)
-                    if tokens > C.MAX_TOKENS_PER_SEARCH_RESPONSE:
-                        split_text = text.split('\n')
-                        keep = len(split_text) * C.MAX_TOKENS_PER_SEARCH_RESPONSE / tokens
-                        if keep:
-                            text = '\n'.join(split_text[:]) + '\n...'
-                        else:
-                            text = text[len(text) * C.MAX_TOKENS_PER_SEARCH_RESPONSE / tokens] + '...'
-                    return text
+
+        if text:
+            tokens = tiktoken_len(text)
+            if tokens > C.MAX_TOKENS_PER_SEARCH_RESPONSE:
+                split_text = text.split('\n')
+                keep = len(split_text) * C.MAX_TOKENS_PER_SEARCH_RESPONSE / tokens
+                if keep:
+                    text = '\n'.join(split_text[:]) + '\n...'
+                else:
+                    text = text[len(text) * C.MAX_TOKENS_PER_SEARCH_RESPONSE / tokens] + '...'
+            return text
 
         fragments: List[Fragment] = [fragment_from_db_fragment(*pair) for pair in pairs]
 
