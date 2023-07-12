@@ -1,19 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <title>AskYourCode</title>
-    <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="style.css">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="style.css" rel="stylesheet">
+
+  <title>AskYourCode</title>
 </head>
+
 <body>
-<h1>AskYourCode</h1>
-<h3>The intelligent rubber ducky!</h3>
-<p style="margin: 2ch 0;">
-Please find the FAQ, HowTo and #bug-reports on<br />
-<a href="https://discord.gg/cq5cMHZ9B3">the plugin's Discord server</a>.
-</p>
-<img src="logo.png" style="width: 256px; height: 256px;"/>
-<p><a href="legal/">Terms & Conditions</a></p>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">AskYourCode</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="jumbotron-heading">Talk with your source code</h1>
+        <p style="margin: 2ch 0;">
+          <h3>No more copy-pasting into the chat.</h3>
+          <h3>The AI can navigate and retrieve</h3>
+          <h3>the code of interest if prompted to do so.</h3>
+        </p>
+        <p class="lead text-muted">Works with most popular programming languages.</p>
+        <p style="margin: 2ch 0;">
+          <p>In order to use the plugin you need a <a href="https://chat.openai.com">ChatGPT Plus subscription</a>.</p>
+          <p>Install the "AskYourCode" plugin from the Plugin Store.<br/>If you want to use the plugin, it needs to be enabled on starting the conversation.</p>
+        </p>
+        <p style="margin: 2ch 0;">
+        Please find the <b>#faq</b>, <b>#howto</b> and <b>#bug-reports</b> on the
+        <a href="https://discord.gg/cq5cMHZ9B3">Discord server</a>.
+        </p>
+        <p>AskYourCode is your intelligent rubber ducky!</p>
+        <img src="logo.png" style="width: 256px; height: 256px;"/>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="row" style="display: none">
+        <div class="col-md-12">
+          <h2>About AskYourCode</h2>
+          <p>AskYourCode is a ChatGPT plugin providing summarization and search capability over the source code and documentation of a software project. It facilitates discovering the project gradually, retrieving only the parts relevant for reasoning about the task at hand.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-muted text-center">
+    <div class="container">
+      <p>&copy; 2023 AskYourCode. All rights reserved.</p>
+      <p>
+            <a href="/legal/terms.html">Terms of Service</a> |
+            <a href="/legal/privacy-policy.html">Privacy Policy</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
