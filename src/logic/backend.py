@@ -126,7 +126,7 @@ class Backend:
         await self.update_project_accessed()
 
         async with self.db.connection() as conn:
-            triplets = await search_in_project(conn, self.project.id, path, tail, name, text, False, limit * 20)
+            triplets = await search_in_project(conn, self.project.id, path, tail, name, text, False, min(300_000, limit * 100))
 
         if not triplets:
             return []
@@ -151,7 +151,7 @@ class Backend:
         text = ''
 
         async with self.db.connection() as conn:
-            pairs = await search_in_project(conn, self.project.id, path, tail, name, '', True, 10_000)
+            pairs = await search_in_project(conn, self.project.id, path, tail, name, '', True, 100_000)
             if not pairs:
                 pairs = await search_in_project(conn, self.project.id, path, tail, name, '', False, 20)
                 text = '\n\n'.join(frag.body for path, frag in pairs)
@@ -184,7 +184,7 @@ class Backend:
             if tail or name:
                 return ''
             async with self.db.connection() as conn:
-                pairs = await search_in_project(conn, self.project.id, '/', '', '', '', True, 10_000)
+                pairs = await search_in_project(conn, self.project.id, '/', '', '', '', True, 100_000)
                 fragments = [fragment_from_db_fragment(*pair) for pair in pairs]
             if not fragments:
                 return ''
@@ -256,7 +256,11 @@ class Backend:
             subdir_info = [f'Relevant subdirectories:\n']
             max_count = max(subdir_hit_counts.values())
             for subdir, count in sorted(subdir_hit_counts.items(), reverse=True, key=lambda pair: pair[1]):
-                subdir_info.append(f"  {subdir}: {int(100.0 * count / max_count)}%\n")
+                pct = int(100.0 * count / max_count)
+                if pct:
+                    subdir_info.append(f"  {subdir}: {pct}%\n")
+                elif count:
+                    subdir_info.append(f"  {subdir}: < 1%\n")
             yield ''.join(subdir_info)
 
     async def update_project_accessed(self):
