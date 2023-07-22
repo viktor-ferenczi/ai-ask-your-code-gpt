@@ -1,3 +1,4 @@
+import asyncio
 import os
 import zipfile
 from datetime import datetime, timedelta
@@ -117,6 +118,12 @@ class TestBackend(BaseBackendTest):
         backend = await Backend.ensure_project(self.db, 'tester', 'medium_project')
         info: TInfo = await backend.download('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip', timeout=5.0)
         print(info)
+        if 'Archive downloaded' not in info['status']:
+            print('Retrying the download')
+            await self.scheduler.delete_all_tasks()
+            await asyncio.sleep(0.5)
+            info: TInfo = await backend.download('https://github.com/viktor-ferenczi/dblayer/archive/refs/tags/0.7.0.zip', timeout=5.0)
+            print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 
         await self.wait_for_processing(30.0)
