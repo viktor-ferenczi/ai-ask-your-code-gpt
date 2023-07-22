@@ -1,3 +1,5 @@
+import asyncpg
+
 from common.reuse_addr import patch_reuse_addr
 
 patch_reuse_addr()
@@ -77,9 +79,16 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
 
                     doc_type = detect(zip_doc.path, mime_type)
                     if doc_type is not None:
-                        document = await documents.create(conn, document_cs, doc_type.name, mime_type, zip_doc.body)
-                        add(len(zip_doc.body), document_cs, zip_doc.path)
-                        doc_count += 1
+                        try:
+                            document = await documents.create(conn, document_cs, doc_type.name, mime_type, zip_doc.body)
+                        except asyncpg.UniqueViolationError:
+                            # It happens rarely the archive contains the same file
+                            # multiple times, so they happen to be added concurrently.
+                            # In this case link the already added document to this file.
+                            document = await documents.find_by_checksum(conn, document_cs)
+                        else:
+                            add(len(zip_doc.body), document_cs, zip_doc.path)
+                            doc_count += 1
 
                 if project_id and document is not None:
                     await files.create(conn, project_id, zip_doc.path[:400], document_cs, archive_cs)
