@@ -140,3 +140,4 @@ TestProject.zip
 /src/tests/test_repos_data/**/neovim
 /src/tests/test_repos_data/**/sanity
 /src/tests/test_repos_data/**/unreal
+/src/tests/test_repos_data/**/SE

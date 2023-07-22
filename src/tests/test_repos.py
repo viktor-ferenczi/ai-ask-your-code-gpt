@@ -183,6 +183,14 @@ class TestRepos(BaseBackendTest):
             actual = await backend.summarize(path='/src/pages/index.tsx', token_limit=999999999)
             self.verify(f'summary-index.tsx', actual)
 
+        if zip_name == 'SE':
+            actual = await backend.search(tail='MyCubeGrid.cs')
+            self.verify(f'search-MyCubeGrid.cs', actual)
+            actual = await backend.summarize(path='/Sandbox.Game/Sandbox/Game/Entities/', token_limit=999999999)
+            self.verify(f'summary-Game-Entities.tsx', actual)
+            actual = await backend.summarize(path='/Sandbox.Game/Sandbox/Game/Entities/Blocks/', token_limit=999999999)
+            self.verify(f'summary-Game-Entities-Blocks.tsx', actual)
+
         for extension in PARSERS_BY_EXTENSION:
             actual = await backend.summarize(tail=f'.{extension}', token_limit=999999999)
             if actual:
