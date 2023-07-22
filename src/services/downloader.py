@@ -1,3 +1,5 @@
+import asyncpg
+
 from common.reuse_addr import patch_reuse_addr
 
 patch_reuse_addr()
@@ -63,7 +65,13 @@ class Downloader:
             print(f'Common base dir: {common_base_dir!r}')
             doc_count = out_count[0]
 
-            archive = await archives.create(conn, download_result.checksum, download_result.size, doc_count, self.url[:400], download_result.etag[:160], common_base_dir[:400])
+            try:
+                archive = await archives.create(conn, download_result.checksum, download_result.size, doc_count, self.url[:400], download_result.etag[:160], common_base_dir[:400])
+            except asyncpg.UniqueViolationError:
+                archive = await archives.find_by_checksum(conn, download_result.checksum)
+                if archive is None:
+                    raise Exception(f'Failed to create archive: url={self.url!r}, checksum={download_result.checksum!r}')
+                return False, archive
 
             path = archive.path
             dirname = os.path.dirname(path)
