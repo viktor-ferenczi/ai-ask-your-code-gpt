@@ -27,7 +27,7 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
 
         path = os.path.join(C.ARCHIVE_DIR, archive.checksum[:3], archive.checksum)
 
-        iter_zip_docs: Iterator[ZipDoc] = extract_verify_documents(path)
+        iter_zip_docs: Iterator[ZipDoc] = extract_verify_documents(path, max_file_size=C.MAX_FILE_SIZE)
         iter_zip_docs: Iterator[ZipDoc] = remove_common_base_dir(archive.common_base_dir, iter_zip_docs)
 
         docs = []
