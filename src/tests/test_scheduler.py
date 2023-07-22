@@ -5,11 +5,13 @@ from datetime import datetime
 from typing import List, NoReturn, Any
 
 from base_database_test import BaseDatabaseTest
+from common.constants import C
 from storage.scheduler import Scheduler, Operation, Task, THandlerResult, TaskState, TaskFailed
 
 
 class TestScheduler(BaseDatabaseTest):
     test_script = __file__
+
     async def asyncSetUp(self) -> None:
         await super().asyncSetUp()
 
@@ -67,6 +69,26 @@ class TestScheduler(BaseDatabaseTest):
         self.assertTrue(bool(task.finished))
         self.assertEqual(task.message, 'Test failure')
 
+    async def test_handler_timeout(self) -> None:
+        evidence: List[int] = []
+
+        async def handler() -> NoReturn:
+            evidence.append(1)
+            await asyncio.sleep(9999)
+
+        C.TASK_TIMEOUT = 0.1
+        try:
+            task = await self.run_test_task(handler, evidence)
+        finally:
+            C.TASK_TIMEOUT = 300.0
+
+        self.assertEqual(len(evidence), 1)
+        task = await self.tasks.get_task(task.id)
+        self.assertEqual(task.state, TaskState.failed)
+        self.assertTrue(bool(task.started))
+        self.assertTrue(bool(task.finished))
+        self.assertEqual(task.message, 'Timeout')
+
     async def test_crashed_handler(self) -> None:
         evidence: List[int] = []
 
@@ -99,7 +121,7 @@ class TestScheduler(BaseDatabaseTest):
             task = await schedule_task()
             await self.wait_for_processing(evidence)
         finally:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.2)
             listener.cancel()
 
         return task
