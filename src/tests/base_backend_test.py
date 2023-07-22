@@ -73,6 +73,7 @@ class BaseBackendTest(BaseDatabaseTest):
         print('Waiting for all tasks to be processed...')
         started = time()
         deadline = started + timeout
+        last_count = -1
         while 1:
             count = await self.scheduler.count_tasks(TaskState.pending)
             if not count:
@@ -81,7 +82,10 @@ class BaseBackendTest(BaseDatabaseTest):
             if time() > deadline:
                 raise TimeoutError('Processing has not finished on time')
 
-            print(f'Pending tasks: {count}')
+            if count != last_count:
+                print(f'Pending tasks: {count}')
+                last_count = count
+
             await asyncio.sleep(1.0)
 
         duration = time() - started
