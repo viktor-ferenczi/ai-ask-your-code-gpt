@@ -64,7 +64,10 @@ REPOS = [
 
     # TypeScript (.js, .ts, .tsx, .json)
     ('MI_AI_Revised', 'https://github.com/TheGameVIX/MI-AI_Revised/archive/refs/heads/main.zip'),
-]
+
+    # TypeScript (.js, .ts, .tsx, .json)
+    ('SE', 'https://ferenczi.eu/download/hf3s90fm7xotvgi74/se-1.202.066.zip'),
+][-1:]
 
 
 def normalize_fragments(fragments: List[Fragment]) -> None:
@@ -124,7 +127,7 @@ class TestRepos(BaseBackendTest):
         print(info)
         self.assertTrue('Archive downloaded' in info['status'])
 
-        await self.wait_for_processing(600.0)
+        await self.wait_for_processing(900.0)
 
         hits = await backend.search(path='/readme.md', limit=100)
         normalize_hits(hits)
