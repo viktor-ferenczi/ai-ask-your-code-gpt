@@ -166,10 +166,6 @@ class Scheduler:
             except Exception:
                 task.state = TaskState.crashed
                 task.message = format_exc()
-                print('ERROR: Task handler crashed:')
-                print(f'Task: {task!r}')
-                print(f'Handler: {handler!r}')
-                print(task.message)
             else:
                 task.state = TaskState.completed
                 if isinstance(result, Task):
