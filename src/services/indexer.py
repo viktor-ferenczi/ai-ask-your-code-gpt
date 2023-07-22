@@ -1,6 +1,7 @@
 import asyncio
 import functools
 import os
+from time import time
 from typing import List, Iterable
 
 from quart import Quart
@@ -39,23 +40,27 @@ async def index_batch(db: Database, checksums: List[str], paths: List[str]) -> T
 
     frags = []
     with timer(f'Indexed {len(docs)} documents'):
+        next_sleep = time() + 1.0
         for document in docs:
             frags.extend(index_document(document, path_map[document.checksum]))
-            await asyncio.sleep(0)
-
-    if frags:
-        with timer(f'Stored {len(frags)} fragments of {len(docs)} documents'):
-            async with db.transaction() as conn:
-                # FIXME: Delete with a single query
-                for checksum in checksums:
-                    await fragments.delete_by_document_cs(conn, checksum)
+            if time() >= next_sleep:
+                next_sleep = time() + 1.0
                 await asyncio.sleep(0)
-                await fragments.insert_many(conn, frags)
 
-    return None
+    if not frags:
+        return None
+
+    await asyncio.sleep(0)
+    with timer(f'Stored {len(frags)} fragments of {len(docs)} documents'):
+        async with db.transaction() as conn:
+            # FIXME: Delete with a single query
+            for checksum in checksums:
+                await fragments.delete_by_document_cs(conn, checksum)
+            await fragments.insert_many(conn, frags)
 
 
 def index_document(document: Document, path: str) -> Iterable[DbFragment]:
+    deadline = time() + C.MAX_DOCUMENT_PARSE_TIME
     with timer(f'Indexed: {document.checksum} {path}', show=C.IS_DEVELOPMENT):
         parser_cls = PARSERS_BY_NAME.get(document.doc_type)
         if parser_cls is None:
@@ -87,6 +92,10 @@ def index_document(document: Document, path: str) -> Iterable[DbFragment]:
                 name=fragment.name,
                 body=fragment.text,
             )
+
+            if time() > deadline:
+                print(f'WARNING: Document parse time exceeded {C.MAX_DOCUMENT_PARSE_TIME} seconds: document={document.checksum!r}, path={path!r}')
+                break
 
 
 async def worker():

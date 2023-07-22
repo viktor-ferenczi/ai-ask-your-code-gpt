@@ -90,6 +90,7 @@ class C:
 
     # Parser
     MAX_FRAGMENTS_PER_DOCUMENT = 1_000_000
+    MAX_DOCUMENT_PARSE_TIME = 180  # s
 
     # Summary
     MAX_SUMMARY_WIDTH = 80
