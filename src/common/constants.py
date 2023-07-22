@@ -83,7 +83,7 @@ class C:
     MAX_FILE_COUNT = 100 << 10
 
     # Task queue
-    TASK_TIMEOUT = 300  # s
+    TASK_TIMEOUT = 600  # s
 
     # Splitter
     MAX_TOKENS_PER_FRAGMENT = 250
