@@ -1,3 +1,4 @@
+from common.core_dump import enable_core_dumps
 from common.reuse_addr import patch_reuse_addr
 
 patch_reuse_addr()
@@ -123,4 +124,5 @@ def main(http_port: int) -> None:
 
 
 if __name__ == "__main__":
+    enable_core_dumps()
     main(int(os.environ.get('HTTP_PORT', '43000')))
