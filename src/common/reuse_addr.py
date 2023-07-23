@@ -11,7 +11,7 @@ How can I monkey-patch the socket opening in the library used by Quart and hyper
 """
 import sys
 
-if sys.platform == 'linux2':
+if sys.platform == 'linux':
 
     import asyncio
     import socket
@@ -25,8 +25,8 @@ if sys.platform == 'linux2':
 
 
     class ReuseAddrEventLoop(asyncio.SelectorEventLoop):
-        def create_server(self, *args, **kwargs):
-            server = super().create_server(*args, **kwargs)
+        async def create_server(self, *args, **kwargs):
+            server = await super().create_server(*args, **kwargs)
             return ReuseAddrServer(*server.args, **server.kwargs)
 
 
