@@ -1,9 +1,3 @@
-import asyncpg
-
-from common.reuse_addr import patch_reuse_addr
-
-patch_reuse_addr()
-
 import asyncio
 import functools
 import os
@@ -11,6 +5,7 @@ from traceback import print_exc
 from typing import Iterator, List, Tuple
 from zipfile import BadZipFile, LargeZipFile
 
+import asyncpg
 from quart import Quart
 
 from common.constants import C

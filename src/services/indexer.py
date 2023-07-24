@@ -1,8 +1,3 @@
-from common.core_dump import enable_core_dumps
-from common.reuse_addr import patch_reuse_addr
-
-patch_reuse_addr()
-
 import asyncio
 import functools
 import os
@@ -12,6 +7,7 @@ from typing import List, Iterable
 from quart import Quart
 
 from common.constants import C
+from common.core_dump import enable_core_dumps
 from common.server import run_app
 from common.timer import timer
 from common.tools import tiktoken_len

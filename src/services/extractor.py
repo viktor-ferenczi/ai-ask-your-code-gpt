@@ -1,15 +1,10 @@
-import asyncpg
-
-from common.reuse_addr import patch_reuse_addr
-
-patch_reuse_addr()
-
 import asyncio
 import functools
 import hashlib
 import os
 from typing import Iterator, List
 
+import asyncpg
 from quart import Quart
 
 from common.constants import C

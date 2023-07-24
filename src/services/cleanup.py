@@ -1,7 +1,3 @@
-from common.reuse_addr import patch_reuse_addr
-
-patch_reuse_addr()
-
 import asyncio
 import os
 from datetime import datetime, timedelta
