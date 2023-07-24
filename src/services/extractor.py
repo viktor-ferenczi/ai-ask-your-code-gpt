@@ -23,7 +23,7 @@ async def extract(db: Database, archive_cs: str, project_id: int) -> THandlerRes
     indexing_tasks: List[Task] = []
 
     with timer(f'Extracted archive {archive_cs!r} for project {project_id!r}'):
-        async with db.transaction() as conn:
+        async with db.connection() as conn:
             archive: Archive = await archives.find_by_checksum(conn, archive_cs)
 
         path = os.path.join(C.ARCHIVE_DIR, archive.checksum[:3], archive.checksum)
