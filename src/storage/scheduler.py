@@ -201,7 +201,7 @@ class Scheduler:
         return row
 
     async def get_task(self, id: int) -> Optional[Task]:
-        async with self.db.transaction() as conn:
+        async with self.db.connection() as conn:
             row = await conn.fetchrow('''
                     SELECT * 
                     FROM task 
@@ -218,7 +218,7 @@ class Scheduler:
             await asyncio.sleep(polling_period)
 
     async def count_tasks(self, state: TaskState) -> int:
-        async with self.db.transaction() as conn:
+        async with self.db.connection() as conn:
             return await conn.fetchval('''
                     SELECT COUNT(1) 
                     FROM task 
@@ -226,7 +226,7 @@ class Scheduler:
                 ''', state.name)
 
     async def get_all_tasks(self) -> List[Task]:
-        async with self.db.transaction() as conn:
+        async with self.db.connection() as conn:
             return [
                 Task.from_row(row)
                 for row in await conn.fetch('''
