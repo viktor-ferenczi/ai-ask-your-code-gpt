@@ -45,7 +45,6 @@ class BaseBackendTest(BaseDatabaseTest):
         try:
             coroutines = (
                     [
-                        self.actual_test(),
                         self.serve_zip(),
                         downloader_app.run_task(debug=True, host='localhost', port=51000),
                         extractor_app.run_task(debug=True, host='localhost', port=52000),
@@ -56,10 +55,9 @@ class BaseBackendTest(BaseDatabaseTest):
             )
             tasks = [asyncio.create_task(coro) for coro in coroutines]
 
-            await asyncio.wait(tasks, timeout=999999.0, return_when=asyncio.FIRST_COMPLETED)
+            await asyncio.wait_for(self.actual_test(), timeout=999999.0)
 
-            tasks[0].result()
-            for task in tasks[1:]:
+            for task in tasks:
                 task.cancel()
         finally:
             for process in processes:
