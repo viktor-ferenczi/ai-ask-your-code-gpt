@@ -67,7 +67,7 @@ REPOS = [
 
     # TypeScript (.js, .ts, .tsx, .json)
     ('SE', 'https://ferenczi.eu/download/hf3s90fm7xotvgi74/se-1.202.066.zip'),
-][-1:]
+][:1]
 
 
 def normalize_fragments(fragments: List[Fragment]) -> None:
