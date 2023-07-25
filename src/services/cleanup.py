@@ -71,7 +71,7 @@ async def cleanup(db: Database):
                   AND finished < $1;
             """, datetime.utcnow() - timedelta(days=3))
 
-        deleted_task_count = await conn.fetchval('SELECT COUNT(*) FROM task') - task_count
+        deleted_task_count = task_count - await conn.fetchval('SELECT COUNT(*) FROM task')
 
     if deleted_task_count:
         print(f'Deleted {deleted_task_count} tasks')
