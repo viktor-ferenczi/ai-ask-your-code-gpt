@@ -226,5 +226,4 @@ create index file_document_cs_index
 MIGRATIONS: Dict[int, str] = {
     0: CREATE,
     1: MIGRATE_1_TO_2,
-    # Insert incremental migrations from each past version here
 }

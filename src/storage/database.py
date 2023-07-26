@@ -71,20 +71,18 @@ class Database:
                     await self.create()
                     break
 
-                if version == schema.VERSION:
-                    break
+            if version == schema.VERSION:
+                break
 
-                if version > schema.VERSION:
-                    raise ValueError(f'Database version {version} is newer than the schema VERSION {schema.VERSION} in the code, which should not happen')
+            if version > schema.VERSION:
+                raise ValueError(f'Database version {version} is newer than the schema VERSION {schema.VERSION} in the code, which should not happen')
 
-                migration = schema.MIGRATIONS.get(version)
-                if not migration:
-                    raise ValueError(f'Migration is not defined for database version {version}')
+            migration = schema.MIGRATIONS.get(version)
+            if not migration:
+                raise ValueError(f'Migration is not defined for database version {version}')
 
+            async with self.transaction() as conn:
                 await conn.execute(migration)
+                await properties.write(conn, 'Version', version + 1)
 
-                new_version = await properties.read(conn, 'Version') or 0
-                if new_version <= version:
-                    raise ValueError(f'New version {new_version} after migration must be higher than the former version {version}')
-
-                print(f'Migrated database from version {version} to {new_version}')
+            print(f'Migrated database from version {version} to {version + 1}')
