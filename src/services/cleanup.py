@@ -42,12 +42,12 @@ async def cleanup(db: Database):
 
         await conn.execute("""
                 DELETE FROM file
-                WHERE project_id NOT IN (SELECT DISTINCT id FROM project);
+                WHERE project_id NOT IN (SELECT id FROM project);
             """)
 
         await conn.execute("""
                 DELETE FROM document
-                WHERE checksum NOT IN (SELECT DISTINCT document_cs FROM file);
+                WHERE checksum NOT IN (SELECT document_cs FROM file);
             """)
 
         await conn.execute("""

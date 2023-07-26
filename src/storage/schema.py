@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 
-VERSION = 1
+VERSION = 2
 
 DROP = '''
 
@@ -181,6 +181,9 @@ alter table public.fragment
 create index fragment_parent_id_index
     on public.fragment (parent_id);
 
+create index fragment_document_cs_index
+    on public.fragment (document_cs);
+
 create index fragment_body_index
     on public.fragment using gin (to_tsvector('english'::regconfig, body));
 
@@ -202,6 +205,9 @@ alter table public.file
 create index file_path_index
     on public.file (project_id, path);
     
+create index file_document_cs_index
+    on public.file (document_cs);
+    
 ''' + f'''
 insert into public.property (name, number) values ('Version', {VERSION});
 '''
@@ -209,7 +215,16 @@ insert into public.property (name, number) values ('Version', {VERSION});
 RX_ALTER_OWNER = re.compile(r'alter ([a-z]+) .*?owner to .*?;', re.IGNORECASE | re.DOTALL)
 CREATE = RX_ALTER_OWNER.subn('', CREATE)[0]
 
+MIGRATE_1_TO_2 = '''
+create index fragment_document_cs_index
+    on public.fragment (document_cs);
+
+create index file_document_cs_index
+    on public.file (document_cs);
+'''
+
 MIGRATIONS: Dict[int, str] = {
     0: CREATE,
+    1: MIGRATE_1_TO_2,
     # Insert incremental migrations from each past version here
 }
