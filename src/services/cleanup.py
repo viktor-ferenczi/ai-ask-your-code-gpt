@@ -41,18 +41,30 @@ async def cleanup(db: Database):
         fragment_count = await fragments.count(conn)
 
         await conn.execute("""
-                DELETE FROM file
-                WHERE project_id NOT IN (SELECT id FROM project);
+            DELETE FROM file f
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM project p
+                WHERE p.id = f.project_id
+            );
             """)
 
         await conn.execute("""
-                DELETE FROM document
-                WHERE checksum NOT IN (SELECT document_cs FROM file);
+            DELETE FROM document d
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM file f
+                WHERE f.document_cs = d.checksum AND left(f.document_cs, 2) = d.partition_key
+            );
             """)
 
         await conn.execute("""
-                DELETE FROM fragment
-                WHERE document_cs NOT IN (SELECT checksum FROM document);
+            DELETE FROM fragment fr
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM document d
+                WHERE d.checksum = fr.document_cs AND left(d.checksum, 2) = fr.partition_key
+            );
             """)
 
         deleted_file_count = file_count - await files.count(conn)
