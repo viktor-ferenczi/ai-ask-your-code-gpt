@@ -11,7 +11,7 @@ PATH="/home/plugin/bin:/home/plugin/.local/bin:/usr/local/sbin:/usr/local/bin:/u
 
 # Restarts
 # mm hh         dom mon dow command
-03 */8           *   *   *  /bin/bash -l $HOME/bin/ayc restart >>$HOME/log/restart.log 2>&1
+03 08            *   *   *  /bin/bash -l $HOME/bin/ayc restart >>$HOME/log/restart.log 2>&1
 
 # Backup
 # mm hh         dom mon dow command
