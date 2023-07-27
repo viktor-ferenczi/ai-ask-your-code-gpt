@@ -37,9 +37,6 @@ async def cleanup(db: Database):
 
     async with db.transaction() as conn:
         file_count = await files.count(conn)
-        document_count = await documents.count(conn)
-        fragment_count = await fragments.count(conn)
-
         await conn.execute("""
             DELETE FROM file f
             WHERE NOT EXISTS (
@@ -48,7 +45,13 @@ async def cleanup(db: Database):
                 WHERE p.id = f.project_id
             );
             """)
+        deleted_file_count = file_count - await files.count(conn)
 
+    if deleted_file_count:
+        print(f'Deleted {deleted_file_count} files')
+
+    async with db.transaction() as conn:
+        document_count = await documents.count(conn)
         await conn.execute("""
             DELETE FROM document d
             WHERE NOT EXISTS (
@@ -57,7 +60,13 @@ async def cleanup(db: Database):
                 WHERE f.document_cs = d.checksum AND left(f.document_cs, 2) = d.partition_key
             );
             """)
+        deleted_document_count = document_count - await documents.count(conn)
 
+    if deleted_document_count:
+        print(f'Deleted {deleted_document_count} documents')
+
+    async with db.transaction() as conn:
+        fragment_count = await fragments.count(conn)
         await conn.execute("""
             DELETE FROM fragment fr
             WHERE NOT EXISTS (
@@ -66,13 +75,10 @@ async def cleanup(db: Database):
                 WHERE d.checksum = fr.document_cs AND left(d.checksum, 2) = fr.partition_key
             );
             """)
-
-        deleted_file_count = file_count - await files.count(conn)
-        deleted_document_count = document_count - await documents.count(conn)
         deleted_fragment_count = fragment_count - await fragments.count(conn)
 
-    if deleted_file_count or deleted_document_count or deleted_fragment_count:
-        print(f'Deleted {deleted_file_count} files, {deleted_document_count} documents, {deleted_fragment_count} fragments')
+    if deleted_fragment_count:
+        print(f'Deleted {deleted_fragment_count} fragments')
 
     async with db.transaction() as conn:
         task_count = await conn.fetchval('SELECT COUNT(*) FROM task')
@@ -87,8 +93,6 @@ async def cleanup(db: Database):
 
     if deleted_task_count:
         print(f'Deleted {deleted_task_count} tasks')
-
-    print()
 
 
 async def worker():
