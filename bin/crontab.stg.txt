@@ -11,7 +11,7 @@ PATH="/home/staging/bin:/home/staging/.local/bin:/usr/local/sbin:/usr/local/bin:
 
 # Restarts
 # mm hh         dom mon dow command
-02 */8           *   *   *  /bin/bash -l $HOME/bin/ayc restart >>$HOME/log/restart.log 2>&1
+02 08            *   *   *  /bin/bash -l $HOME/bin/ayc restart >>$HOME/log/restart.log 2>&1
 
 # Backup
 # mm hh         dom mon dow command
