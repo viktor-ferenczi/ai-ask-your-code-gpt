@@ -241,3 +241,5 @@ MIGRATIONS: Dict[int, str] = {
     1: MIGRATE_1_TO_2,
     2: MIGRATE_2_TO_3,
 }
+
+assert max(MIGRATIONS) == VERSION - 1, 'Database schema VERSION does not match the migrations'
