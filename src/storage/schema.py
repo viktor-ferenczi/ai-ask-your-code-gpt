@@ -202,8 +202,11 @@ create table public.file
 alter table public.file
     owner to askyourcode;
 
+create index file_project_id_index
+    on public.file (project_id);
+    
 create index file_path_index
-    on public.file (project_id, path);
+    on public.file (path);
     
 create index file_document_cs_index
     on public.file (document_cs);
@@ -223,7 +226,18 @@ create index file_document_cs_index
     on public.file (document_cs);
 '''
 
+MIGRATE_2_TO_3 = '''
+create index file_project_id_index
+    on public.file (project_id);
+    
+drop index file_path_index;
+
+create index file_path_index
+    on public.file (path);
+'''
+
 MIGRATIONS: Dict[int, str] = {
     0: CREATE,
     1: MIGRATE_1_TO_2,
+    2: MIGRATE_2_TO_3,
 }
