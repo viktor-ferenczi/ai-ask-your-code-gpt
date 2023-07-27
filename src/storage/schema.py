@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 
-VERSION = 3
+VERSION = 4
 
 DROP = '''
 
@@ -71,8 +71,8 @@ comment on column public.task.message is 'Message explaining the error if failed
 alter table public.task
     owner to askyourcode;
     
-create index task_created_state_index
-    on public.task (created, state);
+create index task_state_index
+    on public.task (state);
 
 
 create table public.archive
@@ -236,10 +236,18 @@ create index file_path_index
     on public.file (path);
 '''
 
+MIGRATE_3_TO_4 = '''
+drop index task_created_state_index;
+
+create index task_state_index
+    on public.task (state);
+'''
+
 MIGRATIONS: Dict[int, str] = {
     0: CREATE,
     1: MIGRATE_1_TO_2,
     2: MIGRATE_2_TO_3,
+    3: MIGRATE_3_TO_4,
 }
 
-assert max(MIGRATIONS) == VERSION - 1, 'Database schema VERSION does not match the migrations'
+assert VERSION == max(MIGRATIONS) + 1, 'Database schema VERSION does not match the migrations'
