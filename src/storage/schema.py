@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 
-VERSION = 2
+VERSION = 3
 
 DROP = '''
 
