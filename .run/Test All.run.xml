@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Test All" type="tests" factoryName="Autodetect">
-    <module name="AskYourCodePlugin" />
+    <module name="ayc" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
