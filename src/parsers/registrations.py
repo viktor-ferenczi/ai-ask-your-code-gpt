@@ -13,6 +13,7 @@ from parsers.css_parser import CssParser
 from parsers.html_parser import HtmlParser
 from parsers.ipynb_parser import PythonNotebookParser
 from parsers.java_parser import JavaParser
+from parsers.swift_parser import SwiftParser
 from parsers.javascript_parser import JavaScriptParser
 from parsers.markdown_parser import MarkdownParser
 from parsers.php_parser import PhpParser
@@ -35,6 +36,7 @@ PARSERS = (
     CSharpParser,
     CppParser,
     JavaParser,
+    SwiftParser,
 )
 
 PARSERS_BY_NAME = {}

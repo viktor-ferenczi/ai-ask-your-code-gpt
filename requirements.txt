@@ -4,7 +4,7 @@ quart-cors
 tqdm~=4.65.0
 tiktoken~=0.4.0
 tree-sitter
-langchain==0.0.217
+langchain
 numpy==1.25.0
 aiohttp~=3.8.4
 scikit-learn~=1.2.2

@@ -65,9 +65,13 @@ REPOS = [
     # TypeScript (.js, .ts, .tsx, .json)
     ('MI_AI_Revised', 'https://github.com/TheGameVIX/MI-AI_Revised/archive/refs/heads/main.zip'),
 
-    # TypeScript (.js, .ts, .tsx, .json)
+    # Swift (.swift, .plist)
+    ('Swift-Tutorial', 'https://github.com/jquave/Swift-Tutorial/archive/refs/heads/master.zip'),
+    
+    # C# (.js, .ts, .tsx, .json)
+    # Huge repository
     ('SE', 'https://ferenczi.eu/download/hf3s90fm7xotvgi74/se-1.202.066.zip'),
-][:1]
+][-2:-1]
 
 
 def normalize_fragments(fragments: List[Fragment]) -> None:
@@ -182,6 +186,12 @@ class TestRepos(BaseBackendTest):
             self.verify(f'search-ProjectManagerView.tsx', actual)
             actual = await backend.summarize(path='/src/pages/index.tsx', token_limit=999999999)
             self.verify(f'summary-index.tsx', actual)
+
+        if zip_name == 'Swift-Tutorial':
+            actual = await backend.search(name='SearchResultsViewController')
+            self.verify(f'search-SearchResultsViewController', actual)
+            actual = await backend.summarize(path='/MusicPlayer/SearchResultsViewController.swift', token_limit=999999999)
+            self.verify(f'summary-SearchResultsViewController.swift', actual)
 
         if zip_name == 'SE':
             actual = await backend.search(tail='MyCubeGrid.cs')

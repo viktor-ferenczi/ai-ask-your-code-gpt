@@ -1,0 +1,10 @@
+Summary of path: /
+File extensions: .pbxproj .swift
+
+/.gitignore:
+
+
+Relevant subdirectories:
+  MusicPlayer: 100%
+  MusicPlayerTests: 14%
+  MusicPlayer.xcodeproj: 14%

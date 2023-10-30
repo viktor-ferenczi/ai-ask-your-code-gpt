@@ -36,7 +36,8 @@ class TreeSitterParser(BaseParser):
 
         debug_file = None
         if self.debug:
-            debug_path = os.path.join(C.DATA_DIR, 'debug', path.lstrip('/'))
+            debug_path = os.path.join(C.DATA_DIR, 'debug', path.lstrip('/') + '.log')
+            print(f'Tree-Sitter parser debug log: {debug_path}')
             debug_dir = os.path.dirname(debug_path)
             os.makedirs(debug_dir, exist_ok=True)
             debug_file = open(debug_path, 'wt', encoding='utf-8')

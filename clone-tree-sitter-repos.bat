@@ -27,7 +27,7 @@ git clone https://github.com/tree-sitter/tree-sitter-ql.git
 git clone https://github.com/tree-sitter/tree-sitter-tsq.git
 git clone https://github.com/tree-sitter/tree-sitter-fluent.git
 git clone https://github.com/tree-sitter/tree-sitter-toml.git
-git clone https://github.com/tree-sitter/tree-sitter-swift.git
+git clone https://github.com/alex-pinkus/tree-sitter-swift.git
 git clone https://github.com/tree-sitter/tree-sitter-agda.git
 
 rename tree-sitter-c-sharp tree-sitter-c_sharp
