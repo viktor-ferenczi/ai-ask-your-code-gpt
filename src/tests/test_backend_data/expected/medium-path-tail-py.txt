@@ -1,13 +1,13 @@
 Summary of file(s): /lib/dblayer*.py
 File extensions: .py
 
-/lib/dblayer/__init__.py:
-
-
 /lib/dblayer/constants.py:
   Classes: NA
   Methods: __repr__
   Variables and usages: CURSOR_ARRAYSIZE DATABASE_ID_RANGE DEBUG ENCODING GENERATOR_TEMPLATE_DIRECTORY_PATH INNER_JOIN JOIN_TYPES LEFT_JOIN LOG_SQL_ANALYSIS LOG_SQL_RESULT_ROWS LOG_SQL_STATEMENTS MAX_INSERT_RETRY_COUNT PROFILE_QUERIES dirname environ join path
+
+
+/lib/dblayer/__init__.py:
 
 
 /lib/dblayer/util.py:

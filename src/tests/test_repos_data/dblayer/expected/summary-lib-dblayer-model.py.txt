@@ -1,9 +1,6 @@
 Summary of file(s): /lib/dblayer/model*.py
 File extensions: .py
 
-/lib/dblayer/model/__init__.py:
-
-
 /lib/dblayer/model/aggregate.py:
   Classes: Avg BaseAggregate Count Max Min Sum
   Methods: __init__
@@ -38,6 +35,9 @@ File extensions: .py
   Classes: BaseIndex FullTextSearchIndex Index
   Methods: __init__ __repr__ __str__ clone get_implicit_definition_list_for_table_class sort_key
   Variables and usages: column columns dblayer get_next_definition_serial getattr implicit join name rsplit staticmethod table table_class update util
+
+
+/lib/dblayer/model/__init__.py:
 
 
 /lib/dblayer/model/procedure.py:

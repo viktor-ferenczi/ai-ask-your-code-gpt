@@ -17,14 +17,6 @@ File extensions: .md
 ## Code
 
 
-/README.md:
-# Test project
-## Rationale
-### Doc types and languages
-### Some long section
-## Summary
-
-
 /README2.md:
 # C++ Programming
 ## Contents
@@ -33,5 +25,13 @@ File extensions: .md
 ## Learning Resources
 ## Problem Solving
 ## Projects Ideas
+
+
+/README.md:
+# Test project
+## Rationale
+### Doc types and languages
+### Some long section
+## Summary
 
 

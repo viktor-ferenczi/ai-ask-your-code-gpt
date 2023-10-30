@@ -14797,58 +14797,15 @@
           body=''),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
           id=735,
-          lineno=25,
-          tokens=13,
-          depth=2,
-          parent_id=None,
-          category='class',
-          summary=False,
-          name='{{table.__class__.__name__}}Record(record.Record)',
-          body='class {{table.__class__.__name__}}Record(record.Record):'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=736,
-          lineno=106,
-          tokens=13,
-          depth=2,
-          parent_id=None,
-          category='class',
-          summary=False,
-          name='{{abstraction_class_name}}(database.DatabaseAbstraction)',
-          body='class '
-               '{{abstraction_class_name}}(database.DatabaseAbstraction):'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=737,
-          lineno=13,
-          tokens=27,
-          depth=2,
-          parent_id=None,
-          category='dependency',
-          summary=False,
-          name='',
-          body='import timeimport dblayerfrom dblayer import constants, '
-               'utilfrom dblayer import constants, utilfrom '
-               '{{backend.__name__}} import'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=738,
-          lineno=116,
-          tokens=15,
-          depth=2,
-          parent_id=None,
-          category='dependency',
-          summary=False,
-          name='',
-          body='importfrom {{backend.__name__}}.clausesimport Clausesfrom'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=739,
           lineno=1,
-          tokens=89,
-          depth=3,
+          tokens=182,
+          depth=0,
           parent_id=None,
           category='documentation',
           summary=False,
           name='',
-          body=' {{abstraction_class_name}} - generated database abstraction '
-               'layer\n'
+          body='""" {{abstraction_class_name}} - generated database '
+               'abstraction layer\n'
                '\n'
                'Database model: {{database.__class__.__name__}}\n'
                'Backend server: {{backend.__name__}}\n'
@@ -14859,18 +14816,35 @@
                '      All your changes will be lost next time this code is '
                'generated!\n'
                '      Please add your code in a subclass.\n'
-               '\n'),
+               '\n'
+               '"""\n'
+               '\n'
+               'import time\n'
+               '\n'
+               'import dblayer\n'
+               'from dblayer import constants, util\n'
+               'from {{backend.__name__}} import database, record\n'
+               '\n'
+               'NA = constants.NA\n'
+               '\n'
+               '### Record classes\n'
+               '\n'
+               '%for table in database._table_list:\n'
+               '%accessible_column_list = [column for column in '
+               'table._column_list if column.accessible]\n'
+               'class {{table.__class__.__name__}}Record(record.Record):\n'
+               '    """ {{table.__class__.__name__}} record\n'
+               '    '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=740,
-          lineno=26,
-          tokens=132,
-          depth=3,
+          id=736,
+          lineno=27,
+          tokens=242,
+          depth=1,
           parent_id=None,
           category='documentation',
           summary=False,
           name='',
-          body=' {{table.__class__.__name__}} record\n'
-               '    \n'
+          body='\n'
                '    %for column in accessible_column_list:\n'
                '    %if column.doc:\n'
                '    * {{column.name}}: {{column.doc}}\n'
@@ -14888,18 +14862,49 @@
                '      %end\n'
                '    \n'
                '    %end\n'
-               '    ### Runtime model information# Name of the corresponding '
-               'database table storing the actual records# Column information'),
+               '    """\n'
+               '    \n'
+               '    ### Runtime model information\n'
+               '    \n'
+               '    # Name of the corresponding database table storing the '
+               'actual records\n'
+               '    _table_name = {{repr(table._name)}}\n'
+               '    \n'
+               '    # Column information\n'
+               '    _column_name_list = {{tuple(column.name for column in '
+               'accessible_column_list)}}\n'
+               '    _quoted_column_name_list = '
+               '{{tuple(format.quote_name(column.name) for column in '
+               'accessible_column_list)}}\n'
+               '    _nullable_column_name_set = set({{tuple(column.name for '
+               'column in accessible_column_list)}})\n'
+               '    _column_default_map = {{dict((column.name, column.default) '
+               'for column in accessible_column_list if column.default is not '
+               'None and not column.has_custom_default)}}\n'
+               '    '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=741,
-          lineno=67,
-          tokens=117,
-          depth=3,
+          id=737,
+          lineno=57,
+          tokens=215,
+          depth=1,
           parent_id=None,
           category='documentation',
           summary=False,
           name='',
-          body=' Creates {{table.__class__.__name__}} record in memory\n'
+          body='\n'
+               '    ### Optimization\n'
+               '    \n'
+               '    __slots__ = _column_name_list\n'
+               '    \n'
+               '    ### Implementation\n'
+               '    \n'
+               '    def __init__(\n'
+               '        self,\n'
+               "        {{',\\n        '.join('%s=%r' % (column.name, (None if "
+               'column.has_custom_default else column.default)) for column in '
+               'accessible_column_list)}}):\n'
+               '        """ Creates {{table.__class__.__name__}} record in '
+               'memory\n'
                '        \n'
                '        %for column in accessible_column_list:\n'
                '        %if column.doc:\n'
@@ -14918,562 +14923,124 @@
                '          %end\n'
                '        \n'
                '        %end\n'
-               '        '),
+               '        """\n'
+               "        {{'\\n        '.join('self.%s = %s' % (column.name, "
+               'column.name) for column in accessible_column_list)}}\n'),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=742,
-          lineno=91,
-          tokens=20,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Returns a tuple with the field values of this '
-               '{{table.__class__.__name__}} record\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=743,
-          lineno=98,
-          tokens=23,
-          depth=6,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Returns a dictionary with the field values of this '
-               '{{table.__class__.__name__}} record\n'
-               '        ### Database abstraction'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=744,
-          lineno=107,
-          tokens=64,
-          depth=3,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Database abstraction layer\n'
-               '    \n'
-               '    Database model: {{database.__class__.__name__}}\n'
-               '    Backend server: {{backend.__name__}}\n'
-               "    Generated   on: {{now.isoformat(' ').rsplit('.', 1)[0]}}\n"
-               '    \n'
-               '    # Database backend module, required by the methods in the '
-               'DatabaseAbstraction base class'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=745,
-          lineno=126,
-          tokens=70,
+          id=738,
+          lineno=88,
+          tokens=231,
           depth=1,
           parent_id=None,
           category='documentation',
           summary=False,
           name='',
-          body='# SQL statement for the savepoint set before each indentity '
-               'insert statementbefore_identity_insert# SQL statement to '
-               'release a savepoint after a successful identity '
-               'insertbefore_identity_insert# SQL statement for rolling back '
-               'to the savepoint after a failing insert '
-               'statementbefore_identity_insert### Creating in-memory records '
-               '- override them to provide custom record classes### Selecting '
-               'from the database'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=746,
-          lineno=159,
-          tokens=95,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Retrieves a {{table.__class__.__name__}} record or None if '
-               'not found\n'
-               '        The {{table.__class__.__name__}} table does not have a '
-               'primary key, so no way to find a record by primary key '
-               'value!Cannot pass a where condition while searching for a '
-               'record by its primary key value (id)!Cannot pass '
-               'parameter_tuple while searching for a record by its primary '
-               'key value (id)!{{format.quote_name(table._primary_key.name)}} '
-               '= %s'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=747,
-          lineno=205,
-          tokens=14,
-          depth=3,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Retrieves list of {{table.__class__.__name__}} records\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=748,
-          lineno=229,
-          tokens=14,
-          depth=3,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Iterates on {{table.__class__.__name__}} records\n        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=749,
-          lineno=255,
-          tokens=15,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Counts {{table.__class__.__name__}} records in the database\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=750,
-          lineno=303,
-          tokens=28,
-          depth=3,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Finds {{table.__class__.__name__}} record by field values, '
-               'returns None if not found\n'
-               '        Query execution time: %dms'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=751,
-          lineno=355,
-          tokens=22,
-          depth=3,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Finds {{table.__class__.__name__}} records by field values\n'
-               '        Query execution time: %dms'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=752,
-          lineno=407,
-          tokens=27,
-          depth=7,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Finds {{table.__class__.__name__}} records by field values '
-               'and iterates on them\n'
-               '        Query execution time: %dms'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=753,
-          lineno=460,
-          tokens=48,
-          depth=3,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Counds {{table.__class__.__name__}} records by field values\n'
-               '\n'
-               '        The record ordering is ignored, but can be passed to '
-               'provide\n'
-               '        compatible method signature with the actual find '
-               'methods.\n'
-               '        \n'
-               '        Query execution time: %dms'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=754,
-          lineno=562,
-          tokens=25,
-          depth=7,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Executes the {{query.__class__.__name__}} query and returns '
-               'the resulting records\n'
-               '        Query execution time: %dms'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=755,
-          lineno=615,
-          tokens=27,
-          depth=7,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Executes the {{query.__class__.__name__}} query and iterates '
-               'on the resulting records\n'
-               '        Query execution time: %dms'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=756,
-          lineno=669,
-          tokens=56,
-          depth=7,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Executes the {{query.__class__.__name__}} query and counts '
-               'the resulting records\n'
-               '\n'
-               '        The record ordering is ignored, but can be passed to '
-               'provide\n'
-               '        compatible method signature with the actual query '
-               'methods.\n'
-               '        \n'
-               '        Query execution time: %dms### Inserting into the '
-               'database'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=757,
-          lineno=719,
-          tokens=22,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Inserts single {{table.__class__.__name__}} record into the '
-               '{{table._name}} database table\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=758,
-          lineno=724,
-          tokens=27,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Inserts multiple {{table.__class__.__name__}} records into '
-               'the {{table._name}} database table\n'
-               '        ### Updating into the database'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=759,
-          lineno=739,
-          tokens=22,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Updates single {{table.__class__.__name__}} record into the '
-               '{{table._name}} database table\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=760,
-          lineno=744,
-          tokens=27,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Updates multiple {{table.__class__.__name__}} records into '
-               'the {{table._name}} database table\n'
-               '        ### Deleting from the database'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=761,
-          lineno=759,
-          tokens=22,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Deletes single {{table.__class__.__name__}} record from the '
-               '{{table._name}} database table\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=762,
-          lineno=764,
-          tokens=22,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Deletes multiple {{table.__class__.__name__}} records from '
-               'the {{table._name}} database table\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=763,
-          lineno=769,
-          tokens=14,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Truncates table {{table._name}} in the database\n        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=764,
-          lineno=779,
-          tokens=49,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Truncates all the tables in the database\n'
-               '        \n'
-               "        {{'\\n        '.join(table._name for table in "
-               'reversed(database._table_list) if table._creatable and '
-               'table._primary_key)}}\n'
-               '        \n'
-               '        ### Creating and dropping stored procedures'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=765,
-          lineno=796,
-          tokens=16,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates stored procedure {{table.__class__.__name__}} in the '
-               'database\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=766,
-          lineno=805,
-          tokens=26,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops stored procedure {{table.__class__.__name__}} from the '
-               'database\n'
-               '        ### Creating and dropping all the stored procedures at '
-               'once'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=767,
-          lineno=817,
-          tokens=30,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates all the stored procedures into the database\n'
-               '        \n'
-               "        {{'\\n        '.join(procedure.name for procedure in "
-               'database._procedure_list)}}\n'
-               '        \n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=768,
-          lineno=829,
-          tokens=35,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops all the stored procedures from the database\n'
-               '        \n'
-               "        {{'\\n        '.join(procedure.name for procedure in "
-               'database._procedure_list)}}\n'
-               '        \n'
-               '        ### Creating and dropping triggers'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=769,
-          lineno=847,
-          tokens=20,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates trigger {{table.__class__.__name__}}.{{trigger.name}} '
-               'in the database\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=770,
-          lineno=856,
-          tokens=32,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops trigger {{table.__class__.__name__}}.{{trigger.name}} '
-               'from the database\n'
-               '        ### Creating and dropping the triggers of all the '
-               'tables at once'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=771,
-          lineno=871,
-          tokens=42,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates the triggers for all the tables in the database\n'
-               '        \n'
-               "        {{'\\n        '.join(table._name for table in "
-               'database._table_list if table._creatable and '
-               'table._trigger_list)}}\n'
-               '        \n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=772,
-          lineno=887,
-          tokens=49,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops the triggers for all the tables from the database\n'
-               '        \n'
-               "        {{'\\n        '.join(table._name for table in "
-               'reversed(database._table_list) if table._creatable and '
-               'table._trigger_list)}}\n'
-               '        \n'
-               '        ### Creating and dropping tables'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=773,
-          lineno=907,
-          tokens=15,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates table {{table.__class__.__name__}} in the database\n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=774,
-          lineno=916,
-          tokens=27,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops table {{table.__class__.__name__}} from the database\n'
-               '        ### Creating, dropping and truncating all the tables '
-               'at once'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=775,
-          lineno=929,
-          tokens=36,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates all the tables and views into the database\n'
-               '        \n'
-               "        {{'\\n        '.join(table._name for table in "
-               'database._table_list if table._creatable)}}\n'
-               '        \n'
-               '        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=776,
-          lineno=943,
-          tokens=41,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops all the tables and views from the database\n'
-               '        \n'
-               "        {{'\\n        '.join(table._name for table in "
-               'reversed(database._table_list) if table._creatable)}}\n'
-               '        \n'
-               '        ### Creating languages'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=777,
-          lineno=959,
-          tokens=19,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates all the procedural languages used in the procedures '
-               'defined\n'
-               '        ### Creating and dropping the database structure'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=778,
-          lineno=971,
-          tokens=7,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Creates the whole database structure\n        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=779,
-          lineno=982,
-          tokens=7,
-          depth=5,
-          parent_id=None,
-          category='documentation',
-          summary=False,
-          name='',
-          body=' Drops the whole database structure\n        '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=780,
-          lineno=64,
-          tokens=44,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='__init__',
-          body='def __init__(\n'
-               '        self,\n'
-               "        {{',\\n        '.join('%s=%r' % (column.name, (None if "
-               'column.has_custom_default else column.default)) for column in '
-               'accessible_column_list)}}):'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=781,
-          lineno=90,
-          tokens=54,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='tuple',
-          body='def tuple(self):\n'
+          body='\n'
+               '    @property\n'
+               '    def tuple(self):\n'
                '        """ Returns a tuple with the field values of this '
                '{{table.__class__.__name__}} record\n'
                '        """\n'
                '        return (\n'
                "            {{',\\n            '.join('self.%s' % column.name "
-               'for column in accessible_column_list)}})'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=782,
-          lineno=97,
-          tokens=61,
-          depth=3,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='dict',
-          body='def dict(self):\n'
+               'for column in accessible_column_list)}})\n'
+               '    \n'
+               '    @property\n'
+               '    def dict(self):\n'
                '        """ Returns a dictionary with the field values of this '
                '{{table.__class__.__name__}} record\n'
                '        """\n'
                '        return dict(\n'
                "            {{',\\n            '.join('%s=self.%s' % "
                '(column.name, column.name) for column in '
-               'accessible_column_list)}})'),
+               'accessible_column_list)}})\n'
+               '\n'
+               '%end\n'
+               '### Database abstraction\n'
+               '\n'
+               'class '
+               '{{abstraction_class_name}}(database.DatabaseAbstraction):\n'
+               '    """ Database abstraction layer\n'
+               '    \n'
+               '    Database model: {{database.__class__.__name__}}\n'
+               '    Backend server: {{backend.__name__}}\n'
+               "    Generated   on: {{now.isoformat(' ').rsplit('.', 1)[0]}}\n"
+               '    \n'
+               '    """\n'
+               '\n'
+               '    # Database backend module, required by the methods in the '
+               'DatabaseAbstraction base class\n'
+               '    import {{backend.__name__}}.format as _format\n'
+               '    '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=783,
-          lineno=152,
-          tokens=204,
-          depth=2,
+          id=739,
+          lineno=117,
+          tokens=240,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='get_{{table.',
-          body='def get_{{table._name}}(\n'
+          name='',
+          body='\n'
+               '    # Classes\n'
+               '    from {{backend.__name__}}.clauses import Clauses\n'
+               '    from {{backend.__name__}}.error import (\n'
+               '        Warning, Error, InterfaceError, DatabaseError, '
+               'DataError, OperationalError, \n'
+               '        IntegrityError, InternalError, ProgrammingError, '
+               'NotSupportedError)\n'
+               '    \n'
+               '    # Constants\n'
+               '    \n'
+               '    # SQL statement for the savepoint set before each '
+               'indentity insert statement\n'
+               '    _SQL_IDENTITY_INSERT_SAVEPOINT = '
+               "{{repr(format.format_savepoint('before_identity_insert'))}}\n"
+               '    \n'
+               '    # SQL statement to release a savepoint after a successful '
+               'identity insert\n'
+               '    _SQL_IDENTITY_INSERT_RELEASE_SAVEPOINT = '
+               "{{repr(format.format_release_savepoint('before_identity_insert'))}}\n"
+               '    \n'
+               '    # SQL statement for rolling back to the savepoint after a '
+               'failing insert statement\n'
+               '    _SQL_IDENTITY_INSERT_ROLLBACK_SAVEPOINT = '
+               "{{repr(format.format_rollback_to_savepoint('before_identity_insert'))}}\n"
+               '    \n'
+               '    ### Creating in-memory records - override them to provide '
+               'custom record classes\n'
+               '    \n'
+               '    %for table in database._table_list:\n'
+               '    new_{{table._name}} = {{table.__class__.__name__}}Record\n'
+               '    %end\n'
+               '    '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=740,
+          lineno=140,
+          tokens=245,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
+               '    ### Selecting from the database\n'
+               '    \n'
+               '    %for table in database._table_list:\n'
+               '    %table_name = table._name\n'
+               "    %table_constant_prefix = '_%s' % table_name.upper()\n"
+               '    %accessible_column_list = tuple(column for column in '
+               'table._column_list if column.accessible)\n'
+               '    %table_column_name_list = tuple(column.name for column in '
+               'accessible_column_list)\n'
+               '    %table_quoted_column_list = '
+               'list(map(format.format_expression, accessible_column_list))\n'
+               '    %table_order_by_map = '
+               'format.format_table_order_by_map(table)\n'
+               '    %table_condition_map = '
+               'format.format_table_condition_map(table)\n'
+               '    %if table._creatable:\n'
+               '    def get_{{table._name}}(\n'
                '        self,\n'
                '        id=None,\n'
                '        where=None,\n'
@@ -15489,7 +15056,17 @@
                'table does not have a primary key, so no way to find a record '
                "by primary key value!')\n"
                '            %else:\n'
-               '            %if constants.DEBUG:\n'
+               '            '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=741,
+          lineno=165,
+          tokens=117,
+          depth=2,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='%if constants.DEBUG:\n'
                '            if where is not None:\n'
                "                raise ValueError('Cannot pass a where "
                'condition while searching for a record by its primary key '
@@ -15501,17 +15078,44 @@
                '            parameter_tuple = (id, )\n'
                '            where = '
                "'{{format.quote_name(table._primary_key.name)}} = %s'\n"
-               '            %end'),
+               '            %end\n'
+               '        else:\n'
+               '            if not isinstance(where, str):\n'
+               '                where = self._format.format_expression(where)\n'
+               '                '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=784,
-          lineno=198,
-          tokens=37,
-          depth=2,
+          id=742,
+          lineno=177,
+          tokens=220,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='get_',
+          name='',
           body='\n'
+               '        formatted_order_by = '
+               'self._format.format_order_by(self.{{table_constant_prefix}}_ORDER_BY_MAP, '
+               'order_by)\n'
+               '        \n'
+               '        clauses = self.Clauses(\n'
+               '            table_list=({{repr(table._table_name)}}, ),\n'
+               '            '
+               'field_list=self.new_{{table._name}}._quoted_column_name_list,\n'
+               '            where=where,\n'
+               '            order_by=formatted_order_by,\n'
+               '            limit=1,\n'
+               '            offset=offset)\n'
+               '            \n'
+               '        record = self.get_record(\n'
+               '            self.new_{{table._name}},\n'
+               '            clauses,\n'
+               '            parameter_tuple)\n'
+               '            \n'
+               '        if 0:\n'
+               '            assert isinstance(record, '
+               '{{table.__class__.__name__}}Record)\n'
+               '            \n'
+               '        return record\n'
                '        \n'
                '    def get_{{table._name}}_list(\n'
                '        self,\n'
@@ -15519,17 +15123,37 @@
                '        parameter_tuple=(),\n'
                '        order_by=(),\n'
                '        limit=None,\n'
-               '        offset=None):'),
+               '        offset=None):\n'
+               '        """ Retrieves list of {{table.__class__.__name__}} '
+               'records\n'
+               '        """\n'
+               '        formatted_order_by = '
+               'self._format.format_order_by(self.{{table_constant_prefix}}_ORDER_BY_MAP, '
+               'order_by)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=785,
-          lineno=222,
-          tokens=37,
-          depth=2,
+          id=743,
+          lineno=208,
+          tokens=187,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='get_',
+          name='',
           body='\n'
+               '        clauses = self.Clauses(\n'
+               '            table_list=({{repr(table._table_name)}}, ),\n'
+               '            '
+               'field_list=self.new_{{table._name}}._quoted_column_name_list,\n'
+               '            where=where,\n'
+               '            order_by=formatted_order_by,\n'
+               '            limit=limit,\n'
+               '            offset=offset)\n'
+               '            \n'
+               '        return self.get_record_list(\n'
+               '            self.new_{{table._name}},\n'
+               '            clauses,\n'
+               '            parameter_tuple)\n'
                '    \n'
                '    def get_{{table._name}}_iter(\n'
                '        self,\n'
@@ -15537,17 +15161,43 @@
                '        parameter_tuple=(),\n'
                '        order_by=(),\n'
                '        limit=None,\n'
-               '        offset=None):'),
+               '        offset=None):\n'
+               '        """ Iterates on {{table.__class__.__name__}} records\n'
+               '        """\n'
+               '        if not isinstance(where, str):\n'
+               '            where = self._format.format_expression(where)\n'
+               '        \n'
+               '        formatted_order_by = '
+               'self._format.format_order_by(self.{{table_constant_prefix}}_ORDER_BY_MAP, '
+               'order_by)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=786,
-          lineno=251,
-          tokens=128,
-          depth=2,
+          id=744,
+          lineno=235,
+          tokens=224,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='get_{{table._name}}',
-          body='def get_{{table._name}}_count(\n'
+          name='',
+          body='\n'
+               '        clauses = self.Clauses(\n'
+               '            table_list=({{repr(table._table_name)}}, ),\n'
+               '            '
+               'field_list=self.new_{{table._name}}._quoted_column_name_list,\n'
+               '            where=where,\n'
+               '            order_by=formatted_order_by,\n'
+               '            limit=limit,\n'
+               '            offset=offset)\n'
+               '            \n'
+               '        for record in self.get_record_iter(\n'
+               '                self.new_{{table._name}},\n'
+               '                clauses,\n'
+               '                parameter_tuple):\n'
+               '            \n'
+               '            yield record\n'
+               '            \n'
+               '    def get_{{table._name}}_count(\n'
                '        self,\n'
                "        where='',\n"
                '        parameter_tuple=()):\n'
@@ -15565,18 +15215,55 @@
                '        sql = self._format.format_select(clauses)\n'
                '        \n'
                '        with self.cursor() as cursor:\n'
-               '            return self.execute_and_fetch_one(cursor, sql)[0]'),
+               '            return self.execute_and_fetch_one(cursor, sql)[0]\n'
+               '            '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=787,
-          lineno=292,
-          tokens=62,
-          depth=2,
+          id=745,
+          lineno=269,
+          tokens=187,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='find_',
+          name='',
           body='\n'
-               '    \n'
+               '    {{table_constant_prefix}}_TABLE_LIST = [\n'
+               '        ({{repr(table._table_name)}}, {{repr(table_name)}})]\n'
+               '        \n'
+               '    {{table_constant_prefix}}_FIELD_LIST = [\n'
+               '        %for field_info in table_quoted_column_list:\n'
+               '        {{repr(field_info)}},\n'
+               '        %end\n'
+               '        ]\n'
+               '        \n'
+               '    {{table_constant_prefix}}_ORDER_BY_MAP = {\n'
+               '        %for name, sql_expression in '
+               'sorted(table_order_by_map.items()):\n'
+               '        {{repr(name)}}: {{repr(sql_expression)}},\n'
+               '        %end\n'
+               '        }\n'
+               '        \n'
+               '    {{table_constant_prefix}}_CONDITION_MAP = {\n'
+               '        %for argument_name, condition_info in '
+               'sorted(table_condition_map.items()):\n'
+               '        %suffix, formatting_function_name, value_expression = '
+               'condition_info\n'
+               '        {{repr(argument_name)}}: ({{repr(suffix)}}, '
+               '_format.{{formatting_function_name}}, '
+               '{{repr(value_expression)}}),\n'
+               '        %end\n'
+               '        }\n'
+               '    '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=746,
+          lineno=291,
+          tokens=210,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                '    def find_{{table_name}}(\n'
                '        self,\n'
                '        %if constants.DEBUG:\n'
@@ -15587,18 +15274,70 @@
                '        order_by=(),\n'
                '        offset=None,\n'
                '        where=None,\n'
-               '        **runtime_conditions):'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=788,
-          lineno=343,
-          tokens=68,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='find_',
-          body='\n'
+               '        **runtime_conditions):\n'
+               '        """ Finds {{table.__class__.__name__}} record by field '
+               'values, returns None if not found\n'
+               '        """\n'
+               '        %if constants.DEBUG:\n'
+               '        %for name in table_column_name_list:\n'
+               '        runtime_conditions[{{repr(name)}}] = {{name}}\n'
+               '        %end\n'
                '        \n'
+               '        %end\n'
+               '        sql, parameter_tuple = self._format.format_query(\n'
+               '            self.{{table_constant_prefix}}_TABLE_LIST,\n'
+               '            self.{{table_constant_prefix}}_FIELD_LIST,\n'
+               '            self.{{table_constant_prefix}}_CONDITION_MAP,\n'
+               '            {},\n'
+               '            [],\n'
+               '            self.{{table_constant_prefix}}_ORDER_BY_MAP,\n'
+               '            where,\n'
+               '            None,\n'
+               '            runtime_conditions,\n'
+               '            order_by,\n'
+               '            1,\n'
+               '            offset)\n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=747,
+          lineno=324,
+          tokens=143,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
+               '        with self.cursor() as cursor:\n'
+               '            %if constants.LOG_SQL_ANALYSIS:\n'
+               '            self.log_analysis(cursor, sql, parameter_tuple)\n'
+               '            %end\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            start_time = time.time()\n'
+               '            %end\n'
+               '            row = self.execute_and_fetch_one(cursor, sql, '
+               'parameter_tuple)\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            end_time = time.time()\n'
+               "            util.log('Query execution time: %dms', "
+               'int((end_time - start_time) * 1000 + 0.5))\n'
+               '            %end\n'
+               '            \n'
+               '        if row is None:\n'
+               '            return None\n'
+               '            \n'
+               '        return self.new_{{table_name}}(*row)\n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=748,
+          lineno=342,
+          tokens=209,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                '    def find_{{table_name}}_list(\n'
                '        self,\n'
                '        %if constants.DEBUG:\n'
@@ -15610,32 +15349,148 @@
                '        limit=None,\n'
                '        offset=None,\n'
                '        where=None,\n'
-               '        **runtime_conditions):'),
+               '        **runtime_conditions):\n'
+               '        """ Finds {{table.__class__.__name__}} records by '
+               'field values\n'
+               '        """\n'
+               '        %if constants.DEBUG:\n'
+               '        %for name in table_column_name_list:\n'
+               '        runtime_conditions[{{repr(name)}}] = {{name}}\n'
+               '        %end\n'
+               '        \n'
+               '        %end\n'
+               '        sql, parameter_tuple = self._format.format_query(\n'
+               '            self.{{table_constant_prefix}}_TABLE_LIST,\n'
+               '            self.{{table_constant_prefix}}_FIELD_LIST,\n'
+               '            self.{{table_constant_prefix}}_CONDITION_MAP,\n'
+               '            {},\n'
+               '            [],\n'
+               '            self.{{table_constant_prefix}}_ORDER_BY_MAP,\n'
+               '            where,\n'
+               '            None,\n'
+               '            runtime_conditions,\n'
+               '            order_by,\n'
+               '            limit,\n'
+               '            offset)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=789,
-          lineno=395,
-          tokens=15,
-          depth=7,
+          id=749,
+          lineno=376,
+          tokens=151,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='find_',
-          body='end\n'
+          name='',
+          body='\n'
+               '        record_class = self.new_{{table_name}}    \n'
+               '        with self.cursor() as cursor:\n'
+               '            %if constants.LOG_SQL_ANALYSIS:\n'
+               '            self.log_analysis(cursor, sql, parameter_tuple)\n'
+               '            %end\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            start_time = time.time()\n'
+               '            %end\n'
+               '            record_list = [\n'
+               '                record_class(*row) \n'
+               '                for row in self.execute_and_fetch_iter(cursor, '
+               'sql, parameter_tuple)]\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            end_time = time.time()\n'
+               "            util.log('Query execution time: %dms', "
+               'int((end_time - start_time) * 1000 + 0.5))\n'
+               '            %end\n'
                '            \n'
                '        return record_list\n'
-               '        \n'
-               '    def find_{{table_name}}'),
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=790,
-          lineno=448,
-          tokens=68,
-          depth=2,
+          id=750,
+          lineno=394,
+          tokens=214,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='find_',
+          name='',
           body='\n'
-               '            \n'
+               '    def find_{{table_name}}_iter(\n'
+               '        self,\n'
+               '        %if constants.DEBUG:\n'
+               '        %for name in table_column_name_list:\n'
+               '        {{name}}=NA,\n'
+               '        %end\n'
+               '        %end\n'
+               '        order_by=(),\n'
+               '        limit=None,\n'
+               '        offset=None,\n'
+               '        where=None,\n'
+               '        **runtime_conditions):\n'
+               '        """ Finds {{table.__class__.__name__}} records by '
+               'field values and iterates on them\n'
+               '        """\n'
+               '        %if constants.DEBUG:\n'
+               '        %for name in table_column_name_list:\n'
+               '        runtime_conditions[{{repr(name)}}] = {{name}}\n'
+               '        %end\n'
+               '        \n'
+               '        %end\n'
+               '        sql, parameter_tuple = self._format.format_query(\n'
+               '            self.{{table_constant_prefix}}_TABLE_LIST,\n'
+               '            self.{{table_constant_prefix}}_FIELD_LIST,\n'
+               '            self.{{table_constant_prefix}}_CONDITION_MAP,\n'
+               '            {},\n'
+               '            [],\n'
+               '            self.{{table_constant_prefix}}_ORDER_BY_MAP,\n'
+               '            where,\n'
+               '            None,\n'
+               '            runtime_conditions,\n'
+               '            order_by,\n'
+               '            limit,\n'
+               '            offset)\n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=751,
+          lineno=428,
+          tokens=175,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
+               '        record_class = self.new_{{table_name}}\n'
+               '        %if constants.LOG_SQL_ANALYSIS:\n'
+               '        with self.cursor() as cursor:\n'
+               '            self.log_analysis(cursor, sql, parameter_tuple)\n'
+               '        %else:\n'
+               '        with self.cursor(named=True) as cursor:\n'
+               '        %end\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            start_time = time.time()\n'
+               '            row_list = '
+               'list(self.execute_and_fetch_iter(cursor, sql, '
+               'parameter_tuple))\n'
+               '            end_time = time.time()\n'
+               "            util.log('Query execution time: %dms', "
+               'int((end_time - start_time) * 1000 + 0.5))\n'
+               '            for row in row_list:\n'
+               '                yield record_class(*row)\n'
+               '            %else:\n'
+               '            for row in self.execute_and_fetch_iter(cursor, '
+               'sql, parameter_tuple):\n'
+               '                yield record_class(*row)\n'
+               '            %end\n'
+               '            '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=752,
+          lineno=447,
+          tokens=216,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                '    def find_{{table_name}}_count(\n'
                '        self,\n'
                '        %if constants.DEBUG:\n'
@@ -15647,17 +15502,156 @@
                '        limit=None,\n'
                '        offset=None,\n'
                '        where=None,\n'
-               '        **runtime_conditions):'),
+               '        **runtime_conditions):\n'
+               '        """ Counds {{table.__class__.__name__}} records by '
+               'field values\n'
+               '\n'
+               '        The record ordering is ignored, but can be passed to '
+               'provide\n'
+               '        compatible method signature with the actual find '
+               'methods.\n'
+               '        \n'
+               '        """\n'
+               '        %if constants.DEBUG:\n'
+               '        %for name in table_column_name_list:\n'
+               '        runtime_conditions[{{repr(name)}}] = {{name}}\n'
+               '        %end\n'
+               '\n'
+               '        %end\n'
+               '        sql, parameter_tuple = self._format.format_query(\n'
+               '            self.{{table_constant_prefix}}_TABLE_LIST,\n'
+               "            ('COUNT(*)', ),\n"
+               '            self.{{table_constant_prefix}}_CONDITION_MAP,\n'
+               '            {},\n'
+               '            [],\n'
+               '            {},\n'
+               '            where,\n'
+               '            None,\n'
+               '            runtime_conditions,\n'
+               '            (),\n'
+               '            limit,\n'
+               '            offset)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=791,
-          lineno=549,
-          tokens=133,
-          depth=2,
+          id=753,
+          lineno=485,
+          tokens=127,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='query_{{query_name}}',
-          body='def query_{{query_name}}_list(\n'
+          name='',
+          body='\n'
+               '        with self.cursor() as cursor:\n'
+               '            %if constants.LOG_SQL_ANALYSIS:\n'
+               '            self.log_analysis(cursor, sql, parameter_tuple)\n'
+               '            %end\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            start_time = time.time()\n'
+               '            %end\n'
+               '            row = self.execute_and_fetch_one(cursor, sql, '
+               'parameter_tuple)\n'
+               '            %if constants.PROFILE_QUERIES:\n'
+               '            end_time = time.time()\n'
+               "            util.log('Query execution time: %dms', "
+               'int((end_time - start_time) * 1000 + 0.5))\n'
+               '            %end\n'
+               '            \n'
+               '        return row[0]\n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=754,
+          lineno=500,
+          tokens=242,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
+               '    %else:\n'
+               '    %query = table\n'
+               '    %query_name = query._name\n'
+               "    %query_constant_prefix = '_%s' % query_name.upper()\n"
+               '    %query_table_list = query.get_table_list()\n'
+               '    %query_field_list = list(map(format.format_result, '
+               'query._column_list))\n'
+               '    %query_group_by = list(map(format.format_expression, '
+               'query._group_by))\n'
+               '    %query_order_by_map = '
+               'format.format_query_order_by_map(query)\n'
+               '    %query_where_condition_map, query_having_condition_map = '
+               'format.format_query_condition_map(query)\n'
+               '    %condition_name_list = [column.name for column in '
+               'query._column_list + query._condition_list]\n'
+               '    {{query_constant_prefix}}_TABLE_LIST = [\n'
+               '        %for table_info in query_table_list:\n'
+               '        {{repr(table_info)}},\n'
+               '        %end\n'
+               '        ]\n'
+               '        \n'
+               '    {{query_constant_prefix}}_FIELD_LIST = [\n'
+               '        %for field_info in query_field_list:\n'
+               '        {{repr(field_info)}},\n'
+               '        %end\n'
+               '        ]\n'
+               '        \n'
+               '    {{query_constant_prefix}}_GROUP_BY = [\n'
+               '        %for field_info in query_group_by:\n'
+               '        {{repr(field_info)}},\n'
+               '        %end\n'
+               '        ]\n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=755,
+          lineno=528,
+          tokens=203,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
+               '    {{query_constant_prefix}}_ORDER_BY_MAP = {\n'
+               '        %for name, sql_expression in '
+               'sorted(query_order_by_map.items()):\n'
+               '        {{repr(name)}}: {{repr(sql_expression)}},\n'
+               '        %end\n'
+               '        }\n'
+               '        \n'
+               '    {{query_constant_prefix}}_WHERE_CONDITION_MAP = {\n'
+               '        %for argument_name, condition_info in '
+               'sorted(query_where_condition_map.items()):\n'
+               '        %suffix, formatting_function_name, value_expression = '
+               'condition_info\n'
+               '        {{repr(argument_name)}}: ({{repr(suffix)}}, '
+               '_format.{{formatting_function_name}}, '
+               '{{repr(value_expression)}}),\n'
+               '        %end\n'
+               '        }\n'
+               '        \n'
+               '    {{query_constant_prefix}}_HAVING_CONDITION_MAP = {\n'
+               '        %for argument_name, condition_info in '
+               'sorted(query_having_condition_map.items()):\n'
+               '        %suffix, formatting_function_name, value_expression = '
+               'condition_info\n'
+               '        {{repr(argument_name)}}: ({{repr(suffix)}}, '
+               '_format.{{formatting_function_name}}, '
+               '{{repr(value_expression)}}),\n'
+               '        %end\n'
+               '        }\n'
+               '    '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=756,
+          lineno=548,
+          tokens=243,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
+               '    def query_{{query_name}}_list(\n'
                '        self,\n'
                '        %if constants.DEBUG:\n'
                '        %for name in condition_name_list:\n'
@@ -15679,17 +15673,7 @@
                '        %end\n'
                '        \n'
                '        %end\n'
-               '      '),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=792,
-          lineno=570,
-          tokens=121,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='query_{{query_name}}',
-          body='  sql, parameter_tuple = self._format.format_query(\n'
+               '        sql, parameter_tuple = self._format.format_query(\n'
                '            self.{{query_constant_prefix}}_TABLE_LIST,\n'
                '            self.{{query_constant_prefix}}_FIELD_LIST,\n'
                '            '
@@ -15704,18 +15688,19 @@
                '            order_by,\n'
                '            limit,\n'
                '            offset)\n'
-               '        \n'
-               '        record_class = self.new_{{query_name}}    \n'),
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=793,
-          lineno=585,
-          tokens=136,
-          depth=2,
+          id=757,
+          lineno=583,
+          tokens=151,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='query_{{query_name}}',
-          body='        with self.cursor() as cursor:\n'
+          name='',
+          body='\n'
+               '        record_class = self.new_{{query_name}}    \n'
+               '        with self.cursor() as cursor:\n'
                '            %if constants.LOG_SQL_ANALYSIS:\n'
                '            self.log_analysis(cursor, sql, parameter_tuple)\n'
                '            %end\n'
@@ -15732,17 +15717,19 @@
                'int((end_time - start_time) * 1000 + 0.5))\n'
                '            %end\n'
                '            \n'
-               '        return record_list'),
+               '        return record_list\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=794,
-          lineno=602,
-          tokens=138,
-          depth=2,
+          id=758,
+          lineno=601,
+          tokens=245,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='query_{{query_name}}',
-          body='def query_{{query_name}}_iter(\n'
+          name='',
+          body='\n'
+               '    def query_{{query_name}}_iter(\n'
                '        self,\n'
                '        %if constants.DEBUG:\n'
                '        %for name in condition_name_list:\n'
@@ -15764,17 +15751,7 @@
                '        %end\n'
                '        \n'
                '        %end\n'
-               '        sql, parameter'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=795,
-          lineno=623,
-          tokens=148,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='query_{{query_name}}',
-          body='_tuple = self._format.format_query(\n'
+               '        sql, parameter_tuple = self._format.format_query(\n'
                '            self.{{query_constant_prefix}}_TABLE_LIST,\n'
                '            self.{{query_constant_prefix}}_FIELD_LIST,\n'
                '            '
@@ -15789,22 +15766,23 @@
                '            order_by,\n'
                '            limit,\n'
                '            offset)\n'
-               '        \n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=759,
+          lineno=636,
+          tokens=175,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                '        record_class = self.new_{{query_name}}\n'
                '        %if constants.LOG_SQL_ANALYSIS:\n'
                '        with self.cursor() as cursor:\n'
                '            self.log_analysis(cursor, sql, parameter_tuple)\n'
-               '        %else:\n'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=796,
-          lineno=642,
-          tokens=129,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='query_{{query_name}}',
-          body='        with self.cursor(named=True) as cursor:\n'
+               '        %else:\n'
+               '        with self.cursor(named=True) as cursor:\n'
                '        %end\n'
                '            %if constants.PROFILE_QUERIES:\n'
                '            start_time = time.time()\n'
@@ -15820,17 +15798,19 @@
                '            for row in self.execute_and_fetch_iter(cursor, '
                'sql, parameter_tuple):\n'
                '                yield record_class(*row)\n'
-               '            %end'),
+               '            %end\n'
+               '            '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=797,
-          lineno=656,
-          tokens=240,
-          depth=2,
+          id=760,
+          lineno=655,
+          tokens=243,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='query_{{query_name}}',
-          body='def query_{{query_name}}_count(\n'
+          name='',
+          body='\n'
+               '    def query_{{query_name}}_count(\n'
                '        self,\n'
                '        %if constants.DEBUG:\n'
                '        %for name in condition_name_list:\n'
@@ -15872,17 +15852,18 @@
                '            runtime_conditions,\n'
                '            (),\n'
                '            limit,\n'
-               '            offset)\n'),
+               '            offset)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=798,
+          id=761,
           lineno=694,
-          tokens=126,
-          depth=2,
+          tokens=245,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='query_{{query_name}}',
-          body='        \n'
+          name='',
+          body='\n'
                '        with self.cursor() as cursor:\n'
                '            %if constants.LOG_SQL_ANALYSIS:\n'
                '            self.log_analysis(cursor, sql, parameter_tuple)\n'
@@ -15898,124 +15879,122 @@
                'int((end_time - start_time) * 1000 + 0.5))\n'
                '            %end\n'
                '            \n'
-               '        return row[0]'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=799,
-          lineno=718,
-          tokens=68,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='add_{{table.',
-          body='def add_{{table._name}}(self, record, generate_id=True):\n'
+               '        return row[0]\n'
+               '        \n'
+               '    %end\n'
+               '    %end\n'
+               '    %if options.insert:\n'
+               '    ### Inserting into the database\n'
+               '\n'
+               '    %for table in database._table_list:\n'
+               '    %if table._writable:\n'
+               '    %if table._primary_key:\n'
+               '    def add_{{table._name}}(self, record, generate_id=True):\n'
                '        """ Inserts single {{table.__class__.__name__}} record '
                'into the {{table._name}} database table\n'
                '        """\n'
                '        self.add_record(self.new_{{table._name}}, record, '
-               'generate_id, {{repr(table._primary_key.serial)}})'),
+               'generate_id, {{repr(table._primary_key.serial)}})\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=800,
-          lineno=723,
-          tokens=72,
-          depth=2,
+          id=762,
+          lineno=722,
+          tokens=242,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='add_{{table._name}}',
-          body='def add_{{table._name}}_list(self, record_list, '
+          name='',
+          body='\n'
+               '    def add_{{table._name}}_list(self, record_list, '
                'generate_id=True):\n'
                '        """ Inserts multiple {{table.__class__.__name__}} '
                'records into the {{table._name}} database table\n'
                '        """\n'
                '        self.add_record_list(self.new_{{table._name}}, '
-               'record_list, generate_id, {{repr(table._primary_key.serial)}})'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=801,
-          lineno=738,
-          tokens=52,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='update_',
-          body='def update_{{table._name}}(self, record):\n'
+               'record_list, generate_id, '
+               '{{repr(table._primary_key.serial)}})\n'
+               '        \n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    %if options.update:\n'
+               '    ### Updating into the database\n'
+               '\n'
+               '    %for table in database._table_list:\n'
+               '    %if table._writable:\n'
+               '    %if table._primary_key:\n'
+               '    def update_{{table._name}}(self, record):\n'
                '        """ Updates single {{table.__class__.__name__}} record '
                'into the {{table._name}} database table\n'
                '        """\n'
-               '        self.update_record(self.new_{{table._name}}, record)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=802,
-          lineno=743,
-          tokens=56,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='update_{{table._name}}',
-          body='def update_{{table._name}}_list(self, record_list):\n'
+               '        self.update_record(self.new_{{table._name}}, record)\n'
+               '        \n'
+               '    def update_{{table._name}}_list(self, record_list):\n'
                '        """ Updates multiple {{table.__class__.__name__}} '
                'records into the {{table._name}} database table\n'
                '        """\n'
                '        self.update_record_list(self.new_{{table._name}}, '
-               'record_list)'),
+               'record_list)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=803,
-          lineno=758,
-          tokens=56,
-          depth=2,
+          id=763,
+          lineno=747,
+          tokens=240,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='delete_',
-          body='def delete_{{table._name}}(self, record_or_id):\n'
+          name='',
+          body='\n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    %if options.delete:\n'
+               '    ### Deleting from the database\n'
+               '\n'
+               '    %for table in database._table_list:\n'
+               '    %if table._writable:\n'
+               '    %if table._primary_key:\n'
+               '    def delete_{{table._name}}(self, record_or_id):\n'
                '        """ Deletes single {{table.__class__.__name__}} record '
                'from the {{table._name}} database table\n'
                '        """\n'
                '        self.delete_record(self.new_{{table._name}}, '
-               'record_or_id)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=804,
-          lineno=763,
-          tokens=60,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='delete_{{table._name}}',
-          body='def delete_{{table._name}}_list(self, record_or_id_list):\n'
+               'record_or_id)\n'
+               '        \n'
+               '    def delete_{{table._name}}_list(self, record_or_id_list):\n'
                '        """ Deletes multiple {{table.__class__.__name__}} '
                'records from the {{table._name}} database table\n'
                '        """\n'
                '        self.delete_record_list(self.new_{{table._name}}, '
-               'record_or_id_list)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=805,
-          lineno=768,
-          tokens=62,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='truncate_',
-          body='def truncate_{{table._name}}(self):\n'
+               'record_or_id_list)\n'
+               '        \n'
+               '    def truncate_{{table._name}}(self):\n'
                '        """ Truncates table {{table._name}} in the database\n'
                '        """\n'
                '        statement_list = '
                '{{repr(format.format_truncate_table(table, database))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list)'),
+               'statement_list)\n'
+               '        '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=806,
-          lineno=778,
-          tokens=91,
-          depth=2,
+          id=764,
+          lineno=774,
+          tokens=216,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='truncate_all_tables',
-          body='def truncate_all_tables(self):\n'
+          name='',
+          body='\n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    def truncate_all_tables(self):\n'
                '        """ Truncates all the tables in the database\n'
                '        \n'
                "        {{'\\n        '.join(table._name for table in "
@@ -16029,17 +16008,15 @@
                '        \n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=807,
-          lineno=795,
-          tokens=71,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='create_procedure_',
-          body='def create_procedure_{{procedure.name}}(self, '
+               'statement_list)\n'
+               '            \n'
+               '    %end\n'
+               '    %if options.create or options.drop:\n'
+               '    ### Creating and dropping stored procedures\n'
+               '    \n'
+               '    %for procedure in database._procedure_list:\n'
+               '    %if options.create:\n'
+               '    def create_procedure_{{procedure.name}}(self, '
                'ignore_errors=False):\n'
                '        """ Creates stored procedure '
                '{{table.__class__.__name__}} in the database\n'
@@ -16048,17 +16025,21 @@
                '{{repr(format.format_create_procedure(procedure))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list, ignore_errors)'),
+               'statement_list, ignore_errors)\n'
+               '            '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=808,
-          lineno=804,
-          tokens=71,
-          depth=2,
+          id=765,
+          lineno=801,
+          tokens=236,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='drop_procedure_',
-          body='def drop_procedure_{{procedure.name}}(self, '
+          name='',
+          body='\n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_procedure_{{procedure.name}}(self, '
                'ignore_errors=False):\n'
                '        """ Drops stored procedure '
                '{{table.__class__.__name__}} from the database\n'
@@ -16067,17 +16048,15 @@
                '{{repr(format.format_drop_procedure(procedure))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list, ignore_errors)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=809,
-          lineno=816,
-          tokens=71,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='create_all_procedures',
-          body='def create_all_procedures(self, ignore_errors=False):\n'
+               'statement_list, ignore_errors)\n'
+               '        \n'
+               '    %end\n'
+               '    %end\n'
+               '    ### Creating and dropping all the stored procedures at '
+               'once\n'
+               '    \n'
+               '    %if options.create:\n'
+               '    def create_all_procedures(self, ignore_errors=False):\n'
                '        """ Creates all the stored procedures into the '
                'database\n'
                '        \n'
@@ -16088,36 +16067,40 @@
                '        %for procedure in database._procedure_list:\n'
                '        '
                'self.create_procedure_{{procedure.name}}(ignore_errors)\n'
-               '        %end'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=810,
-          lineno=828,
-          tokens=72,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='drop_all_procedures',
-          body='def drop_all_procedures(self, ignore_errors=False):\n'
+               '        %end\n'
+               '        \n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_all_procedures(self, ignore_errors=False):\n'
                '        """ Drops all the stored procedures from the database\n'
                '        \n'
                "        {{'\\n        '.join(procedure.name for procedure in "
                'database._procedure_list)}}\n'
-               '        \n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=766,
+          lineno=832,
+          tokens=167,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                '        """\n'
                '        %for procedure in reversed(database._procedure_list):\n'
                '        self.drop_procedure_{{procedure.name}}(ignore_errors)\n'
-               '        %end'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=811,
-          lineno=846,
-          tokens=78,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='create_trigger_',
-          body='def create_trigger_{{table._name}}_{{trigger.name}}(self, '
+               '        %end\n'
+               '    \n'
+               '    %end\n'
+               '    ### Creating and dropping triggers\n'
+               '    \n'
+               '    %for table in database._table_list:\n'
+               '    %if table._creatable:\n'
+               '    %for trigger in table._trigger_list:\n'
+               '    %for procedure in database._procedure_list:\n'
+               '    %if options.create:\n'
+               '    def create_trigger_{{table._name}}_{{trigger.name}}(self, '
                'ignore_errors=False):\n'
                '        """ Creates trigger '
                '{{table.__class__.__name__}}.{{trigger.name}} in the database\n'
@@ -16126,17 +16109,21 @@
                '{{repr(format.format_create_trigger(trigger))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list, ignore_errors)'),
+               'statement_list, ignore_errors)\n'
+               '            '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=812,
-          lineno=855,
-          tokens=78,
-          depth=2,
+          id=767,
+          lineno=852,
+          tokens=186,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='drop_trigger_',
-          body='def drop_trigger_{{table._name}}_{{trigger.name}}(self, '
+          name='',
+          body='\n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_trigger_{{table._name}}_{{trigger.name}}(self, '
                'ignore_errors=False):\n'
                '        """ Drops trigger '
                '{{table.__class__.__name__}}.{{trigger.name}} from the '
@@ -16146,24 +16133,35 @@
                '{{repr(format.format_drop_trigger(trigger))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list, ignore_errors)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=813,
-          lineno=870,
-          tokens=114,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='create_all_triggers',
-          body='def create_all_triggers(self, ignore_errors=False):\n'
+               'statement_list, ignore_errors)\n'
+               '        \n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    ### Creating and dropping the triggers of all the tables '
+               'at once\n'
+               '    \n'
+               '    %if options.create:\n'
+               '    def create_all_triggers(self, ignore_errors=False):\n'
                '        """ Creates the triggers for all the tables in the '
                'database\n'
                '        \n'
                "        {{'\\n        '.join(table._name for table in "
                'database._table_list if table._creatable and '
                'table._trigger_list)}}\n'
-               '        \n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=768,
+          lineno=874,
+          tokens=202,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                '        """\n'
                '        %for table in database._table_list:\n'
                '        %if table._creatable:\n'
@@ -16172,17 +16170,11 @@
                'self.create_trigger_{{table._name}}_{{trigger.name}}(ignore_errors)\n'
                '        %end\n'
                '        %end\n'
-               '        %end'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=814,
-          lineno=886,
-          tokens=117,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='drop_all_triggers',
-          body='def drop_all_triggers(self, ignore_errors=False):\n'
+               '        %end\n'
+               '        \n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_all_triggers(self, ignore_errors=False):\n'
                '        """ Drops the triggers for all the tables from the '
                'database\n'
                '        \n'
@@ -16198,17 +16190,25 @@
                'self.drop_trigger_{{table._name}}_{{trigger.name}}(ignore_errors)\n'
                '        %end\n'
                '        %end\n'
-               '        %end'),
+               '        %end\n'
+               '        \n'
+               '    %end\n'
+               '    ### Creating and dropping tables\n'),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=815,
-          lineno=906,
-          tokens=70,
-          depth=2,
+          id=769,
+          lineno=902,
+          tokens=235,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='create_table_',
-          body='def create_table_{{table._name}}(self, ignore_errors=False):\n'
+          name='',
+          body='\n'
+               '    %for table in database._table_list:\n'
+               '    %if table._creatable:\n'
+               '    %if options.create:\n'
+               '    def create_table_{{table._name}}(self, '
+               'ignore_errors=False):\n'
                '        """ Creates table {{table.__class__.__name__}} in the '
                'database\n'
                '        """\n'
@@ -16216,17 +16216,12 @@
                '{{repr(format.format_create_table(table, database))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list, ignore_errors)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=816,
-          lineno=915,
-          tokens=70,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='drop_table_',
-          body='def drop_table_{{table._name}}(self, ignore_errors=False):\n'
+               'statement_list, ignore_errors)\n'
+               '        \n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_table_{{table._name}}(self, '
+               'ignore_errors=False):\n'
                '        """ Drops table {{table.__class__.__name__}} from the '
                'database\n'
                '        """\n'
@@ -16234,20 +16229,29 @@
                '{{repr(format.format_drop_table(table, database))}}\n'
                '        with self.cursor() as cursor:\n'
                '            self.execute_statement_list(cursor, '
-               'statement_list, ignore_errors)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=817,
-          lineno=928,
-          tokens=88,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='create_all_tables',
-          body='def create_all_tables(self, ignore_errors=False):\n'
+               'statement_list, ignore_errors)\n'
+               '            \n'
+               '    %end\n'
+               '    %end\n'
+               '    %end\n'
+               '    ### Creating, dropping and truncating all the tables at '
+               'once\n'
+               '    \n'
+               '    %if options.create:\n'
+               '    def create_all_tables(self, ignore_errors=False):\n'
                '        """ Creates all the tables and views into the '
                'database\n'
-               '        \n'
+               '        '),
+ Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
+          id=770,
+          lineno=930,
+          tokens=187,
+          depth=1,
+          parent_id=None,
+          category='documentation',
+          summary=False,
+          name='',
+          body='\n'
                "        {{'\\n        '.join(table._name for table in "
                'database._table_list if table._creatable)}}\n'
                '        \n'
@@ -16256,17 +16260,11 @@
                '        %if table._creatable:\n'
                '        self.create_table_{{table._name}}(ignore_errors)\n'
                '        %end\n'
-               '        %end'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=818,
-          lineno=942,
-          tokens=91,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='drop_all_tables',
-          body='def drop_all_tables(self, ignore_errors=False):\n'
+               '        %end\n'
+               '        \n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_all_tables(self, ignore_errors=False):\n'
                '        """ Drops all the tables and views from the database\n'
                '        \n'
                "        {{'\\n        '.join(table._name for table in "
@@ -16277,17 +16275,23 @@
                '        %if table._creatable:\n'
                '        self.drop_table_{{table._name}}(ignore_errors)\n'
                '        %end\n'
-               '        %end'),
+               '        %end\n'
+               '        \n'
+               '    %end\n'
+               '    %if options.create:\n'
+               '    ### Creating languages\n'
+               '    '),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=819,
-          lineno=958,
-          tokens=73,
-          depth=2,
+          id=771,
+          lineno=957,
+          tokens=214,
+          depth=1,
           parent_id=None,
-          category='function',
+          category='documentation',
           summary=False,
-          name='create_all_languages',
-          body='def create_all_languages(self, ignore_errors=True):\n'
+          name='',
+          body='\n'
+               '    def create_all_languages(self, ignore_errors=True):\n'
                '        """ Creates all the procedural languages used in the '
                'procedures defined\n'
                '        """\n'
@@ -16297,109 +16301,44 @@
                '        %for language in sorted(language_set):\n'
                '        self.create_language({{repr(language)}}, '
                'ignore_errors)\n'
-               '        %end'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=820,
-          lineno=970,
-          tokens=52,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='create_structure',
-          body='def create_structure(self, ignore_errors=False):\n'
+               '        %end\n'
+               '\n'
+               '    %end\n'
+               '    ### Creating and dropping the database structure\n'
+               '    \n'
+               '    %if options.create:\n'
+               '    def create_structure(self, ignore_errors=False):\n'
                '        """ Creates the whole database structure\n'
                '        """\n'
                '        self.create_all_languages()\n'
                '        \n'
                '        self.create_all_tables(ignore_errors)\n'
                '        self.create_all_procedures(ignore_errors)\n'
-               '        self.create_all_triggers(ignore_errors)'),
- Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=821,
-          lineno=981,
-          tokens=45,
-          depth=2,
-          parent_id=None,
-          category='function',
-          summary=False,
-          name='drop_structure',
-          body='def drop_structure(self, ignore_errors=False):\n'
+               '        self.create_all_triggers(ignore_errors)\n'
+               '        \n'
+               '    %end\n'
+               '    %if options.drop:\n'
+               '    def drop_structure(self, ignore_errors=False):\n'
                '        """ Drops the whole database structure\n'
                '        """\n'
                '        self.drop_all_triggers(ignore_errors)\n'
                '        self.drop_all_procedures(ignore_errors)\n'
-               '        self.drop_all_tables(ignore_errors)'),
+               '        self.drop_all_tables(ignore_errors)\n'
+               '        \n'
+               '    %end\n'
+               '    %end\n'),
  Fragment(document_cs='e97547f610cb75a3e8c41311a14da75a98d1cc9b67b661a23dcf5c3e6e477f17',
-          id=822,
+          id=772,
           lineno=1,
-          tokens=571,
+          tokens=0,
           depth=0,
           parent_id=None,
           category='summary',
           summary=True,
           name='',
-          body='  Classes: '
-               '{{abstraction_class_name}}(database.DatabaseAbstraction) '
-               '{{table.__class__.__name__}}Record(record.Record)\n'
-               '  Methods: __init__ add_{{table. add_{{table._name}} '
-               'create_all_languages create_all_procedures create_all_tables '
-               'create_all_triggers create_procedure_ create_structure '
-               'create_table_ create_trigger_ delete_ delete_{{table._name}} '
-               'dict drop_all_procedures drop_all_tables drop_all_triggers '
-               'drop_procedure_ drop_structure drop_table_ drop_trigger_ find_ '
-               'get_ get_{{table. get_{{table._name}} query_{{query_name}} '
-               'truncate_ truncate_all_tables tuple update_ '
-               'update_{{table._name}}\n'
-               '  Variables and usages: Clauses DEBUG DataError '
-               'DatabaseAbstraction DatabaseError Error IntegrityError '
-               'InterfaceError InternalError LOG_SQL_ANALYSIS NA '
-               'NotSupportedError OperationalError PROFILE_QUERIES '
-               'ProgrammingError Record ValueError Warning _CONDITION_MAP '
-               '_FIELD_LIST _GROUP_BY _HAVING_CONDITION_MAP _ORDER_BY_MAP '
-               '_SQL_IDENTITY_INSERT_RELEASE_SAVEPOINT '
-               '_SQL_IDENTITY_INSERT_ROLLBACK_SAVEPOINT '
-               '_SQL_IDENTITY_INSERT_SAVEPOINT _TABLE_LIST '
-               '_WHERE_CONDITION_MAP _column_default_map _column_list '
-               '_column_name_list _condition_list _count _creatable _format '
-               '_group_by _iter _list _name _nullable_column_name_set '
-               '_order_by _primary_key _procedure_list '
-               '_quoted_column_name_list _table_list _table_name _trigger_list '
-               '_writable abstraction_class_name accessible '
-               'accessible_column_list add_ add_record add_record_list '
-               'argument_name backend clauses column condition_info '
-               'condition_name_list constants create create_language cursor '
-               'database dblayer default delete delete_record '
-               'delete_record_list drop else end_time error '
-               'execute_and_fetch_iter execute_and_fetch_one '
-               'execute_statement_list field_info field_list format '
-               'format_create_procedure format_create_table '
-               'format_create_trigger format_drop_procedure format_drop_table '
-               'format_drop_trigger format_expression format_order_by '
-               'format_query format_query_condition_map '
-               'format_query_order_by_map format_release_savepoint '
-               'format_result format_rollback_to_savepoint format_savepoint '
-               'format_select format_table_condition_map '
-               'format_table_order_by_map format_truncate_table '
-               'format_truncate_table_list formatted_order_by '
-               'formatting_function_name generate_id get_record '
-               'get_record_iter get_record_list get_table_list '
-               'has_custom_default having ignore_errors import insert items '
-               'join language language_set limit log_analysis name named new_ '
-               'offset options order_by parameter_tuple procedure property '
-               'query query_ query_constant_prefix query_field_list '
-               'query_group_by query_having_condition_map query_name '
-               'query_order_by_map query_table_list query_where_condition_map '
-               'quote_name record record_class record_list record_or_id '
-               'record_or_id_list repr reversed row_list runtime_conditions '
-               'serial sorted sql_expression start_time statement_list suffix '
-               'table table_column_name_list table_condition_map '
-               'table_constant_prefix table_info table_list table_name '
-               'table_order_by_map table_quoted_column_list time trigger '
-               'update update_record update_record_list upper util '
-               'value_expression where\n'),
+          body=''),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=823,
+          id=773,
           lineno=4,
           tokens=15,
           depth=1,
@@ -16410,7 +16349,7 @@
           body='import datetimeimport dblayerfrom dblayer import constantsfrom '
                'dblayer import constants'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=824,
+          id=774,
           lineno=1,
           tokens=7,
           depth=2,
@@ -16420,7 +16359,7 @@
           name='',
           body=' Functions formatting pieces of SQL statements\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=825,
+          id=775,
           lineno=12,
           tokens=5,
           depth=0,
@@ -16430,7 +16369,7 @@
           name='',
           body='### Quoting and escaping'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=826,
+          id=776,
           lineno=15,
           tokens=32,
           depth=4,
@@ -16442,7 +16381,7 @@
                '    Names must not contain double quotes!Names must not '
                'contain special characters which need to be escaped!'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=827,
+          id=777,
           lineno=25,
           tokens=14,
           depth=4,
@@ -16453,7 +16392,7 @@
           body=' Quotes aliased table or field name for use in SQL statements\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=828,
+          id=778,
           lineno=31,
           tokens=6,
           depth=4,
@@ -16463,7 +16402,7 @@
           name='',
           body=' Quotes a column reference\n    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=829,
+          id=779,
           lineno=37,
           tokens=23,
           depth=4,
@@ -16475,7 +16414,7 @@
                '    Cannot quote literal value: %r### Handling of parameter '
                'placeholders'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=830,
+          id=780,
           lineno=59,
           tokens=34,
           depth=4,
@@ -16488,7 +16427,7 @@
                '    # NOTE: It does not replace inside string literals### '
                'Formatting of column definitions based on the database model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=831,
+          id=781,
           lineno=71,
           tokens=14,
           depth=4,
@@ -16500,7 +16439,7 @@
                'needed\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=832,
+          id=782,
           lineno=88,
           tokens=11,
           depth=4,
@@ -16511,7 +16450,7 @@
           body=' Returns column type definition for the given custom column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=833,
+          id=783,
           lineno=97,
           tokens=17,
           depth=4,
@@ -16523,7 +16462,7 @@
                'column\n'
                '    BIGSERIAL PRIMARY KEY'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=834,
+          id=784,
           lineno=109,
           tokens=12,
           depth=4,
@@ -16535,7 +16474,7 @@
                'column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=835,
+          id=785,
           lineno=122,
           tokens=12,
           depth=4,
@@ -16547,7 +16486,7 @@
                'column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=836,
+          id=786,
           lineno=135,
           tokens=12,
           depth=4,
@@ -16559,7 +16498,7 @@
                'column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=837,
+          id=787,
           lineno=153,
           tokens=14,
           depth=4,
@@ -16571,7 +16510,7 @@
                'double column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=838,
+          id=788,
           lineno=170,
           tokens=12,
           depth=4,
@@ -16583,7 +16522,7 @@
                'column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=839,
+          id=789,
           lineno=191,
           tokens=12,
           depth=4,
@@ -16595,7 +16534,7 @@
                'column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=840,
+          id=790,
           lineno=208,
           tokens=12,
           depth=4,
@@ -16606,7 +16545,7 @@
           body=' Returns the column type definition for the given date column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=841,
+          id=791,
           lineno=221,
           tokens=17,
           depth=4,
@@ -16618,7 +16557,7 @@
                'column\n'
                '    TIMESTAMP WITHOUT TIME ZONE'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=842,
+          id=792,
           lineno=234,
           tokens=13,
           depth=4,
@@ -16630,7 +16569,7 @@
                'document column\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=843,
+          id=793,
           lineno=243,
           tokens=21,
           depth=4,
@@ -16642,7 +16581,7 @@
                '    ### Formatting of index creation based on the database '
                'model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=844,
+          id=794,
           lineno=271,
           tokens=26,
           depth=4,
@@ -16653,7 +16592,7 @@
           body=' Returns the definition of a regular B-Tree based index\n'
                '    CREATE INDEX %s ON %s USING btree(%s);'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=845,
+          id=795,
           lineno=284,
           tokens=133,
           depth=4,
@@ -16679,7 +16618,7 @@
                'FOR EACH ROW \\\n'
                'EXECUTE PROCEDURE %(procedure_name)s ();'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=846,
+          id=796,
           lineno=329,
           tokens=18,
           depth=4,
@@ -16691,7 +16630,7 @@
                '    ### Formatting of index removal based on the database '
                'model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=847,
+          id=797,
           lineno=347,
           tokens=14,
           depth=4,
@@ -16702,7 +16641,7 @@
           body=' Returns the statements to drop a regular B-Tree based index\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=848,
+          id=798,
           lineno=357,
           tokens=34,
           depth=4,
@@ -16714,7 +16653,7 @@
                '    %s_%s_update_triggerfn_%s_%s_update_triggerDROP TRIGGER %s '
                'ON %s;'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=849,
+          id=799,
           lineno=376,
           tokens=18,
           depth=4,
@@ -16726,7 +16665,7 @@
                '    ### Formatting of procedure definitions based on the '
                'database model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=850,
+          id=800,
           lineno=394,
           tokens=50,
           depth=4,
@@ -16744,7 +16683,7 @@
                'END\n'
                '$$ LANGUAGE %(language)s;'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=851,
+          id=801,
           lineno=417,
           tokens=35,
           depth=4,
@@ -16757,7 +16696,7 @@
                '    DROP FUNCTION %s (%s);### Formatting of trigger '
                'definitions based on the database model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=852,
+          id=802,
           lineno=431,
           tokens=59,
           depth=4,
@@ -16775,7 +16714,7 @@
                'EXECUTE PROCEDURE %(procedure_name)s '
                '(%(procedure_parameters)s);'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=853,
+          id=803,
           lineno=477,
           tokens=37,
           depth=4,
@@ -16788,7 +16727,7 @@
                '    DROP TRIGGER %s ON %s%s;### Formatting of constraint '
                'definitions based on the database model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=854,
+          id=804,
           lineno=492,
           tokens=10,
           depth=4,
@@ -16798,7 +16737,7 @@
           name='',
           body=' Returns the definition of a primary key constraint\n    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=855,
+          id=805,
           lineno=502,
           tokens=82,
           depth=4,
@@ -16814,7 +16753,7 @@
                'REFERENCES %s (%s) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE '
                'NO ACTION'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=856,
+          id=806,
           lineno=527,
           tokens=10,
           depth=4,
@@ -16824,7 +16763,7 @@
           name='',
           body=' Returns the definition of a unique index constraint\n    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=857,
+          id=807,
           lineno=537,
           tokens=9,
           depth=4,
@@ -16834,7 +16773,7 @@
           name='',
           body=' Returns the definition of a check constraint\n    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=858,
+          id=808,
           lineno=547,
           tokens=18,
           depth=4,
@@ -16846,7 +16785,7 @@
                '    ### Formatting of SQL statements based on the database '
                'model'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=859,
+          id=809,
           lineno=567,
           tokens=62,
           depth=4,
@@ -16862,7 +16801,7 @@
                'Format CREATE INDEX statements# Prepare the parameter '
                'placeholders'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=860,
+          id=810,
           lineno=613,
           tokens=29,
           depth=4,
@@ -16875,7 +16814,7 @@
                '    # Format DROP INDEX statements# Format statements to drop '
                'the table'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=861,
+          id=811,
           lineno=634,
           tokens=17,
           depth=4,
@@ -16887,7 +16826,7 @@
                'parameter_tuple to truncate a table\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=862,
+          id=812,
           lineno=643,
           tokens=33,
           depth=4,
@@ -16900,7 +16839,7 @@
                '    ### Formatting SQL statements runtime (no database model '
                'available, only the record classes)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=863,
+          id=813,
           lineno=655,
           tokens=66,
           depth=4,
@@ -16917,7 +16856,7 @@
                'an existing cross join groupUnknown join type: %rTrying to '
                'append a new join to an empty cross join group!'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=864,
+          id=814,
           lineno=706,
           tokens=42,
           depth=4,
@@ -16932,7 +16871,7 @@
                '    SQL SELECT statements must have a field list!SQL SELECT '
                'statements must have source table(s) to select from!'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=865,
+          id=815,
           lineno=754,
           tokens=102,
           depth=4,
@@ -16952,7 +16891,7 @@
                'INSERT statements do not have an offset clause!SQL INSERT '
                'statements can only work on a single table!'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=866,
+          id=816,
           lineno=789,
           tokens=121,
           depth=4,
@@ -16974,7 +16913,7 @@
                'UPDATE statements do not have an offset clause!SQL UPDATE '
                'statements can only work on a single table!'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=867,
+          id=817,
           lineno=825,
           tokens=153,
           depth=4,
@@ -16999,7 +16938,7 @@
                'servers not needing# a savepoint to restore from an aborted '
                'transaction after failing queries'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=868,
+          id=818,
           lineno=864,
           tokens=13,
           depth=4,
@@ -17011,7 +16950,7 @@
                'transaction state\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=869,
+          id=819,
           lineno=870,
           tokens=26,
           depth=4,
@@ -17025,7 +16964,7 @@
                '    \n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=870,
+          id=820,
           lineno=878,
           tokens=31,
           depth=4,
@@ -17038,7 +16977,7 @@
                '    \n'
                '    ROLLBACK TO SAVEPOINT '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=871,
+          id=821,
           lineno=888,
           tokens=16,
           depth=4,
@@ -17049,7 +16988,7 @@
           body=' Formats a query result expression and defines its alias name\n'
                '    ### Functions and aggregates'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=872,
+          id=822,
           lineno=1087,
           tokens=13,
           depth=5,
@@ -17059,7 +16998,7 @@
           name='',
           body='(STRPOS(%s, %s) > 0)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=873,
+          id=823,
           lineno=1179,
           tokens=8,
           depth=4,
@@ -17069,7 +17008,7 @@
           name='',
           body=' Formats an SQL function or aggregate\n    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=874,
+          id=824,
           lineno=1231,
           tokens=21,
           depth=4,
@@ -17081,7 +17020,7 @@
                'a function\n'
                '    ### Formatting query conditions at runtime'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=875,
+          id=825,
           lineno=1278,
           tokens=16,
           depth=1,
@@ -17092,7 +17031,7 @@
           body='# NOTE: It can only be used with an sql_expression without '
                'parameter placeholders.'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=876,
+          id=826,
           lineno=1286,
           tokens=16,
           depth=1,
@@ -17103,7 +17042,7 @@
           body='# NOTE: It can only be used with an sql_expression without '
                'parameter placeholders.'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=877,
+          id=827,
           lineno=1332,
           tokens=30,
           depth=6,
@@ -17115,7 +17054,7 @@
                'template and function to prepare# the expressions passed as '
                'parameters### Formatting query conditions'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=878,
+          id=828,
           lineno=1362,
           tokens=55,
           depth=4,
@@ -17133,7 +17072,7 @@
                'operator# Yield SQL argument name and SQL expression for this '
                'operator'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=879,
+          id=829,
           lineno=1383,
           tokens=80,
           depth=4,
@@ -17156,7 +17095,7 @@
                'condition map# Append each possible operator for this '
                'condition'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=880,
+          id=830,
           lineno=1410,
           tokens=21,
           depth=4,
@@ -17169,7 +17108,7 @@
                '    order by fields to their SQL expression\n'
                '    '),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=881,
+          id=831,
           lineno=1424,
           tokens=56,
           depth=4,
@@ -17187,7 +17126,7 @@
                'operator# Yield SQL argument name and SQL expression for this '
                'operator'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=882,
+          id=832,
           lineno=1445,
           tokens=62,
           depth=4,
@@ -17207,7 +17146,7 @@
                '    # Process all the query conditions# Append each possible '
                'operator for this condition'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=883,
+          id=833,
           lineno=1462,
           tokens=26,
           depth=4,
@@ -17220,7 +17159,7 @@
                '    order by columns to their SQL expression\n'
                '    ### Formatting queries at runtime'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=884,
+          id=834,
           lineno=1490,
           tokens=185,
           depth=4,
@@ -17256,7 +17195,7 @@
                'group_by expressions are formatted while the abstraction layer '
                'is generated.# Format order by items'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=885,
+          id=835,
           lineno=1573,
           tokens=18,
           depth=4,
@@ -17267,7 +17206,7 @@
           body=' Formats the items of an ORDER BY clause\n'
                '    Unparsable column order: %r'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=886,
+          id=836,
           lineno=14,
           tokens=72,
           depth=1,
@@ -17287,7 +17226,7 @@
                "need to be escaped!')\n"
                '    return \'"%s"\' % name'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=887,
+          id=837,
           lineno=24,
           tokens=43,
           depth=1,
@@ -17301,7 +17240,7 @@
                '    """\n'
                "    return '%s AS %s' % (quote_name(name), quote_name(alias))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=888,
+          id=838,
           lineno=30,
           tokens=39,
           depth=1,
@@ -17315,7 +17254,7 @@
                "    return '%s.%s' % (quote_name(table_name), "
                'quote_name(column_name))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=889,
+          id=839,
           lineno=36,
           tokens=196,
           depth=1,
@@ -17347,7 +17286,7 @@
                "    raise ValueError('Cannot quote literal value: %r' % "
                '(value,))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=890,
+          id=840,
           lineno=58,
           tokens=83,
           depth=1,
@@ -17365,7 +17304,7 @@
                "        split_sql[i] = split_sql[i].replace('?', '%s')\n"
                '    return "\'".join(split_sql)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=891,
+          id=841,
           lineno=70,
           tokens=111,
           depth=1,
@@ -17393,7 +17332,7 @@
                '    if not column.null:\n'
                "        sql.append('NOT NULL')"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=892,
+          id=842,
           lineno=87,
           tokens=44,
           depth=1,
@@ -17411,7 +17350,7 @@
                '\n'
                '    return (column.sql_type, ())'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=893,
+          id=843,
           lineno=96,
           tokens=63,
           depth=1,
@@ -17432,7 +17371,7 @@
                '\n'
                "    return ('BIGINT NOT NULL', ())"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=894,
+          id=844,
           lineno=108,
           tokens=79,
           depth=1,
@@ -17454,7 +17393,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=895,
+          id=845,
           lineno=121,
           tokens=77,
           depth=1,
@@ -17476,7 +17415,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=896,
+          id=846,
           lineno=134,
           tokens=124,
           depth=1,
@@ -17503,7 +17442,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=897,
+          id=847,
           lineno=152,
           tokens=99,
           depth=1,
@@ -17528,7 +17467,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=898,
+          id=848,
           lineno=169,
           tokens=143,
           depth=1,
@@ -17559,7 +17498,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=899,
+          id=849,
           lineno=190,
           tokens=103,
           depth=1,
@@ -17584,7 +17523,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=900,
+          id=850,
           lineno=207,
           tokens=77,
           depth=1,
@@ -17605,7 +17544,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=901,
+          id=851,
           lineno=220,
           tokens=83,
           depth=1,
@@ -17627,7 +17566,7 @@
                "    sql = ' '.join(sql)\n"
                '    return (sql, tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=902,
+          id=852,
           lineno=233,
           tokens=47,
           depth=1,
@@ -17645,7 +17584,7 @@
                '\n'
                "    return ('tsvector', ())"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=903,
+          id=853,
           lineno=242,
           tokens=54,
           depth=1,
@@ -17665,7 +17604,7 @@
                'COLUMN_FORMATTER_MAP[column.abstract_sql_column_type]\n'
                '    return formatter(column)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=904,
+          id=854,
           lineno=270,
           tokens=110,
           depth=1,
@@ -17689,7 +17628,7 @@
                'index.columns))\n'
                '    return [(sql, ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=905,
+          id=855,
           lineno=283,
           tokens=215,
           depth=1,
@@ -17726,7 +17665,7 @@
                'BEGIN\n'
                '  new'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=906,
+          id=856,
           lineno=304,
           tokens=142,
           depth=1,
@@ -17758,7 +17697,7 @@
                '\n'
                '    return statements'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=907,
+          id=857,
           lineno=328,
           tokens=54,
           depth=1,
@@ -17777,7 +17716,7 @@
                'CREATE_INDEX_FORMATTER_MAP[index.__class__.__name__]\n'
                '    return formatter(index)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=908,
+          id=858,
           lineno=346,
           tokens=76,
           depth=1,
@@ -17797,7 +17736,7 @@
                '(index.table._name, index.name))\n'
                '    return [(sql, ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=909,
+          id=859,
           lineno=356,
           tokens=178,
           depth=1,
@@ -17829,7 +17768,7 @@
                '\n'
                '    return statements'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=910,
+          id=860,
           lineno=375,
           tokens=54,
           depth=1,
@@ -17848,7 +17787,7 @@
                'DROP_INDEX_FORMATTER_MAP[index.__class__.__name__]\n'
                '    return formatter(index)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=911,
+          id=861,
           lineno=393,
           tokens=141,
           depth=1,
@@ -17881,7 +17820,7 @@
                '\n'
                '    return [(sql, ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=912,
+          id=862,
           lineno=416,
           tokens=88,
           depth=1,
@@ -17902,7 +17841,7 @@
                "        ', '.join(procedure.argument_list))\n"
                '    return [(sql, ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=913,
+          id=863,
           lineno=430,
           tokens=185,
           depth=1,
@@ -17940,7 +17879,7 @@
                "(%(procedure_parameters)s);''' % variables\n"
                '    return [(sql, ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=914,
+          id=864,
           lineno=476,
           tokens=91,
           depth=1,
@@ -17962,7 +17901,7 @@
                "        ' CASCADE' if cascade else '')\n"
                '    return [(sql, ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=915,
+          id=865,
           lineno=491,
           tokens=70,
           depth=1,
@@ -17982,7 +17921,7 @@
                'constraint.columns))\n'
                '    return (sql, ())'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=916,
+          id=866,
           lineno=501,
           tokens=236,
           depth=1,
@@ -18020,7 +17959,7 @@
                '                quote_name(pk_column.name)))\n'
                '    return (sql, ())'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=917,
+          id=867,
           lineno=526,
           tokens=69,
           depth=1,
@@ -18039,7 +17978,7 @@
                'for column in constraint.columns))\n'
                '    return (sql, ())'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=918,
+          id=868,
           lineno=536,
           tokens=57,
           depth=1,
@@ -18058,7 +17997,7 @@
                'format_expression(constraint.expression)\n'
                '    return (sql, ())'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=919,
+          id=869,
           lineno=546,
           tokens=56,
           depth=1,
@@ -18077,7 +18016,7 @@
                'CONSTRAINT_FORMATTER_MAP[constraint.__class__.__name__]\n'
                '    return formatter(constraint)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=920,
+          id=870,
           lineno=566,
           tokens=129,
           depth=1,
@@ -18108,7 +18047,7 @@
                '\n'
                '    # Collect list of constraint definitions\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=921,
+          id=871,
           lineno=587,
           tokens=183,
           depth=1,
@@ -18144,7 +18083,7 @@
                '\n'
                '    return statements'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=922,
+          id=872,
           lineno=612,
           tokens=122,
           depth=1,
@@ -18173,7 +18112,7 @@
                '\n'
                '    return statements'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=923,
+          id=873,
           lineno=633,
           tokens=64,
           depth=1,
@@ -18191,7 +18130,7 @@
                "    return [('TRUNCATE TABLE %s' % quote_name(table._name), "
                '())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=924,
+          id=874,
           lineno=642,
           tokens=88,
           depth=1,
@@ -18212,7 +18151,7 @@
                "'.join(quote_name(table._name) for table in table_list if "
                'table._writable), ())]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=925,
+          id=875,
           lineno=654,
           tokens=218,
           depth=1,
@@ -18259,7 +18198,7 @@
                '             referer_table_name,\n'
                '             fk_field_name) = source\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=926,
+          id=876,
           lineno=689,
           tokens=122,
           depth=1,
@@ -18286,7 +18225,7 @@
                '\n'
                '    return from_list'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=927,
+          id=877,
           lineno=705,
           tokens=244,
           depth=1,
@@ -18336,7 +18275,7 @@
                '    if clauses.limit:\n'
                "        sql.extend(('LIMIT', str(clauses.limit)))\n"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=928,
+          id=878,
           lineno=742,
           tokens=48,
           depth=1,
@@ -18354,7 +18293,7 @@
                '    cache[clauses] = sql\n'
                "    return sql + ';'"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=929,
+          id=879,
           lineno=753,
           tokens=210,
           depth=1,
@@ -18390,7 +18329,7 @@
                '\n'
                '    sql = cache.get(clauses)\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=930,
+          id=880,
           lineno=771,
           tokens=103,
           depth=1,
@@ -18415,7 +18354,7 @@
                '    cache[clauses] = sql\n'
                '    return sql'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=931,
+          id=881,
           lineno=788,
           tokens=229,
           depth=1,
@@ -18453,7 +18392,7 @@
                '\n'
                '    sql = cache.get(clauses)\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=932,
+          id=882,
           lineno=806,
           tokens=93,
           depth=1,
@@ -18479,7 +18418,7 @@
                '    cache[clauses] = sql\n'
                '    return sql'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=933,
+          id=883,
           lineno=824,
           tokens=236,
           depth=1,
@@ -18517,7 +18456,7 @@
                '\n'
                '    sql = cache.get(clauses)\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=934,
+          id=884,
           lineno=842,
           tokens=70,
           depth=1,
@@ -18540,7 +18479,7 @@
                '    cache[clauses] = sql\n'
                '    return sql'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=935,
+          id=885,
           lineno=863,
           tokens=33,
           depth=1,
@@ -18554,7 +18493,7 @@
                '    """\n'
                "    return 'SAVEPOINT ' + quote_name(name);"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=936,
+          id=886,
           lineno=869,
           tokens=48,
           depth=1,
@@ -18570,7 +18509,7 @@
                '    """\n'
                "    return 'RELEASE SAVEPOINT ' + quote_name(name);"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=937,
+          id=887,
           lineno=877,
           tokens=50,
           depth=1,
@@ -18586,7 +18525,7 @@
                '    """\n'
                "    return 'ROLLBACK TO SAVEPOINT ' + quote_name(name);"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=938,
+          id=888,
           lineno=887,
           tokens=58,
           depth=1,
@@ -18605,7 +18544,7 @@
                "    return '%s AS %s' % (format_expression(result.expression), "
                'quote_name(result.name))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=939,
+          id=889,
           lineno=898,
           tokens=40,
           depth=1,
@@ -18621,7 +18560,7 @@
                '\n'
                '    return function.args[0]'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=940,
+          id=890,
           lineno=906,
           tokens=42,
           depth=1,
@@ -18637,7 +18576,7 @@
                '\n'
                '    return quote_name(function.args[0])'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=941,
+          id=891,
           lineno=914,
           tokens=48,
           depth=1,
@@ -18653,7 +18592,7 @@
                '\n'
                "    return '(NOT %s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=942,
+          id=892,
           lineno=922,
           tokens=51,
           depth=1,
@@ -18670,7 +18609,7 @@
                "    return '(%s)' % ' AND '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=943,
+          id=893,
           lineno=930,
           tokens=51,
           depth=1,
@@ -18687,7 +18626,7 @@
                "    return '(%s)' % ' OR '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=944,
+          id=894,
           lineno=938,
           tokens=51,
           depth=1,
@@ -18704,7 +18643,7 @@
                "    return '(%s = %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=945,
+          id=895,
           lineno=946,
           tokens=52,
           depth=1,
@@ -18721,7 +18660,7 @@
                "    return '(%s <> %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=946,
+          id=896,
           lineno=954,
           tokens=52,
           depth=1,
@@ -18738,7 +18677,7 @@
                "    return '(%s < %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=947,
+          id=897,
           lineno=962,
           tokens=54,
           depth=1,
@@ -18755,7 +18694,7 @@
                "    return '(%s <= %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=948,
+          id=898,
           lineno=970,
           tokens=52,
           depth=1,
@@ -18772,7 +18711,7 @@
                "    return '(%s > %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=949,
+          id=899,
           lineno=978,
           tokens=54,
           depth=1,
@@ -18789,7 +18728,7 @@
                "    return '(%s >= %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=950,
+          id=900,
           lineno=986,
           tokens=76,
           depth=1,
@@ -18810,7 +18749,7 @@
                'quote_literal_value(b))\n'
                "    return 'FALSE'"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=951,
+          id=901,
           lineno=998,
           tokens=78,
           depth=1,
@@ -18831,7 +18770,7 @@
                'quote_literal_value(b))\n'
                "    return 'TRUE'"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=952,
+          id=902,
           lineno=1010,
           tokens=48,
           depth=1,
@@ -18847,7 +18786,7 @@
                '\n'
                "    return '(-%s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=953,
+          id=903,
           lineno=1018,
           tokens=51,
           depth=1,
@@ -18864,7 +18803,7 @@
                "    return '(%s)' % ' + '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=954,
+          id=904,
           lineno=1026,
           tokens=51,
           depth=1,
@@ -18881,7 +18820,7 @@
                "    return '(%s)' % ' - '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=955,
+          id=905,
           lineno=1034,
           tokens=51,
           depth=1,
@@ -18898,7 +18837,7 @@
                "    return '(%s)' % ' * '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=956,
+          id=906,
           lineno=1042,
           tokens=51,
           depth=1,
@@ -18915,7 +18854,7 @@
                "    return '(%s)' % ' / '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=957,
+          id=907,
           lineno=1050,
           tokens=52,
           depth=1,
@@ -18932,7 +18871,7 @@
                "    return 'CONCAT(%s)' % ', '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=958,
+          id=908,
           lineno=1058,
           tokens=52,
           depth=1,
@@ -18949,7 +18888,7 @@
                "    return 'LEFT(%s, %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=959,
+          id=909,
           lineno=1066,
           tokens=52,
           depth=1,
@@ -18966,7 +18905,7 @@
                "    return 'RIGHT(%s, %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=960,
+          id=910,
           lineno=1074,
           tokens=56,
           depth=1,
@@ -18983,7 +18922,7 @@
                "    return 'SUBSTR(%s)' % ', '.join(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=961,
+          id=911,
           lineno=1082,
           tokens=57,
           depth=1,
@@ -19000,7 +18939,7 @@
                "    return '(STRPOS(%s, %s) > 0)' % "
                'tuple(map(format_expression, function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=962,
+          id=912,
           lineno=1090,
           tokens=51,
           depth=1,
@@ -19017,7 +18956,7 @@
                "    return '(%s LIKE %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=963,
+          id=913,
           lineno=1098,
           tokens=53,
           depth=1,
@@ -19034,7 +18973,7 @@
                "    return '(%s NOT LIKE %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=964,
+          id=914,
           lineno=1106,
           tokens=51,
           depth=1,
@@ -19051,7 +18990,7 @@
                "    return '(%s ~ %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=965,
+          id=915,
           lineno=1114,
           tokens=53,
           depth=1,
@@ -19068,7 +19007,7 @@
                "    return '(%s !~ %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=966,
+          id=916,
           lineno=1122,
           tokens=53,
           depth=1,
@@ -19085,7 +19024,7 @@
                "    return '(%s @@ %s)' % tuple(map(format_expression, "
                'function.args))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=967,
+          id=917,
           lineno=1130,
           tokens=55,
           depth=1,
@@ -19102,7 +19041,7 @@
                "    return 'COALESCE(%s)' % ', "
                "'.join(tuple(map(format_expression, function.args)))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=968,
+          id=918,
           lineno=1138,
           tokens=49,
           depth=1,
@@ -19118,7 +19057,7 @@
                '\n'
                "    return 'COUNT(%s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=969,
+          id=919,
           lineno=1146,
           tokens=49,
           depth=1,
@@ -19134,7 +19073,7 @@
                '\n'
                "    return 'MIN(%s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=970,
+          id=920,
           lineno=1154,
           tokens=49,
           depth=1,
@@ -19150,7 +19089,7 @@
                '\n'
                "    return 'MAX(%s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=971,
+          id=921,
           lineno=1162,
           tokens=49,
           depth=1,
@@ -19166,7 +19105,7 @@
                '\n'
                "    return 'SUM(%s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=972,
+          id=922,
           lineno=1170,
           tokens=50,
           depth=1,
@@ -19182,7 +19121,7 @@
                '\n'
                "    return 'AVG(%s)' % format_expression(function.args[0])"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=973,
+          id=923,
           lineno=1178,
           tokens=53,
           depth=1,
@@ -19201,7 +19140,7 @@
                'FUNCTION_FORMATTER_MAP[function.__class__.__name__]\n'
                '    return formatter(function)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=974,
+          id=924,
           lineno=1230,
           tokens=119,
           depth=1,
@@ -19231,7 +19170,7 @@
                '\n'
                '    return quote_literal_value(expression)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=975,
+          id=925,
           lineno=1249,
           tokens=44,
           depth=1,
@@ -19244,7 +19183,7 @@
                "        return ('%s IS NULL' % sql_expression, ())\n"
                "    return ('%s = ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=976,
+          id=926,
           lineno=1255,
           tokens=45,
           depth=1,
@@ -19257,7 +19196,7 @@
                "        return ('%s IS NOT NULL' % sql_expression, ())\n"
                "    return ('%s <> ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=977,
+          id=927,
           lineno=1261,
           tokens=25,
           depth=1,
@@ -19268,7 +19207,7 @@
           body='def format_gt_condition(sql_expression, value):\n'
                "    return ('%s > ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=978,
+          id=928,
           lineno=1265,
           tokens=25,
           depth=1,
@@ -19279,7 +19218,7 @@
           body='def format_lt_condition(sql_expression, value):\n'
                "    return ('%s < ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=979,
+          id=929,
           lineno=1269,
           tokens=25,
           depth=1,
@@ -19290,7 +19229,7 @@
           body='def format_ge_condition(sql_expression, value):\n'
                "    return ('%s >= ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=980,
+          id=930,
           lineno=1273,
           tokens=25,
           depth=1,
@@ -19301,7 +19240,7 @@
           body='def format_le_condition(sql_expression, value):\n'
                "    return ('%s <= ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=981,
+          id=931,
           lineno=1277,
           tokens=65,
           depth=1,
@@ -19318,7 +19257,7 @@
                'sql_expression),\n'
                '        (lower_limit, upper_limit))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=982,
+          id=932,
           lineno=1285,
           tokens=68,
           depth=1,
@@ -19335,7 +19274,7 @@
                'sql_expression),\n'
                '        (lower_limit, upper_limit))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=983,
+          id=933,
           lineno=1293,
           tokens=42,
           depth=1,
@@ -19349,7 +19288,7 @@
                "        return ('FALSE', ())\n"
                "    return ('%s IN ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=984,
+          id=934,
           lineno=1300,
           tokens=44,
           depth=1,
@@ -19363,7 +19302,7 @@
                "        return ('TRUE', ())\n"
                "    return ('%s NOT IN ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=985,
+          id=935,
           lineno=1307,
           tokens=25,
           depth=1,
@@ -19374,7 +19313,7 @@
           body='def format_like_condition(sql_expression, value):\n'
                "    return ('%s LIKE ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=986,
+          id=936,
           lineno=1311,
           tokens=27,
           depth=1,
@@ -19385,7 +19324,7 @@
           body='def format_not_like_condition(sql_expression, value):\n'
                "    return ('%s NOT LIKE ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=987,
+          id=937,
           lineno=1315,
           tokens=30,
           depth=1,
@@ -19396,7 +19335,7 @@
           body='def format_similar_to_condition(sql_expression, value):\n'
                "    return ('%s SIMILAR TO ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=988,
+          id=938,
           lineno=1319,
           tokens=32,
           depth=1,
@@ -19407,7 +19346,7 @@
           body='def format_not_similar_to_condition(sql_expression, value):\n'
                "    return ('%s NOT SIMILAR TO ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=989,
+          id=939,
           lineno=1323,
           tokens=25,
           depth=1,
@@ -19418,7 +19357,7 @@
           body='def format_match_condition(sql_expression, value):\n'
                "    return ('%s ~ ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=990,
+          id=940,
           lineno=1327,
           tokens=27,
           depth=1,
@@ -19429,7 +19368,7 @@
           body='def format_not_match_condition(sql_expression, value):\n'
                "    return ('%s !~ ?' % sql_expression, (value,))"),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=991,
+          id=941,
           lineno=1331,
           tokens=30,
           depth=1,
@@ -19441,7 +19380,7 @@
                "    return ('%s @@ plainto_tsquery(?)' % sql_expression, "
                '(value,))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=992,
+          id=942,
           lineno=1361,
           tokens=133,
           depth=1,
@@ -19475,7 +19414,7 @@
                '        yield (argument_name, (suffix, '
                'formatting_function.__name__, value_expression))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=993,
+          id=943,
           lineno=1382,
           tokens=168,
           depth=1,
@@ -19514,7 +19453,7 @@
                '\n'
                '    return (where_condition_map, having_condition_map)'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=994,
+          id=944,
           lineno=1409,
           tokens=114,
           depth=1,
@@ -19538,7 +19477,7 @@
                "        order_by_map['-' + name] = sql_expression + ' DESC'\n"
                '    return order_by_map'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=995,
+          id=945,
           lineno=1423,
           tokens=135,
           depth=1,
@@ -19571,7 +19510,7 @@
                '        yield (argument_name, (suffix, '
                'formatting_function.__name__, value_expression))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=996,
+          id=946,
           lineno=1444,
           tokens=104,
           depth=1,
@@ -19599,7 +19538,7 @@
                '\n'
                '    return condition_map'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=997,
+          id=947,
           lineno=1461,
           tokens=105,
           depth=1,
@@ -19621,7 +19560,7 @@
                "        order_by_map['-' + name] = sql_expression + ' DESC'\n"
                '    return order_by_map'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=998,
+          id=948,
           lineno=1477,
           tokens=249,
           depth=1,
@@ -19676,7 +19615,7 @@
                '    parameter_list = []\n'
                '    for name, value in runtime_conditions.items():\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=999,
+          id=949,
           lineno=1515,
           tokens=177,
           depth=1,
@@ -19720,7 +19659,7 @@
                '\n'
                '    # Having condition built up runtime\n'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=1000,
+          id=950,
           lineno=1546,
           tokens=167,
           depth=1,
@@ -19756,7 +19695,7 @@
                '\n'
                '    return (format_select(clauses), tuple(parameter_list))'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=1001,
+          id=951,
           lineno=1572,
           tokens=103,
           depth=1,
@@ -19781,7 +19720,7 @@
                '\n'
                '    return formatted_order_by'),
  Fragment(document_cs='ebae74d5b7eb11c27a18ce730775620fef7b4bdf7753276e926af075160e78af',
-          id=1002,
+          id=952,
           lineno=1,
           tokens=788,
           depth=0,
@@ -19881,7 +19820,7 @@
                'timing trigger trigger_name tuple update upper_limit value '
                'value_expression variables where where_condition_map\n'),
  Fragment(document_cs='ff1cb950dd3ca78b26d27ba1078671219d0c799b3378060140f75f0bc4fd8b6e',
-          id=1003,
+          id=953,
           lineno=43,
           tokens=23,
           depth=1,
@@ -19895,7 +19834,7 @@
                '\n'
                '    __str__ = __repr__'),
  Fragment(document_cs='ff1cb950dd3ca78b26d27ba1078671219d0c799b3378060140f75f0bc4fd8b6e',
-          id=1004,
+          id=954,
           lineno=4,
           tokens=2,
           depth=1,
@@ -19905,7 +19844,7 @@
           name='',
           body='import os'),
  Fragment(document_cs='ff1cb950dd3ca78b26d27ba1078671219d0c799b3378060140f75f0bc4fd8b6e',
-          id=1005,
+          id=955,
           lineno=6,
           tokens=98,
           depth=0,
@@ -19924,7 +19863,7 @@
                'singleton, used to detect missing parameters# while allowing '
                'None as a valid value'),
  Fragment(document_cs='ff1cb950dd3ca78b26d27ba1078671219d0c799b3378060140f75f0bc4fd8b6e',
-          id=1006,
+          id=956,
           lineno=44,
           tokens=11,
           depth=3,
@@ -19934,7 +19873,7 @@
           name='__repr__',
           body="def __repr__(self):\n        return 'NA'"),
  Fragment(document_cs='ff1cb950dd3ca78b26d27ba1078671219d0c799b3378060140f75f0bc4fd8b6e',
-          id=1007,
+          id=957,
           lineno=1,
           tokens=64,
           depth=0,
