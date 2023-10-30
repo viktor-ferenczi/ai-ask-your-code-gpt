@@ -1,4 +1,4 @@
-python-magic-bin~=0.4.14
+python-magic~=0.4.14
 quart~=0.18.4
 quart-cors
 tqdm~=4.65.0
@@ -13,3 +13,4 @@ aioquic
 asyncpg~=0.27.0
 aiodebug
 requests==2.31.0
+Werkzeug==2.2.2
