@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "AskYourCode",
     "description": "Provides summarization and search capability over the source code and documentation of a software project. Facilitates discovering the project gradually, retrieving only the parts relevant for reasoning about the task at hand.",
@@ -214,8 +214,7 @@
         "properties": {
           "project": {
             "type": "string",
-            "description": "Project identifier",
-            "required": true
+            "description": "Project identifier"
           },
           "info": {
             "type": "object",
@@ -231,8 +230,7 @@
         "properties": {
           "summary": {
             "type": "string",
-            "description": "Summary",
-            "required": true
+            "description": "Summary"
           },
           "info": {
             "type": "object",
