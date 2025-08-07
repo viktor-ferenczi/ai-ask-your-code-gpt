@@ -1,4 +1,9 @@
-# AskYourCode ChatGPT plugin
+**This is the full source code of the now discontinued AskYourCode plugn (or GPT) for OpenAI's ChatGPT.
+Please contact me if you want to continue or reuse this project in any form.**
+
+---
+
+# AskYourCode ChatGPT plugin / GPT
 
 Ask your source code directly. The intelligent rubber ducky!
 
