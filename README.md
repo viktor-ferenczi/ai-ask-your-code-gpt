@@ -146,10 +146,3 @@ TODO
 ## Getting help
 
 If you run into issues or have questions building a plugin, please join our [Developer community forum](https://community.openai.com/c/chat-plugins/20).
-
-## TODO
-
-- Add more doc formats: requirements.txt, C/C++, C#, Java, Rust, Go, Bash, TypeScript, JSON, YAML
-- Refactor the whole thing, reduce the need for embedding, use an external embedding service
-- Implement an agent to serve code from a local folder instead of a ZIP download.
-- Implement portal to let the users buy a professional license.
