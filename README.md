@@ -43,37 +43,12 @@ The plugin should now be installed and enabled! You can start with a question li
 6. Enter: **AskYourCode YOUR-URL-HERE**
 7. The plugin's backend server will download your archive, extract the source code, split it into small fragments and store into a vector database.
 8. The plugin will report back with a GUID, that's the unique identifier of your project. You can refer to this project later without having to upload it again.
-9. 
 
 ## Limits
 
 ### ChatGPT account
 
 You must be logged in on CharGPT to use this plugin.
-
-### Usage limits
-
-#### Free usage
-
-- Up to 100kB decompressed source code archive. Please subscribe to work on bigger projects.
-- Up to 3 project uploads per hour.
-- Up to 30 requests per hour.
-- Up to 8 hours of project retention time after last use.
-
-#### Subscribers
-
-- Up to 10MB decompressed source code archive. Please split your project or remove unnecessary files.
-- Up to 30 project uploads per hour.
-- Up to 600 requests per hour (pretty much unlimited).
-- Up to 30 days of project retention time after last use.
-
-Paid accounts are not available yet. Please leave your email address
-to express your interest in a paid subscription. Once we have enough
-signups it will happen.
-
-TODO: Way to sign interest
-
-Planned price: $10/month
 
 ### Supported file types
 
@@ -112,8 +87,6 @@ Supported:
 - CSS
 - HTML
 
-TODO: Way to request more languages and doc formats.
-
 ## Security
 
 Only your ChatGPT user can access your projects, even if others would know its unique identifier.
@@ -129,15 +102,6 @@ Only your ChatGPT user can access your projects, even if others would know its u
 ## Assumptions
 
 - All textual source files are UTF-8 encoded. 
-
-## Best practices
-
-TODO
-
-## Roadmap
-
-- Paid subscription with increased limits, required for sustainable service
-- Agent to upload source directly form the user's machine (no need to upload an archive)
 
 ## Citations
 
